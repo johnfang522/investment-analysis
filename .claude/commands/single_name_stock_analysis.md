@@ -27,20 +27,26 @@ Before running any analyses, check whether all 8 output files already exist in `
 
 ---
 
-## Step 2 — Run All 8 Individual Analyses in Sequence
+## Step 2 — Run All 8 Individual Analyses via Subagents
 
-Read and fully execute the instructions in each skill file below, **one at a time**, for the given ticker. Each analysis must complete (including charts + Word document saved to `Outputs/{TICKER}/`) before moving to the next.
+Spawn each analysis as a **separate subagent** using the Agent tool, one at a time (wait for each to complete before spawning the next). Each subagent receives a self-contained prompt instructing it to read and execute the relevant skill file for {TICKER}.
+
+For each skill, use this prompt template:
+
+> Read the file `.claude/commands/{skill_filename}` and execute all instructions in it for ticker {TICKER}. The working directory is the investment-analysis project root. Use `.venv/Scripts/python` to run any Python scripts.
 
 Execute in this exact order:
 
-1. Read `.claude/commands/business_overview_analysis.md` → execute for {TICKER}
-2. Read `.claude/commands/leadership_analysis.md` → execute for {TICKER}
-3. Read `.claude/commands/income_statement_analysis.md` → execute for {TICKER}
-4. Read `.claude/commands/balance_sheet_analysis.md` → execute for {TICKER}
-5. Read `.claude/commands/cash_flow_analysis.md` → execute for {TICKER}
-6. Read `.claude/commands/growth_and_profitability_analysis.md` → execute for {TICKER}
-7. Read `.claude/commands/valuation_analysis.md` → execute for {TICKER}
-8. Read `.claude/commands/technical_analysis.md` → execute for {TICKER}
+1. Subagent → `.claude/commands/business_overview_analysis.md` for {TICKER}
+2. Subagent → `.claude/commands/leadership_analysis.md` for {TICKER}
+3. Subagent → `.claude/commands/income_statement_analysis.md` for {TICKER}
+4. Subagent → `.claude/commands/balance_sheet_analysis.md` for {TICKER}
+5. Subagent → `.claude/commands/cash_flow_analysis.md` for {TICKER}
+6. Subagent → `.claude/commands/growth_and_profitability_analysis.md` for {TICKER}
+7. Subagent → `.claude/commands/valuation_analysis.md` for {TICKER}
+8. Subagent → `.claude/commands/technical_analysis.md` for {TICKER}
+
+Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`. Do not carry skill output into the orchestrator's context — the orchestrator proceeds to Step 3 once all 8 subagents have completed.
 
 ---
 
