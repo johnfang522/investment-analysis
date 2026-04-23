@@ -1,0 +1,15 @@
+# One ticker per line. Lines starting with '#' are ignored.
+AAPL
+AMZN
+ASML
+AVGO
+COHR
+GOOG
+ISRG
+META
+MSFT
+MRVL
+NVDA
+ORCL
+TSLA
+TSM

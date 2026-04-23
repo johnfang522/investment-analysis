@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(.venv/Scripts/python key_stock_metrics.py)",
+      "Bash(cd * && .venv/Scripts/python key_stock_metrics.py*)"
+    ]
+  }
+}

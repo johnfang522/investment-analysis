@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "mcp__yahoo-finance__income_statements",
+      "Bash(python plot_nvda_revenue.py)",
+      "Bash(ls c:/Users/johnf/Projects/YahooFinanceTest/*.py)",
+      "Bash(powershell -Command \"Rename-Item 'C:\\\\Users\\\\johnf\\\\Projects\\\\YahooFinanceTest' 'investment-analysis'\")",
+      "Bash(mkdir -p /c/Users/johnf/Projects/investment-analysis/.claude/commands)",
+      "Bash(mv /c/Users/johnf/Projects/investment-analysis/.claude/skills/key_stock_metrics.md /c/Users/johnf/Projects/investment-analysis/.claude/commands/key_stock_metrics.md)",
+      "Bash(rmdir /c/Users/johnf/Projects/investment-analysis/.claude/skills)",
+      "Bash(.venv/Scripts/python munger_metrics.py)",
+      "Bash(.venv/Scripts/pip install *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(.venv/Scripts/pip.exe install *)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(.venv/Scripts/pip show *)",
+      "Bash(.venv/Scripts/python -c \"import openpyxl; print\\(openpyxl.__version__\\)\")",
+      "Bash(.venv/Scripts/python cohr_charts.py)"
+    ]
+  }
+}
