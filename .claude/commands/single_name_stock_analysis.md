@@ -6,28 +6,7 @@ You are a top-tier Wall Street equity research analyst producing a complete inst
 
 ---
 
-## Step 1 — Check for Existing Analyses
-
-Before running any analyses, check whether all 8 output files already exist in `Outputs/{TICKER}/`:
-- `{ticker_lowercase}_business_overview_analysis.docx`
-- `{ticker_lowercase}_leadership_analysis.docx`
-- `{ticker_lowercase}_income_statement_analysis.docx`
-- `{ticker_lowercase}_balance_sheet_analysis.docx`
-- `{ticker_lowercase}_cash_flow_analysis.docx`
-- `{ticker_lowercase}_growth_and_profitability_analysis.docx`
-- `{ticker_lowercase}_valuation_analysis.docx`
-- `{ticker_lowercase}_technical_analysis.docx`
-
-**If all 8 files exist**, ask the user: *"All 8 analyses for {TICKER} already exist. Do you want to refresh them (re-run all 8), or use the existing files to generate the research note?"*
-
-- If the user says **refresh**: proceed to Step 2 (run all 8).
-- If the user says **use existing** (or any equivalent): skip to Step 3.
-
-**If any files are missing**, proceed directly to Step 2 without asking.
-
----
-
-## Step 2 — Run All 8 Individual Analyses via Subagents
+## Step 1 — Run All 9 Individual Analyses via Subagents
 
 Spawn each analysis as a **separate subagent** using the Agent tool, one at a time (wait for each to complete before spawning the next). Each subagent receives a self-contained prompt instructing it to read and execute the relevant skill file for {TICKER}.
 
@@ -43,16 +22,17 @@ Execute in this exact order:
 4. Subagent → `.claude/commands/balance_sheet_analysis.md` for {TICKER}
 5. Subagent → `.claude/commands/cash_flow_analysis.md` for {TICKER}
 6. Subagent → `.claude/commands/growth_and_profitability_analysis.md` for {TICKER}
-7. Subagent → `.claude/commands/valuation_analysis.md` for {TICKER}
-8. Subagent → `.claude/commands/technical_analysis.md` for {TICKER}
+7. Subagent → `.claude/commands/business_potential_analysis.md` for {TICKER}
+8. Subagent → `.claude/commands/valuation_analysis.md` for {TICKER}
+9. Subagent → `.claude/commands/technical_analysis.md` for {TICKER}
 
-Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`. Do not carry skill output into the orchestrator's context — the orchestrator proceeds to Step 3 once all 8 subagents have completed.
+Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`. Do not carry skill output into the orchestrator's context — the orchestrator proceeds to Step 3 once all 9 subagents have completed.
 
 ---
 
 ## Step 3 — Write the Executive Summary
 
-Synthesize the findings from all 8 analyses into a **2–3 page Wall Street–style equity research note**. Write it as if publishing to institutional clients. Be direct, lead with the recommendation, and back every claim with a specific number.
+Synthesize the findings from all 9 analyses into a **2–3 page Wall Street–style equity research note**. Write it as if publishing to institutional clients. Be direct, lead with the recommendation, and back every claim with a specific number.
 
 **FORMAT YOUR SUMMARY EXACTLY AS FOLLOWS:**
 
@@ -117,6 +97,24 @@ State the single most important reason to own or avoid this stock. Lead with the
 - **FCF quality:** Is FCF above or below net income (FCF conversion ratio)?
 - **Capital allocation:** Buybacks, dividends, or reinvestment — where is management deploying cash?
 
+#### Business Potential — NBT Readiness
+
+*This section evaluates the company's structural capacity to capitalize on its primary emerging opportunity before it becomes the industry standard.*
+
+**Overall NBT Readiness: X/20 (X/5)** — [Readiness rating label: Dominant / Strong / Capable / At Risk / Ill-Positioned]
+
+| Dimension | Score | Key Evidence |
+|-----------|-------|--------------|
+| Value Alignment (DNA) | X/5 | [One-phrase summary] |
+| Operational Agility (Engine) | X/5 | [One-phrase summary] |
+| Solvency & Buffer (Oxygen) | X/5 | [One-phrase summary] |
+| Ecosystem Power (Gravity) | X/5 | [One-phrase summary] |
+
+- **Primary emerging opportunity:** [Name the specific trend — e.g., AI inference at the edge, robotic surgery expansion, autonomous vehicles]
+- **Biggest structural advantage:** [One sentence on the single dimension where the company leads and why it is defensible]
+- **NBT Spend Ratio:** X.Xx (Trend Capex / Annual FCF) — [self-funding / manageable / reliant on external capital]
+- **Biggest execution risk:** [One sentence on the structural or operational gap most likely to prevent full capture of the opportunity]
+
 #### Key Risks *(3 bullets, specific numbers required)*
 - [Risk 1]
 - [Risk 2]
@@ -143,6 +141,7 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
    - Rating line in large bold text (use Heading 1 style, green color `007000`)
    - All sections formatted with Heading 2 subheadings
    - Financial Snapshot table: dark blue header row (fill `1F3864`), white bold text
+   - Business Potential NBT Readiness table: dark blue header row (fill `1F3864`), white bold text; color the Overall NBT Readiness line bold; color the score cell green (`007000`) for 4–5, orange (`FF8C00`) for 3, red (`C00000`) for 1–2
    - Bullet points as Word list items
 
 2. **Tables**: initialize with `rows=1` (header only), then `table.add_row()` per data row.

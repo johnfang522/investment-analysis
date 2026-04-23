@@ -16,7 +16,8 @@
       "Bash(echo \"exit:$?\")",
       "Bash(.venv/Scripts/pip show *)",
       "Bash(.venv/Scripts/python -c \"import openpyxl; print\\(openpyxl.__version__\\)\")",
-      "Bash(.venv/Scripts/python cohr_charts.py)"
+      "Bash(.venv/Scripts/python cohr_charts.py)",
+      "Bash(.venv/Scripts/python *)"
     ]
   }
 }

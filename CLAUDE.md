@@ -68,6 +68,7 @@ The intended workflow runs in three stages:
 | 3 | `/balance_sheet_analysis` | TICKER | Word: `Outputs/{ticker}_balance_sheet_analysis.docx` |
 | 3 | `/cash_flow_analysis` | TICKER | Word: `Outputs/{ticker}_cash_flow_analysis.docx` |
 | 3 | `/growth_and_profitability_analysis` | TICKER | Word: `Outputs/{ticker}_growth_and_profitability_analysis.docx` |
+| 3 | `/business_potential_analysis` | TICKER | Word: `Outputs/{ticker}_business_potential_analysis.docx` |
 | 3 | `/valuation_analysis` | TICKER | Word: `Outputs/{ticker}_valuation_analysis.docx` |
 | 3 | `/technical_analysis` | TICKER | Word: `Outputs/{ticker}_technical_analysis.docx` |
 | 3 | `/single_name_stock_analysis` | TICKER | Word: `Outputs/{ticker}_research_notes_YYYYMMDD.docx` |
@@ -76,7 +77,7 @@ The intended workflow runs in three stages:
 - `/key_stock_metrics` always re-fetches fresh data via `fetch_all()` before computing metrics, even if JSON files already exist
 - Skills read local JSON from `Outputs/` first, run `yahoo_finance_data.py` if missing, then supplement with `WebSearch` for analyst estimates, guidance, and any N/A values
 - Each analysis skill generates matplotlib charts (saved as PNGs to `Outputs/`), then writes and executes a `python-docx` script inline to embed the charts and produce the `.docx`
-- `/single_name_stock_analysis` orchestrates all 8 individual skills in sequence, then synthesizes a 2–3 page Wall Street–style research note (BUY/HOLD/SELL with price target); if all 8 `.docx` files already exist it asks whether to refresh or reuse them
+- `/single_name_stock_analysis` always re-fetches fresh Yahoo Finance data and re-runs all 9 individual analyses in sequence, then synthesizes a 2–3 page Wall Street–style research note (BUY/HOLD/SELL with price target)
 
 ## Word Document Generation
 
