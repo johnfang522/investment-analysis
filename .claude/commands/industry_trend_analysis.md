@@ -119,7 +119,23 @@ For each layer provide: definition, named companies or company types relevant to
 
 Produce the following sections in order:
 
-### 1. Trend Assessment
+### 1. Introduction
+
+Write a 3–5 paragraph introduction aimed at a reader who is intelligent but unfamiliar with this specific theme. The goal is to bring them up to speed before the analytical framework begins.
+
+Cover in order:
+1. **What is this theme?** — Define it in plain language. Avoid jargon. Explain what technology, behavior, or structural shift is at the center of it.
+2. **Why now?** — What has changed recently (in the last 1–5 years) that makes this theme relevant today and not 10 years ago? This could be a cost curve break, a regulatory milestone, a scientific breakthrough, or a behavioral shift.
+3. **What does the world look like if this plays out?** — Paint a concrete, specific picture of the end state: which industries are disrupted, what new behaviors become normal, what disappears. Avoid vague language ("things will be different") — use specifics ("X million workers will shift from Y task to Z role because...").
+4. **Why does this matter for investors?** — Summarize the investment opportunity in 2–3 sentences: magnitude of capital flows expected, timeline, and what makes this distinct from prior hype cycles (or confirm that it resembles one and explain why it may still be investable).
+
+Use `WebSearch` to ground the introduction with 2–3 current facts, statistics, or recent events that make the theme feel concrete and timely.
+
+Write in clear, direct prose. No bullet points in this section — flowing paragraphs only.
+
+---
+
+### 2. Trend Assessment (5 Convergence Signals)
 
 Score each of the 5 signals as one of: ✅ Firing / ⚠️ Partial / ❌ Not yet.
 For each, write 1–3 sentences of rationale citing specific current evidence found via WebSearch (recent data points, named companies, regulatory events, cost curves, capital raises). Then give a convergence verdict with cycle stage.
@@ -138,7 +154,7 @@ Format as a table:
 
 ---
 
-### 2. Value Chain Map
+### 3. Value Chain Map
 
 Populate all 6 layers for the specific theme with named public companies where possible (and private companies or company types where public comps don't yet exist). For each company or type, note:
 - **Moat strength:** High / Medium / Low
@@ -149,14 +165,53 @@ Present as a table per layer, or a single consolidated table with a Layer column
 
 ---
 
-### 3. Positioning Recommendation
+### 4. TAM Expansion Analysis
 
-2–4 paragraphs. Given where we are in the cycle, suggest how to weight across layers (e.g., "overweight Infrastructure and Bottlenecks; underweight Applications until revenue models clarify"). Call out any crowding risk,
-valuation excess, or consensus positioning to fade. Be specific about which named companies or types look most attractive vs. most risky at this stage.
+This section quantifies how the theme expands addressable markets and identifies which named companies capture the most vs. least of that expansion.
+
+**4a. TAM Expansion Narrative (2–3 paragraphs)**
+
+Describe how this theme creates net-new demand rather than merely redistributing existing spend. Address:
+- What markets did not previously exist (or were economically inaccessible) that this theme unlocks?
+- What is the order-of-magnitude expansion? (e.g., "legacy TAM was $X; this theme expands it to $Y by 20XX because...")
+- Which demand drivers are structural (demographic, regulatory, physical constraints) vs. cyclical (adoption enthusiasm, cheap capital)?
+
+Use `WebSearch` to find analyst TAM estimates, market sizing studies, or company-disclosed SAM/TAM figures. Cite sources and dates.
+
+**4b. Primary Beneficiaries — High TAM Capture**
+
+Identify 4–6 specific named companies most likely to capture disproportionate TAM expansion. For each, explain:
+- **Why they capture it:** what structural advantage (moat, position, timing) lets them take share of the new market
+- **TAM exposure:** what % of their current revenue or business mix is tied to the expanding TAM
+- **Upside scenario:** what does revenue look like if TAM expands as projected?
+
+Present as a table:
+
+| Company | Ticker | Why High TAM Capture | TAM Exposure | Upside Scenario |
+|---|---|---|---|---|
+
+**4c. Limited Beneficiaries — Low TAM Capture or TAM Risk**
+
+Identify 3–5 named companies that are in the value chain but will capture less TAM expansion than the market assumes — or that face TAM compression from the same trend. For each, explain:
+- **Why they underperform:** commoditization pressure, addressable segment too small, displaced by the trend, or margin compression from new entrants
+- **Common mistake:** why investors might initially lump them into the theme incorrectly
+- **What to watch:** the signal that confirms or refutes this concern
+
+Present as a table:
+
+| Company | Ticker | Why Limited Capture | Common Investor Mistake | Signal to Watch |
+|---|---|---|---|---|
 
 ---
 
-### 4. Key Diligence Questions
+### 5. Positioning Recommendation
+
+2–4 paragraphs. Given where we are in the cycle, suggest how to weight across layers (e.g., "overweight Infrastructure and Bottlenecks; underweight Applications until revenue models clarify"). Call out any crowding risk,
+valuation excess, or consensus positioning to fade. Be specific about which named companies or types look most attractive vs. most risky at this stage. Reference the TAM Expansion Analysis findings where relevant.
+
+---
+
+### 6. Key Diligence Questions
 
 List 3–5 specific questions an investor must be able to answer before committing capital. Make them precise and falsifiable — not generic ("understand the market size") but specific ("can actuator cost reach $X/unit at scale needed for sub-$50K robot BOM?").
 
@@ -195,7 +250,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
        section.left_margin = Inches(0.75)
        section.right_margin = Inches(0.75)
    ```
-3. Renders all 4 output sections (Trend Assessment, Value Chain Map, Positioning Recommendation, Key Diligence Questions) with appropriate headings, paragraphs, and tables.
+3. Renders all 6 output sections (Introduction, Trend Assessment, Value Chain Map, TAM Expansion Analysis, Positioning Recommendation, Key Diligence Questions) with appropriate headings, paragraphs, and tables.
 4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
 5. **Every table in the document must use AutoFit to Contents — no exceptions.** Implement a reusable `autofit_table(table)` helper and call it immediately after creating every table. The helper must: (a) set `tblW` to `w="0" type="auto"`; (b) set `tblLayout` to `type="autofit"`; (c) strip any existing `w:tcW` elements from every cell so no fixed-width overrides remain. Do NOT use `table.columns[i].width` or any fixed-width assignment anywhere in the script. The helper body must include:
    ```python

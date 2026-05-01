@@ -31,6 +31,7 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 - JSON filenames within the folder: `{ticker_lower}_quick_metrics.json`, `{ticker_lower}_balance_sheet_quarterly.json`, `{ticker_lower}_price_history.json`, and `{ticker_lower}_{income_statement|cash_flow_statement}_{quarterly|annual|ttm}.json`
 - Income statements and cash flow statements produce three files each (quarterly, annual, ttm); balance sheet produces only quarterly
 - `get_price_history()` returns a `{"YYYY-MM-DD": price}` dict; used by technical analysis charts
+- To re-fetch all tickers: `.venv/Scripts/python yahoo_finance_data.py` (reads `tickers.txt`); to force-refresh a single ticker, delete `Outputs/{TICKER}/` then re-run the skill or call `fetch_all([ticker])` from a script
 
 **`key_stock_metrics.py`** — Excel report generator
 - Reads only `Outputs/{TICKER}/{ticker_lower}_quick_metrics.json` (via `load_quick()`); the detailed statement fallback logic lives in the `/key_stock_metrics` skill prompt, not this script
@@ -82,8 +83,10 @@ The intended workflow runs in three stages:
 ## Word Document Generation
 
 When writing `python-docx` table code in any skill or script:
-- **Always initialize tables with `rows=1`** (header only), then call `table.add_row()` for each data row
-- Do NOT use `rows=1+len(data)` upfront — this creates blank rows between the header and data
+- **Always initialize tables with `rows=1`** (header only), then call `table.add_row()` for each data row — do NOT use `rows=1+len(data)` upfront, which creates blank rows between the header and data
+- **Every table must call `autofit_table(table)` immediately after creation** — sets `tblW`/`tblLayout` to autofit and strips fixed `w:tcW` cell widths; never use `table.columns[i].width` or any fixed-width assignment
+- **Every table must call `add_table_borders(table)` immediately after `autofit_table()`** — applies a thin single border (`sz=4`, `val="single"`, `color="000000"`) to all four sides of every cell via `w:tcBorders`
+- Both helpers are defined inline in each skill's generated script; copy the pattern from any existing skill if writing a new one
 
 ## Outputs Directory
 
