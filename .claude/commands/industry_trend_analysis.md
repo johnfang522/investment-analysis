@@ -250,7 +250,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
        section.left_margin = Inches(0.75)
        section.right_margin = Inches(0.75)
    ```
-3. Renders all 6 output sections (Introduction, Trend Assessment, Value Chain Map, TAM Expansion Analysis, Positioning Recommendation, Key Diligence Questions) with appropriate headings, paragraphs, and tables.
+3. Renders all 6 output sections with appropriate headings, paragraphs, tables, and bullet points as specified below. Follow the per-section formatting rules exactly.
 4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
 5. **Every table in the document must use AutoFit to Contents — no exceptions.** Implement a reusable `autofit_table(table)` helper and call it immediately after creating every table. The helper must: (a) set `tblW` to `w="0" type="auto"`; (b) set `tblLayout` to `type="autofit"`; (c) strip any existing `w:tcW` elements from every cell so no fixed-width overrides remain. Do NOT use `table.columns[i].width` or any fixed-width assignment anywhere in the script. The helper body must include:
    ```python
@@ -269,16 +269,60 @@ Write and execute a Python script using `.venv/Scripts/python` that:
                    for tcW in tcPr.findall(qn('w:tcW')): tcPr.remove(tcW)
    ```
 6. **Every table must have visible borders on all cells (header and data rows).** Implement a reusable `add_table_borders(table)` helper that applies a single thin border (`sz=4`, `val="single"`, `color="000000"`) to all four sides (`top`, `bottom`, `left`, `right`) of every cell using the `w:tcBorders` / `w:tblBorders` XML element. Call this helper immediately after `autofit_table()` on every table.
-7. **Part 2 — Value Chain Map table: apply a distinct background fill color to each layer's rows** so layers are visually separated. Use these fills (hex, applied to every data row in that layer):
-   - Layer 1 — Infrastructure: `D6E4F0` (light blue)
-   - Layer 2 — Enablers: `D5E8D4` (light green)
-   - Layer 3 — Integrators: `FFF2CC` (light yellow)
-   - Layer 4 — Applications: `FCE4D6` (light orange)
-   - Layer 5 — Adjacent Beneficiaries: `E1D5E7` (light purple)
-   - Layer 6 — Bottlenecks: `F4CCCC` (light red/pink)
-   - Apply fills using the `w:shd` XML element on each `w:tc` (table cell), same pattern used for header rows.
-8. **Use bullet points (Word List Bullet style) throughout the document wherever content is list-like**: signal rationale sub-points, positioning recommendation action items, key risks, diligence sub-questions, and any enumerated observations. Reserve prose paragraphs only for flowing narrative (introductions, verdicts, and multi-sentence analytical conclusions).
-9. Saves the file to the output path above.
+7. Saves the file to the output path above.
+
+---
+
+### Per-Section Formatting Rules
+
+#### Section 1 — Introduction
+- Heading 1: "1. Introduction"
+- Write 3–5 flowing prose paragraphs (no bullets). This is the only section that is pure prose.
+
+#### Section 2 — Trend Assessment
+- Heading 1: "2. Trend Assessment: The 5 Convergence Signals"
+- Open with a **summary table** (3 columns: Signal | Status | One-Line Verdict). Keep the One-Line Verdict to a single concise sentence — do not put long rationale in the table cell.
+- After the table, write the **convergence verdict** as a bold paragraph: "Convergence Verdict: X/5 signals firing — [level]. Estimated cycle stage: [Early/Mid/Late]."
+- Then add one **Heading 2 sub-section per signal** (e.g., "Technology Inflection — ✅ Firing"). Under each heading, write the detailed rationale as **3–5 bullet points**, each citing a specific data point, named company, date, or figure. Do not use prose paragraphs in these sub-sections.
+
+#### Section 3 — Value Chain Map
+- Heading 1: "3. Value Chain Map"
+- For **each of the 6 layers**, emit:
+  1. A **Heading 2** with the layer name and color label (e.g., "Layer 1 — Infrastructure ('Picks & Shovels')")
+  2. A **one-sentence italicized definition** of what this layer means for the specific theme
+  3. A **per-layer table** with columns: Company / Type | Ticker | Moat Strength | Cycle Timing | Key Risk
+     - Apply the layer's background fill color to every data row (not the header row) using the `w:shd` XML element:
+       - Layer 1 — Infrastructure: `D6E4F0` (light blue)
+       - Layer 2 — Enablers: `D5E8D4` (light green)
+       - Layer 3 — Integrators: `FFF2CC` (light yellow)
+       - Layer 4 — Applications: `FCE4D6` (light orange)
+       - Layer 5 — Adjacent Beneficiaries: `E1D5E7` (light purple)
+       - Layer 6 — Bottlenecks: `F4CCCC` (light red/pink)
+- Do **not** use a single consolidated table for all layers — each layer gets its own table.
+
+#### Section 4 — TAM Expansion Analysis
+- Heading 1: "4. TAM Expansion Analysis"
+- **4a. TAM Expansion Narrative**
+  - Heading 2: "4a. Market Size & Growth Drivers"
+  - Write 1 short framing paragraph (2–3 sentences) explaining the net-new demand thesis.
+  - Then emit a **bullet list of key TAM data points**: market size today, projected size, CAGR, source, and date — one bullet per data point/segment. Example: "• Global optical interconnect market: $15.4B (2025) → $43B (2034) at 12% CAGR (Mordor Intelligence, 2025)"
+  - Then write a short paragraph (3–5 sentences) distinguishing structural demand drivers from cyclical ones.
+- **4b. Primary Beneficiaries**
+  - Heading 2: "4b. Primary Beneficiaries — High TAM Capture"
+  - Table with columns: Company | Ticker | Why High TAM Capture | TAM Exposure | Upside Scenario
+- **4c. Limited Beneficiaries**
+  - Heading 2: "4c. Limited Beneficiaries — Low TAM Capture or TAM Risk"
+  - Table with columns: Company | Ticker | Why Limited Capture | Common Investor Mistake | Signal to Watch
+
+#### Section 5 — Positioning Recommendation
+- Heading 1: "5. Positioning Recommendation"
+- Open with a **Layer Weighting Summary table** (3 columns: Layer | Weight | Rationale), where Weight is one of: Overweight / Neutral / Underweight. Keep Rationale to one short phrase.
+- Then write **one bullet per named company or company type** you recommend acting on, formatted as: "**TICKER / Name** — [1-sentence action and reason]". Group bullets under bold sub-labels: **Overweight**, **Neutral**, **Underweight**.
+- Close with 1–2 prose paragraphs covering crowding risk, valuation caution, or entry timing nuance.
+
+#### Section 6 — Key Diligence Questions
+- Heading 1: "6. Key Diligence Questions"
+- Write each question as a **numbered bullet** (Word List Number style). Each question must be specific and falsifiable — include concrete thresholds, named companies, or specific timeframes. No generic questions.
 
 ---
 
