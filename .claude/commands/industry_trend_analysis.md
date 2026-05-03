@@ -121,17 +121,14 @@ Produce the following sections in order:
 
 ### 1. Introduction
 
-Write a 3–5 paragraph introduction aimed at a reader who is intelligent but unfamiliar with this specific theme. The goal is to bring them up to speed before the analytical framework begins.
+Write a concise introduction using 4–6 bullet points. Each bullet should be one to two sentences. Cover:
+- **What is this theme?** — Plain-language definition of the technology, behavior, or structural shift at the center of it.
+- **Why now?** — The key recent change (cost curve break, regulatory milestone, scientific breakthrough, or behavioral shift) that makes this relevant today.
+- **End state** — One concrete, specific picture of what the world looks like if this plays out (which industries disrupted, what disappears, what new behavior becomes normal).
+- **Investment opportunity** — Magnitude of expected capital flows, rough timeline, and what distinguishes this from prior hype cycles (or why it may still be investable despite resembling one).
+- 1–2 additional bullets for any critical context a new reader needs (e.g., a key enabling technology, a defining constraint, or a common misconception to dispel).
 
-Cover in order:
-1. **What is this theme?** — Define it in plain language. Avoid jargon. Explain what technology, behavior, or structural shift is at the center of it.
-2. **Why now?** — What has changed recently (in the last 1–5 years) that makes this theme relevant today and not 10 years ago? This could be a cost curve break, a regulatory milestone, a scientific breakthrough, or a behavioral shift.
-3. **What does the world look like if this plays out?** — Paint a concrete, specific picture of the end state: which industries are disrupted, what new behaviors become normal, what disappears. Avoid vague language ("things will be different") — use specifics ("X million workers will shift from Y task to Z role because...").
-4. **Why does this matter for investors?** — Summarize the investment opportunity in 2–3 sentences: magnitude of capital flows expected, timeline, and what makes this distinct from prior hype cycles (or confirm that it resembles one and explain why it may still be investable).
-
-Use `WebSearch` to ground the introduction with 2–3 current facts, statistics, or recent events that make the theme feel concrete and timely.
-
-Write in clear, direct prose. No bullet points in this section — flowing paragraphs only.
+Use `WebSearch` to ground at least 2 bullets with current facts, statistics, or recent events.
 
 ---
 
@@ -277,7 +274,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 
 #### Section 1 — Introduction
 - Heading 1: "1. Introduction"
-- Write 3–5 flowing prose paragraphs (no bullets). This is the only section that is pure prose.
+- Write 4–6 bullet points (no prose paragraphs). Each bullet is 1–2 sentences.
 
 #### Section 2 — Trend Assessment
 - Heading 1: "2. Trend Assessment: The 5 Convergence Signals"
