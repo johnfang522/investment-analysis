@@ -252,7 +252,16 @@ Write and execute a Python script using `.venv/Scripts/python` that:
    ```
 3. Renders all 6 output sections with appropriate headings, paragraphs, tables, and bullet points as specified below. Follow the per-section formatting rules exactly.
 4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
-5. **Every table in the document must use AutoFit to Contents — no exceptions.** Implement a reusable `autofit_table(table)` helper and call it immediately after creating every table. The helper must: (a) set `tblW` to `w="0" type="auto"`; (b) set `tblLayout` to `type="autofit"`; (c) strip any existing `w:tcW` elements from every cell so no fixed-width overrides remain. Do NOT use `table.columns[i].width` or any fixed-width assignment anywhere in the script. The helper body must include:
+5. **Every table must use AutoFit to Contents and have visible borders — applied AFTER all rows are added.** The critical rule: `autofit_table` and `add_table_borders` must be called **after** all data rows have been added to the table, not at creation time. Rows added after these helpers are called will not inherit the settings. Use this pattern for every table without exception:
+   ```python
+   table = doc.add_table(rows=1, cols=N)
+   # ... populate header row ...
+   # ... add all data rows with table.add_row() ...
+   autofit_table(table)      # call AFTER all rows are added
+   add_table_borders(table)  # call AFTER all rows are added
+   ```
+
+   **`autofit_table` helper** — sets `tblW`/`tblLayout` to autofit and strips all `w:tcW` fixed-width overrides from every cell:
    ```python
    def autofit_table(table):
        tbl = table._tbl
@@ -272,7 +281,8 @@ Write and execute a Python script using `.venv/Scripts/python` that:
                if tcPr is not None:
                    for tcW in tcPr.findall(qn('w:tcW')): tcPr.remove(tcW)
    ```
-6. **Every table must have visible borders on all cells (header and data rows).** Implement a reusable `add_table_borders(table)` helper that applies a single thin border (`sz=4`, `val="single"`, `color="000000"`) to all four sides (`top`, `bottom`, `left`, `right`) of every cell using the `w:tcBorders` XML element. Call this helper immediately after `autofit_table()` on every table:
+
+   **`add_table_borders` helper** — applies a single thin border (`sz=4`, `val="single"`, `color="000000"`) to all four sides of every cell in every row:
    ```python
    def add_table_borders(table):
        for row in table.rows:
@@ -293,7 +303,8 @@ Write and execute a Python script using `.venv/Scripts/python` that:
                    border.set(qn('w:color'), '000000')
                    tcBorders.append(border)
    ```
-7. **All non-header table cell text must use font size 12.** After populating every data row, set `run.font.size = Pt(12)` for every run in every non-header cell. Implement a reusable helper and call it on every data row immediately after adding it:
+
+6. **All non-header table cell text must use font size 12.** Implement a reusable helper and call it on every data row immediately after `table.add_row()`:
    ```python
    from docx.shared import Pt
    def set_row_font_size(row, size=12):
@@ -303,7 +314,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
                    run.font.size = Pt(size)
    ```
    Call `set_row_font_size(row)` on every data row (i.e., every row returned by `table.add_row()`). Do **not** call it on the header row.
-8. Saves the file to the output path above.
+7. Saves the file to the output path above.
 
 ---
 
