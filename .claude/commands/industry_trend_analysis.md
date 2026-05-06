@@ -238,10 +238,13 @@ After producing the full analysis, save it as a Word document using `python-docx
 
 Write and execute a Python script using `.venv/Scripts/python` that:
 1. Creates the document with a title heading matching the theme.
-2. **Set narrow page margins** immediately after creating the document:
+2. **Set landscape orientation and narrow page margins** immediately after creating the document:
    ```python
    from docx.shared import Inches
    for section in doc.sections:
+       section.orientation = 1  # WD_ORIENT.LANDSCAPE
+       section.page_width = Inches(11)
+       section.page_height = Inches(8.5)
        section.top_margin = Inches(0.5)
        section.bottom_margin = Inches(0.5)
        section.left_margin = Inches(0.75)
@@ -253,10 +256,14 @@ Write and execute a Python script using `.venv/Scripts/python` that:
    ```python
    def autofit_table(table):
        tbl = table._tbl
-       tblPr = tbl.find(qn('w:tblPr')) or OxmlElement('w:tblPr')
-       if tblPr not in tbl: tbl.insert(0, tblPr)
+       tblPr = tbl.find(qn('w:tblPr'))
+       if tblPr is None:
+           tblPr = OxmlElement('w:tblPr')
+           tbl.insert(0, tblPr)
        for tag, attrs in [('w:tblW', {'w:w':'0','w:type':'auto'}), ('w:tblLayout', {'w:type':'autofit'})]:
-           el = tblPr.find(qn(tag)) or OxmlElement(tag)
+           el = tblPr.find(qn(tag))
+           if el is None:
+               el = OxmlElement(tag)
            for k,v in attrs.items(): el.set(qn(k), v)
            if el not in tblPr: tblPr.append(el)
        for row in table.rows:
@@ -265,8 +272,38 @@ Write and execute a Python script using `.venv/Scripts/python` that:
                if tcPr is not None:
                    for tcW in tcPr.findall(qn('w:tcW')): tcPr.remove(tcW)
    ```
-6. **Every table must have visible borders on all cells (header and data rows).** Implement a reusable `add_table_borders(table)` helper that applies a single thin border (`sz=4`, `val="single"`, `color="000000"`) to all four sides (`top`, `bottom`, `left`, `right`) of every cell using the `w:tcBorders` / `w:tblBorders` XML element. Call this helper immediately after `autofit_table()` on every table.
-7. Saves the file to the output path above.
+6. **Every table must have visible borders on all cells (header and data rows).** Implement a reusable `add_table_borders(table)` helper that applies a single thin border (`sz=4`, `val="single"`, `color="000000"`) to all four sides (`top`, `bottom`, `left`, `right`) of every cell using the `w:tcBorders` XML element. Call this helper immediately after `autofit_table()` on every table:
+   ```python
+   def add_table_borders(table):
+       for row in table.rows:
+           for cell in row.cells:
+               tc = cell._tc
+               tcPr = tc.find(qn('w:tcPr'))
+               if tcPr is None:
+                   tcPr = OxmlElement('w:tcPr')
+                   tc.insert(0, tcPr)
+               tcBorders = tcPr.find(qn('w:tcBorders'))
+               if tcBorders is None:
+                   tcBorders = OxmlElement('w:tcBorders')
+                   tcPr.append(tcBorders)
+               for side in ['top', 'left', 'bottom', 'right']:
+                   border = OxmlElement(f'w:{side}')
+                   border.set(qn('w:val'), 'single')
+                   border.set(qn('w:sz'), '4')
+                   border.set(qn('w:color'), '000000')
+                   tcBorders.append(border)
+   ```
+7. **All non-header table cell text must use font size 12.** After populating every data row, set `run.font.size = Pt(12)` for every run in every non-header cell. Implement a reusable helper and call it on every data row immediately after adding it:
+   ```python
+   from docx.shared import Pt
+   def set_row_font_size(row, size=12):
+       for cell in row.cells:
+           for para in cell.paragraphs:
+               for run in para.runs:
+                   run.font.size = Pt(size)
+   ```
+   Call `set_row_font_size(row)` on every data row (i.e., every row returned by `table.add_row()`). Do **not** call it on the header row.
+8. Saves the file to the output path above.
 
 ---
 
@@ -287,7 +324,8 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 - For **each of the 6 layers**, emit:
   1. A **Heading 2** with the layer name and color label (e.g., "Layer 1 — Infrastructure ('Picks & Shovels')")
   2. A **one-sentence italicized definition** of what this layer means for the specific theme
-  3. A **per-layer table** with columns: Company / Type | Ticker | Moat Strength | Cycle Timing | Key Risk
+  3. A **per-layer table** with columns: Company / Type | Ticker | Description | Moat Strength | Cycle Timing | Key Risk
+     - **Description** is a 1–2 sentence plain-language summary of what the company does and why it is relevant to this theme
      - Apply the layer's background fill color to every data row (not the header row) using the `w:shd` XML element:
        - Layer 1 — Infrastructure: `D6E4F0` (light blue)
        - Layer 2 — Enablers: `D5E8D4` (light green)
