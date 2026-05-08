@@ -61,6 +61,7 @@ The intended workflow runs in three stages:
 
 | Stage | Skill | Argument | Output |
 |---|---|---|---|
+| 1 | `/emerging_industry_trend_identification` | THEME or _(none)_ | Chat output (signal scorecard, value chain map, bottleneck analysis, positioning) |
 | 1 | `/industry_trend_analysis` | THEME | Word: `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.docx` |
 | 2 | `/key_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel: `Outputs/key_stock_metrics_YYYYMMDD.xlsx` |
 | 3 | `/business_overview_analysis` | TICKER | Word: `Outputs/{ticker}_business_overview_analysis.docx` |
@@ -74,11 +75,12 @@ The intended workflow runs in three stages:
 | 3 | `/technical_analysis` | TICKER | Word: `Outputs/{ticker}_technical_analysis.docx` |
 | 3 | `/single_name_stock_analysis` | TICKER | Word: `Outputs/{ticker}_research_notes_YYYYMMDD.docx` |
 
+- `/emerging_industry_trend_identification` scans for live bottleneck signals before the market prices them in — outputs directly to chat (no Word doc); use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme
 - `/key_stock_metrics` with no args reads from `tickers.txt`; all other skills require a TICKER or THEME argument
 - `/key_stock_metrics` always re-fetches fresh data via `fetch_all()` before computing metrics, even if JSON files already exist
 - Skills read local JSON from `Outputs/` first, run `yahoo_finance_data.py` if missing, then supplement with `WebSearch` for analyst estimates, guidance, and any N/A values
 - Each analysis skill generates matplotlib charts (saved as PNGs to `Outputs/`), then writes and executes a `python-docx` script inline to embed the charts and produce the `.docx`
-- `/single_name_stock_analysis` always re-fetches fresh Yahoo Finance data and re-runs all 9 individual analyses in sequence, then synthesizes a 2–3 page Wall Street–style research note (BUY/HOLD/SELL with price target)
+- `/single_name_stock_analysis` always re-fetches fresh Yahoo Finance data and re-runs all 9 individual analyses in sequence (all Stage 3 skills except `/leadership_analysis`), then synthesizes a 2–3 page Wall Street–style research note (BUY/HOLD/SELL with price target)
 
 ## Word Document Generation
 
@@ -93,3 +95,4 @@ When writing `python-docx` table code in any skill or script:
 - **Ticker-specific files** (JSON, PNG, Word) → `Outputs/{TICKER}/` (e.g., `Outputs/NVDA/`) — created automatically by `yahoo_finance_data.py` and each analysis skill
 - **Cross-ticker files** (Excel) → `Outputs/` root — e.g., `key_stock_metrics_YYYYMMDD.xlsx`
 - JSON files are the persistent data cache — delete and re-fetch if data is stale; Word/PNG files are overwritten on each run
+- `generate_*.py` and `compute_*.py` files in the project root are one-off artifacts written by skills or subagents during analysis runs — safe to delete at any time

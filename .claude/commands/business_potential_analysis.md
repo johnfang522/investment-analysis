@@ -55,6 +55,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
 **Infrastructure Elasticity:** Can the digital or physical supply chain scale 10x in 12 months if the trend hits an inflection point?
 - [1–2 sentences; cite capacity expansion plans, cloud/manufacturing partnerships, or capex trajectory]
+- **Justify any growth assertions with concrete forward-looking evidence:** signed contracts, announced customer wins, joint ventures, capacity build-out commitments (new fabs, data centers, facilities), or management guidance with specific volume/revenue targets. Do not assert growth without naming the specific deals, projects, or partnerships that support it.
 
 **Agility Score: X/5** — [One sentence verdict]
 
