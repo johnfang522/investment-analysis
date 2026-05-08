@@ -53,11 +53,15 @@ For **every metric**, always attempt to source values from `_quick_metrics.json`
 | FCF Margin | `freeCashflow` (numerator) + `totalRevenue` (denominator) |
 | Revenue Growth Rate (for Rule of 40) | `revenueGrowth` (already a ratio, use directly) |
 | Operating Margin (for Rule of 40) | `operatingMargins` (same as above) |
+| Current Price | `currentPrice`, fallback `regularMarketPrice` |
+| 52-Week Low | `fiftyTwoWeekLow` |
+| 52-Week High | `fiftyTwoWeekHigh` |
 | Market Cap | `marketCap` |
 | Trailing P/E | `trailingPE` |
 | Forward P/E | `forwardPE` |
 | PEG Ratio | `pegRatio`, fallback to `trailingPegRatio` |
 | Price / Sales | `priceToSalesTrailing12Months` |
+| Dividend Yield | `trailingAnnualDividendYield` |
 
 #### Fallback: detailed financial statements
 
@@ -87,63 +91,76 @@ Only used when a quick metrics field is missing or null:
 
 For each ticker compute the following. Apply the comment/benchmark alongside each value.
 
-#### 0. Market Cap
+#### 1. Current Price
+`currentPrice` (fallback `regularMarketPrice`) — display as `$X.XX`; color green if closer to 52-week low, pink if closer to 52-week high
+
+#### 2. 52-Week Low
+`fiftyTwoWeekLow` — display as `$X.XX`; no coloring
+
+#### 3. 52-Week High
+`fiftyTwoWeekHigh` — display as `$X.XX`; no coloring
+
+#### 4. RSI (14-Day)
+Compute from `{ticker}_price_history.json` using Wilder's smoothed 14-day RSI.
+- Green ≤30 (oversold) | Yellow 30–70 (neutral) | Red ≥70 (overbought)
+
+#### 5. Market Cap
 `Market Cap = marketCap from quick metrics`
 - Display in billions: `$X.XXB`
 - Comments: no threshold coloring — informational context only
 
-#### 1. Revenue (TTM)
+#### 6. Revenue (TTM)
 `Revenue = totalRevenue from quick metrics (or Total Revenue from TTM income statement)`
 - Display in billions: `$X.XXB`
 - Comments: no threshold coloring — informational context only (leave cell uncolored)
 
-#### 2. Revenue Growth Rate (YoY)
+#### 7. Revenue Growth Rate (YoY)
 `Revenue Growth = revenueGrowth from quick metrics (or compute from two most recent annual periods)`
 - Comments: >20% → Strong | 10–20% → Solid | <10% → Slow
 
-#### 3. Gross Margin
+#### 8. Gross Margin
 `Gross Margin = (Total Revenue - Cost of Revenue) / Total Revenue (TTM)`
 - Comments: >60% → High quality | 40–60% → Decent | <40% → Watch for pricing pressure
 
-#### 4. Operating Margin
+#### 9. Operating Margin
 `Operating Margin = Operating Income (TTM) / Total Revenue (TTM)`
 - Comments: >30% → Strong pricing power | 15–30% → Decent | <15% → Watch for cost pressure
 
-#### 5. Net Income Margin
+#### 10. Net Income Margin
 `Net Income Margin = Net Income (TTM) / Total Revenue (TTM)`
 - Comments: >20% → Strong | 10–20% → Decent | <10% → Thin
 
-#### 6. Return on Equity (ROE)
+#### 11. Return on Equity (ROE)
 `ROE = Net Income (TTM) / Stockholders Equity (most recent quarter)`
 - Comments: ≥20% → Ideal | ≥15% → Good | <15% → Below threshold
 
-#### 7. Debt-to-Equity (D/E)
+#### 12. Debt-to-Equity (D/E)
 `D/E = Total Debt (most recent quarter) / Stockholders Equity (most recent quarter)`
 - Total Debt = Short Long Term Debt + Long Term Debt (sum whichever fields are present; use `Total Debt` if available directly)
 - Comments: <0.5 → Very conservative | 0.5–1.0 → Healthy | 1.0–2.0 → Moderate leverage | >2.0 → High risk
 
-#### 8. Interest Coverage
+#### 13. Interest Coverage
 `Interest Coverage = EBIT (TTM) / Interest Expense (TTM)`
 - EBIT = Operating Income (TTM); use absolute value of Interest Expense as denominator
 - If Interest Expense is zero or missing, display `N/A`
 - Comments: >10× → Very safe | 5–10× → Adequate | 3–5× → Watch | <3× → At risk
 
-#### 9. Current Ratio
+#### 14. Current Ratio
 `Current Ratio = Current Assets (MRQ) / Current Liabilities (MRQ)`
 - Comments: >2.0 → Very liquid | 1.5–2.0 → Healthy | 1.0–1.5 → Adequate | <1.0 → Potential liquidity risk
 
-#### 10. Free Cash Flow (FCF) Margin
+#### 15. Free Cash Flow (FCF) Margin
 `FCF Margin = (Operating Cash Flow (TTM) - Capital Expenditure (TTM)) / Total Revenue (TTM)`
 - Capital Expenditure may be negative in the JSON; use its absolute value.
 - Comments: >20% → High quality | 10–20% → Solid | <10% → Low
 
-#### 11. Rule of 40 Score
+#### 16. Rule of 40 Score
 `Rule of 40 = Revenue Growth Rate (YoY annual) + Operating Margin (TTM)`
 - Revenue Growth Rate = (Most Recent Annual Revenue - Prior Annual Revenue) / Prior Annual Revenue
 - Both expressed as percentages before summing.
 - Comments: >40 → Healthy/investible | 30–40 → Borderline | <30 → Warning zone
 
-#### 12. Valuation
+#### 17. Valuation
 Pull directly from `_quick_metrics.json`:
 - `Trailing P/E` (field: `trailingPE`)
 - `Forward P/E` (field: `forwardPE`)
@@ -151,6 +168,12 @@ Pull directly from `_quick_metrics.json`:
 - `Price / Sales` (field: `priceToSalesTrailing12Months`)
 - Comments: PEG <1 → Potentially undervalued | PEG 1–2 → Fair | PEG >2 → Expensive relative to growth
 - P/S Comments: <3 → Cheap | 3–6 → Fair | >6 → Expensive
+
+#### 18. Dividend Yield
+`Dividend Yield = trailingAnnualDividendYield from quick metrics`
+- Display as a percentage (e.g. `1.5%`)
+- Only shown when available; display `N/A` if missing
+- No color applied
 
 ### Output format (Excel)
 
