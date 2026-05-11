@@ -5,7 +5,7 @@ Scripts are saved to Outputs/{TICKER}/ and run from the project root, so they
 must add '.' to sys.path before importing:
 
     import sys; sys.path.insert(0, '.')
-    from doc_utils import autofit_table, add_table_borders
+    from doc_utils import autofit_table, add_table_borders, set_row_font_size
 """
 
 from docx.oxml.ns import qn
@@ -16,9 +16,14 @@ from docx.shared import Pt
 def autofit_table(table):
     """Set table layout to autofit and strip all fixed w:tcW cell-width overrides."""
     tbl = table._tbl
-    tblPr = tbl.find(qn('w:tblPr')) or tbl.insert(0, OxmlElement('w:tblPr'))
+    tblPr = tbl.find(qn('w:tblPr'))
+    if tblPr is None:
+        tblPr = OxmlElement('w:tblPr')
+        tbl.insert(0, tblPr)
     for tag, attrs in [('w:tblW', {'w:w': '0', 'w:type': 'auto'}), ('w:tblLayout', {'w:type': 'autofit'})]:
-        el = tblPr.find(qn(tag)) or OxmlElement(tag)
+        el = tblPr.find(qn(tag))
+        if el is None:
+            el = OxmlElement(tag)
         for k, v in attrs.items():
             el.set(qn(k), v)
         if el not in list(tblPr):
