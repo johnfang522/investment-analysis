@@ -142,6 +142,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - Source citations in small italic font
 - Rating block in bold
 - Saves to `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis.docx`
+- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_balance_sheet.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_balance_sheet.py`
 
 Define these helpers in the script:
 ```python

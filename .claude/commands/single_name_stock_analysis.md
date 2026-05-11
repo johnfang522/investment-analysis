@@ -187,7 +187,9 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
 3. **Save to**: `Outputs/{TICKER}/{ticker_lowercase}_research_notes_{YYYYMMDD}.docx`  
    *(use today's date, e.g., `Outputs/NVDA/nvda_research_notes_20260420.docx`)*
 
-4. **Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_research_notes_{YYYYMMDD}.docx`
+4. **Script file location**: Save the script itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_research_notes.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_research_notes.py`
+
+5. **Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_research_notes_{YYYYMMDD}.docx`
 
 ---
 
@@ -216,11 +218,17 @@ from docx import Document
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from copy import deepcopy
-import copy
 
 def append_doc(target, source_path, appendix_label, appendix_title):
     """Append a page break, appendix heading, then all body elements from source."""
     src = Document(source_path)
+
+    # Register images into target first (deduplication by content hash)
+    rId_map = {}
+    for rel in src.part.rels.values():
+        if "image" in rel.reltype:
+            new_rId = _add_image_to_target(target, rel.target_part)
+            rId_map[rel.rId] = new_rId
 
     # Page break before each appendix
     p = OxmlElement('w:p')
@@ -235,40 +243,54 @@ def append_doc(target, source_path, appendix_label, appendix_title):
     heading = target.add_heading(f"{appendix_label} — {appendix_title}", level=1)
     heading.runs[0].font.color.rgb = RGBColor(0x1F, 0x38, 0x64)
 
-    # Copy all body-level XML elements from source (skip the last sectPr)
+    # Copy body elements, remapping image rIds only within the copied elements
     for elem in src.element.body:
         if elem.tag.endswith('}sectPr'):
             continue
-        target.element.body.append(deepcopy(elem))
+        copied = deepcopy(elem)
+        if rId_map:
+            for node in copied.iter():
+                for attr in list(node.attrib):
+                    if node.attrib[attr] in rId_map:
+                        node.attrib[attr] = rId_map[node.attrib[attr]]
+        target.element.body.append(copied)
 ```
 
-Copy images: images embedded in the source document must be carried over. To handle this, after copying elements, copy all image parts from the source document's package into the target package using the relationship map:
+Copy images: images must be registered into the target package with unique partnames before copying elements, to avoid duplicate zip entries that corrupt the file. Use this approach — images are deduplicated by SHA-1 hash of their bytes, and each unique image gets a unique partname:
 
 ```python
-from docx.opc.constants import RELATIONSHIP_TYPE as RT
+import hashlib
+from docx.parts.image import ImagePart
+from docx.opc.packuri import PackURI
 
-def copy_images(target_doc, source_doc):
-    """Copy image blobs from source into target and re-map rId references in copied XML."""
-    for rel in source_doc.part.rels.values():
-        if "image" in rel.reltype:
-            img_part = rel.target_part
-            new_rId = target_doc.part.relate_to(img_part, rel.reltype)
-            # Remap rId in the copied XML elements
-            for elem in target_doc.element.body.iter():
-                for attr in list(elem.attrib):
-                    if elem.attrib[attr] == rel.rId:
-                        elem.attrib[attr] = new_rId
+_image_registry = {}   # sha1 -> target ImagePart
+_image_counter = [0]
+
+def _add_image_to_target(target_doc, src_img_part):
+    blob = src_img_part.blob
+    sha1 = hashlib.sha1(blob).hexdigest()
+    if sha1 not in _image_registry:
+        _image_counter[0] += 1
+        ext = src_img_part.partname.ext
+        partname = PackURI(f"/word/media/img_merged_{_image_counter[0]}{ext}")
+        _image_registry[sha1] = ImagePart(partname, src_img_part.content_type, blob)
+    img_part = _image_registry[sha1]
+    return target_doc.part.relate_to(img_part,
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image")
 ```
 
-Call `copy_images(target, src)` immediately after copying each source document's elements, before moving to the next source.
+Image rId remapping is handled inside `append_doc` — build the rId map from the source before copying, then remap only within the newly-copied elements (not the whole body).
 
 **Script structure:**
 
 ```python
+import hashlib
 from docx import Document
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.shared import RGBColor
+from docx.parts.image import ImagePart
+from docx.opc.packuri import PackURI
 from copy import deepcopy
 
 # ... define append_doc and copy_images helpers above ...
@@ -293,9 +315,7 @@ appendices = [
 ]
 
 for label, title, path in appendices:
-    src = Document(path)
-    append_doc(target, path, label, title)   # adds page break + heading + body elements
-    copy_images(target, src)                 # re-maps image relationships
+    append_doc(target, path, label, title)   # adds page break + heading + body elements (images handled inside)
 
 def add_page_numbers(doc):
     """Add 'Page X of Y' footer to every section in the document."""
@@ -352,6 +372,8 @@ out_path = f"{base}/{t}_research_package_{date}.docx"
 target.save(out_path)
 print(f"Saved: {out_path}")
 ```
+
+**Script file location**: Save the script itself to `Outputs/{TICKER}/assemble_{ticker_lowercase}_research_package.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/assemble_{ticker_lowercase}_research_package.py`
 
 **Save to**: `Outputs/{TICKER}/{ticker_lowercase}_research_package_{YYYYMMDD}.docx`
 

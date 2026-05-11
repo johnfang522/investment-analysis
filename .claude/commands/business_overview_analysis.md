@@ -117,6 +117,6 @@ After completing the analysis, save it to a Word document:
                    tcBorders.append(border)
    ```
 
-2. Execute with `.venv/Scripts/python` (Windows environment). Create `Outputs/{TICKER}/` if it doesn't exist.
+2. Save the script file to `Outputs/{TICKER}/` (e.g. `Outputs/{TICKER}/generate_{ticker_lowercase}_business_overview.py`), then execute it from the project root with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_business_overview.py`. Create `Outputs/{TICKER}/` if it doesn't exist.
 
 3. Confirm the output file path to the user.

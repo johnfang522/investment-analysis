@@ -110,6 +110,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - Dark blue header rows (fill `1F3864`), white bold text; source citations in small italic
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
 - Saves to `Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_analysis.docx`
+- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_cash_flow.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_cash_flow.py`
 
 Define these helpers in the script:
 ```python

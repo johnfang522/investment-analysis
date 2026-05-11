@@ -151,6 +151,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
 - Rating block in bold
 - Saves to `Outputs/{TICKER}/6_{ticker_lowercase}_growth_and_profitability_analysis.docx`
+- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_growth_profitability.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_growth_profitability.py`
 
 Define these helpers in the script:
 ```python

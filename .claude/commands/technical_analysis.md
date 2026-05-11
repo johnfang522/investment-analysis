@@ -224,6 +224,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
 - Final verdict block in bold
 - Saves to `Outputs/{TICKER}/9_{ticker_lowercase}_technical_analysis.docx`
+- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_technical.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_technical.py`
 
 Define these helpers in the script:
 ```python
