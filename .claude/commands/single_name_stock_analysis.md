@@ -297,11 +297,62 @@ for label, title, path in appendices:
     append_doc(target, path, label, title)   # adds page break + heading + body elements
     copy_images(target, src)                 # re-maps image relationships
 
-out_path = f"{base}/{t}_deep_research_{date}.docx"
+def add_page_numbers(doc):
+    """Add 'Page X of Y' footer to every section in the document."""
+    from docx.oxml.ns import qn
+    from docx.oxml import OxmlElement
+
+    def make_fldChar(fld_char_type):
+        fldChar = OxmlElement('w:fldChar')
+        fldChar.set(qn('w:fldCharType'), fld_char_type)
+        return fldChar
+
+    def make_instrText(text):
+        instrText = OxmlElement('w:instrText')
+        instrText.set(qn('xml:space'), 'preserve')
+        instrText.text = text
+        return instrText
+
+    for section in doc.sections:
+        section.different_first_page_header_footer = False
+        footer = section.footer
+        footer.is_linked_to_previous = False
+        # Clear existing footer content
+        for para in footer.paragraphs:
+            para.clear()
+        p = footer.paragraphs[0]
+        p.alignment = 1  # center
+        run = p.add_run()
+        run.add_text('Page ')
+        # PAGE field
+        r1 = OxmlElement('w:r')
+        r1.append(make_fldChar('begin'))
+        p._p.append(r1)
+        r2 = OxmlElement('w:r')
+        r2.append(make_instrText(' PAGE '))
+        p._p.append(r2)
+        r3 = OxmlElement('w:r')
+        r3.append(make_fldChar('end'))
+        p._p.append(r3)
+        run2 = p.add_run(' of ')
+        # NUMPAGES field
+        r4 = OxmlElement('w:r')
+        r4.append(make_fldChar('begin'))
+        p._p.append(r4)
+        r5 = OxmlElement('w:r')
+        r5.append(make_instrText(' NUMPAGES '))
+        p._p.append(r5)
+        r6 = OxmlElement('w:r')
+        r6.append(make_fldChar('end'))
+        p._p.append(r6)
+
+add_page_numbers(target)
+
+out_path = f"{base}/{t}_research_package_{date}.docx"
 target.save(out_path)
 print(f"Saved: {out_path}")
 ```
 
-**Save to**: `Outputs/{TICKER}/{ticker_lowercase}_deep_research_{YYYYMMDD}.docx`
+**Save to**: `Outputs/{TICKER}/{ticker_lowercase}_research_package_{YYYYMMDD}.docx`
 
-**Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_deep_research_{YYYYMMDD}.docx`
+**Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_research_package_{YYYYMMDD}.docx`
