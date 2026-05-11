@@ -47,6 +47,11 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 - Skills call these scripts rather than generating matplotlib code inline; if a chart needs updating, edit the corresponding `chart_*.py`
 - Each script reads its required JSON files from `Outputs/{TICKER}/` directly — run `yahoo_finance_data.py` first if JSON is missing
 
+**`doc_utils.py`** — shared python-docx helpers
+- Provides `autofit_table(table)`, `add_table_borders(table)`, and `set_row_font_size(row, size=12)`
+- All skill-generated Word scripts import from here; see the Word Document Generation section for the required import pattern
+- When adding a new helper needed by multiple skills, add it here rather than inline in each skill
+
 ## Tickers
 
 Edit `tickers.txt` to add/remove tickers (one per line, `#` for comments). Currently tracking: AAPL, AMZN, ASML, AVGO, COHR, GOOG, ISRG, META, MSFT, MRVL, NVDA, ORCL, TSLA, TSM.
@@ -91,7 +96,21 @@ When writing `python-docx` table code in any skill or script:
 - **Every table must call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added** — calling before rows are added means new rows won't inherit the settings. Never call them at table creation time; always call them after the last `table.add_row()`.
   - `autofit_table` — sets `tblW`/`tblLayout` to autofit and strips all fixed `w:tcW` cell widths; never use `table.columns[i].width` or any fixed-width assignment
   - `add_table_borders` — applies a thin single border (`sz=4`, `val="single"`, `color="000000"`) to all four sides of every cell via `w:tcBorders`
-- Both helpers are defined inline in each skill's generated script; copy the pattern from any existing skill if writing a new one
+- Both helpers (and `set_row_font_size`) live in `doc_utils.py` at the project root — generated scripts import them with:
+  ```python
+  import sys; sys.path.insert(0, '.')
+  from doc_utils import autofit_table, add_table_borders
+  ```
+  The `sys.path.insert(0, '.')` is required because scripts are saved under `Outputs/{TICKER}/` but run from the project root.
+
+## Adding a New Skill
+
+To add a new analysis skill:
+1. Create `.claude/commands/{skill_name}.md` — write it as instructions Claude will follow at execution time (not Python code itself)
+2. If the skill generates charts, add a `chart_{name}.py` at the project root following the existing chart script pattern (reads JSON from `Outputs/{TICKER}/`, saves PNG to the same folder)
+3. If the skill generates a Word document, instruct it to: run the relevant `chart_*.py` → write a `generate_*.py` script to `Outputs/{TICKER}/` → execute it → confirm the `.docx` path
+4. All generated Word scripts must import helpers from `doc_utils.py` (see Word Document Generation section)
+5. Ad-hoc one-off Python scripts should be saved to `Outputs/{TICKER}/`, not the project root
 
 ## Outputs Directory
 

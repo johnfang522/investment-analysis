@@ -97,42 +97,10 @@ After completing the analysis, save it to a Word document:
    - Rating block as bold text
    - Saves to `Outputs/{TICKER}/2_{ticker_lowercase}_leadership_analysis.docx`
 
-   Define these helpers in the script:
+   Import the shared helpers from `doc_utils.py` (in the project root):
    ```python
-   def autofit_table(table):
-       from docx.oxml.ns import qn
-       from docx.oxml import OxmlElement
-       tbl = table._tbl
-       tblPr = tbl.find(qn('w:tblPr')) or tbl.insert(0, OxmlElement('w:tblPr'))
-       for tag, attrs in [('w:tblW', {'w:w':'0','w:type':'auto'}), ('w:tblLayout', {'w:type':'autofit'})]:
-           el = tblPr.find(qn(tag)) or OxmlElement(tag)
-           for k, v in attrs.items(): el.set(qn(k), v)
-           if el not in list(tblPr): tblPr.append(el)
-       for row in table.rows:
-           for cell in row.cells:
-               tc = cell._tc
-               tcPr = tc.find(qn('w:tcPr'))
-               if tcPr is not None:
-                   for tcW in tcPr.findall(qn('w:tcW')): tcPr.remove(tcW)
-
-   def add_table_borders(table):
-       from docx.oxml.ns import qn
-       from docx.oxml import OxmlElement
-       for row in table.rows:
-           for cell in row.cells:
-               tc = cell._tc
-               tcPr = tc.find(qn('w:tcPr'))
-               if tcPr is None:
-                   tcPr = OxmlElement('w:tcPr'); tc.insert(0, tcPr)
-               tcBorders = tcPr.find(qn('w:tcBorders'))
-               if tcBorders is None:
-                   tcBorders = OxmlElement('w:tcBorders'); tcPr.append(tcBorders)
-               for side in ('top','left','bottom','right','insideH','insideV'):
-                   border = OxmlElement(f'w:{side}')
-                   border.set(qn('w:val'), 'single')
-                   border.set(qn('w:sz'), '4')
-                   border.set(qn('w:color'), '000000')
-                   tcBorders.append(border)
+   import sys; sys.path.insert(0, '.')
+   from doc_utils import autofit_table, add_table_borders
    ```
 
 2. Save the script file to `Outputs/{TICKER}/` (e.g. `Outputs/{TICKER}/generate_{ticker_lowercase}_leadership.py`), then execute it from the project root with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_leadership.py`. Create `Outputs/{TICKER}/` if it doesn't exist.

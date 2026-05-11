@@ -261,59 +261,13 @@ Write and execute a Python script using `.venv/Scripts/python` that:
    add_table_borders(table)  # call AFTER all rows are added
    ```
 
-   **`autofit_table` helper** — sets `tblW`/`tblLayout` to autofit and strips all `w:tcW` fixed-width overrides from every cell:
+   Import the shared helpers from `doc_utils.py` (in the project root):
    ```python
-   def autofit_table(table):
-       tbl = table._tbl
-       tblPr = tbl.find(qn('w:tblPr'))
-       if tblPr is None:
-           tblPr = OxmlElement('w:tblPr')
-           tbl.insert(0, tblPr)
-       for tag, attrs in [('w:tblW', {'w:w':'0','w:type':'auto'}), ('w:tblLayout', {'w:type':'autofit'})]:
-           el = tblPr.find(qn(tag))
-           if el is None:
-               el = OxmlElement(tag)
-           for k,v in attrs.items(): el.set(qn(k), v)
-           if el not in tblPr: tblPr.append(el)
-       for row in table.rows:
-           for cell in row.cells:
-               tcPr = cell._tc.find(qn('w:tcPr'))
-               if tcPr is not None:
-                   for tcW in tcPr.findall(qn('w:tcW')): tcPr.remove(tcW)
+   import sys; sys.path.insert(0, '.')
+   from doc_utils import autofit_table, add_table_borders, set_row_font_size
    ```
 
-   **`add_table_borders` helper** — applies a single thin border (`sz=4`, `val="single"`, `color="000000"`) to all four sides of every cell in every row:
-   ```python
-   def add_table_borders(table):
-       for row in table.rows:
-           for cell in row.cells:
-               tc = cell._tc
-               tcPr = tc.find(qn('w:tcPr'))
-               if tcPr is None:
-                   tcPr = OxmlElement('w:tcPr')
-                   tc.insert(0, tcPr)
-               tcBorders = tcPr.find(qn('w:tcBorders'))
-               if tcBorders is None:
-                   tcBorders = OxmlElement('w:tcBorders')
-                   tcPr.append(tcBorders)
-               for side in ['top', 'left', 'bottom', 'right']:
-                   border = OxmlElement(f'w:{side}')
-                   border.set(qn('w:val'), 'single')
-                   border.set(qn('w:sz'), '4')
-                   border.set(qn('w:color'), '000000')
-                   tcBorders.append(border)
-   ```
-
-6. **All non-header table cell text must use font size 12.** Implement a reusable helper and call it on every data row immediately after `table.add_row()`:
-   ```python
-   from docx.shared import Pt
-   def set_row_font_size(row, size=12):
-       for cell in row.cells:
-           for para in cell.paragraphs:
-               for run in para.runs:
-                   run.font.size = Pt(size)
-   ```
-   Call `set_row_font_size(row)` on every data row (i.e., every row returned by `table.add_row()`). Do **not** call it on the header row.
+6. **All non-header table cell text must use font size 12.** Call `set_row_font_size(row)` (imported above) on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
 7. Saves the file to the output path above.
 
 ---
