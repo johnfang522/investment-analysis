@@ -238,13 +238,13 @@ After producing the full analysis, save it as a Word document using `python-docx
 
 Write and execute a Python script using `.venv/Scripts/python` that:
 1. Creates the document with a title heading matching the theme.
-2. **Set landscape orientation and narrow page margins** immediately after creating the document:
+2. **Set portrait orientation and narrow page margins** immediately after creating the document:
    ```python
    from docx.shared import Inches
    for section in doc.sections:
-       section.orientation = 1  # WD_ORIENT.LANDSCAPE
-       section.page_width = Inches(11)
-       section.page_height = Inches(8.5)
+       section.orientation = 0  # WD_ORIENT.PORTRAIT
+       section.page_width = Inches(8.5)
+       section.page_height = Inches(11)
        section.top_margin = Inches(0.5)
        section.bottom_margin = Inches(0.5)
        section.left_margin = Inches(0.75)

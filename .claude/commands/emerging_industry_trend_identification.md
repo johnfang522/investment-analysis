@@ -240,6 +240,137 @@ Follow the table with bullets:
 
 ---
 
+## Document Output
+
+After producing the full analysis in chat, save it as a Word document using `python-docx`.
+
+- **Output path:** `Outputs/emerging_industry_trends_{theme}_{yyyymmdd}.docx`
+  - If a specific theme was provided: replace `{theme}` with the theme argument, lowercased, spaces replaced with underscores (e.g., `edge_ai_compute`, `quantum_computing`).
+  - If a broad scan was run: use `broad_scan` as the theme (e.g., `Outputs/emerging_industry_trends_broad_scan_20260509.docx`).
+  - Replace `{yyyymmdd}` with today's date in YYYYMMDD format.
+
+Write and execute a Python script using `.venv/Scripts/python` that:
+
+1. Creates the document with a title heading matching the theme.
+2. **Set portrait orientation and narrow page margins** immediately after creating the document:
+   ```python
+   from docx.shared import Inches
+   for section in doc.sections:
+       section.orientation = 0  # WD_ORIENT.PORTRAIT
+       section.page_width = Inches(8.5)
+       section.page_height = Inches(11)
+       section.top_margin = Inches(0.5)
+       section.bottom_margin = Inches(0.5)
+       section.left_margin = Inches(0.75)
+       section.right_margin = Inches(0.75)
+   ```
+3. Renders all 4 output sections (Signal Scorecard, Value Chain Map, Bottleneck Analysis, Positioning & Diligence) with appropriate headings, paragraphs, tables, and bullet points.
+4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
+5. **Every table must use AutoFit to Contents and have visible borders — applied AFTER all rows are added.** Use this pattern for every table without exception:
+   ```python
+   table = doc.add_table(rows=1, cols=N)
+   # ... populate header row ...
+   # ... add all data rows with table.add_row() ...
+   autofit_table(table)      # call AFTER all rows are added
+   add_table_borders(table)  # call AFTER all rows are added
+   ```
+
+   **`autofit_table` helper:**
+   ```python
+   def autofit_table(table):
+       tbl = table._tbl
+       tblPr = tbl.find(qn('w:tblPr'))
+       if tblPr is None:
+           tblPr = OxmlElement('w:tblPr')
+           tbl.insert(0, tblPr)
+       for tag, attrs in [('w:tblW', {'w:w':'0','w:type':'auto'}), ('w:tblLayout', {'w:type':'autofit'})]:
+           el = tblPr.find(qn(tag))
+           if el is None:
+               el = OxmlElement(tag)
+           for k,v in attrs.items(): el.set(qn(k), v)
+           if el not in tblPr: tblPr.append(el)
+       for row in table.rows:
+           for cell in row.cells:
+               tcPr = cell._tc.find(qn('w:tcPr'))
+               if tcPr is not None:
+                   for tcW in tcPr.findall(qn('w:tcW')): tcPr.remove(tcW)
+   ```
+
+   **`add_table_borders` helper:**
+   ```python
+   def add_table_borders(table):
+       for row in table.rows:
+           for cell in row.cells:
+               tc = cell._tc
+               tcPr = tc.find(qn('w:tcPr'))
+               if tcPr is None:
+                   tcPr = OxmlElement('w:tcPr')
+                   tc.insert(0, tcPr)
+               tcBorders = tcPr.find(qn('w:tcBorders'))
+               if tcBorders is None:
+                   tcBorders = OxmlElement('w:tcBorders')
+                   tcPr.append(tcBorders)
+               for side in ['top', 'left', 'bottom', 'right']:
+                   border = OxmlElement(f'w:{side}')
+                   border.set(qn('w:val'), 'single')
+                   border.set(qn('w:sz'), '4')
+                   border.set(qn('w:color'), '000000')
+                   tcBorders.append(border)
+   ```
+
+6. **All non-header table cell text must use font size 11.** Call this helper on every data row immediately after `table.add_row()`:
+   ```python
+   from docx.shared import Pt
+   def set_row_font_size(row, size=11):
+       for cell in row.cells:
+           for para in cell.paragraphs:
+               for run in para.runs:
+                   run.font.size = Pt(size)
+   ```
+
+7. Apply color fills to Value Chain Map rows using the layer's background color via the `w:shd` XML element:
+   - Layer 1 — Infrastructure: `D6E4F0` (light blue)
+   - Layer 2 — Enablers: `D5E8D4` (light green)
+   - Layer 3 — Integrators: `FFF2CC` (light yellow)
+   - Layer 4 — Applications: `FCE4D6` (light orange)
+   - Layer 5 — Adjacent Beneficiaries: `E1D5E7` (light purple)
+   - Layer 6 — Bottlenecks: `F4CCCC` (light red/pink)
+
+8. Ends with a **Sources** section listing all URLs cited during the analysis as bullet points.
+9. Saves the file to the output path above and prints the path.
+
+---
+
+### Per-Section Formatting Rules
+
+#### Section 1 — Signal Scorecard
+- Heading 1: "1. Signal Scorecard"
+- One summary table: Signal | Status | Evidence (3 columns). Keep Evidence to one concise sentence per row.
+- After the table, add two bold bullet points: convergence verdict and cycle stage.
+
+#### Section 2 — Value Chain Map
+- Heading 1: "2. Value Chain Map"
+- One table with columns: Layer | Layer Name | Representative Companies | Moat Strength | Cycle Timing | Key Risk
+- Color-fill each data row by layer (colors above). Do not color the header row.
+- After the table, one bold bullet: "Highest-conviction layer right now:" with one sentence of reasoning.
+
+#### Section 3 — Bottleneck Analysis
+- Heading 1: "3. Bottleneck Analysis"
+- One table with columns: # | Test | Answer | Implication
+- After the table, two bold bullet points: top structural chokepoint(s) and key CEO/executive quotes with sources.
+
+#### Section 4 — Positioning & Diligence
+- Heading 1: "4. Positioning & Diligence"
+- One Layer Weighting table: Layer | Weight | Rationale (Weight = Overweight / Neutral / Underweight)
+- Then a bold "Risk Flags" sub-heading followed by bullet points.
+- Then a bold "Diligence Questions" sub-heading followed by numbered bullet points (Word List Number style), each specific and falsifiable.
+
+#### Section 5 — Sources
+- Heading 1: "5. Sources"
+- Bullet list of all URLs cited during the analysis (title + URL).
+
+---
+
 ## Worked Examples
 
 ### Example A — GPU / Compute (2022, now late cycle)

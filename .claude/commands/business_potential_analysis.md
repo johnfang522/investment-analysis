@@ -152,7 +152,46 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row**
 - Dark blue header rows (fill `1F3864`), white bold text; source citations in small italic
 - NBT Readiness Scorecard table: bold the Overall row; color the score cell based on rating (green `007000` for 4–5, orange `FF8C00` for 3, red `C00000` for 1–2)
+- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
 - Rating block in bold
-- Saves to `Outputs/{TICKER}/{ticker_lowercase}_business_potential_analysis.docx`
+- Saves to `Outputs/{TICKER}/7_{ticker_lowercase}_business_potential_analysis.docx`
+
+Define these helpers in the script:
+```python
+def autofit_table(table):
+    from docx.oxml.ns import qn
+    from docx.oxml import OxmlElement
+    tbl = table._tbl
+    tblPr = tbl.find(qn('w:tblPr')) or tbl.insert(0, OxmlElement('w:tblPr'))
+    for tag, attrs in [('w:tblW', {'w:w':'0','w:type':'auto'}), ('w:tblLayout', {'w:type':'autofit'})]:
+        el = tblPr.find(qn(tag)) or OxmlElement(tag)
+        for k, v in attrs.items(): el.set(qn(k), v)
+        if el not in list(tblPr): tblPr.append(el)
+    for row in table.rows:
+        for cell in row.cells:
+            tc = cell._tc
+            tcPr = tc.find(qn('w:tcPr'))
+            if tcPr is not None:
+                for tcW in tcPr.findall(qn('w:tcW')): tcPr.remove(tcW)
+
+def add_table_borders(table):
+    from docx.oxml.ns import qn
+    from docx.oxml import OxmlElement
+    for row in table.rows:
+        for cell in row.cells:
+            tc = cell._tc
+            tcPr = tc.find(qn('w:tcPr'))
+            if tcPr is None:
+                tcPr = OxmlElement('w:tcPr'); tc.insert(0, tcPr)
+            tcBorders = tcPr.find(qn('w:tcBorders'))
+            if tcBorders is None:
+                tcBorders = OxmlElement('w:tcBorders'); tcPr.append(tcBorders)
+            for side in ('top','left','bottom','right','insideH','insideV'):
+                border = OxmlElement(f'w:{side}')
+                border.set(qn('w:val'), 'single')
+                border.set(qn('w:sz'), '4')
+                border.set(qn('w:color'), '000000')
+                tcBorders.append(border)
+```
 
 Confirm the output file path when done.
