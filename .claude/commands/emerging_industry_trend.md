@@ -157,7 +157,18 @@ Run this checklist specifically to find the Layer 6 chokepoint:
 
 ## Output Format
 
-Always produce all four sections below. Use **tables** and **bullet points** throughout — no dense prose paragraphs.
+Always produce all five sections below in order. Use **tables** and **bullet points** throughout — no dense prose paragraphs.
+
+---
+
+### 0. Theme Summary
+
+Write a concise 3–5 sentence overview of the theme **before any deep-dive analysis**. Cover:
+- What the theme is and why it is emerging now
+- The core market opportunity or structural shift driving it
+- Why it may be underpriced or early relative to where the market currently is
+
+This section sets context for everything that follows. Keep it punchy — no bullet points, just clear prose.
 
 ---
 
@@ -264,7 +275,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
        section.left_margin = Inches(0.75)
        section.right_margin = Inches(0.75)
    ```
-3. Renders all 4 output sections (Signal Scorecard, Value Chain Map, Bottleneck Analysis, Positioning & Diligence) with appropriate headings, paragraphs, tables, and bullet points.
+3. Renders all 5 output sections (Theme Summary, Signal Scorecard, Value Chain Map, Bottleneck Analysis, Positioning & Diligence) with appropriate headings, paragraphs, tables, and bullet points.
 4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
 5. **Every table must use AutoFit to Contents and have visible borders — applied AFTER all rows are added.** Use this pattern for every table without exception:
    ```python
@@ -297,6 +308,11 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 ---
 
 ### Per-Section Formatting Rules
+
+#### Section 0 — Theme Summary
+- Heading 1: "0. Theme Summary"
+- One paragraph (3–5 sentences): what the theme is, why it is emerging now, the core opportunity, and why it may be underpriced.
+- No tables or bullet points in this section.
 
 #### Section 1 — Signal Scorecard
 - Heading 1: "1. Signal Scorecard"
