@@ -41,6 +41,7 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 - RSI is computed directly from `{ticker_lower}_price_history.json` (Wilder's 14-day method) inside `_calc_rsi()` — not sourced from Yahoo Finance
 - Produces `Outputs/key_stock_metrics_YYYYMMDD.xlsx` with per-ticker sheets + a `Comparison` sheet (placed first)
 - Can be run directly: `.venv/Scripts/python key_stock_metrics.py [TICKER ...]`
+- `compute_metrics(ticker)`, `_short_comment(key, val, metrics)`, `METRICS`, and `color_current_price(metrics)` are imported by the `/single_name_stock_analysis` skill's generated Word scripts — treat these as a shared library, not just a CLI script
 
 **`chart_*.py`** — standalone chart generators (one per analysis domain)
 - Scripts: `chart_income_statement.py`, `chart_balance_sheet.py`, `chart_cash_flow.py`, `chart_growth_profitability.py`, `chart_valuation.py`, `chart_technical.py`

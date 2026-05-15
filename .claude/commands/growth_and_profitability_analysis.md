@@ -112,7 +112,7 @@ WebSearch for analyst consensus.
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
 - Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
 - Title: `{TICKER} — Growth & Profitability` (bold, centered) + date subtitle
-- **Embed all three chart images at `width=Inches(5.0)`** to keep them compact
+- **Embed all three chart images at `width=Inches(7.0)`** to fill the full text width
 - Section headings as Heading 1
 - Bullets as Word list items
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.

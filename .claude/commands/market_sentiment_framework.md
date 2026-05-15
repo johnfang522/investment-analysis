@@ -141,7 +141,7 @@ Generate these charts inline in the Python script (no separate chart_*.py file).
 For theme-specific reports (anything other than "broad market"), **also** add:
 - **`sentiment_{slug}_theme_etf_trend.png`** — Theme ETF price + 200-DMA, last 2 years. Title: "[Theme] — Price vs 200-Day MA."
 
-Embed every chart at `width=Inches(5.5)` to keep them compact.
+Embed every chart at `width=Inches(7.0)` to keep them compact.
 
 ---
 
@@ -204,7 +204,7 @@ Cite sources inline as `Source: URL` on an indented line below the relevant cont
 
 ### 7. Charts
 - Heading 1: "Charts"
-- Embed all 4 (or 5) charts described above, each at `width=Inches(5.5)`, with a 1-sentence caption underneath each in italic
+- Embed all 4 (or 5) charts described above, each at `width=Inches(7.0)`, with a 1-sentence caption underneath each in italic
 
 ### 8. Composite Score Scorecard
 - Heading 1: "Composite Score Scorecard"
@@ -276,7 +276,7 @@ Write and execute a Python script saved as `Outputs/generate_market_sentiment_{t
        section.left_margin = Inches(0.75)
        section.right_margin = Inches(0.75)
    ```
-3. **Generate all 4 (or 5) charts inline using yfinance + matplotlib** before building the body. Save each PNG to `Outputs/sentiment_{slug}_<chart>.png`. Use `matplotlib.use("Agg")`. Embed each at `width=Inches(5.5)` in Section 7.
+3. **Generate all 4 (or 5) charts inline using yfinance + matplotlib** before building the body. Save each PNG to `Outputs/sentiment_{slug}_<chart>.png`. Use `matplotlib.use("Agg")`. Embed each at `width=Inches(7.0)` in Section 7.
 4. Render all 12 output sections with appropriate headings, paragraphs, tables, and bullet points.
 5. **Tables:** initialize with `rows=1` (header only), then `table.add_row()` per data row. **Every table** must call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added.
 6. **Font size 12 on every data row** — call `set_row_font_size(row)` immediately after `table.add_row()` (don't call on header).

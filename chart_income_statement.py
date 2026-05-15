@@ -101,7 +101,7 @@ def chart_flow(ticker, data, out_path):
         return patches.Rectangle((x, BASE + bottom_offset), NODE_W, h,
                                   transform=ax.transAxes, color=color, zorder=2)
 
-    fig, ax = plt.subplots(figsize=(22, 10))
+    fig, ax = plt.subplots(figsize=(16, 9))
     ax.set_xlim(0, 1.0); ax.set_ylim(0, 1.0)
     ax.axis("off")
     ax.set_title(f"{t} Quarterly Income Statement ({period})",

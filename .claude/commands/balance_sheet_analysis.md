@@ -93,7 +93,7 @@ WebSearch: "{TICKER} operating leases contingent liabilities [year]"
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
 - Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
 - Title: `{TICKER} — Balance Sheet` (bold, centered) + date subtitle
-- **Embed both chart images at `width=Inches(5.0)`** to keep them compact
+- **Embed both chart images at `width=Inches(7.0)`** to fill the full text width
 - Section headings as Heading 1
 - Bullets as Word list items
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
