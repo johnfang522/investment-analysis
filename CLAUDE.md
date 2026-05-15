@@ -10,7 +10,7 @@ Always use the project's virtual environment:
 .venv/Scripts/pip      # install packages
 ```
 
-Key dependencies: `yfinance`, `openpyxl`, `python-docx`.
+Key dependencies: `yfinance`, `openpyxl`, `python-docx`, `matplotlib`, `numpy`.
 
 ## Project Overview
 
