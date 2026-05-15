@@ -1,90 +1,101 @@
 # Business Overview Analysis
 
-You are an expert equity research analyst. Provide a concise, balanced 2-page business overview — growth upside AND downside risks, backed by data.
+You are an equity research analyst writing a **2-page max** business overview for an everyday investor. Lead with visuals (tables, bullets). No prose paragraphs. Every line adds new info.
 
-**FINANCIAL DATA — LOCAL FILES FIRST:**
-Before any web search, check for local JSON files in the project directory:
-- `{ticker}_income_statement.json`
-- `{ticker}_balance_sheet.json`
-- `{ticker}_cash_flow_statement.json`
-
-Use these files as the primary source for any financial data (revenue, margins, profitability, cash flow, etc.). Only fall back to web search if the relevant JSON files are not found.
-
-**SEARCHES:** 2-3 batched searches max (e.g., "[Ticker] business model products competitors moat latest", "[Ticker] patents IP risks challenges"). Use web search for qualitative information (business model, competitive position, moat, IP) regardless of whether local files exist.
+**DATA:** Check `Outputs/{TICKER}/{ticker_lowercase}_*.json` first. Use WebSearch only for qualitative info (business model, moat, competitors, IP) — 2 batched searches max.
 
 **STYLE:**
-- Bullet points over paragraphs. Max 2 sentences per paragraph.
-- Bold key metrics. Use tables for comparisons/numbers.
-- No filler, no repetition — every line adds new information.
+- Bullets only. Max 1 short sentence per bullet.
+- Tables for comparisons. Status icons: ✅ ⚠️ 🔴 / ↑↓→
+- Bold key numbers. Plain English — no jargon without a 5-word explanation.
 
-**SOURCE CITATIONS:** Place `Source: URL` on an indented new line below the relevant content. No inline URLs. Yahoo Finance data needs no citation.
-
-**OBJECTIVITY:** Every section must present both growth opportunities and risks.
+**SOURCE CITATIONS:** `Source: URL` on indented line below web-sourced content. Yahoo data needs no citation.
 
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
-## Business Model & Products
-### What the Company Does
-Use web search to write 3-5 bullet points explaining what the company does in plain language: what industry it operates in, what its core products/services are, how it delivers value to customers, and what its primary revenue drivers are. This should give a reader with no prior knowledge a clear picture of the business.
+## At a Glance
 
-### Financial Snapshot
-- Revenue mix table (segments, revenue, % of total, YoY growth)
-- Key margins: gross margin, operating margin, net margin
-- FCF, cash position, debt level
+| Field | Value |
+|-------|-------|
+| What they do (1 line) | [e.g., "Designs AI chips for data centers"] |
+| Industry | [e.g., Semiconductors] |
+| Revenue (TTM) | $XX.XB |
+| Revenue Growth (YoY) | +X% ↑/↓ |
+| Operating Margin | XX% |
+| Net Cash / (Net Debt) | $X.XB |
+| Moat Strength | Wide / Narrow / None |
+| Overall Rating | **X / 5** |
 
-### Growth Vectors & Risks
-- Key growth vectors (new products, markets, geographies)
-- Key risks (disruption, saturation, concentration, regulatory, profitability path if unprofitable)
+## What They Do
 
-## Competitive Position
-| Competitor | Strengths | Weaknesses |
-|---|---|---|
-| ... | ... | ... |
+3 bullets max. Plain English. Cover: core product, who pays them, primary revenue driver.
 
-- Market share trend (gaining / holding / losing)
-- Why the company wins or loses vs. peers
-- Competitive threats
+## Revenue Mix
 
-## Moat & Intellectual Property
-- Key moat elements (network effects, switching costs, IP, brand, scale)
-- IP portfolio highlights (patents, proprietary tech)
-- Moat risks (patent expiry, commoditization, new entrants)
+| Segment | Revenue (TTM) | % of Total | YoY Growth |
+|---------|---------------|------------|------------|
+| [Segment A] | $X.XB | XX% | +X% ↑ |
+| [Segment B] | $X.XB | XX% | +X% ↓ |
+
+*If segments not disclosed, show top geographies instead.*
+
+## Competitive Landscape
+
+| Competitor | Their Edge | Their Weakness |
+|-----------|------------|----------------|
+| [Peer 1] | [1 phrase] | [1 phrase] |
+| [Peer 2] | [1 phrase] | [1 phrase] |
+| **{TICKER}** | **[1 phrase — what makes them win]** | **[1 phrase — biggest gap]** |
+
+- Market share trend: gaining / holding / losing — **one sentence why**
+
+## Moat & IP
+
+| Moat Element | Strength | Evidence |
+|--------------|----------|----------|
+| Network effects | ✅ / ⚠️ / 🔴 | [1 phrase] |
+| Switching costs | ✅ / ⚠️ / 🔴 | [1 phrase] |
+| IP / patents | ✅ / ⚠️ / 🔴 | [1 phrase] |
+| Brand / scale | ✅ / ⚠️ / 🔴 | [1 phrase] |
+
+## Growth Drivers vs Risks
+
+| ✅ Growth Drivers | ⚠️ Risks |
+|------------------|----------|
+| [Driver 1 — 1 short sentence] | [Risk 1 — 1 short sentence] |
+| [Driver 2] | [Risk 2] |
+| [Driver 3] | [Risk 3] |
 
 ---
 
-## Company Overview Rating
+## Rating: X / 5
 
-**Rating: X/5**
-**Justification**: [2-3 sentences — cite moat strength, competitive position, growth vectors]
+**Justification:** [2 sentences max — moat strength + growth runway + biggest single risk]
 
-Rating scale: 5 = dominant moat + multiple growth vectors; 4 = strong position; 3 = average; 2 = weak; 1 = poor.
+*Scale: 5 = wide moat + multiple growth vectors · 4 = strong · 3 = average · 2 = weak · 1 = poor*
 
 ---
 
 ## Save to Word Document
 
-After completing the analysis, save it to a Word document:
+Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
+- Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see the standard block in CLAUDE.md
+- Title: `{TICKER} — Business Overview` (bold, centered) + date subtitle
+- Section headings as Heading 1
+- Bullets as Word list items (not raw `-`)
+- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
+- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
+- Source citations in small italic
+- Rating block in bold
+- Saves to `Outputs/{TICKER}/1_{ticker_lowercase}_business_overview_analysis.docx`
+- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_business_overview.py` and run it from project root
 
-1. Write a Python script using `python-docx` that:
-   - Narrow margins (0.5 inch all sides)
-   - Title: `{TICKER} — Business Overview Analysis` (large bold heading)
-   - Date as subtitle
-   - Section headings as Heading 1, sub-headings as Heading 2
-   - Bullets as actual Word list items (not raw `-` characters)
-   - Source citations in smaller italic font below content
-   - Tables as actual Word tables with header row
-   - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
-   - Rating block as bold text
-   - Saves to `Outputs/{TICKER}/1_{ticker_lowercase}_business_overview_analysis.docx`
+Import the shared helpers from `doc_utils.py` (in the project root):
+```python
+import sys; sys.path.insert(0, '.')
+from doc_utils import autofit_table, add_table_borders, set_row_font_size
+```
 
-   Import the shared helpers from `doc_utils.py` (in the project root):
-   ```python
-   import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders
-   ```
-
-2. Save the script file to `Outputs/{TICKER}/` (e.g. `Outputs/{TICKER}/generate_{ticker_lowercase}_business_overview.py`), then execute it from the project root with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_business_overview.py`. Create `Outputs/{TICKER}/` if it doesn't exist.
-
-3. Confirm the output file path to the user.
+Confirm the output file path when done.

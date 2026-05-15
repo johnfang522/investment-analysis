@@ -1,153 +1,113 @@
 # Balance Sheet Analysis
 
-You are a financial analyst writing a clear, concise balance sheet analysis for a general investor audience. Be direct, data-driven, and avoid jargon — explain any technical term in plain English when you use it.
+You are a financial analyst writing a **3-page max** balance sheet review for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English.
 
-**DATA SOURCING (follow this order):**
-1. Load `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_quarterly.json` and `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`. Focus on the most recent quarter (first column). If files are missing, run `yahoo_finance_data.py` to fetch.
-2. Only use WebSearch for values genuinely missing from the JSON. Do not search for data already available locally.
-3. For any value still not found, leave as N/A.
+**DATA SOURCING:**
+1. Load `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_quarterly.json` and `_quick_metrics.json`. Run `yahoo_finance_data.py` if missing.
+2. WebSearch only for items genuinely missing (interest coverage, off-balance-sheet items). Leave N/A if not found.
 
-**CRITICAL: Always compare year-over-year (e.g., Q4 2025 vs Q4 2024). Never compare sequential quarters.**
+**Always YoY (latest qtr vs same qtr last year). Never sequential quarters.**
 
-**WRITING STYLE:**
-- Lead with the key insight, then support with numbers.
-- Bullet points over paragraphs. Tables over prose for numbers.
-- Bold key metrics. No filler or repetition.
-- Plain English: briefly define ratios the first time you use them (e.g., "current ratio — whether short-term assets cover short-term bills").
-
-**SOURCE CITATIONS:** When using web search data, put `Source: URL` on a new indented line below the content. No inline URLs. Local JSON data needs no citation.
+**STYLE:** Bullets only — 1 short sentence. Tables for all numbers. Bold key metrics. Status icons: ✅ ⚠️ 🔴 / ↑↓→
 
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
-**Data as of**: [Fiscal Quarter] [Year] (Balance sheet date: [Date])
+**Data as of**: [Fiscal Quarter] [Year]
 
-## Balance Sheet Charts
-
-Run the chart script to generate both charts:
+## Charts
 
 ```
 .venv/Scripts/python chart_balance_sheet.py {TICKER}
 ```
+Produces `{ticker}_balance_sheet_composition.png` and `{ticker}_balance_sheet_trend.png` in `Outputs/{TICKER}/`.
 
-This produces:
-- `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_composition.png` — Stacked bar composition (Assets vs Funding) for the most recent quarter
-- `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_trend.png` — Trend line (Total Assets, Equity, Liabilities, Total Debt, Cash)
+## At a Glance
 
----
+| Field | Value | Signal |
+|-------|-------|--------|
+| Total Assets | $XX.XB | +X% YoY ↑/↓ |
+| Net Cash / (Net Debt) | $X.XB | ✅ Net Cash / ⚠️ Manageable / 🔴 Heavy Debt |
+| Current Ratio | X.Xx | ✅ >1.5 / ⚠️ 1–1.5 / 🔴 <1 |
+| Debt / Equity | X.Xx | ✅ <0.5 / ⚠️ 0.5–1.5 / 🔴 >1.5 |
+| Interest Coverage | X.Xx | ✅ >5 / ⚠️ 2–5 / 🔴 <2 |
+| Overall Rating | **X / 5** | — |
 
-## Overview
+## Balance Sheet Snapshot (YoY)
 
-*A 2–3 bullet snapshot: how big is the balance sheet, is it mostly funded by debt or equity, and what's the one trend that stands out?*
+*One table = key asset, liability, and equity lines, current quarter vs prior-year quarter.*
 
-Reference the trend chart above when describing multi-period changes.
+| Line Item | Latest Qtr | Prior-Yr Qtr | Δ |
+|-----------|-----------|--------------|---|
+| Total Assets | $XX.XB | $XX.XB | +X% ↑ |
+| Cash & Equivalents | $XX.XB | $XX.XB | +X% |
+| PP&E (net) | $XX.XB | $XX.XB | +X% |
+| Goodwill & Intangibles | $XX.XB | $XX.XB | +X% |
+| Total Debt | $XX.XB | $XX.XB | +X% |
+| Current Liabilities | $XX.XB | $XX.XB | +X% |
+| Total Equity | $XX.XB | $XX.XB | +X% |
 
-## Assets
+- **Biggest YoY shift:** [1 sentence — what changed and why]
 
-*Assets = what the company owns. Current assets (cash, receivables, inventory) convert to cash within a year. Non-current assets (factories, equipment, goodwill) are long-term.*
+## Liquidity & Leverage
 
-| Period | Total Assets | Current Assets | Cash & Equiv. | PP&E (Net) | Goodwill & Intangibles |
-|--------|--------------|----------------|---------------|------------|------------------------|
-| [Current Quarter] | $XX.XB | $XX.XB | $XX.XB | $XX.XB | $XX.XB |
-| [Prior Year Quarter] | $XX.XB | $XX.XB | $XX.XB | $XX.XB | $XX.XB |
+*Liquidity = can it pay near-term bills. Leverage = how much it relies on borrowed money.*
 
-- What changed most YoY and why
-- Any asset quality flags (e.g., large goodwill that could be written down, growing receivables)
+| Ratio | Latest | Prior-Yr | Plain English |
+|-------|--------|----------|---------------|
+| Current Ratio | X.Xx | X.Xx | Short-term assets vs short-term bills |
+| Quick Ratio | X.Xx | X.Xx | Same, excluding inventory |
+| Cash Ratio | X.Xx | X.Xx | Cash alone vs short-term bills |
+| Debt / Equity | X.Xx | X.Xx | Debt size vs shareholder capital |
+| Interest Coverage | X.Xx | X.Xx | Operating profit ÷ interest |
+| Net Debt / EBITDA | X.Xx | X.Xx | Years of profit to repay all debt |
 
-## Liabilities & Equity
+- **Trend:** liquidity improving ↑ / steady → / tightening ↓ — [1 sentence]
 
-*Liabilities = what the company owes. Equity = what's left for shareholders after all debts are paid.*
+## Hidden Risks
 
-| Period | Total Liabilities | Current Liabilities | Long-term Debt | Total Equity |
-|--------|-------------------|---------------------|----------------|--------------|
-| [Current Quarter] | $XX.XB | $XX.XB | $XX.XB | $XX.XB |
-| [Prior Year Quarter] | $XX.XB | $XX.XB | $XX.XB | $XX.XB |
+WebSearch: "{TICKER} operating leases contingent liabilities [year]"
+- Material off-balance items (leases, lawsuits, pensions, purchase commitments). If none: "No significant off-balance-sheet concerns identified."
 
-- Key shifts in debt or equity YoY (buybacks, new borrowing, retained earnings)
+## Strengths vs Risks
 
-## Liquidity
-
-*Can the company pay its bills over the next 12 months? These ratios answer that.*
-
-Calculate these ratios directly from the JSON balance sheet data. Only use WebSearch if a required input (e.g., inventory for quick ratio) is missing from the JSON.
-
-| Period | Current Ratio | Quick Ratio | Cash Ratio | Working Capital |
-|--------|---------------|-------------|------------|-----------------|
-| [Current Quarter] | X.Xx | X.Xx | X.Xx | $XX.XB |
-| [Prior Year Quarter] | X.Xx | X.Xx | X.Xx | $XX.XB |
-
-*Current ratio >1 = more short-term assets than bills due. Quick ratio excludes inventory (more conservative). Cash ratio is the strictest — cash only.*
-
-- Is liquidity improving or deteriorating, and why?
-
-## Leverage & Debt
-
-*How much does the company rely on borrowed money? More debt = higher risk but can boost returns.*
-
-Search WebSearch for interest coverage if not available from the data.
-
-| Period | Total Debt | Net Cash / (Net Debt) | D/E Ratio | Interest Coverage |
-|--------|------------|----------------------|-----------|-------------------|
-| [Current Quarter] | $XX.XB | $XX.XB | X.Xx | X.Xx |
-| [Prior Year Quarter] | $XX.XB | $XX.XB | X.Xx | X.Xx |
-
-*Net cash = Cash minus Total Debt — positive is good. D/E = debt relative to equity. Interest coverage = how easily operating profit covers interest payments.*
-
-- Is debt rising for strategic reasons (e.g., acquisitions) or due to weak cash flow?
-- Any near-term debt maturities or refinancing risk? (Search WebSearch if needed)
-
-## Hidden Risks: Off-Balance-Sheet Items
-
-Search WebSearch for "[Ticker] operating leases contingent liabilities [year]".
-
-- Operating leases, legal liabilities, pension obligations, or purchase commitments — anything material not visible on the balance sheet
-- If nothing material found: "No significant off-balance-sheet concerns identified"
-
-## Key Strengths
-
-3–5 strengths with specific numbers:
-- [e.g., Net cash of $XX.XB — more cash than debt, a sign of financial strength]
-- [e.g., Current ratio of X.Xx — short-term assets easily cover near-term bills]
-- [e.g., Low D/E of X.Xx — conservative use of debt]
-
-## Risks & Concerns
-
-3–5 risks with specific numbers:
-- [e.g., Long-term debt rose $XX.XB YoY — watch if cash flow keeps pace]
-- [e.g., Goodwill of $XX.XB — could be written down if acquisitions underperform]
-- [e.g., Quick ratio declining — short-term liquidity tightening]
+| ✅ Strengths | ⚠️ Risks |
+|-------------|----------|
+| [e.g., Net cash of $X.XB — fortress balance sheet] | [e.g., Goodwill $X.XB — write-down risk if M&A underperforms] |
+| [Strength 2] | [Risk 2] |
+| [Strength 3] | [Risk 3] |
 
 ---
 
-## Balance Sheet Rating
+## Rating: X / 5
 
-**Rating Scale:** 5 = fortress (net cash, current ratio >2x, minimal debt) · 4 = healthy · 3 = adequate (moderate debt, no immediate concerns) · 2 = stretched (high net debt, weak liquidity) · 1 = distressed (solvency risk)
+**Justification:** [2 sentences — net cash/debt position + key ratios + biggest single risk]
 
-**Rating: X/5**
-**Justification**: [2–3 sentences — cite net cash/debt, key ratios, and the biggest risk or strength]
+*Scale: 5 = fortress (net cash, current >2x, low debt) · 4 = healthy · 3 = adequate · 2 = stretched · 1 = distressed*
 
 ---
 
 ## Save to Word Document
 
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Narrow margins (0.5 inch all sides)
-- Title: `{TICKER} — Balance Sheet Analysis` (large bold heading) + date subtitle
-- Embeds both chart images after the title
+- Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
+- Title: `{TICKER} — Balance Sheet` (bold, centered) + date subtitle
+- **Embed both chart images at `width=Inches(5.0)`** to keep them compact
 - Section headings as Heading 1
-- Bullets as actual Word list items
-- Tables as Word tables with header row formatting. Initialize with `rows=1` (header only), then call `table.add_row()` per data row.
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
-- Source citations in small italic font
+- Bullets as Word list items
+- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
+- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
+- Dark blue header rows (fill `1F3864`), white bold text
+- Source citations in small italic
 - Rating block in bold
 - Saves to `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis.docx`
-- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_balance_sheet.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_balance_sheet.py`
+- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_balance_sheet.py` and run it from project root
 
-Import the shared helpers from `doc_utils.py` (in the project root):
+Import the shared helpers from `doc_utils.py`:
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders
+from doc_utils import autofit_table, add_table_borders, set_row_font_size
 ```
 
 Confirm the output file path when done.

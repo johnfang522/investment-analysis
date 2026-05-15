@@ -1,17 +1,16 @@
 # Growth & Profitability Analysis
 
-You are a financial analyst writing a plain-English growth and profitability analysis for a general investor. Be concise — lead with numbers, skip filler, one or two bullets per section maximum.
+You are a financial analyst writing a **3-page max** growth & profitability review for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English.
 
-**DATA SOURCING (follow this order):**
-1. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json`, `Outputs/{TICKER}/{ticker_lowercase}_income_statement_annual.json`, and `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`. If files are missing, run `yahoo_finance_data.py` to fetch.
-2. Use quarterly JSON for all current/prior-year-quarter metrics. Use annual JSON only for multi-year CAGRs.
-3. Compute EPS as Net Income / Shares Outstanding (`sharesOutstanding` from quick_metrics) if the EPS field in the JSON is zero or missing.
-4. Only use WebSearch for analyst estimates and forward guidance — not for anything available locally.
-5. Leave as N/A if still not found.
+**DATA SOURCING:**
+1. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json`, `_income_statement_annual.json`, and `_quick_metrics.json`. Run `yahoo_finance_data.py` if missing.
+2. Use quarterly JSON for current/prior-year quarter; annual JSON for multi-year CAGRs.
+3. Compute EPS = Net Income / Shares Outstanding (`sharesOutstanding`) if EPS field is missing.
+4. WebSearch only for forward analyst estimates / guidance.
 
-**Always compare year-over-year. Never compare sequential quarters.**
+**Always YoY. Never sequential quarters.**
 
-**SOURCE CITATIONS:** `Source: URL` indented below any web-sourced value. No citation needed for local JSON.
+**STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→
 
 ---
 
@@ -21,142 +20,113 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
 ## Charts
 
-Run the chart script to generate all three charts:
-
 ```
 .venv/Scripts/python chart_growth_profitability.py {TICKER}
 ```
+Produces `{ticker}_gp_revenue_trend.png`, `{ticker}_margin_trend.png`, `{ticker}_yoy_growth.png` in `Outputs/{TICKER}/`.
 
-This produces:
-- `Outputs/{TICKER}/{ticker_lowercase}_gp_revenue_trend.png` — Revenue & Gross Profit grouped bar + Gross Margin % line (last 5 quarters)
-- `Outputs/{TICKER}/{ticker_lowercase}_margin_trend.png` — Gross / Operating / Net Margin trend lines (last 5 quarters)
-- `Outputs/{TICKER}/{ticker_lowercase}_yoy_growth.png` — Annual YoY Revenue & Net Income growth bars
+## At a Glance
 
----
+| Field | Value | Signal |
+|-------|-------|--------|
+| Revenue Growth (YoY) | +X% | ✅ >15% / ⚠️ 5–15% / 🔴 <5% |
+| Operating Margin | XX% | +/-X pp YoY |
+| Net Margin | XX% | +/-X pp YoY |
+| EPS Growth (YoY) | +X% | ✅ >20% / ⚠️ 5–20% / 🔴 <5% |
+| Rule of 40 Score | XX | ✅ ≥40 / ⚠️ 30–39 / 🔴 <30 |
+| Overall Rating | **X / 5** | — |
 
-## 1. Revenue Growth
+## Growth & Margins (YoY)
 
-*Revenue = total sales. Growing revenue means the business is expanding.*
+*One table = revenue, profitability, EPS — current quarter vs prior-year quarter.*
 
-| Period | Revenue | YoY Growth | Gross Profit | Gross Margin |
-|--------|---------|------------|--------------|--------------|
-| [Current Quarter] | $XX.XB | +X.X% | $XX.XB | XX.X% |
-| [Prior Year Quarter] | $XX.XB | — | $XX.XB | XX.X% |
+| Metric | Latest Qtr | Prior-Yr Qtr | Δ |
+|--------|-----------|--------------|---|
+| Revenue | $XX.XB | $XX.XB | +X% ↑ |
+| Gross Profit / Margin | $XX.XB / XX% | $XX.XB / XX% | +X pp |
+| Operating Income / Margin | $XX.XB / XX% | $XX.XB / XX% | +X pp |
+| Net Income / Margin | $XX.XB / XX% | $XX.XB / XX% | +X pp |
+| EPS | $X.XX | $X.XX | +X% |
+| Operating Leverage* | X.Xx | — | — |
 
-- Is growth accelerating or decelerating? Name the primary driver.
-- Gross margin direction: expanding = pricing power or scale; compressing = rising costs.
+*Op leverage = Operating Income growth ÷ Revenue growth. >1x means costs scaling slower than revenue.*
 
-## 2. Profitability
+- **Margin direction:** all expanding ↑ / mixed ↔ / all compressing ↓ — [1 sentence]
 
-*Margins show how much of each revenue dollar becomes profit at each level.*
+## Multi-Year Scorecard (CAGR)
 
-| Period | Gross Margin | Op. Margin | Net Margin | Op. Leverage* |
-|--------|-------------|------------|------------|---------------|
-| [Current Quarter] | XX.X% | XX.X% | XX.X% | X.Xx |
-| [Prior Year Quarter] | XX.X% | XX.X% | XX.X% | X.Xx |
+*CAGR = the steady annual growth rate that produces the same result over the period.*
 
-*Op. leverage = Operating Income growth ÷ Revenue growth. Above 1x means costs are scaling slower than revenue.*
-
-- Are all three margins moving in the same direction? Divergence (e.g., gross up but net down) signals a specific cost problem worth naming.
-
-## 3. Bottom-Line Growth
-
-*EPS (earnings per share) is the profit allocated to each share you own.*
-
-| Period | Operating Income | Op. Margin | Net Income | Net Margin | EPS | YoY EPS Growth |
-|--------|-----------------|------------|------------|------------|-----|----------------|
-| [Current Quarter] | $XX.XB | XX.X% | $XX.XB | XX.X% | $X.XX | +X.X% |
-| [Prior Year Quarter] | $XX.XB | XX.X% | $XX.XB | XX.X% | $X.XX | — |
-
-- Is net income growing faster or slower than revenue? Faster = real operating leverage.
-- Is EPS growth matching net income growth? If EPS grows much faster, it's buyback-driven, not earnings quality.
-
-## 4. Multi-Year Scorecard
-
-*CAGR = the steady annual rate that would produce the same result over the period. Computed from annual JSON.*
-
-| Metric | 1-Year | 3-Year CAGR | 5-Year CAGR |
-|--------|--------|-------------|-------------|
+| Metric | 1-Yr | 3-Yr CAGR | 5-Yr CAGR |
+|--------|------|-----------|-----------|
 | Revenue | +X% | +X% | +X% |
-| Gross Profit | +X% | +X% | +X% |
 | Operating Income | +X% | +X% | +X% |
 | Net Income | +X% | +X% | +X% |
 | EPS | +X% | +X% | +X% |
 
-Use N/A if fewer than 3 or 5 years of annual data are available.
+- **Consistency:** [1 sentence — is one line lagging?] Use N/A if <3 or <5 years available.
 
-- One sentence: is growth consistent across all lines, or is one lagging?
+## Rule of 40 Scorecard
 
-## 5. Forward Estimates
+*Rule of 40: a quick health check — Revenue Growth + Operating Margin. ≥40 = balancing growth and profitability well.*
 
-Search WebSearch for consensus analyst estimates.
+| View | Growth + Margin | Score | Verdict |
+|------|-----------------|-------|---------|
+| Operating Margin | +X% + XX% | XX | ✅ Healthy / ⚠️ Watch / 🔴 Concern |
+| FCF Margin (alt view) | +X% + XX% | XX | ✅ / ⚠️ / 🔴 |
 
-| Metric | Next Quarter Est. | Full Year Est. | Company Guidance |
-|--------|-------------------|----------------|------------------|
+*Read FCF and revenue from `_cash_flow_statement_quarterly.json` for the FCF view.*
+
+## Forward Outlook
+
+WebSearch for analyst consensus.
+
+| Metric | Next Qtr Est. | Full Year Est. | Company Guidance |
+|--------|---------------|----------------|------------------|
 | Revenue | $XX.XB | $XX.XB | $XX–XXB |
 | EPS | $X.XX | $X.XX | $X.XX–X.XX |
 | Revenue Growth (YoY) | +X% | +X% | — |
 
-- One sentence: is the market expecting growth to accelerate or slow down?
+- **Acceleration check:** market expects growth to accelerate ↑ / stable → / decelerate ↓ — [1 sentence]
+
+## Strengths vs Risks
+
+| ✅ Strengths | ⚠️ Risks |
+|-------------|----------|
+| [Strength 1 — number required] | [Risk 1 — number required] |
+| [Strength 2] | [Risk 2] |
+| [Strength 3] | [Risk 3] |
 
 ---
 
-## Strengths
+## Rating: X / 5
 
-3 bullet points, numbers required.
+**Justification:** [2 sentences — Rule of 40 + margin direction + biggest growth risk]
 
-## Risks
-
-3 bullet points, numbers required.
-
----
-
-## Rule of 40 Summary
-
-*The Rule of 40 is a quick health check for a business: add its revenue growth rate and its operating profit margin. A score above 40 means the company is balancing growth and profitability well. Below 40 is a warning sign.*
-
-**Formula: Revenue Growth % (YoY) + Operating Margin %**
-
-| Period | Revenue Growth | Operating Margin | Rule of 40 Score | Assessment |
-|--------|---------------|-----------------|-----------------|------------|
-| [Current Quarter] | +X.X% | XX.X% | XX | ✅ Healthy / ⚠️ Watch / ❌ Concern |
-| [Prior Year Quarter] | +X.X% | XX.X% | XX | ✅ / ⚠️ / ❌ |
-
-Thresholds: **≥40 = healthy** · **30–39 = watch** · **<30 = concern**
-
-Also compute using FCF margin in place of operating margin as an alternative view (read FCF and revenue from `_cash_flow_statement_quarterly.json`):
-
-| Period | Revenue Growth | FCF Margin | Rule of 40 (FCF) | Assessment |
-|--------|---------------|------------|-----------------|------------|
-| [Current Quarter] | +X.X% | XX.X% | XX | ✅ / ⚠️ / ❌ |
-| [Prior Year Quarter] | +X.X% | XX.X% | XX | ✅ / ⚠️ / ❌ |
-
-**Overall Rating: X/5**
-
-Scale: 5 = exceptional (Rule of 40 ≥ 60, expanding margins, consistent multi-year growth) · 4 = strong (40–59) · 3 = average (Rule of 40 30–39 or growth slowing) · 2 = weak · 1 = poor
-
-[2 sentences: Rule of 40 score, margin trend direction, and biggest growth risk.]
+*Scale: 5 = exceptional (Rule of 40 ≥60, expanding margins, consistent multi-year) · 4 = strong (40–59) · 3 = average (30–39) · 2 = weak · 1 = poor*
 
 ---
 
 ## Save to Word Document
 
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Narrow margins (0.5 inch all sides)
-- Title: `{TICKER} — Growth & Profitability Analysis` (bold heading) + date subtitle
-- Embeds all three chart images after the title
-- Section headings as Heading 1; bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row**
-- Dark blue header rows (fill `1F3864`), white bold text; source citations in small italic
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
+- Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
+- Title: `{TICKER} — Growth & Profitability` (bold, centered) + date subtitle
+- **Embed all three chart images at `width=Inches(5.0)`** to keep them compact
+- Section headings as Heading 1
+- Bullets as Word list items
+- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
+- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
+- Dark blue header rows (fill `1F3864`), white bold text
+- Source citations in small italic
 - Rating block in bold
 - Saves to `Outputs/{TICKER}/6_{ticker_lowercase}_growth_and_profitability_analysis.docx`
-- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_growth_profitability.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_growth_profitability.py`
+- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_growth_profitability.py` and run it from project root
 
-Import the shared helpers from `doc_utils.py` (in the project root):
+Import the shared helpers from `doc_utils.py`:
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders
+from doc_utils import autofit_table, add_table_borders, set_row_font_size
 ```
 
 Confirm the output file path when done.

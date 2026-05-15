@@ -1,18 +1,14 @@
 # Valuation Analysis
 
-You are a financial analyst writing a plain-English valuation analysis for a general investor. Be concise — lead with numbers, explain *why* a valuation is high or low, and help the reader decide whether a premium is justified or a discount is a value trap.
+You are a financial analyst writing a **3-page max** valuation analysis for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English — explain *why* multiples are high or low, and whether premium is earned or excessive.
 
-**DATA SOURCING (follow this order):**
-1. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`, `Outputs/{TICKER}/{ticker_lowercase}_income_statement_annual.json`, `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json`, `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_quarterly.json`, and `Outputs/{TICKER}/{ticker_lowercase}_cash_flow_statement_annual.json`. If any are missing, run `yahoo_finance_data.py` to fetch.
-2. Use quick_metrics JSON first for all market data (price, market cap, P/E, P/B, EV/EBITDA, analyst targets, ROE, ROA, etc.).
-3. Use income statement annual JSON for multi-year growth (CAGRs) and earnings history.
-4. Use cash flow annual JSON for FCF history used in DCF.
-5. Only use WebSearch when a value is genuinely missing from local JSON (peer multiples, forward estimates, industry averages, WACC estimates). Do NOT search for data already in the JSON.
-6. Leave as N/A if still not found after searching.
+**DATA SOURCING:**
+1. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`, `_income_statement_annual.json`, `_income_statement_quarterly.json`, `_balance_sheet_quarterly.json`, `_cash_flow_statement_annual.json`. Run `yahoo_finance_data.py` if missing.
+2. Use quick_metrics first for market data (price, P/E, P/B, EV/EBITDA, analyst targets, ROE, ROA).
+3. Annual income statement for multi-year CAGRs; cash flow annual for FCF history (DCF).
+4. WebSearch only for items genuinely missing (peer multiples, industry averages, WACC). Leave N/A if not found.
 
-**Always compare year-over-year. Use the most recent data available and state its date.**
-
-**SOURCE CITATIONS:** `Source: URL` indented below any web-sourced value. No citation needed for local JSON.
+**STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→
 
 ---
 
@@ -22,232 +18,124 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
 ## Charts
 
-Run the chart script to generate both charts:
-
 ```
 .venv/Scripts/python chart_valuation.py {TICKER}
 ```
+Produces `{ticker}_valuation_multiples_trend.png` and `{ticker}_valuation_price_targets.png` in `Outputs/{TICKER}/`.
 
-This produces:
-- `Outputs/{TICKER}/{ticker_lowercase}_valuation_multiples_trend.png` — P/E & EV/EBITDA (left axis) + P/S (right axis) trend over annual periods, with 3-year average reference lines
-- `Outputs/{TICKER}/{ticker_lowercase}_valuation_price_targets.png` — Current price vs analyst Target High/Mean/Median/Low horizontal bars
+## At a Glance
 
----
-
-## Current Market Data
-
-| Metric | Value |
-|--------|-------|
-| Current Price | $X.XX |
-| Market Cap | $X.XB/T |
-| Shares Outstanding | X.XXB |
-| Enterprise Value | $X.XB/T |
-| 52-Week Range | $XX – $XX |
-
-## Valuation Multiples
-
-| Multiple | Current | 3-Yr Avg | Industry Avg |
-|----------|---------|----------|--------------|
-| Trailing P/E | Xx | Xx | Xx |
-| Forward P/E | Xx | — | Xx |
-| P/B Ratio | Xx | Xx | Xx |
-| P/S Ratio | Xx | Xx | Xx |
-| EV/EBITDA | Xx | Xx | Xx |
-| PEG Ratio | X.Xx | — | X.Xx |
-
-*Source any industry averages from WebSearch.*
-
-**Valuation context — answer these two questions in 2 bullets:**
-- If multiples look HIGH: Explain why. Is the premium justified? (e.g., dominant market position, AI/hypergrowth tailwind, platform network effects, margin expansion trajectory, no credible competition). Or is it priced for perfection with little margin of error?
-- If multiples look LOW: Explain why. Is it a genuine bargain? (e.g., cyclical trough, temporary headwind, ignored by the market). Or is there a structural problem that makes it a value trap? (e.g., declining revenue, loss of competitive moat, regulatory risk, broken business model).
-
-## Growth Metrics
-
-| Metric | Current (YoY) | 3-Year Avg | 5-Year Avg |
-|--------|---------------|------------|------------|
-| Revenue Growth | +X% | +X% | +X% |
-| Net Income Growth | +X% | +X% | +X% |
-| EPS Growth | +X% | +X% | +X% |
-
-*Compute from annual JSON. Use N/A if fewer than 3 or 5 years available.*
-
-- Does growth justify the current multiple? High P/E is acceptable with 30%+ sustained EPS growth; it is a red flag if growth is slowing.
-
-## Profitability Metrics
-
-| Metric | Current | 1-Year Ago | Change |
-|--------|---------|------------|--------|
-| Gross Margin | X% | X% | +Xpp |
-| Operating Margin | X% | X% | +Xpp |
-| Net Profit Margin | X% | X% | +Xpp |
-| ROE | X% | X% | +Xpp |
-| ROA | X% | X% | +Xpp |
-
-- Expanding margins support a premium valuation. Compressing margins in a high-multiple stock is a warning sign.
-
-## Earnings & EPS
-
-| Metric | Value |
-|--------|-------|
-| Revenue (Annual TTM) | $X.XB |
-| Net Income (Annual TTM) | $X.XB |
-| EPS (Trailing) | $X.XX |
-| EPS (Forward Est.) | $X.XX |
-| EBITDA (Annual) | $X.XB |
-
-## Dividend & Yield
-
-If the company pays a dividend, include this table. Otherwise state "No dividend paid — growth company reinvesting all cash."
-
-| Metric | Value |
-|--------|-------|
-| Annual Dividend | $X.XX |
-| Dividend Yield | X.X% |
-| Payout Ratio | X% |
-
-## Analyst Estimates
-
-*Use WebSearch only if analyst target data is missing from quick_metrics JSON.*
-
-| Metric | Value | Upside/Downside |
-|--------|-------|-----------------|
+| Field | Value | Signal |
+|-------|-------|--------|
 | Current Price | $X.XX | — |
-| Target Mean | $X.XX | +X% |
-| Target Median | $X.XX | +X% |
-| Target High | $X.XX | +X% |
-| Target Low | $X.XX | −X% |
-| Recommendation | Buy/Hold/Sell | — |
-| Number of Analysts | X | — |
+| Market Cap | $X.XB/T | — |
+| Forward P/E | Xx | ✅ < hist & peer / ⚠️ in-line / 🔴 > both |
+| PEG Ratio | X.Xx | ✅ <1 / ⚠️ 1–2 / 🔴 >2 |
+| Analyst Target Mean | $X.XX | +/- X% upside |
+| DCF Base Case | $X.XX | +/- X% vs price |
+| **Overall Rating** | **X / 5** | — |
 
-- One sentence: does consensus imply meaningful upside, or has the market already priced in the good news?
+## Multiples — Now vs History vs Peers
 
-## Financial Health
+| Multiple | Current | 3-Yr Avg | Industry Avg | vs History | vs Peers |
+|----------|---------|----------|--------------|------------|----------|
+| Trailing P/E | Xx | Xx | Xx | ↑ premium / → in-line / ↓ discount | ↑ / → / ↓ |
+| Forward P/E | Xx | — | Xx | — | ↑ / → / ↓ |
+| P/S | Xx | Xx | Xx | ↑ / → / ↓ | ↑ / → / ↓ |
+| EV/EBITDA | Xx | Xx | Xx | ↑ / → / ↓ | ↑ / → / ↓ |
+| PEG | X.Xx | — | X.Xx | — | ↑ / → / ↓ |
 
-| Metric | Value |
-|--------|-------|
-| Total Debt | $X.XB |
-| Total Cash | $X.XB |
-| Net Cash / (Net Debt) | $X.XB |
-| Free Cash Flow (Annual) | $X.XB |
-| Debt-to-Equity | X.Xx |
-| Current Ratio | X.Xx |
+- **Why high (if applicable):** [1 sentence — earned premium for growth/moat OR priced for perfection]
+- **Why low (if applicable):** [1 sentence — genuine bargain OR value trap with declining moat]
+
+## Growth & Profitability vs Multiple
+
+*Does growth justify the valuation?*
+
+| Metric | 1-Yr | 3-Yr Avg | 5-Yr Avg |
+|--------|------|----------|----------|
+| Revenue Growth | +X% | +X% | +X% |
+| EPS Growth | +X% | +X% | +X% |
+| ROE | X% | X% | — |
+| Operating Margin | X% | X% | — |
+| Margin direction | ↑ / → / ↓ | — | — |
+
+- **Verdict:** growth & margins justify multiple ✅ / partial fit ⚠️ / multiple ahead of fundamentals 🔴 — [1 sentence]
 
 ## Peer Comparison
 
-*Use WebSearch for peer multiples not available locally. Choose 2–3 direct competitors or closest sector peers.*
+WebSearch peer multiples if missing locally. Choose 2–3 direct competitors.
 
-| Company | Market Cap | P/E | P/S | EV/EBITDA | Rev Growth | Net Margin | ROE |
-|---------|------------|-----|-----|-----------|------------|------------|-----|
-| [Ticker] | $X.XT | Xx | Xx | Xx | +X% | X% | X% |
-| [Peer A] | $X.XB | Xx | Xx | Xx | +X% | X% | X% |
-| [Peer B] | $X.XB | Xx | Xx | Xx | +X% | X% | X% |
+| Company | Mkt Cap | P/E | P/S | EV/EBITDA | Rev Growth | Net Margin | ROE |
+|---------|---------|-----|-----|-----------|-----------|------------|-----|
+| **{TICKER}** | $X | Xx | Xx | Xx | +X% | X% | X% |
+| [Peer A] | $X | Xx | Xx | Xx | +X% | X% | X% |
+| [Peer B] | $X | Xx | Xx | Xx | +X% | X% | X% |
 | Industry Avg | — | Xx | Xx | Xx | +X% | X% | X% |
 
-- Is the subject company trading at a premium or discount to peers? Name the specific reason: superior growth, higher margins, dominant moat — or unjustified hype.
+- **Premium / discount earned?** [1 sentence — name the reason]
 
----
+## DCF Snapshot
 
-## DCF Valuation (Simplified)
+*DCF (Discounted Cash Flow) = "what would all the company's future cash be worth today?" WACC = the discount rate accounting for risk.*
 
-*DCF (Discounted Cash Flow) estimates what the business is worth today based on the cash it will generate in the future. Think of it as: "If I owned this entire business, what would all its future profits be worth right now?" The discount rate (WACC) accounts for risk — a riskier business needs a higher return to justify the investment.*
+| Scenario | FCF Growth (Yrs 1-5) | Terminal Growth | WACC | Implied Price | vs Current |
+|----------|----------------------|-----------------|------|---------------|------------|
+| Bull | X% | X% | X% | $X.XX | +X% ↑ |
+| **Base** | **X%** | **X%** | **X%** | **$X.XX** | **+/- X%** |
+| Bear | X% | X% | X% | $X.XX | -X% ↓ |
 
-Use FCF history from `_cash_flow_statement_annual.json`. Use WebSearch for WACC estimates if needed.
+- **Sensitivity:** WACC and terminal growth swing implied price most — a 1% change typically moves value ±15–20%.
 
-**Assumptions:**
-
-| Input | Bull Case | Base Case | Bear Case |
-|-------|-----------|-----------|-----------|
-| FCF Growth (Yrs 1–5) | X% | X% | X% |
-| FCF Growth (Yrs 6–10) | X% | X% | X% |
-| Terminal Growth Rate | X% | X% | X% |
-| WACC | X% | X% | X% |
-
-**Implied Intrinsic Value:**
-
-| Scenario | Implied Price | vs Current Price |
-|----------|--------------|-----------------|
-| Bull Case | $X.XX | +X% |
-| Base Case | $X.XX | +X% / −X% |
-| Bear Case | $X.XX | −X% |
-
-- Which assumption drives the valuation most? (Usually terminal growth rate or WACC — a 1% swing often moves the result ±15–20%.)
-- If the stock looks expensive on DCF, is the market pricing in a scenario more optimistic than the bull case? That's a signal the stock needs perfect execution.
-
----
-
-## PEG Ratio Analysis
-
-*PEG = Forward P/E ÷ Expected EPS Growth Rate. It answers: "Am I paying a fair price for this growth?" PEG below 1.0 = growth may be underpriced. PEG above 2.0 = you're paying a steep premium for growth.*
+## Analyst Consensus
 
 | Metric | Value |
 |--------|-------|
-| Forward P/E | Xx |
-| Expected EPS Growth (next 3–5 yr) | +X% |
-| PEG Ratio | X.Xx |
-| Industry PEG | X.Xx |
+| Target Mean | $X.XX (+X%) |
+| Target High | $X.XX (+X%) |
+| Target Low | $X.XX (-X%) |
+| Recommendation | Buy / Hold / Sell (X analysts) |
 
-- One sentence verdict: is the price-to-growth trade-off attractive, fair, or expensive?
+## Bull Case vs Bear Case
 
----
+| ✅ Bull (why fair or undervalued) | ⚠️ Bear (why over-priced) |
+|----------------------------------|---------------------------|
+| [Bullet 1 — data + mechanism] | [Bullet 1 — data + mechanism] |
+| [Bullet 2] | [Bullet 2] |
+| [Bullet 3] | [Bullet 3] |
 
-## Bullish Case
-
-*Why the stock could be fairly valued or undervalued — even if multiples look high.*
-
-3–5 data-backed bullets. For each point, explain the *reason* behind it:
-- [e.g., Forward P/E of Xx looks high, but EPS is growing +X% — PEG of X.Xx is below the industry's X.Xx, meaning you're getting faster growth at a lower relative price]
-- [e.g., Premium to peers is earned: X% net margin vs industry X%, and ROE of X% vs peers at X%]
-- [e.g., Analyst consensus of $XXX implies +X% upside — X of X analysts rated Buy]
-- [e.g., Dominant position in [AI/cloud/semiconductor/etc.] — a secular trend that could sustain elevated multiples for years]
-- [e.g., DCF base case of $XXX suggests stock is fairly valued; bull case of $XXX implies meaningful upside if growth holds]
-
-## Bearish Case
-
-*Why the stock could be overvalued — and what could go wrong.*
-
-3–5 data-backed bullets. For each point, explain the *mechanism* of the risk:
-- [e.g., Trading at Xx EV/EBITDA vs peers at Xx — the premium leaves no room for execution misses; a single earnings miss could compress multiples sharply]
-- [e.g., Revenue growth decelerating from +X% to +X% — if the slowdown continues, today's P/E of Xx becomes tomorrow's expensive multiple]
-- [e.g., DCF bear case of $XXX implies −X% downside if growth assumptions prove optimistic]
-- [e.g., [Specific risk]: export controls / competition / customer concentration / regulatory pressure — explain how it would directly reduce earnings or multiples]
-- [e.g., High P/S of Xx requires sustained margin expansion to be justified — if margins plateau, the stock could re-rate lower]
-
-**Value trap check** (include this paragraph if the stock looks cheap): If the stock is trading at a discount to peers or historical averages, state plainly whether this is likely a temporary opportunity or a structural problem. A value trap typically shows declining revenue, an eroding competitive moat, or a business model disrupted by new technology or competition.
+**Value trap check** (if stock looks cheap): structural decline / temporary dip — [1 sentence].
 
 ---
 
-## Valuation Analysis Rating
+## Rating: X / 5
 
-**Rating Scale:**
-- **5/5 — Highly Attractive**: Significantly undervalued (>30% upside to fair value), low PEG, compelling margin of safety
-- **4/5 — Attractive**: Modestly undervalued (10–30% upside), multiples reasonable relative to growth and quality
-- **3/5 — Fairly Valued**: Trading near fair value (within ~10%), multiples in line with history and peers
-- **2/5 — Unattractive**: Modestly overvalued (10–30% downside risk), premium not fully justified by fundamentals
-- **1/5 — Highly Unattractive**: Significantly overvalued (>30% downside), extreme multiples unsupported by fundamentals
+**Justification:** [2–3 sentences — key multiple + comp to peers/history + upside/downside to fair value + single biggest swing factor]
 
-**Rating: X/5**
-**Justification**: [2–3 sentences: cite the key multiple(s), compare to peers/history, state the upside/downside to fair value, and name the single biggest factor that would change this rating.]
+*Scale: 5 = Highly Attractive (>30% upside) · 4 = Attractive (10–30%) · 3 = Fairly Valued (±10%) · 2 = Unattractive (10–30% downside risk) · 1 = Highly Unattractive (>30% overvalued)*
 
 ---
 
 ## Save to Word Document
 
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Narrow margins (0.5 inch all sides)
-- Title: `{TICKER} — Valuation Analysis` (bold heading) + date subtitle
-- Embeds both chart images after the title
-- Section headings as Heading 1; bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row**
-- Dark blue header rows (fill `1F3864`), white bold text; source citations in small italic
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
+- Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
+- Title: `{TICKER} — Valuation` (bold, centered) + date subtitle
+- **Embed both chart images at `width=Inches(5.0)`** to keep them compact
+- Section headings as Heading 1
+- Bullets as Word list items
+- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
+- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
+- Dark blue header rows (fill `1F3864`), white bold text
+- Source citations in small italic
 - Rating block in bold
 - Saves to `Outputs/{TICKER}/8_{ticker_lowercase}_valuation_analysis.docx`
-- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_valuation.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_valuation.py`
+- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_valuation.py` and run it from project root
 
-Import the shared helpers from `doc_utils.py` (in the project root):
+Import the shared helpers from `doc_utils.py`:
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders
+from doc_utils import autofit_table, add_table_borders, set_row_font_size
 ```
 
 Confirm the output file path when done.

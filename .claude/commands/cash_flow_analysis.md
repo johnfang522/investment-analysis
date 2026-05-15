@@ -1,15 +1,14 @@
 # Cash Flow Analysis
 
-You are a financial analyst writing a plain-English cash flow analysis for a general investor. Be concise, data-driven, and avoid jargon — briefly define any technical term the first time you use it.
+You are a financial analyst writing a **3-page max** cash flow review for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English.
 
-**DATA SOURCING (follow this order):**
-1. Load `Outputs/{TICKER}/{ticker_lowercase}_cash_flow_statement_quarterly.json` and `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`. If missing, run `yahoo_finance_data.py` to fetch.
-2. Only use WebSearch for values that are genuinely missing from the JSON (interest expense, dividend totals, analyst estimates). Do not search for data already available locally.
-3. For any value still not found, leave as N/A.
+**DATA SOURCING:**
+1. Load `Outputs/{TICKER}/{ticker_lowercase}_cash_flow_statement_quarterly.json` and `_quick_metrics.json`. Run `yahoo_finance_data.py` if missing.
+2. WebSearch only for items genuinely missing (interest expense, dividend totals). Leave N/A if not found.
 
-**Always compare year-over-year (e.g., Q4 2025 vs Q4 2024). Never compare sequential quarters.**
+**Always YoY. Never sequential quarters.**
 
-**SOURCE CITATIONS:** `Source: URL` on an indented line below web-sourced content. Local JSON needs no citation.
+**STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→
 
 ---
 
@@ -19,103 +18,98 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
 ## Charts
 
-Run the chart script to generate both charts:
-
 ```
 .venv/Scripts/python chart_cash_flow.py {TICKER}
 ```
+Produces `{ticker}_cash_flow_waterfall.png` and `{ticker}_cash_flow_trend.png` in `Outputs/{TICKER}/`.
 
-This produces:
-- `Outputs/{TICKER}/{ticker_lowercase}_cash_flow_waterfall.png` — Waterfall bar (OCF → CapEx → FCF) for the most recent quarter
-- `Outputs/{TICKER}/{ticker_lowercase}_cash_flow_trend.png` — Quarterly trend line (Operating CF, Free CF, Net Income)
+## At a Glance
 
----
+| Field | Value | Signal |
+|-------|-------|--------|
+| Operating Cash Flow | $X.XB | +X% YoY ↑/↓ |
+| Free Cash Flow | $X.XB | +X% YoY ↑/↓ |
+| FCF Margin | XX% | ✅ >15% / ⚠️ 5–15% / 🔴 <5% |
+| FCF Conversion (FCF ÷ NI) | X.Xx | ✅ >1 / ⚠️ ~1 / 🔴 <1 |
+| Capital Allocation Bias | Buybacks / Dividends / M&A / Reinvest | — |
+| Overall Rating | **X / 5** | — |
 
-## Operating Cash Flow
+## Cash Flow Snapshot (YoY)
 
-*Operating cash flow (OCF) — cash the business actually generates from its core operations. When OCF exceeds net income, earnings are backed by real cash.*
+*One table = OCF, FCF, CapEx and the key margins, current quarter vs prior-year quarter.*
 
-| Period | Operating CF | OCF Margin | YoY Change | vs Net Income |
-|--------|--------------|------------|------------|---------------|
-| [Current Quarter] | $XX.XB | XX% | +X% | X.Xx |
-| [Prior Year Quarter] | $XX.XB | XX% | — | X.Xx |
+| Metric | Latest Qtr | Prior-Yr Qtr | Δ |
+|--------|-----------|--------------|---|
+| Operating Cash Flow | $X.XB | $X.XB | +X% ↑ |
+| OCF Margin | XX% | XX% | +X pp |
+| CapEx | $X.XB | $X.XB | +X% |
+| Free Cash Flow | $X.XB | $X.XB | +X% |
+| FCF Margin | XX% | XX% | +X pp |
+| FCF / Net Income | X.Xx | X.Xx | — |
 
-- Is OCF growing in line with earnings, or diverging? Call out any major working capital swings (receivables, inventory, payables).
-
-## Free Cash Flow
-
-*Free cash flow (FCF) = OCF minus capital spending (CapEx). This is the cash available to return to shareholders or fund growth.*
-
-| Period | FCF | FCF Margin | CapEx | FCF Conversion | YoY Change |
-|--------|-----|------------|-------|----------------|------------|
-| [Current Quarter] | $XX.XB | XX% | $XX.XB | X.Xx | +X% |
-| [Prior Year Quarter] | $XX.XB | XX% | $XX.XB | X.Xx | — |
-
-*FCF conversion = FCF / Net Income. Above 1x means the company produces more cash than reported profit.*
-
-- Is FCF margin stable or compressing? Note any large one-time CapEx items.
+- **What drove the change:** [1 sentence — working capital, CapEx surge, etc.]
 
 ## Capital Allocation
 
-*Where is management spending the money? This reveals priorities: growth, shareholder returns, or debt reduction.*
+*Where management is putting the cash.*
 
-| Period | CapEx | Buybacks | Dividends | Debt Repayment | Total |
-|--------|-------|----------|-----------|----------------|-------|
-| [Current Quarter] | $XX.XB | $XX.XB | $XX.XB | $XX.XB | $XX.XB |
-| [Prior Year Quarter] | $XX.XB | $XX.XB | $XX.XB | $XX.XB | $XX.XB |
+| Use of Cash | Latest Qtr | Prior-Yr Qtr | Δ |
+|-------------|-----------|--------------|---|
+| CapEx | $X.XB | $X.XB | +X% |
+| Buybacks | $X.XB | $X.XB | +X% |
+| Dividends | $X.XB | $X.XB | +X% |
+| Debt Repayment | $X.XB | $X.XB | +X% |
 
-- Red flags to call out: buybacks while debt rises, dividends funded by borrowing, or excessive acquisitions.
+- **Red flag check:** [e.g., "Buybacks rising while debt grows" — or "None identified"]
 
 ## Financial Safety
 
-*Can the company cover its bills and survive a downturn without raising new debt or equity?*
+| Coverage Ratio | Latest | Plain English |
+|----------------|--------|---------------|
+| Interest Coverage (OCF ÷ interest) | X.Xx | Higher = safer |
+| Dividend Coverage (FCF ÷ dividends) | X.Xx | >1 means dividend covered |
+| Debt Coverage (OCF ÷ total debt) | X.Xx | Years to repay all debt from OCF |
 
-| Period | Interest Coverage | Dividend Coverage | Debt Coverage |
-|--------|-------------------|-------------------|---------------|
-| [Current Quarter] | XX.Xx | XX.Xx | X.Xx |
-| [Prior Year Quarter] | XX.Xx | XX.Xx | X.Xx |
+- **Could the company self-fund through a bad year?** Yes / Tight / No — [1 sentence]
 
-*Interest coverage = OCF / interest expense. Higher = safer.*
+## Strengths vs Risks
 
-- 1–2 sentences on financial flexibility: could the company self-fund through a bad year?
-
----
-
-## Strengths
-
-3 bullet points with specific numbers (e.g., "FCF of $XX.XB at XX% margin — consistently above net income").
-
-## Risks
-
-3 bullet points with specific numbers (e.g., "CapEx up XX% YoY — watch for FCF margin compression").
+| ✅ Strengths | ⚠️ Risks |
+|-------------|----------|
+| [e.g., FCF $X.XB at XX% margin — ahead of net income] | [e.g., CapEx +XX% YoY pressuring FCF margin] |
+| [Strength 2] | [Risk 2] |
+| [Strength 3] | [Risk 3] |
 
 ---
 
-## Cash Flow Rating
+## Rating: X / 5
 
-**Scale:** 5 = exceptional (>25% FCF margin, FCF conversion >1x, disciplined allocation) · 4 = strong (15–25%) · 3 = average (5–15%) · 2 = weak (<5%) · 1 = poor (negative FCF/OCF)
+**Justification:** [2 sentences — FCF margin + OCF vs net income + biggest allocation flag]
 
-**Rating: X/5** — [2 sentences: cite FCF margin, OCF vs net income, and the biggest capital allocation strength or risk]
+*Scale: 5 = exceptional (>25% FCF margin, FCF >1x NI, disciplined) · 4 = strong (15–25%) · 3 = average (5–15%) · 2 = weak (<5%) · 1 = poor (negative)*
 
 ---
 
 ## Save to Word Document
 
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Narrow margins (0.5 inch all sides)
-- Title: `{TICKER} — Cash Flow Analysis` (bold heading) + date subtitle
-- Embeds both chart images after the title
-- Section headings as Heading 1; bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row**
-- Dark blue header rows (fill `1F3864`), white bold text; source citations in small italic
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
+- Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
+- Title: `{TICKER} — Cash Flow` (bold, centered) + date subtitle
+- **Embed both chart images at `width=Inches(5.0)`** to keep them compact
+- Section headings as Heading 1
+- Bullets as Word list items
+- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
+- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
+- Dark blue header rows (fill `1F3864`), white bold text
+- Source citations in small italic
+- Rating block in bold
 - Saves to `Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_analysis.docx`
-- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_cash_flow.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_cash_flow.py`
+- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_cash_flow.py` and run it from project root
 
-Import the shared helpers from `doc_utils.py` (in the project root):
+Import the shared helpers from `doc_utils.py`:
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders
+from doc_utils import autofit_table, add_table_borders, set_row_font_size
 ```
 
 Confirm the output file path when done.

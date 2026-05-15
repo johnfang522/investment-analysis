@@ -1,21 +1,19 @@
 # Income Statement Analysis
 
-You are an expert equity research analyst writing a concise 2–3 page income statement analysis for a general investor audience. Be clear, data-driven, and accessible — avoid jargon where possible.
+You are a financial analyst writing a **3-page max** income statement analysis for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English. No prose paragraphs.
 
-**DATA SOURCING (follow this order):**
-1. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json` and `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`. Focus on the most recent quarter (first column). If files are missing, run `yahoo_finance_data.py` to fetch.
-2. Only use WebSearch for values genuinely missing from the JSON (analyst estimates, guidance). Do not search for data already available locally.
-3. For any value still not found, leave as N/A.
+**DATA SOURCING:**
+1. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json` and `_quick_metrics.json`. Focus on most recent quarter. Run `yahoo_finance_data.py` if missing.
+2. WebSearch only for analyst estimates / guidance not in JSON. Leave N/A if still missing.
 
-**CRITICAL: Always compare year-over-year (e.g., Q4 2025 vs Q4 2024). Never compare sequential quarters.**
+**Always compare year-over-year (e.g., Q4 2025 vs Q4 2024). Never sequential quarters.**
 
-**WRITING STYLE:**
-- Max 2–3 bullet points per section. Be specific — cite actual numbers.
-- Use tables for all multi-metric data. Show margins alongside dollar figures in the same row.
-- Bold key metrics. No filler or repetition.
-- Plain English: explain what each metric means in one phrase if it's not obvious (e.g., "gross margin — how much revenue the company keeps after production costs").
+**STYLE:**
+- Bullets only — 1 short sentence each, max 2 per section.
+- Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→
+- Bold key metrics.
 
-**SOURCE CITATIONS:** When using WebSearch data, put `Source: URL` on an indented new line below the content. No inline URLs. Yahoo Finance / local JSON needs no citation.
+**SOURCE CITATIONS:** `Source: URL` indented below web-sourced lines.
 
 ---
 
@@ -23,109 +21,88 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
 **Data as of**: [Fiscal Quarter] [Year] (Earnings reported: [Date])
 
-## Income Statement Charts
+## Charts
 
-Run the chart script to generate both charts:
-
+Run the chart script:
 ```
 .venv/Scripts/python chart_income_statement.py {TICKER}
 ```
+Produces `{ticker}_income_statement_flow.png` and `{ticker}_income_statement_trend.png` in `Outputs/{TICKER}/`.
 
-This produces:
-- `Outputs/{TICKER}/{ticker_lowercase}_income_statement_flow.png` — Sankey-style income flow for the most recent quarter
-- `Outputs/{TICKER}/{ticker_lowercase}_income_statement_trend.png` — Quarterly trend line (Revenue, Gross Profit, Operating Income, Net Income)
+## At a Glance
 
----
+| Field | Value | Signal |
+|-------|-------|--------|
+| Revenue (latest qtr) | $XX.XB | +X% YoY ↑/↓ |
+| Beat / Miss vs Est. | ±$X.XB | ✅ Beat / ⚠️ In-line / 🔴 Miss |
+| Gross Margin | XX% | +/-X pp YoY |
+| Operating Margin | XX% | +/-X pp YoY |
+| Net Margin | XX% | +/-X pp YoY |
+| EPS | $X.XX | ±$X.XX vs Est. |
+| Overall Rating | **X / 5** | — |
 
-## Revenue
+## Income Statement Snapshot (YoY)
 
-*Revenue is the total sales a company generates — the "top line."*
+*One table = revenue + all 3 profit lines + margins, current quarter vs prior-year quarter.*
 
-Search for revenue analyst estimates (WebSearch) before creating this table.
+| Metric | Latest Qtr | Prior-Yr Qtr | Δ |
+|--------|------------|--------------|---|
+| Revenue | $XX.XB | $XX.XB | +X% ↑ |
+| Gross Profit | $XX.XB (XX%) | $XX.XB (XX%) | +X pp |
+| Operating Income | $XX.XB (XX%) | $XX.XB (XX%) | +X pp |
+| Net Income | $XX.XB (XX%) | $XX.XB (XX%) | +X pp |
+| EPS | $X.XX | $X.XX | +X% |
 
-| Period | Revenue | Analyst Est. | Beat/Miss | YoY Growth |
-|--------|---------|--------------|-----------|------------|
-| [Current Quarter] | $XX.XB | $XX.XB | +/-$X.XB | +X.X% |
-| [Prior Year Quarter] | $XX.XB | $XX.XB | +/-$X.XB | +X.X% |
+- **What drove the beat/miss:** [1 sentence]
+- **Margin direction:** expanding ↑ / compressed ↓ — [1 sentence why]
 
-- Beat/miss vs expectations and what drove it
-- Top revenue segments or geographies (include a pie chart if segment data is available)
+## Forward Outlook
 
-## Profitability Snapshot
-
-*This table shows how much of each revenue dollar the company keeps at each level — gross profit (after production costs), operating income (after all operating expenses), and net income (the final "bottom line").*
-
-Search for gross profit, operating income, and net income analyst estimates (WebSearch) before creating this table.
-
-| Period | Gross Profit | Gross Margin | Operating Income | Op. Margin | Net Income | Net Margin | EPS | EPS Est. | Beat/Miss |
-|--------|--------------|--------------|-----------------|------------|------------|------------|-----|----------|-----------|
-| [Current Quarter] | $XX.XB | XX.X% | $XX.XB | XX.X% | $XX.XB | XX.X% | $X.XX | $X.XX | +/-$X.XX |
-| [Prior Year Quarter] | $XX.XB | XX.X% | $XX.XB | XX.X% | $XX.XB | XX.X% | $X.XX | $X.XX | +/-$X.XX |
-
-- Whether margins expanded or compressed YoY and why
-- EPS beat/miss significance and earnings quality (recurring vs one-time items)
-
-## Operating Expenses
-
-*Operating expenses are the costs of running the business beyond production — R&D, sales, and administrative costs.*
-
-| Period | R&D | % Rev | SG&A | % Rev | Total OpEx | % Rev |
-|--------|-----|-------|------|-------|------------|-------|
-| [Current Quarter] | $XX.XB | XX% | $XX.XB | XX% | $XX.XB | XX% |
-| [Prior Year Quarter] | $XX.XB | XX% | $XX.XB | XX% | $XX.XB | XX% |
-
-- Key expense trends and whether the company is gaining or losing operating leverage
-
-## Outlook & Guidance
-
-Search for forward estimates and guidance (WebSearch) before creating this table.
-
-| Metric | Next Quarter Est. | Full Year Est. | Company Guidance | vs. Consensus |
-|--------|-------------------|----------------|------------------|---------------|
-| Revenue | $XX.XB | $XX.XB | $XX–XXB | In-line/Above/Below |
-| EPS | $X.XX | $X.XX | $X.XX–X.XX | In-line/Above/Below |
+| Metric | Next Qtr Est. | Full Year Est. | Company Guidance | vs. Consensus |
+|--------|---------------|----------------|------------------|---------------|
+| Revenue | $XX.XB | $XX.XB | $XX–XXB | ✅ Above / In-line / 🔴 Below |
+| EPS | $X.XX | $X.XX | $X.XX–X.XX | ✅ / ⚠️ / 🔴 |
 | Gross Margin | XX% | XX% | XX–XX% | — |
 
-- Key guidance takeaways and analyst sentiment
+- **One sentence:** is the market expecting growth to accelerate or slow?
 
-## Strengths & Risks
+## Strengths vs Risks
 
-**Strengths:**
-- [2–3 specific positives — e.g., revenue beat, margin expansion, strong operating leverage]
-
-**Risks:**
-- [2–3 specific concerns — e.g., margin compression, rising costs, guidance cut, competitive pressure]
+| ✅ Strengths | ⚠️ Risks |
+|-------------|----------|
+| [e.g., Revenue +XX% YoY, beat consensus by $X.XB] | [e.g., Gross margin compressed Xpp on rising input costs] |
+| [Strength 2] | [Risk 2] |
+| [Strength 3] | [Risk 3] |
 
 ---
 
-## Income Statement Rating
+## Rating: X / 5
 
-**Rating Scale:** 5 = exceptional (>20% YoY growth, expanding margins, consistent beats) · 4 = strong (10–20%) · 3 = average (5–10%) · 2 = below average (<5%) · 1 = poor (decline/losses)
+**Justification:** [2 sentences — revenue growth + margin direction + beat/miss quality]
 
-**Rating: X/5**
-**Justification**: [2–3 sentences with specific evidence: revenue growth rate, margin trend, EPS beat/miss]
+*Scale: 5 = exceptional (>20% growth, expanding margins, consistent beats) · 4 = strong (10–20%) · 3 = average (5–10%) · 2 = below average (<5%) · 1 = poor (decline/losses)*
 
 ---
 
 ## Save to Word Document
 
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Narrow margins (0.5 inch all sides)
-- Title: `{TICKER} — Income Statement Analysis` (large bold heading) + date subtitle
-- Embeds both chart images after the title
+- Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
+- Title: `{TICKER} — Income Statement` (bold, centered) + date subtitle
+- **Embed both chart images at `width=Inches(5.0)`** to keep them compact
 - Section headings as Heading 1
-- Bullets as actual Word list items
-- Tables as Word tables with header row formatting. **CRITICAL: initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row — do NOT pass `rows=1+len(data)` upfront or blank rows will appear between the header and data.**
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
-- Source citations in small italic font
+- Bullets as Word list items
+- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
+- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
+- Source citations in small italic
 - Rating block in bold
 - Saves to `Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_analysis.docx`
-- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_income_statement.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_income_statement.py`
+- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_income_statement.py` and run it from project root
 
-Import the shared helpers from `doc_utils.py` (in the project root):
+Import the shared helpers from `doc_utils.py`:
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders
+from doc_utils import autofit_table, add_table_borders, set_row_font_size
 ```
 
 Confirm the output file path when done.
