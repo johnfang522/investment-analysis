@@ -173,7 +173,7 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
 3. Imports the shared helpers from `doc_utils.py`:
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size
+   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
    ```
 4. Renders all sections with appropriate headings, paragraphs, tables, and bullet points.
 5. For all tables:
@@ -187,7 +187,8 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
    - Threat of Substitutes: `FCE4D6` (light orange)
    - Competitive Rivalry: `F4CCCC` (light red/pink)
 7. Ends with a **Sources** section (Heading 1) listing all URLs cited as bullet points.
-8. Saves the file to the output path and prints the path.
+8. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
+9. Saves the file to the output path and prints the path.
 
 ---
 

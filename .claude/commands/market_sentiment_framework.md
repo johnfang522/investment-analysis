@@ -281,11 +281,12 @@ Write and execute a Python script saved as `Outputs/generate_market_sentiment_{t
 5. **Tables:** initialize with `rows=1` (header only), then `table.add_row()` per data row. **Every table** must call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added.
 6. **Font size 12 on every data row** — call `set_row_font_size(row)` immediately after `table.add_row()` (don't call on header).
 7. **Color-shade Score cells** in Sections 3, 8, 10 using the `w:shd` XML element (color rules per section).
+8. Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
 
 Import shared helpers (script lives in `Outputs/` and runs from project root):
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders, set_row_font_size
+from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
 ```
 
 **Helpful chart snippet** — use this pattern for the S&P 500 trend chart and adapt for VIX / yield curve / theme ETF:

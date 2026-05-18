@@ -264,11 +264,12 @@ Write and execute a Python script using `.venv/Scripts/python` that:
    Import the shared helpers from `doc_utils.py` (in the project root):
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size
+   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
    ```
 
 6. **All non-header table cell text must use font size 12.** Call `set_row_font_size(row)` (imported above) on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
-7. Saves the file to the output path above.
+7. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
+8. Saves the file to the output path above.
 
 ---
 

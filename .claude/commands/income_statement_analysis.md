@@ -99,10 +99,12 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - Saves to `Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_analysis.docx`
 - Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_income_statement.py` and run it from project root
 
+Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
+
 Import the shared helpers from `doc_utils.py`:
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders, set_row_font_size
+from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
 ```
 
 Confirm the output file path when done.

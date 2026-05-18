@@ -289,7 +289,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
    Import the shared helpers from `doc_utils.py` (in the project root):
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size
+   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
    ```
 
 6. **All non-header table cell text must use font size 11.** Call `set_row_font_size(row, size=11)` (imported above) on every data row immediately after `table.add_row()`.
@@ -303,7 +303,8 @@ Write and execute a Python script using `.venv/Scripts/python` that:
    - Layer 6 — Bottlenecks: `F4CCCC` (light red/pink)
 
 8. Ends with a **Sources** section listing all URLs cited during the analysis as bullet points.
-9. Saves the file to the output path above and prints the path.
+9. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
+10. Saves the file to the output path above and prints the path.
 
 ---
 

@@ -192,7 +192,7 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
    Import the shared helpers from `doc_utils.py` and metric helpers from `key_stock_metrics.py` (both in the project root):
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size
+   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
    from key_stock_metrics import compute_metrics, _short_comment, METRICS, color_current_price
    ```
 
@@ -201,7 +201,9 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
 
 4. **Script file location**: Save the script itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_research_notes.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_research_notes.py`
 
-5. **Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_research_notes_{YYYYMMDD}.docx`
+5. Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
+
+6. **Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_research_notes_{YYYYMMDD}.docx`
 
 ---
 

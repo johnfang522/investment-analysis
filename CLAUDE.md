@@ -103,12 +103,13 @@ When writing `python-docx` table code in any skill or script:
   - `autofit_table` — sets `tblW`/`tblLayout` to autofit and strips all fixed `w:tcW` cell widths; never use `table.columns[i].width` or any fixed-width assignment
   - `add_table_borders` — applies a thin single border (`sz=4`, `val="single"`, `color="000000"`) to all four sides of every cell via `w:tcBorders`
 - **All non-header table cell text must use font size 12.** Call `set_row_font_size(row)` on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
-- All three helpers live in `doc_utils.py` at the project root — generated scripts import them with:
+- All helpers live in `doc_utils.py` at the project root — generated scripts import them with:
   ```python
   import sys; sys.path.insert(0, '.')
-  from doc_utils import autofit_table, add_table_borders, set_row_font_size
+  from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
   ```
   The `sys.path.insert(0, '.')` is required because scripts are saved under `Outputs/{TICKER}/` but run from the project root.
+- **Every skill must call `add_footnote(doc)` immediately before `doc.save(...)`** — this appends the standard AI-generated disclaimer and "not investment advice" notice at the bottom of every Word document.
 - **Every skill must set portrait orientation and narrow margins** immediately after `doc = Document()`:
   ```python
   from docx.shared import Inches
