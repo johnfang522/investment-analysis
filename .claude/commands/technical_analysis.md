@@ -1,8 +1,6 @@
 # Technical Analysis
 
-You are a patient long-term investor helping an everyday person decide: **"Is now a good time to start or add to a position, or should I wait?"** Output is a **3-page max** scorecard. All visual: tables, status icons, scorecards.
-
-**CORE PRINCIPLES:** Buy fear, not hype. Buy in stages. State data clearly; if missing, say so.
+You are an equity research analyst producing a **3-page max** technical setup scorecard for institutional investors. All visual: tables, status icons, scorecards. State data clearly; if missing, say so.
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json` (price, 50/200-DMA, 52-wk range, beta) and `_price_history.json` (DMA + RSI computation). Run `yahoo_finance_data.py` if missing.
@@ -76,17 +74,15 @@ Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKE
 | AAII Bulls / Bears | X% / X% | ✅ Bulls <30 or Bears >45 |
 | Put/Call Ratio | X.XX | ✅ >1 (fear) / 🔴 <0.7 (complacency) |
 
-## How to Buy (Staged Accumulation)
+## Staged Accumulation Framework
 
-*Don't put all money in at once. Stage entries to reduce timing risk.*
+| When | Trigger | Suggested Sizing |
+|------|---------|-----------------|
+| **Tranche 1** | Score ≥3 or extreme fear reading | 25–33% of intended position |
+| **Tranche 2** | Reclaims 50-DMA; RSI back above 50 | Another 33% |
+| **Tranche 3** | Breakout to new high on volume | Remaining 33% |
 
-| When | Trigger | Size |
-|------|---------|------|
-| **Now (Starter)** | Score ≥3 OR extreme fear | 25–33% of intended position |
-| **Add #1** | Reclaims 50-DMA, RSI back >50 | Another 33% |
-| **Add #2 (Final)** | New high on volume | Remaining 33% |
-
-- If stock rallies 15%+ before Add #1, skip and wait for next pullback. Never chase a 20%+ run from your trigger.
+- If the stock advances 15%+ before Tranche 2 trigger, stand down and reassess — avoid chasing momentum into an extended move.
 
 ## What Could Go Wrong
 
@@ -96,8 +92,7 @@ Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKE
 | Business deterioration | Revenue/EPS miss, guidance cut | Re-check fundamental thesis |
 | Macro shock | VIX >40, S&P -20% | Size down; wait for stability |
 
-- **Soft stop:** sustained close below 200-DMA = pause and reassess (not a panic sell).
-- Avoid tight stop-losses on long-term positions — normal volatility will shake you out.
+- **Soft stop:** sustained close below 200-DMA = pause accumulation and reassess the technical thesis.
 
 ---
 
@@ -115,7 +110,7 @@ Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKE
 
 **Biggest risk to watch:** [1 sentence]
 
-**Plain-English summary:** [2 sentences max — like talking to a friend]
+**Summary:** [2 sentences max — technical thesis and primary risk to watch]
 
 ---
 

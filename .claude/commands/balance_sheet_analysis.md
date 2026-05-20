@@ -1,6 +1,6 @@
 # Balance Sheet Analysis
 
-You are a financial analyst writing a **3-page max** balance sheet review for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English.
+You are a financial analyst writing a **3-page max** balance sheet review for institutional investors. Lead with visuals (charts, tables, status icons).
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_quarterly.json` and `_quick_metrics.json`. Run `yahoo_finance_data.py` if missing.
@@ -52,7 +52,6 @@ Produces `{ticker}_balance_sheet_composition.png` and `{ticker}_balance_sheet_tr
 
 ## Liquidity & Leverage
 
-*Liquidity = can it pay near-term bills. Leverage = how much it relies on borrowed money.*
 
 | Ratio | Latest | Prior-Yr | Plain English |
 |-------|--------|----------|---------------|

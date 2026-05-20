@@ -1,6 +1,6 @@
 # Cash Flow Analysis
 
-You are a financial analyst writing a **3-page max** cash flow review for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English.
+You are a financial analyst writing a **3-page max** cash flow review for institutional investors. Lead with visuals (charts, tables, status icons).
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_cash_flow_statement_quarterly.json` and `_quick_metrics.json`. Run `yahoo_finance_data.py` if missing.
@@ -51,7 +51,6 @@ Produces `{ticker}_cash_flow_waterfall.png` and `{ticker}_cash_flow_trend.png` i
 
 ## Capital Allocation
 
-*Where management is putting the cash.*
 
 | Use of Cash | Latest Qtr | Prior-Yr Qtr | Δ |
 |-------------|-----------|--------------|---|

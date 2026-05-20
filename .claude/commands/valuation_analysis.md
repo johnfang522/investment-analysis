@@ -1,6 +1,6 @@
 # Valuation Analysis
 
-You are a financial analyst writing a **3-page max** valuation analysis for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English — explain *why* multiples are high or low, and whether premium is earned or excessive.
+You are a financial analyst writing a **3-page max** valuation analysis for institutional investors. Lead with visuals (charts, tables, status icons). Explain *why* multiples are high or low, and whether the premium is earned or excessive.
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`, `_income_statement_annual.json`, `_income_statement_quarterly.json`, `_balance_sheet_quarterly.json`, `_cash_flow_statement_annual.json`. Run `yahoo_finance_data.py` if missing.
@@ -50,7 +50,7 @@ Produces `{ticker}_valuation_multiples_trend.png` and `{ticker}_valuation_price_
 
 ## Growth & Profitability vs Multiple
 
-*Does growth justify the valuation?*
+*Does the growth and returns profile justify current multiples?*
 
 | Metric | 1-Yr | 3-Yr Avg | 5-Yr Avg |
 |--------|------|----------|----------|
@@ -77,7 +77,6 @@ WebSearch peer multiples if missing locally. Choose 2–3 direct competitors.
 
 ## DCF Snapshot
 
-*DCF (Discounted Cash Flow) = "what would all the company's future cash be worth today?" WACC = the discount rate accounting for risk.*
 
 | Scenario | FCF Growth (Yrs 1-5) | Terminal Growth | WACC | Implied Price | vs Current |
 |----------|----------------------|-----------------|------|---------------|------------|

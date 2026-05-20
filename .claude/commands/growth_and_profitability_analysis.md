@@ -1,6 +1,6 @@
 # Growth & Profitability Analysis
 
-You are a financial analyst writing a **3-page max** growth & profitability review for an everyday investor. Lead with visuals (charts, tables, status icons). Plain English.
+You are a financial analyst writing a **3-page max** growth & profitability review for institutional investors. Lead with visuals (charts, tables, status icons).
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json`, `_income_statement_annual.json`, and `_quick_metrics.json`. Run `yahoo_finance_data.py` if missing.
@@ -55,7 +55,6 @@ Produces `{ticker}_gp_revenue_trend.png`, `{ticker}_margin_trend.png`, `{ticker}
 
 ## Multi-Year Scorecard (CAGR)
 
-*CAGR = the steady annual growth rate that produces the same result over the period.*
 
 | Metric | 1-Yr | 3-Yr CAGR | 5-Yr CAGR |
 |--------|------|-----------|-----------|
@@ -68,7 +67,6 @@ Produces `{ticker}_gp_revenue_trend.png`, `{ticker}_margin_trend.png`, `{ticker}
 
 ## Rule of 40 Scorecard
 
-*Rule of 40: a quick health check — Revenue Growth + Operating Margin. ≥40 = balancing growth and profitability well.*
 
 | View | Growth + Margin | Score | Verdict |
 |------|-----------------|-------|---------|
