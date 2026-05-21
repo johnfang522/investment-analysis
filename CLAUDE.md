@@ -73,7 +73,7 @@ The intended workflow runs in three stages:
 | 1 | `/emerging_industry_trend` | THEME or _(none)_ | Chat output (signal scorecard, value chain map, bottleneck analysis, positioning) |
 | 1 | `/industry_trend_analysis` | THEME | Word: `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.docx` |
 | 1 | `/industry_deep_dive` | THEME or TICKER | Word: `Outputs/industry_deep_dive_{theme}_{YYYYMMDD}.docx` |
-| 1 | `/market_sentiment_framework` | THEME or "broad market" | Word: `Outputs/market_sentiment_{theme}_{YYYYMMDD}.docx` |
+| 1 | `/market_sentiment_analysis` | THEME or "broad market" | Word: `Outputs/market_sentiment_{theme}_{YYYYMMDD}.docx` |
 | 2 | `/key_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel: `Outputs/key_stock_metrics_YYYYMMDD.xlsx` |
 | 3 | `/business_overview_analysis` | TICKER | Word: `Outputs/{TICKER}/1_{ticker}_business_overview_analysis.docx` |
 | 3 | `/leadership_analysis` | TICKER | Word: `Outputs/{TICKER}/2_{ticker}_leadership_analysis.docx` |
@@ -88,7 +88,7 @@ The intended workflow runs in three stages:
 
 - `/emerging_industry_trend` scans for live bottleneck signals before the market prices them in — outputs directly to chat (no Word doc); use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme
 - `/industry_deep_dive` analyzes the structural mechanics of an industry (Porter's Five Forces, business model economics, competitive landscape, barriers to entry) — use it when you want to understand *how* an industry works, not just which stocks benefit; accepts either a theme name or a ticker symbol
-- `/market_sentiment_framework` scores investor sentiment across 5 pillars (positioning, momentum, valuation, macro, narrative) and saves a Word report; pass a theme name or "broad market"
+- `/market_sentiment_analysis` scores investor sentiment across 5 pillars (positioning, momentum, valuation, macro, narrative) and saves a Word report; pass a theme name or "broad market"
 - `/key_stock_metrics` with no args reads from `tickers.txt`; all other skills require a TICKER or THEME argument
 - `/key_stock_metrics` always re-fetches fresh data via `fetch_all()` before computing metrics, even if JSON files already exist
 - Skills read local JSON from `Outputs/` first, run `yahoo_finance_data.py` if missing, then supplement with `WebSearch` for analyst estimates, guidance, and any N/A values
