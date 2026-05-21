@@ -35,8 +35,7 @@ def quarter_label(date_str):
     from datetime import datetime
     try:
         dt = datetime.strptime(date_str, "%Y-%m-%d")
-        q = (dt.month - 1) // 3 + 1
-        return f"Q{q} {dt.year}"
+        return f"Qtr Ended {dt.strftime('%b %Y')}"
     except Exception:
         return date_str
 
@@ -193,16 +192,19 @@ def chart_yoy_growth(ticker, ann_data, out_path):
     width = 0.35
     fig, ax = plt.subplots(figsize=(18, 8))
 
-    def color_bar(v): return "#34A853" if (v or 0) >= 0 else "#EA4335"
+    # Distinct color pairs: blue for Revenue, orange for Net Income
+    REV_POS, REV_NEG = "#4285F4", "#A8C4F0"   # blue / light blue
+    NI_POS,  NI_NEG  = "#FF8C00", "#EA4335"   # orange / red
 
     for i, (yr, rg, ng) in enumerate(zip(years, rev_growths, ni_growths)):
         if rg is not None:
-            b = ax.bar(i - width/2, rg, width, color=color_bar(rg), label="Revenue Growth" if i == 0 else "")
+            ax.bar(i - width/2, rg, width, color=REV_POS if (rg or 0) >= 0 else REV_NEG,
+                   label="Revenue Growth" if i == 0 else "")
             ax.text(i - width/2, rg + (1 if rg >= 0 else -3), f"{rg:.1f}%",
                     ha="center", fontsize=15, fontweight="bold")
         if ng is not None:
-            ax.bar(i + width/2, ng, width, color=color_bar(ng),
-                   alpha=0.65, label="Net Income Growth" if i == 0 else "")
+            ax.bar(i + width/2, ng, width, color=NI_POS if (ng or 0) >= 0 else NI_NEG,
+                   label="Net Income Growth" if i == 0 else "")
             ax.text(i + width/2, ng + (1 if ng >= 0 else -3), f"{ng:.1f}%",
                     ha="center", fontsize=15, fontweight="bold")
 
@@ -213,8 +215,8 @@ def chart_yoy_growth(ticker, ann_data, out_path):
     ax.set_title(f"{t} Annual YoY Growth Rates", fontsize=22, fontweight="bold")
 
     from matplotlib.patches import Patch
-    ax.legend(handles=[Patch(color="#34A853", label="Revenue Growth"),
-                        Patch(color="#34A853", alpha=0.65, label="Net Income Growth")],
+    ax.legend(handles=[Patch(color=REV_POS, label="Revenue Growth"),
+                        Patch(color=NI_POS,  label="Net Income Growth")],
               fontsize=15)
     ax.grid(axis="y", alpha=0.3)
     plt.tight_layout()

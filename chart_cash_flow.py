@@ -37,8 +37,16 @@ def quarter_label(date_str):
     from datetime import datetime
     try:
         dt = datetime.strptime(date_str, "%Y-%m-%d")
-        q = (dt.month - 1) // 3 + 1
-        return f"Q{q} FY{dt.year}"
+        return f"Qtr Ended {dt.strftime('%b %Y')}"
+    except Exception:
+        return date_str
+
+def period_label(date_str):
+    """Return 'Quarter Ended Mon YYYY' — avoids calendar-vs-fiscal quarter mismatch."""
+    from datetime import datetime
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        return f"Quarter Ended {dt.strftime('%b %Y')}"
     except Exception:
         return date_str
 
@@ -57,7 +65,7 @@ def chart_waterfall(ticker, cf_data, out_path):
         print(f"  [cf waterfall] Missing OCF or FCF for {ticker}"); return
 
     capex_bridge = fcf - ocf  # negative number (steps down)
-    period = quarter_label(ocf_s[0][0]) if ocf_s else "MRQ"
+    period = period_label(ocf_s[0][0]) if ocf_s else "MRQ"
 
     fig, ax = plt.subplots(figsize=(16, 8))
     labels = ["Operating CF", "CapEx", "Free CF"]
@@ -110,7 +118,7 @@ def chart_trend(ticker, cf_data, is_data, out_path):
         print(f"  [cf trend] Missing OCF for {ticker}"); return
 
     ocf_s = list(reversed(ocf_s))  # oldest → newest (left → right)
-    dates = [quarter_label(d).replace(" FY", " ") for d, _ in ocf_s]
+    dates = [quarter_label(d) for d, _ in ocf_s]
 
     def align(series):
         smap = {d: v for d, v in series}

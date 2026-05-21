@@ -38,8 +38,16 @@ def quarter_label(date_str):
     from datetime import datetime
     try:
         dt = datetime.strptime(date_str, "%Y-%m-%d")
-        q = (dt.month - 1) // 3 + 1
-        return f"Q{q} {dt.year}"
+        return f"Qtr Ended {dt.strftime('%b %Y')}"
+    except Exception:
+        return date_str
+
+def period_label(date_str):
+    """Return 'Quarter Ended Mon YYYY' — avoids calendar-vs-fiscal quarter mismatch."""
+    from datetime import datetime
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        return f"Quarter Ended {dt.strftime('%b %Y')}"
     except Exception:
         return date_str
 
@@ -73,7 +81,7 @@ def chart_composition(ticker, data, out_path):
 
     nca = (ta - ca) if ca is not None else None
     other_lt = max(0, (tl - cl - (ltd or 0))) if (tl and cl) else None
-    period = quarter_label(total_assets_s[0][0]) if total_assets_s else "MRQ"
+    period = period_label(total_assets_s[0][0]) if total_assets_s else "MRQ"
 
     fig, ax = plt.subplots(figsize=(16, 8))
 

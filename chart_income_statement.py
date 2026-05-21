@@ -42,8 +42,16 @@ def quarter_label(date_str):
     from datetime import datetime
     try:
         dt = datetime.strptime(date_str, "%Y-%m-%d")
-        q = (dt.month - 1) // 3 + 1
-        return f"Q{q} {dt.year}"
+        return f"Qtr Ended {dt.strftime('%b %Y')}"
+    except Exception:
+        return date_str
+
+def period_label(date_str):
+    """Return 'Quarter Ended Mon YYYY' — avoids calendar-vs-fiscal quarter mismatch."""
+    from datetime import datetime
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        return f"Quarter Ended {dt.strftime('%b %Y')}"
     except Exception:
         return date_str
 
@@ -77,7 +85,7 @@ def chart_flow(ticker, data, out_path):
     if oi   is None: oi = gp - (opex or 0)
     if ni   is None: ni = oi * 0.7
     interest_tax = oi - ni
-    period = quarter_label(rev_s[0][0]) if rev_s else "MRQ"
+    period = period_label(rev_s[0][0]) if rev_s else "MRQ"
 
     CHART_H = 0.80
     BASE = 0.10
