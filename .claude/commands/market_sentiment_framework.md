@@ -114,6 +114,25 @@ WebSearch each indicator (don't rely on training data). Cite sources.
 
 ---
 
+## Broad-Market-Only Sentiment Signals (broad market reports only — skip for theme/sector reports)
+
+For **"broad market"** reports, **also** render these four signals. They describe the index as a whole and should **not** appear in theme/sector reports — keep those on the standard dashboard + five pillars only. WebSearch each (don't rely on training data) and cite sources/dates.
+
+| Signal | Plain English | Current | Status |
+|--------|---------------|---------|--------|
+| VIX extremes (the "fear index") | Very low VIX = complacency / extreme bullishness (often precedes tops); very high VIX = panic / extreme fear (historically a contrarian buy zone) | XX | 🟢 13–20 normal · 🟡 <13 complacent (extreme-bullish, top risk) · 🔴 >30 panic (extreme-bearish, often contrarian) |
+| Equity put/call ratio (CBOE) | Puts (bets on a drop) ÷ calls (bets on a rise). Low = greedy/complacent, high = fearful | X.XX | 🟢 0.6–0.9 balanced · 🟡 <0.6 greedy (complacent) · 🔴 >1.0 fearful (contrarian-buy lean) — thresholds approximate; equity-only readings run lower than the total CBOE ratio |
+| S&P 500 vs equal-weight S&P 500 (SPY/^GSPC vs RSP) | Cap-weighted vs equal-weighted return gap. A wide gap means a handful of mega-caps are carrying the index — narrow, fragile breadth | +/-X% (trailing 6–12 mo) | 🟢 gap <3% (broad participation) · 🟡 3–7% · 🔴 >7% (narrow leadership) |
+| High-yield (junk) bond spread divergence | Credit markets price risk earlier and sharper than equities. Track the ICE BofA US High-Yield spread (FRED `BAMLH0A0HYM2`) and its trend | XXX bps, trend | 🟢 tight & stable/tightening · 🟡 widening · 🔴 widening while S&P near new highs (hidden risk-off divergence) |
+
+**Two divergence checks to call out explicitly (the highest-signal warnings):**
+- **Breadth divergence:** If the cap-weighted S&P 500 is at/near new highs but the equal-weight (RSP) is lagging badly, the rally is concentrated in a few names — historically fragile.
+- **Credit divergence:** If equities are making new highs while high-yield spreads are *widening*, the credit market is flashing risk-off that equities haven't priced yet — treat as a leading bearish signal.
+
+These four signals feed the pillars: VIX extremes + put/call → **Narrative** and **Positioning**; equal-weight breadth gap → **Momentum & Breadth**; high-yield spread → **Macro environment**.
+
+---
+
 ## Bubble Watch Checklist
 
 | Flag | Triggered? | Evidence (1 phrase) |
@@ -140,6 +159,9 @@ Generate these charts inline in the Python script (no separate chart_*.py file).
 
 For theme-specific reports (anything other than "broad market"), **also** add:
 - **`sentiment_{slug}_theme_etf_trend.png`** — Theme ETF price + 200-DMA, last 2 years. Title: "[Theme] — Price vs 200-Day MA."
+
+For **broad market** reports, **also** add:
+- **`sentiment_{slug}_breadth_divergence.png`** — Cap-weighted S&P 500 (SPY) vs equal-weight S&P 500 (RSP), both normalized to 100 at the start, last 1–2 years. Title: "Cap-Weight vs Equal-Weight S&P 500 — Breadth Check." A widening gap (SPY pulling ahead of RSP) signals narrow leadership.
 
 Embed every chart at `width=Inches(7.0)` to keep them compact.
 
@@ -195,6 +217,7 @@ Cite sources inline as `Source: URL` on an indented line below the relevant cont
 ### 5. Macro Health Dashboard
 - Heading 1: "Macro Health Dashboard"
 - Render the dashboard table above
+- **Broad market reports only:** also render the "Broad-Market-Only Sentiment Signals" table (VIX extremes, equity put/call ratio, cap-weight vs equal-weight breadth gap, high-yield spread divergence), then add 2 bullets explicitly calling out the breadth-divergence and credit-divergence checks. Skip this entirely for theme/sector reports.
 - 2-3 plain-English bullets summarizing what the dashboard tells you (e.g., "The S&P 500 is well above its 200-day moving average — long-term trend is up.")
 
 ### 6. Bubble Watch
@@ -204,7 +227,7 @@ Cite sources inline as `Source: URL` on an indented line below the relevant cont
 
 ### 7. Charts
 - Heading 1: "Charts"
-- Embed all 4 (or 5) charts described above, each at `width=Inches(7.0)`, with a 1-sentence caption underneath each in italic
+- Embed all charts described in the Charts section above (4 base; +1 theme-ETF chart for theme reports; +1 cap-weight vs equal-weight breadth-divergence chart for broad-market reports), each at `width=Inches(7.0)`, with a 1-sentence caption underneath each in italic
 
 ### 8. Composite Score Scorecard
 - Heading 1: "Composite Score Scorecard"
@@ -276,7 +299,7 @@ Write and execute a Python script saved as `Outputs/generate_market_sentiment_{t
        section.left_margin = Inches(0.75)
        section.right_margin = Inches(0.75)
    ```
-3. **Generate all 4 (or 5) charts inline using yfinance + matplotlib** before building the body. Save each PNG to `Outputs/sentiment_{slug}_<chart>.png`. Use `matplotlib.use("Agg")`. Embed each at `width=Inches(7.0)` in Section 7.
+3. **Generate all charts inline using yfinance + matplotlib** before building the body — 4 base charts, plus the theme-ETF chart for theme reports OR the cap-weight vs equal-weight breadth-divergence chart for broad-market reports. Save each PNG to `Outputs/sentiment_{slug}_<chart>.png`. Use `matplotlib.use("Agg")`. Embed each at `width=Inches(7.0)` in Section 7.
 4. Render all 12 output sections with appropriate headings, paragraphs, tables, and bullet points.
 5. **Tables:** initialize with `rows=1` (header only), then `table.add_row()` per data row. **Every table** must call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added.
 6. **Font size 12 on every data row** — call `set_row_font_size(row)` immediately after `table.add_row()` (don't call on header).
