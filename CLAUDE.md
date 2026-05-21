@@ -50,7 +50,7 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 - Each script reads its required JSON files from `Outputs/{TICKER}/` directly — run `yahoo_finance_data.py` first if JSON is missing
 
 **`doc_utils.py`** — shared python-docx helpers
-- Provides `autofit_table(table)`, `add_table_borders(table)`, and `set_row_font_size(row, size=12)`
+- Provides `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=12)`, and `add_footnote(doc)`
 - All skill-generated Word scripts import from here; see the Word Document Generation section for the required import pattern
 - When adding a new helper needed by multiple skills, add it here rather than inline in each skill
 
@@ -127,8 +127,8 @@ When writing `python-docx` table code in any skill or script:
 
 To add a new analysis skill:
 1. Create `.claude/commands/{skill_name}.md` — write it as instructions Claude will follow at execution time (not Python code itself)
-2. If the skill generates charts, add a `chart_{name}.py` at the project root following the existing chart script pattern (reads JSON from `Outputs/{TICKER}/`, saves PNG to the same folder)
-3. If the skill generates a Word document, instruct it to: run the relevant `chart_*.py` → write a `generate_*.py` script to `Outputs/{TICKER}/` (or `Outputs/` root for non-ticker skills) → execute it → confirm the `.docx` path
+2. If the skill generates charts for a single ticker, add a `chart_{name}.py` at the project root (reads JSON from `Outputs/{TICKER}/`, saves PNG to same folder). Theme/market-level skills (e.g., `/market_sentiment_analysis`) generate charts inline inside the `generate_*.py` script using `yfinance` + `matplotlib` directly — no separate `chart_*.py` needed.
+3. If the skill generates a Word document, instruct it to: run the relevant `chart_*.py` (or generate charts inline) → write a `generate_*.py` script to `Outputs/{TICKER}/` (or `Outputs/` root for non-ticker skills) → execute it → confirm the `.docx` path
 4. All generated Word scripts must import helpers from `doc_utils.py` (see Word Document Generation section)
 5. Ad-hoc one-off Python scripts should be saved to `Outputs/{TICKER}/`, not the project root
 
