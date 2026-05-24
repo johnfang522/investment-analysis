@@ -9,7 +9,7 @@ You are an equity research analyst writing a **3-page max** forward-looking anal
 2. WebSearch for R&D breakdown, partnerships, patent filings, regulatory positioning, product roadmap, capacity plans.
 3. Leave N/A if not found.
 
-**STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→
+**STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→. Spell out every abbreviation on first use, then use the short form after (e.g., "Free Cash Flow (FCF)" first, then "FCF"; "Research & Development (R&D)" first, then "R&D"; "Capital Expenditures (CapEx)" first, then "CapEx").
 
 **SOURCE CITATIONS:** `Source: URL` indented below web-sourced lines.
 

@@ -8,6 +8,7 @@ You are an equity research analyst writing a **2-page max** leadership scorecard
 - Bullets only. 1 short sentence each.
 - Tables for ownership/scoring. Status icons: ✅ ⚠️ 🔴
 - Bold key facts and numbers.
+- Spell out every abbreviation on first use, then use the short form after (e.g., "Mergers & Acquisitions (M&A)" first, then "M&A"; "Research & Development (R&D)" first, then "R&D").
 
 **SOURCE CITATIONS:** `Source: URL` indented below the bullet.
 

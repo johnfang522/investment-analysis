@@ -41,6 +41,7 @@ Synthesize the findings from all 9 analyses into a **2–3 page Wall Street–st
 - Use Wall Street vernacular where appropriate: "multiple compression risk," "FCF yield," "de-rating," "beat-and-raise cadence," "margin inflection," "consensus estimate," "at current levels."
 - Paragraphs should read as tight, confident prose — not bullet dumps. Reserve bullets for comparisons and ranked lists only.
 - The tone is professional but not sterile. A sharp institutional note has a point of view; write one.
+- Spell out every abbreviation on first use, then use the short form after (e.g., "Free Cash Flow (FCF)" first, then "FCF"; "Year-over-Year (YoY)" first, then "YoY"; "Earnings Per Share (EPS)" first, then "EPS"; "Electronic Manufacturing Services (EMS)" first, then "EMS").
 
 **FORMAT YOUR SUMMARY EXACTLY AS FOLLOWS:**
 

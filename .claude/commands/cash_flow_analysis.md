@@ -8,7 +8,7 @@ You are a financial analyst writing a **3-page max** cash flow review for instit
 
 **Always YoY. Never sequential quarters.**
 
-**STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→
+**STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→. Spell out every abbreviation on first use, then use the short form after (e.g., "Operating Cash Flow (OCF)" first, then "OCF"; "Free Cash Flow (FCF)" first, then "FCF"; "Capital Expenditures (CapEx)" first, then "CapEx").
 
 ---
 

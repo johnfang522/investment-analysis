@@ -49,6 +49,13 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 - Skills call these scripts rather than generating matplotlib code inline; if a chart needs updating, edit the corresponding `chart_*.py`
 - Each script reads its required JSON files from `Outputs/{TICKER}/` directly — run `yahoo_finance_data.py` first if JSON is missing
 
+**`plot_market_sentiment_history.py`** — persistent market sentiment chart generator
+- Fetches 5-year time-series data for all 7 sentiment indicators and saves PNGs to `Outputs/`
+- Run from the project root: `.venv/Scripts/python plot_market_sentiment_history.py`
+- Unlike the ephemeral `generate_*.py` / `assemble_*.py` scripts in `Outputs/`, this lives at the project root and is tracked in git
+- Update the `END` date constant at the top before each run
+- **External data source gotchas baked into this script** (see also the External Data Sources section below)
+
 **`doc_utils.py`** — shared python-docx helpers
 - Provides `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=12)`, and `add_footnote(doc)`
 - All skill-generated Word scripts import from here; see the Word Document Generation section for the required import pattern
@@ -73,7 +80,7 @@ The intended workflow runs in three stages:
 | 1 | `/emerging_industry_trend` | THEME or _(none)_ | Chat output (signal scorecard, value chain map, bottleneck analysis, positioning) |
 | 1 | `/industry_trend_analysis` | THEME | Word: `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.docx` |
 | 1 | `/industry_deep_dive` | THEME or TICKER | Word: `Outputs/industry_deep_dive_{theme}_{YYYYMMDD}.docx` |
-| 1 | `/market_sentiment_analysis` | THEME or "broad market" | Word: `Outputs/market_sentiment_{theme}_{YYYYMMDD}.docx` |
+| 1 | `/market_sentiment_analysis` | _(none)_ | Word: `Outputs/market_sentiment_{YYYYMMDD}.docx` + 7 PNGs + dashboard PNG |
 | 2 | `/key_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel: `Outputs/key_stock_metrics_YYYYMMDD.xlsx` |
 | 3 | `/business_overview_analysis` | TICKER | Word: `Outputs/{TICKER}/1_{ticker}_business_overview_analysis.docx` |
 | 3 | `/leadership_analysis` | TICKER | Word: `Outputs/{TICKER}/2_{ticker}_leadership_analysis.docx` |
@@ -88,7 +95,7 @@ The intended workflow runs in three stages:
 
 - `/emerging_industry_trend` scans for live bottleneck signals before the market prices them in — outputs directly to chat (no Word doc); use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme
 - `/industry_deep_dive` analyzes the structural mechanics of an industry (Porter's Five Forces, business model economics, competitive landscape, barriers to entry) — use it when you want to understand *how* an industry works, not just which stocks benefit; accepts either a theme name or a ticker symbol
-- `/market_sentiment_analysis` scores investor sentiment across 5 pillars (positioning, momentum, valuation, macro, narrative) and saves a Word report; pass a theme name or "broad market"
+- `/market_sentiment_analysis` scores investor sentiment across 7 indicators (VIX, CNN F&G, put/call, breadth, HY OAS, Shiller CAPE, Buffett Indicator), runs `plot_market_sentiment_history.py` to generate 5-year time-series charts, embeds them in the Word report, and saves a combined dashboard PNG
 - `/key_stock_metrics` with no args reads from `tickers.txt`; all other skills require a TICKER or THEME argument
 - `/key_stock_metrics` always re-fetches fresh data via `fetch_all()` before computing metrics, even if JSON files already exist
 - Skills read local JSON from `Outputs/` first, run `yahoo_finance_data.py` if missing, then supplement with `WebSearch` for analyst estimates, guidance, and any N/A values
@@ -122,6 +129,38 @@ When writing `python-docx` table code in any skill or script:
       section.left_margin = Inches(0.75)
       section.right_margin = Inches(0.75)
   ```
+
+## External Data Sources
+
+Non-obvious facts about external APIs used by the market sentiment charts and skills:
+
+**FRED (St. Louis Fed)**
+- Fetch URL: `https://fred.stlouisfed.org/graph/fredgraph.csv?id={SERIES_ID}`
+- CSV format: first row is the header; some responses prepend a disclaimer line — find the row starting with `DATE` before passing to `pd.read_csv`
+- `BAMLH0A0HYM2` (ICE BofA HY OAS): values are in **percentage points**, not basis points (e.g. `2.78` = 278 bps). Always multiply by 100 before plotting or comparing against bps thresholds
+- `WILL5000IND` / `WILL5000INDFC` (Wilshire 5000): **removed from FRED in June 2024** — use `^FTW5000` from yfinance instead
+- FRED occasionally rate-limits or times out; the HY OAS and GDP fetches are the most reliable; retry with a 60-second timeout before giving up
+
+**Yahoo Finance (yfinance)**
+- `^VIX`, `^SKEW`, `^FTW5000`, `RSP`, `SPY` all work reliably
+- `^CPCE` / `^CPC` (CBOE put/call) are not available — use `^SKEW` as the put-demand proxy
+- `yf.download()` returns a MultiIndex when `progress=False`; always call `.squeeze()` on the `Close` column to get a plain Series
+
+**CNN Fear & Greed**
+- Endpoint: `https://production.dataviz.cnn.io/index/fearandgreed/graphdata`
+- Response JSON: `data.fear_and_greed_historical.data` — each element has `x` (ms timestamp) and `y` (score 0–100)
+- Returns ~250 most recent days only; not a full 5-year history
+
+**CBOE Put/Call CSV**
+- Available at `https://cdn.cboe.com/resources/options/volume_and_call_put_ratios/equitypc.csv`
+- The file covers **November 2006 through October 2019 only** — not usable for recent 5-year charts
+- Use the CBOE SKEW Index (`^SKEW` via yfinance) as the current-data substitute
+
+**`pandas_datareader`**
+- Incompatible with Python 3.14+ (imports `distutils`, which was removed in 3.12). Do not use it in this project; fetch FRED data directly via `requests` instead.
+
+**`references/` directory**
+- The files `references/scoring-tables.md` and `references/bubble-framework.md` are referenced in the `/market_sentiment_analysis` skill but **do not exist on disk**. The skill uses inline fallback scoring logic. If you create these files, the skill will read them; until then, scoring tables are embedded in the skill instructions themselves.
 
 ## Adding a New Skill
 
