@@ -17,7 +17,7 @@ The goal is always to find the *next* one of these before the public market pric
 
 ## Instructions
 
-The user has invoked `/emerging_industry_trend_identification` with the following argument: `$ARGUMENTS`
+The user has invoked `/emerging_industry_trend` with the following argument: `$ARGUMENTS`
 
 If `$ARGUMENTS` is empty, ask the user whether they want to:
 (a) scan broadly for the most promising emerging trends right now, or
@@ -361,6 +361,16 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 - **Bottleneck candidates:** Simulation-to-reality platforms (NVIDIA Isaac), precision actuators and force-torque sensors, US-sourced robotics components (geopolitical bottleneck: 90% of components currently from China)
 - **Capital signal:** €38.5B VC into robotics in 2025 (9% of all VC)
 - **Lesson:** Still early — the bottleneck layer hasn't fully emerged. Monitor actuator/sensor supply chains and sim platform lock-in.
+
+---
+
+## Final Step — Offer next step
+
+After delivering the full output (signal scorecard, value chain map, bottleneck analysis, and positioning), ask the user:
+
+> "Would you like to kick off `/industry_trend_analysis` on one of these themes for a deeper value chain breakdown and stock shortlist?"
+
+If the user says yes, ask which theme they want to go deeper on (if more than one was surfaced), then invoke `/industry_trend_analysis` with that theme as the argument.
 
 ---
 

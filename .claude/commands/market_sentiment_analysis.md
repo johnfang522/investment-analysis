@@ -180,6 +180,16 @@ Confirm the output file path when done.
 
 ---
 
+## Step 6 — Offer next step
+
+After confirming the output file path, ask the user:
+
+> "Would you like to kick off `/emerging_industry_trend` to identify the next market trend or investment theme worth researching?"
+
+If the user says yes (or provides a theme), invoke the `/emerging_industry_trend` skill with their input (or with no argument if they want a broad scan).
+
+---
+
 ## Reference files
 
 - `references/scoring-tables.md` — exact conversion tables for each indicator
