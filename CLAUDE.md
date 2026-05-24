@@ -80,7 +80,7 @@ The intended workflow runs in four stages:
 | Stage | Skill | Argument | Output |
 |---|---|---|---|
 | 1 | `/market_sentiment_analysis` | _(none)_ | Word: `Outputs/market_sentiment_{YYYYMMDD}.docx` + 7 PNGs + dashboard PNG |
-| 2 | `/emerging_industry_trend` | THEME or _(none)_ | Chat output (signal scorecard, value chain map, bottleneck analysis, positioning) |
+| 2 | `/emerging_industry_trend` | THEME or _(none)_ | Word: `Outputs/emerging_industry_trends_{theme}_{YYYYMMDD}.docx` |
 | 2 | `/industry_trend_analysis` | THEME | Word: `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.docx` |
 | 2 | `/industry_deep_dive` | THEME or TICKER | Word: `Outputs/industry_deep_dive_{theme}_{YYYYMMDD}.docx` |
 | 3 | `/key_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel: `Outputs/key_stock_metrics_YYYYMMDD.xlsx` |
@@ -95,7 +95,7 @@ The intended workflow runs in four stages:
 | 4 | `/technical_analysis` | TICKER | Word: `Outputs/{TICKER}/9_{ticker}_technical_analysis.docx` |
 | 4 | `/single_name_stock_analysis` | TICKER | Word: `Outputs/{TICKER}/{ticker}_research_package_YYYYMMDD.docx` (+ individual note + appendices) |
 
-- `/emerging_industry_trend` scans for live bottleneck signals before the market prices them in — outputs directly to chat (no Word doc); use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme
+- `/emerging_industry_trend` scans for live bottleneck signals before the market prices them in — produces a Word doc with signal scorecard, value chain map, bottleneck analysis, and positioning; use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme
 - `/industry_deep_dive` analyzes the structural mechanics of an industry (Porter's Five Forces, business model economics, competitive landscape, barriers to entry) — use it when you want to understand *how* an industry works, not just which stocks benefit; accepts either a theme name or a ticker symbol
 - `/market_sentiment_analysis` scores investor sentiment across 7 indicators (VIX, CNN F&G, put/call, breadth, HY OAS, Shiller CAPE, Buffett Indicator), runs `plot_market_sentiment_history.py` to generate 5-year time-series charts, embeds them in the Word report, and saves a combined dashboard PNG
 - `/key_stock_metrics` with no args reads from `tickers.txt`; all other skills require a TICKER or THEME argument
