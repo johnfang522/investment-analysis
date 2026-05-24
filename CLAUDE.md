@@ -67,31 +67,33 @@ Edit `tickers.txt` to add/remove tickers (one per line, `#` for comments). Curre
 
 ## Slash Commands (Skills)
 
-The intended workflow runs in three stages:
+The intended workflow runs in four stages:
 
-**Stage 1 — Theme Discovery:** Identify the value chain for a macro trend and surface candidate stocks at each layer.
+**Stage 1 — Market Conditions:** Assess broad market sentiment and risk before deploying capital.
 
-**Stage 2 — Quick Filter:** Screen candidates on financial quality before committing to deep research.
+**Stage 2 — Theme Discovery:** Identify the value chain for a macro trend and surface candidate stocks at each layer.
 
-**Stage 3 — Individual Stock Analysis:** Deep-dive on specific names across all dimensions, culminating in a research note.
+**Stage 3 — Quick Filter:** Screen candidates on financial quality before committing to deep research.
+
+**Stage 4 — Individual Stock Analysis:** Deep-dive on specific names across all dimensions, culminating in a research note.
 
 | Stage | Skill | Argument | Output |
 |---|---|---|---|
-| 1 | `/emerging_industry_trend` | THEME or _(none)_ | Chat output (signal scorecard, value chain map, bottleneck analysis, positioning) |
-| 1 | `/industry_trend_analysis` | THEME | Word: `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.docx` |
-| 1 | `/industry_deep_dive` | THEME or TICKER | Word: `Outputs/industry_deep_dive_{theme}_{YYYYMMDD}.docx` |
 | 1 | `/market_sentiment_analysis` | _(none)_ | Word: `Outputs/market_sentiment_{YYYYMMDD}.docx` + 7 PNGs + dashboard PNG |
-| 2 | `/key_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel: `Outputs/key_stock_metrics_YYYYMMDD.xlsx` |
-| 3 | `/business_overview_analysis` | TICKER | Word: `Outputs/{TICKER}/1_{ticker}_business_overview_analysis.docx` |
-| 3 | `/leadership_analysis` | TICKER | Word: `Outputs/{TICKER}/2_{ticker}_leadership_analysis.docx` |
-| 3 | `/income_statement_analysis` | TICKER | Word: `Outputs/{TICKER}/3_{ticker}_income_statement_analysis.docx` |
-| 3 | `/balance_sheet_analysis` | TICKER | Word: `Outputs/{TICKER}/4_{ticker}_balance_sheet_analysis.docx` |
-| 3 | `/cash_flow_analysis` | TICKER | Word: `Outputs/{TICKER}/5_{ticker}_cash_flow_analysis.docx` |
-| 3 | `/growth_and_profitability_analysis` | TICKER | Word: `Outputs/{TICKER}/6_{ticker}_growth_and_profitability_analysis.docx` |
-| 3 | `/business_potential_analysis` | TICKER | Word: `Outputs/{TICKER}/7_{ticker}_business_potential_analysis.docx` |
-| 3 | `/valuation_analysis` | TICKER | Word: `Outputs/{TICKER}/8_{ticker}_valuation_analysis.docx` |
-| 3 | `/technical_analysis` | TICKER | Word: `Outputs/{TICKER}/9_{ticker}_technical_analysis.docx` |
-| 3 | `/single_name_stock_analysis` | TICKER | Word: `Outputs/{TICKER}/{ticker}_research_package_YYYYMMDD.docx` (+ individual note + appendices) |
+| 2 | `/emerging_industry_trend` | THEME or _(none)_ | Chat output (signal scorecard, value chain map, bottleneck analysis, positioning) |
+| 2 | `/industry_trend_analysis` | THEME | Word: `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.docx` |
+| 2 | `/industry_deep_dive` | THEME or TICKER | Word: `Outputs/industry_deep_dive_{theme}_{YYYYMMDD}.docx` |
+| 3 | `/key_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel: `Outputs/key_stock_metrics_YYYYMMDD.xlsx` |
+| 4 | `/business_overview_analysis` | TICKER | Word: `Outputs/{TICKER}/1_{ticker}_business_overview_analysis.docx` |
+| 4 | `/leadership_analysis` | TICKER | Word: `Outputs/{TICKER}/2_{ticker}_leadership_analysis.docx` |
+| 4 | `/income_statement_analysis` | TICKER | Word: `Outputs/{TICKER}/3_{ticker}_income_statement_analysis.docx` |
+| 4 | `/balance_sheet_analysis` | TICKER | Word: `Outputs/{TICKER}/4_{ticker}_balance_sheet_analysis.docx` |
+| 4 | `/cash_flow_analysis` | TICKER | Word: `Outputs/{TICKER}/5_{ticker}_cash_flow_analysis.docx` |
+| 4 | `/growth_and_profitability_analysis` | TICKER | Word: `Outputs/{TICKER}/6_{ticker}_growth_and_profitability_analysis.docx` |
+| 4 | `/business_potential_analysis` | TICKER | Word: `Outputs/{TICKER}/7_{ticker}_business_potential_analysis.docx` |
+| 4 | `/valuation_analysis` | TICKER | Word: `Outputs/{TICKER}/8_{ticker}_valuation_analysis.docx` |
+| 4 | `/technical_analysis` | TICKER | Word: `Outputs/{TICKER}/9_{ticker}_technical_analysis.docx` |
+| 4 | `/single_name_stock_analysis` | TICKER | Word: `Outputs/{TICKER}/{ticker}_research_package_YYYYMMDD.docx` (+ individual note + appendices) |
 
 - `/emerging_industry_trend` scans for live bottleneck signals before the market prices them in — outputs directly to chat (no Word doc); use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme
 - `/industry_deep_dive` analyzes the structural mechanics of an industry (Porter's Five Forces, business model economics, competitive landscape, barriers to entry) — use it when you want to understand *how* an industry works, not just which stocks benefit; accepts either a theme name or a ticker symbol
