@@ -123,7 +123,7 @@ Once a theme is confirmed, map every layer. The bottleneck is almost always foun
 - **Why it wins:** Most overlooked layer. No theme label, so trades at lower multiples with less crowding. Productivity benefit shows up in margins with a 2–4 year lag.
 - **Moat:** Existing distribution + brand + regulatory relationships + new tailwind.
 
-### Layer 6 — Bottleneck / Chokepoints ⭐ ("Highest Structural Moat")
+### Layer 6 — Bottleneck ⭐ ("Highest Structural Moat")
 - Single-source inputs, irreplaceable geography, hard-to-replicate IP, or embedded regulatory licenses.
 - **Why it wins:** Moat is structural, not positional — wins across all cycle phases, not just one window. Most defensive in a downturn.
 - **How to find:** Ask — *"If this theme plays out fully, what single thing does every winner have to buy from one or two suppliers?"*
@@ -201,7 +201,7 @@ Present as a table:
 | 3 | Integrators | … | … | … | … |
 | 4 | Applications | … | … | … | … |
 | 5 | Adjacent Beneficiaries | … | … | … | … |
-| 6 ⭐ | Bottleneck / Chokepoints | … | … | … | … |
+| 6 ⭐ | Bottleneck | … | … | … | … |
 
 Follow the table with a single bullet: **Highest-conviction layer right now:** [Layer X] — one sentence of reasoning.
 

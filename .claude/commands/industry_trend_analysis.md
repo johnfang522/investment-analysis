@@ -105,7 +105,7 @@ For each layer provide: definition, named companies or company types relevant to
 - **Timing:** Often lags the theme by 2–4 years as the productivity benefit shows up in margins.
 - **Examples archetype:** Traditional logistics companies adopting autonomous routing, banks with AI fraud detection, pharma using ML in drug discovery.
 
-### Layer 6 — Bottleneck / Chokepoints (Highest Structural Moat)
+### Layer 6 — Bottleneck (Highest Structural Moat)
 - **What:** Single-source inputs, irreplaceable geography, hard-to-replicate patents, or embedded regulatory licenses.
 - **Why it wins:** Moat is structural, not positional — wins across all cycle phases, not just one window.
 - **Moat:** By definition: cannot be replicated quickly regardless of capital.
