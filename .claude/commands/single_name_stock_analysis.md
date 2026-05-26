@@ -180,10 +180,18 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
    - Rating line in large bold text (use Heading 1 style, green color `007000`)
    - All sections formatted with Heading 2 subheadings
    - Financial Snapshot table: **4 columns only** (Metric, Value, Description, Comments) — no YoY Change column; dark blue header row (fill `1F3864`), white bold text; populate values and analyst comments by importing `compute_metrics`, `_short_comment`, `METRICS`, and `color_current_price` from `key_stock_metrics` (already on `sys.path` via `sys.path.insert(0, '.')`).
+     - **IMPORTANT — key names:** Before writing the generation script, run this diagnostic to discover the exact key names returned by `compute_metrics` for this ticker:
+       ```python
+       import sys; sys.path.insert(0, '.')
+       from key_stock_metrics import compute_metrics
+       m = compute_metrics("{TICKER}")
+       print(list(m.keys()))
+       ```
+       Use only the keys that appear in this output. Do NOT invent key names from memory (e.g. do not assume `currentPrice`, `rsi14`, `marketCap` — the actual keys are snake_case such as `current_price`, `rsi`, `market_cap`). Every `m.get(...)` call in the generated script must use a key confirmed by this diagnostic.
      - **Description column**: populate with the formula + benchmark text from the Financial Snapshot table template in Step 3 (hardcode per metric — these are static reference descriptions, not computed values).
      - **Comments column**: populate with the analyst commentary you wrote in Step 3 (the actual one-sentence assessment for this ticker, not the bracketed template text). This is the substantive column — each cell must contain a specific, data-driven sentence, not a placeholder.
      - Apply background color to the **Value cell** (not Comments) using this logic:
-       - Use `color_current_price(metrics)` for Current Price — returns `C6EFCE` / `FFEB9C` / `FFB6C1`
+       - Use `color_current_price(metrics)` for Current Price — **this function returns an openpyxl `PatternFill` object, not a plain hex string**. Extract the 6-digit hex from it with: `fill = color_current_price(m); hex_color = fill.fgColor.rgb[-6:]` (the `.rgb` attribute is an 8-char string like `'00C6EFCE'`; take the last 6 chars).
        - For all other metrics, use `_short_comment(key, val, metrics)` to get the label, then map: positive keywords (Strong, High quality, Ideal, Good, Very conservative, Very safe, Very liquid, Solid, Healthy, Undervalued, Cheap, High yield, Sustainable) → Green (`C6EFCE`); borderline keywords (Decent, Neutral, Moderate, Adequate, Borderline, Fair) → Yellow (`FFEB9C`); warning keywords (Watch, Slow, Thin, Below threshold, At risk, Liquidity risk, Overbought, Expensive, High risk, Low, Warning, Unsustainable) → Pink (`FFC7CE`); no fill for informational rows (52-Week Low, 52-Week High, Market Cap, Revenue TTM) and N/A values
    - Business Potential NBT Readiness table: dark blue header row (fill `1F3864`), white bold text; color the Overall NBT Readiness line bold; color the score cell green (`007000`) for 4–5, orange (`FF8C00`) for 3, red (`C00000`) for 1–2
    - Bullet points as Word list items
