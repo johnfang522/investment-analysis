@@ -24,7 +24,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 | Field | Value |
 |-------|-------|
 | Primary Emerging Opportunity | [e.g., "AI inference at the edge"] |
-| NBT Readiness Score | **X / 20** |
+| Next Big Thing (NBT) Readiness Score | **X / 20** |
 | Readiness Rating | **X / 5** — Dominant / Strong / Capable / At Risk / Ill-Positioned |
 | Single Biggest Advantage | [1 phrase] |
 | Single Biggest Risk | [1 phrase] |

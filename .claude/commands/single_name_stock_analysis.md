@@ -49,7 +49,12 @@ Synthesize the findings from all 9 analyses into a **2–3 page Wall Street–st
 
 ### {TICKER} — Equity Research Note
 **[Company Full Name] | [Sector] | [Exchange]: {TICKER}**
-*Initiating Coverage / Updating Coverage — [Date]*
+*[Coverage label] — [Date]*
+
+Before writing the coverage label, check whether any prior research notes or research package files exist for this ticker in `Outputs/{TICKER}/` (e.g., `*_research_notes_*.docx` or `*_research_package_*.docx`). If prior files exist, use **"Coverage Date: [Date]"**. If this is the first time coverage is being produced, use **"Initiating Coverage — [Date]"**.
+
+Also fetch the current broad market condition at the time of this run. Use `WebSearch` to look up today's S&P 500 level, direction (up/down % on the day), VIX, and one-sentence market context (e.g., risk-on/risk-off, catalyst). Include this as a single italic line immediately below the coverage date line:
+*Market on [Date]: S&P 500 [level] ([+/−X.X%]), VIX [X.X] — [one-sentence context]*
 
 ---
 
@@ -136,9 +141,9 @@ For the Comments column: go beyond the mechanical label. Write a one-sentence an
 - **FCF quality:** Is FCF above or below net income (FCF conversion ratio)?
 - **Capital allocation:** Buybacks, dividends, or reinvestment — where is management deploying cash?
 
-#### Business Potential — NBT Readiness
+#### Business Potential — Next Big Thing (NBT) Readiness
 
-*This section evaluates the company's structural capacity to capitalize on its primary emerging opportunity before it becomes the industry standard.*
+*This section evaluates the company's structural capacity to capitalize on its primary emerging opportunity — its "Next Big Thing" (NBT) — before it becomes the industry standard.*
 
 **Overall NBT Readiness: X/20 (X/5)** — [Readiness rating label: Dominant / Strong / Capable / At Risk / Ill-Positioned]
 
@@ -176,7 +181,8 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
 1. **Document formatting:**
    - Narrow margins (0.5 inch all sides)
    - Title: `{TICKER} — Equity Research Note` (bold heading, level 0) + date subtitle
-   - Company line and date in bold/italic as shown in the summary
+   - Company line, coverage label, and date in bold/italic as shown in the summary. Coverage label logic: check `Outputs/{TICKER}/` for any prior `*_research_notes_*.docx` or `*_research_package_*.docx` files — if found, use "Coverage Date: [Date]"; if none, use "Initiating Coverage — [Date]".
+   - Broad market condition line in italics immediately below the coverage label, as produced in Step 3 (e.g., *Market on [Date]: S&P 500 [level] ([+/−X.X%]), VIX [X.X] — [one-sentence context]*)
    - Rating line in large bold text (use Heading 1 style, green color `007000`)
    - All sections formatted with Heading 2 subheadings
    - Financial Snapshot table: **4 columns only** (Metric, Value, Description, Comments) — no YoY Change column; dark blue header row (fill `1F3864`), white bold text; populate values and analyst comments by importing `compute_metrics`, `_short_comment`, `METRICS`, and `color_current_price` from `key_stock_metrics` (already on `sys.path` via `sys.path.insert(0, '.')`).
