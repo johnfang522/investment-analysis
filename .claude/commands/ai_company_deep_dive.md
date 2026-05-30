@@ -3,7 +3,7 @@ name: ai-company-deep-dive
 description: A structured framework for conducting a comprehensive deep dive on any company with meaningful AI exposure. Use this skill whenever a user wants to analyze, research, evaluate, or build an investment thesis on a company in the AI sector — including pure-play AI companies, AI infrastructure plays, semiconductor companies, cloud providers with AI exposure, AI-enabled SaaS, or any stock where AI is a meaningful growth driver. Trigger on phrases like "deep dive on [ticker]", "analyze [company] as an AI investment", "should I invest in [AI company]", "break down [ticker]", "help me research [company]", "build a thesis on [company]", or any request to evaluate a company with AI exposure in depth. Always use this skill for AI investment questions rather than responding ad-hoc. Takes a stock ticker as input.
 ---
 
-# AI Company Deep Dive Framework
+# Company Deep Dive Framework
 
 **Input:** A stock ticker symbol (e.g., `NVDA`, `MSFT`, `PLTR`).
 
@@ -13,25 +13,22 @@ description: A structured framework for conducting a comprehensive deep dive on 
 
 ## Data Setup
 
-For any quantitative metric needed in this analysis, use local Yahoo Finance JSON data first:
+Always re-fetch fresh Yahoo Finance data before reading any JSON files:
 
-1. Check whether `Outputs/{TICKER}/` exists and contains the required JSON files:
+1. Run the following to force-refresh all data for the ticker:
+   ```python
+   from yahoo_finance_data import fetch_all
+   fetch_all(["TICKER"])
+   ```
+   Execute this via `.venv/Scripts/python -c "from yahoo_finance_data import fetch_all; fetch_all(['TICKER'])"` before reading any JSON.
+
+2. After fetching, read the following files from `Outputs/{TICKER}/`:
    - `{ticker_lower}_quick_metrics.json` — key ratios and price data
    - `{ticker_lower}_income_statement_ttm.json` — TTM income statement
    - `{ticker_lower}_income_statement_annual.json` — annual income statements
    - `{ticker_lower}_balance_sheet_quarterly.json` — balance sheet
    - `{ticker_lower}_cash_flow_statement_ttm.json` — TTM cash flows
    - `{ticker_lower}_price_history.json` — price history for technical context
-
-2. If any required files are missing, run:
-   ```
-   .venv/Scripts/python yahoo_finance_data.py
-   ```
-   or fetch only the specific ticker:
-   ```python
-   from yahoo_finance_data import fetch_all
-   fetch_all(["TICKER"])
-   ```
 
 3. Use `WebSearch` only to supplement what is not available in the JSON — e.g., segment-level AI revenue breakdowns, RPO, NRR, backlog, insider transactions, and recent news.
 
@@ -287,13 +284,13 @@ Write a 3–5 sentence thesis that answers:
 
 ## Save to Word Document
 
-After completing all 9 steps above, write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that saves the full analysis to `Outputs/{TICKER}/{ticker_lowercase}_ai_company_deep_dive.docx`.
+After completing all 9 steps above, write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that saves the full analysis to `Outputs/{TICKER}/{ticker_lowercase}_company_deep_dive_{YYYYMMDD}.docx`.
 
-Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_ai_company_deep_dive.py` and run it from the project root.
+Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_company_deep_dive.py` and run it from the project root.
 
 **Document structure:**
 - Portrait orientation, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
-- Title: `{TICKER} — AI Company Deep Dive` (bold, centered, 16pt) + date subtitle (centered, 11pt italic)
+- Title: `{TICKER} — Company Deep Dive` (bold, centered, 16pt) + date subtitle (centered, 11pt italic)
 - Each Step becomes a **Heading 1** section
 - Narrative text as normal paragraphs (12pt)
 - All tables use dark blue header rows (fill `1F3864`, white bold text), 12pt data rows
