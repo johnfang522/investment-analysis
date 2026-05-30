@@ -83,6 +83,7 @@ The intended workflow runs in four stages:
 | 2 | `/emerging_industry_trend` | THEME or _(none)_ | Word: `Outputs/emerging_industry_trends_{theme}_{YYYYMMDD}.docx` |
 | 2 | `/industry_trend_analysis` | THEME | Word: `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.docx` |
 | 2 | `/industry_deep_dive` | THEME or TICKER | Word: `Outputs/industry_deep_dive_{theme}_{YYYYMMDD}.docx` |
+| 2 | `/ai_company_deep_dive` | TICKER | Word: `Outputs/{TICKER}/{ticker}_ai_company_deep_dive.docx` |
 | 3 | `/key_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel: `Outputs/key_stock_metrics_YYYYMMDD.xlsx` |
 | 4 | `/business_overview_analysis` | TICKER | Word: `Outputs/{TICKER}/1_{ticker}_business_overview_analysis.docx` |
 | 4 | `/leadership_analysis` | TICKER | Word: `Outputs/{TICKER}/2_{ticker}_leadership_analysis.docx` |
@@ -99,6 +100,7 @@ The intended workflow runs in four stages:
 - `/emerging_industry_trend` scans for live bottleneck signals before the market prices them in — produces a Word doc with signal scorecard, value chain map, bottleneck analysis, and positioning; use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme; on completion it prompts the user to kick off `/industry_trend_analysis`
 - `/industry_trend_analysis` maps a known macro theme across its full value chain — identifies investable stocks at each layer (infrastructure, enablers, integrators, applications, adjacent beneficiaries, bottlenecks) and produces a Word doc with thesis, value chain table, stock shortlist, and risks
 - `/industry_deep_dive` analyzes the structural mechanics of an industry (Porter's Five Forces, business model economics, competitive landscape, barriers to entry) — use it when you want to understand *how* an industry works, not just which stocks benefit; accepts either a theme name or a ticker symbol
+- `/ai_company_deep_dive` conducts a rigorous multi-dimensional deep dive on a specific ticker with AI exposure — classifies its position in the AI stack, scores its chokepoint strength, analyzes revenue quality and moat, and builds a 3-scenario investment thesis; uses local Yahoo Finance JSON as the primary quantitative data source; explicitly flags names where the AI narrative is not supported by the data
 - `/key_stock_metrics` with no args reads from `tickers.txt`; all other skills require a TICKER or THEME argument
 - `/key_stock_metrics` always re-fetches fresh data via `fetch_all()` before computing metrics, even if JSON files already exist
 - Skills read local JSON from `Outputs/` first, run `yahoo_finance_data.py` if missing, then supplement with `WebSearch` for analyst estimates, guidance, and any N/A values
