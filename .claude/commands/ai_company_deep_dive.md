@@ -293,6 +293,7 @@ Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_company_deep_di
 - Title: use `doc.add_heading('{TICKER} — Company Deep Dive', 0)` (Heading 0 style, NOT a custom-sized run) + `doc.add_paragraph(date_label)` as plain subtitle
 - Each Step becomes a `doc.add_heading('Step N: ...', 1)` section; sub-headings use level 2
 - All body narrative text: `doc.add_paragraph()` with an explicit 12pt run — do NOT leave font size unset; always call `run.font.size = Pt(12)` on every body paragraph run
+- **Use bullet points liberally.** Any time content is a list — advantages, observations, risks, factors, named items — use `bullet()` instead of embedding it as "(1)...(2)...(3)..." inside a prose paragraph. Never inline numbered items like "(1) ... (2) ... (3) ..." inside a single `body()` call; always split each into its own `bullet()` call. Lead with a short `body()` intro line (e.g. `body(doc, 'Key observations:')`) then follow with individual `bullet()` calls.
 - Bullet points: use `doc.add_paragraph(style='List Bullet')` + `p.add_run(text)` with `run.font.size = Pt(12)`
 - All tables use dark blue header rows (fill `1F3864`, white bold text), 12pt data rows
 - Chokepoint scoring table: color the Score column cell green (`007000`) for High, orange (`FF8C00`) for Medium, red (`C00000`) for Low
