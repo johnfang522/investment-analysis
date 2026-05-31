@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 OUT = "Outputs"
 os.makedirs(OUT, exist_ok=True)
 
-END       = datetime(2026, 5, 23)
+END       = datetime(2026, 5, 30)
 START     = END - timedelta(days=5 * 365 + 5)
 START_STR = START.strftime("%Y-%m-%d")
 END_STR   = END.strftime("%Y-%m-%d")
@@ -385,6 +385,6 @@ if available:
         axes[j].axis("off")
     fig.suptitle("Market Sentiment Dashboard — May 23, 2026", fontsize=16, fontweight="bold", y=1.005)
     fig.tight_layout()
-    save_fig(fig, "sentiment_dashboard_20260523.png")
+    save_fig(fig, f"sentiment_dashboard_{END.strftime('%Y%m%d')}.png")
 
 print(f"\nDone. {len(available)}/7 charts saved to Outputs/")

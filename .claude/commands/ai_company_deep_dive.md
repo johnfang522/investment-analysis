@@ -290,13 +290,14 @@ Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_company_deep_di
 
 **Document structure:**
 - Portrait orientation, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
-- Title: `{TICKER} — Company Deep Dive` (bold, centered, 16pt) + date subtitle (centered, 11pt italic)
-- Each Step becomes a **Heading 1** section
-- Narrative text as normal paragraphs (12pt)
+- Title: use `doc.add_heading('{TICKER} — Company Deep Dive', 0)` (Heading 0 style, NOT a custom-sized run) + `doc.add_paragraph(date_label)` as plain subtitle
+- Each Step becomes a `doc.add_heading('Step N: ...', 1)` section; sub-headings use level 2
+- All body narrative text: `doc.add_paragraph()` with an explicit 12pt run — do NOT leave font size unset; always call `run.font.size = Pt(12)` on every body paragraph run
+- Bullet points: use `doc.add_paragraph(style='List Bullet')` + `p.add_run(text)` with `run.font.size = Pt(12)`
 - All tables use dark blue header rows (fill `1F3864`, white bold text), 12pt data rows
 - Chokepoint scoring table: color the Score column cell green (`007000`) for High, orange (`FF8C00`) for Medium, red (`C00000`) for Low
 - Valuation scenario table: color Bull row green, Base row neutral, Bear row red
-- Source citations in small italic (10pt) immediately below the relevant paragraph
+- Source citations: `doc.add_paragraph()` with `run.italic = True; run.font.size = Pt(10)`
 
 **Required table rules (from CLAUDE.md):**
 - Initialize every table with `rows=1` (header only), then call `table.add_row()` for each data row — never use `rows=1+len(data)` upfront
