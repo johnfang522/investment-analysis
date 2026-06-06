@@ -13,9 +13,30 @@ A two-part framework for professional investors: (1) identify a credible emergin
 
 The user has invoked `/industry_trend_analysis` with the following argument: `$ARGUMENTS`
 
-If `$ARGUMENTS` is empty, ask the user to specify a theme or trend to analyze (e.g., "physical AI", "energy storage", "GLP-1 drugs", "quantum computing").
+### Argument resolution — do this before anything else
 
-Otherwise, treat `$ARGUMENTS` as the theme/trend to analyze. Perform the full two-part framework below, supplementing with `WebSearch` to find current named companies, recent capital flows, talent movements, regulatory developments, and cost curve data specific to the theme.
+**Step A — Classify the argument:**
+
+1. **Empty argument:** Ask the user to specify a theme or trend to analyze (e.g., "physical AI", "energy storage", "GLP-1 drugs", "quantum computing"). Do not proceed until they answer.
+
+2. **Looks like a stock ticker** (1–5 uppercase letters, or a recognisable company name like "nvts", "nvda", "tsmc", "arm"): Do NOT run the analysis on the company — run it on the industry theme the company represents.
+   - First, use `WebSearch` to identify what sector/theme the ticker is primarily known for (e.g., `NVTS` → GaN/SiC wide-bandgap power semiconductors; `NVDA` → AI accelerator / GPU compute; `ARM` → CPU/SoC IP licensing; `LLY` → GLP-1 / obesity drugs).
+   - Derive a clear, descriptive theme name from that research (e.g., "GaN/SiC Wide-Bandgap Power Semiconductors", "AI GPU Compute & Accelerator Infrastructure").
+   - State the mapping explicitly before proceeding: *"Argument detected as ticker [X]. Mapping to theme: [Theme Name]. Running analysis on the theme, not the individual stock."*
+   - The input ticker's company **will appear** in the value chain map at the appropriate layer alongside all other relevant companies — it does not get special treatment or a dedicated focus section.
+
+3. **Looks like a theme or descriptive phrase** (e.g., "humanoid robotics", "nuclear energy", "quantum computing", "edge AI inference"): Treat it directly as the theme and proceed.
+
+In all non-empty cases, perform the full framework below, supplementing with `WebSearch` to find current named companies, recent capital flows, talent movements, regulatory developments, and cost curve data specific to the theme.
+
+### Theme-first, ticker-neutral rule
+
+Regardless of whether the argument was a ticker or a theme name, the entire analysis must be **theme-first and ticker-neutral**:
+- Every value chain layer lists **all materially relevant companies** — not just the input ticker's company.
+- No section of the analysis focuses exclusively on the input ticker.
+- The input ticker's company is listed where it belongs in the value chain alongside its peers, with the same level of detail.
+- The document filename uses the **derived theme name**, not the ticker (e.g., `gan_sic_wbg`, not `nvts`).
+- The document title reflects the theme, with a subtitle noting the triggering argument if it was a ticker (e.g., "Triggered by: NVTS — mapped to GaN/SiC WBG theme").
 
 ---
 
@@ -232,12 +253,12 @@ Do not rely on training data alone for company names, funding amounts, or regula
 After producing the full analysis, save it as a Word document using `python-docx`.
 
 - **Output path:** `Outputs/industry_trend_analysis_{theme}_{yyyymmdd}.docx`
-  - Replace `{theme}` with the theme argument, lowercased, spaces replaced with underscores (e.g., `physical_ai`, `energy_storage`).
+  - `{theme}` is always the **derived theme name**, lowercased with spaces replaced by underscores — never the raw ticker symbol (e.g., `gan_sic_wbg`, `physical_ai`, `energy_storage`). If the argument was a ticker, use the theme you mapped it to.
   - Replace `{yyyymmdd}` with today's date in YYYYMMDD format.
   - Example: `Outputs/industry_trend_analysis_physical_ai_20260420.docx`
 
 Write and execute a Python script using `.venv/Scripts/python` that:
-1. Creates the document with a title heading matching the theme.
+1. Creates the document with a title heading matching the **derived theme name** (never the raw ticker). If the argument was a ticker, add a subtitle line: `"Triggered by: [TICKER] — mapped to [Theme Name]"`.
 2. **Set portrait orientation and narrow page margins** immediately after creating the document:
    ```python
    from docx.shared import Inches

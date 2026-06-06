@@ -19,13 +19,30 @@ The goal is always to find the *next* one of these before the public market pric
 
 The user has invoked `/emerging_industry_trend` with the following argument: `$ARGUMENTS`
 
-If `$ARGUMENTS` is empty, ask the user whether they want to:
-(a) scan broadly for the most promising emerging trends right now, or
-(b) evaluate a specific theme they have in mind.
+### Argument resolution — do this before anything else
 
-Otherwise, treat `$ARGUMENTS` as the theme or question to investigate and run the full three-part framework below.
+**Step A — Classify the argument:**
 
-In either case, **always begin with Step 0 web research** before scoring the signals.
+1. **Empty argument:** Ask the user whether they want to (a) scan broadly for the most promising emerging trends right now, or (b) evaluate a specific theme they have in mind. Do not proceed until they answer.
+
+2. **Looks like a stock ticker** (1–5 uppercase letters, or a recognisable company name like "nvts", "nvda", "tsmc", "arm"): Do NOT run the analysis on the company — run it on the industry theme the company represents.
+   - First, use `WebSearch` to identify what sector/theme the ticker is primarily known for (e.g., `NVTS` → GaN/SiC wide-bandgap power semiconductors; `NVDA` → AI accelerator / GPU compute; `ARM` → CPU/SoC IP licensing).
+   - Derive a clear, descriptive theme name from that research (e.g., "GaN/SiC Wide-Bandgap Power Semiconductors", "AI GPU Compute & Accelerator Infrastructure").
+   - State the mapping explicitly before proceeding: *"Argument detected as ticker [X]. Mapping to theme: [Theme Name]. Running analysis on the theme, not the individual stock."*
+   - The input ticker's company **will appear** in the value chain map at the appropriate layer alongside all other relevant companies — it does not get special treatment or a dedicated focus section.
+
+3. **Looks like a theme or descriptive phrase** (e.g., "humanoid robotics", "nuclear energy", "quantum computing", "edge AI inference"): Treat it directly as the theme and proceed.
+
+In all non-empty cases, **always begin with Step 0 web research** before scoring the signals.
+
+### Theme-first, ticker-neutral rule
+
+Regardless of whether the argument was a ticker or a theme name, the entire analysis must be **theme-first and ticker-neutral**:
+- The value chain map lists **all materially relevant companies** at each layer — not just the input ticker's company.
+- No section of the analysis focuses exclusively on the input ticker.
+- The input ticker's company is listed where it belongs in the value chain (Layer 1, 2, 3, etc.) with the same level of detail as its peers.
+- The document filename uses the **derived theme name**, not the ticker (e.g., `gan_sic_wbg`, not `nvts`).
+- The document title reflects the theme (e.g., "Emerging Industry Trend: GaN / SiC Wide-Bandgap Power Semiconductors"), with a subtitle noting the triggering argument if it was a ticker (e.g., "Triggered by: NVTS — mapped to GaN/SiC WBG theme").
 
 ---
 
@@ -256,13 +273,13 @@ Follow the table with bullets:
 After producing the full analysis in chat, save it as a Word document using `python-docx`.
 
 - **Output path:** `Outputs/emerging_industry_trends_{theme}_{yyyymmdd}.docx`
-  - If a specific theme was provided: replace `{theme}` with the theme argument, lowercased, spaces replaced with underscores (e.g., `edge_ai_compute`, `quantum_computing`).
+  - `{theme}` is always the **derived theme name**, lowercased with spaces replaced by underscores — never the raw ticker symbol (e.g., `gan_sic_wbg`, `ai_gpu_compute`, `humanoid_robotics`). If the argument was a ticker, use the theme you mapped it to.
   - If a broad scan was run: use `broad_scan` as the theme (e.g., `Outputs/emerging_industry_trends_broad_scan_20260509.docx`).
   - Replace `{yyyymmdd}` with today's date in YYYYMMDD format.
 
 Write and execute a Python script using `.venv/Scripts/python` that:
 
-1. Creates the document with a title heading matching the theme.
+1. Creates the document with a title heading matching the **derived theme name** (never the raw ticker). If the argument was a ticker, add a subtitle line: `"Triggered by: [TICKER] — mapped to [Theme Name]"`.
 2. **Set portrait orientation and narrow page margins** immediately after creating the document:
    ```python
    from docx.shared import Inches
