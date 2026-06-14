@@ -5,7 +5,9 @@ description: >
 
 # Industry Deep Dive Framework
 
-A six-section structural analysis of how an industry actually works — its competitive mechanics, business model economics, key players, and moat sources. Designed as an industry primer that complements `/emerging_industry_trend` (bottleneck hunting) and `/industry_trend_analysis` (value chain stock mapping).
+A structural analysis of how an industry actually works — its competitive mechanics, business model economics, key players, and moat sources. Designed as an industry primer that complements `/emerging_industry_trend` (bottleneck hunting) and `/industry_trend_analysis` (value chain stock mapping).
+
+**House style — buy-side, for the PM.** Write this as a hedge-fund analyst, not a textbook. Every structural finding must ladder up to "so what for the book" — is this industry structurally attractive to be long or to short, where do the economics concentrate, and which incumbents hold the moat. End with a directional **industry posture** (conviction + how to express) and a mandatory **variant view** on where consensus is wrong about the industry's structure.
 
 ---
 
@@ -139,9 +141,25 @@ Follow the table with a single bold bullet: **Primary moat source:** identify th
 
 ---
 
+## Section 6 — Variant View & Industry Posture
+
+**Variant View — Consensus vs. Our Read** (table):
+
+| Debate | Consensus View | Our Read |
+|---|---|---|
+| [The structural debate that matters most — e.g., is rivalry permanently compressing margins?] | [what the Street/consensus believes] | [our differentiated read + evidence] |
+| [Second debate — e.g., is the moat durable or eroding?] | [consensus] | [our read] |
+
+Then a bold **Industry Posture** verdict:
+- **Structural attractiveness:** Attractive / Mixed / Unattractive — **Conviction X/10**
+- **How to express it:** one line — e.g., "long the bottleneck/moat holders, short the commoditized integrators," or "avoid until rivalry resolves"
+- **The edge:** one sentence — what the market misunderstands about this industry's structure and why we think we're right
+
+---
+
 ## Output Format
 
-Produce all six sections in chat first (Summary through Barriers + Sources). Use **tables** and **bullet points** throughout — no dense prose paragraphs except Section 0.
+Produce all sections in chat first (Summary through Variant View & Posture + Sources). Use **tables** and **bullet points** throughout — no dense prose paragraphs except Section 0.
 
 Then save as a Word document.
 
@@ -186,8 +204,9 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
    - Bargaining Power of Buyers: `FFF2CC` (light yellow)
    - Threat of Substitutes: `FCE4D6` (light orange)
    - Competitive Rivalry: `F4CCCC` (light red/pink)
-7. Ends with a **Sources** section (Heading 1) listing all URLs cited as bullet points.
-8. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
+7. Renders **Section 6 — Variant View & Industry Posture**: the 3-column Variant View table (dark-blue header row), then the bold Industry Posture verdict (color the attractiveness label green `007000` for Attractive, neutral for Mixed, red `C00000` for Unattractive).
+8. Ends with a **Sources** section (Heading 1) listing all URLs cited as bullet points.
+9. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
 9. Saves the file to the output path and prints the path.
 
 ---
@@ -224,6 +243,11 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
 - One table: Barrier Type | Strength | Examples / Evidence (3 columns).
 - After the table, one bold bullet: "Primary moat source:" with the 1–2 dominant barriers and which incumbents hold them.
 
-#### Section 6 — Sources
-- Heading 1: "6. Sources"
+#### Section 6 — Variant View & Industry Posture
+- Heading 1: "6. Variant View & Industry Posture"
+- One table: Debate | Consensus View | Our Read (3 columns), dark-blue header row.
+- After the table, the bold **Industry Posture** verdict: structural attractiveness label + Conviction X/10, a "How to express it" line, and a bold "The edge:" bullet.
+
+#### Section 7 — Sources
+- Heading 1: "7. Sources"
 - Bullet list of all URLs cited during the analysis (title + URL).

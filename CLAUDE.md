@@ -105,7 +105,20 @@ The intended workflow runs in four stages:
 - `/key_stock_metrics` always re-fetches fresh data via `fetch_all()` before computing metrics, even if JSON files already exist
 - Skills read local JSON from `Outputs/` first, run `yahoo_finance_data.py` if missing, then supplement with `WebSearch` for analyst estimates, guidance, and any N/A values
 - Each analysis skill generates matplotlib charts (saved as PNGs to `Outputs/`), then writes and executes a `python-docx` script inline to embed the charts and produce the `.docx`
-- `/single_name_stock_analysis` always re-fetches fresh Yahoo Finance data and re-runs all 9 individual analyses in sequence (including `/leadership_analysis`), then synthesizes a 2–3 page Wall Street–style research note (BUY/HOLD/SELL with price target), and finally assembles all documents into a single `_research_package_` Word file with page numbers
+- `/single_name_stock_analysis` always re-fetches fresh Yahoo Finance data and re-runs all 9 individual analyses in sequence (including `/leadership_analysis`), then synthesizes a 2–3 page hedge-fund research note (conviction score + LONG/SHORT/PASS with price target), and finally assembles all documents into a single `_research_package_` Word file with page numbers
+
+## Hedge-Fund House Style
+
+Every analysis skill is written for a **buy-side portfolio manager (PM)** to digest — not a sell-side client. All skills share one consistent house style. When editing an existing skill or adding a new one, conform to this:
+
+- **Persona:** the author is a **buy-side analyst at a hedge fund** writing for the PM. Thesis-first, directional, and opinionated. Lead each section with the conclusion ("so what for the long/short"), not a description of what the section covers. No balanced sell-side hedging — take a side and defend it with numbers.
+- **Verdict — two templates depending on skill type:**
+  - **Full-call skills** (`single_name_stock_analysis`, `ai_company_deep_dive`, `valuation_analysis`, `technical_analysis`) render a **Verdict** block with: directional bias (**LONG / SHORT / PASS**), a **Conviction score X/10**, current price, **12-month price target (+%)**, **stop / invalidation level (−%)**, **risk/reward ratio**, and **sizing** (Core / Starter / Tactical / Avoid).
+  - **Component skills** (`business_overview`, `leadership`, `income_statement`, `balance_sheet`, `cash_flow`, `growth_and_profitability`, `business_potential`) render a **Read-Through to the Call** block: a directional **Signal (BULLISH / NEUTRAL / BEARISH for the thesis)**, a **dimension conviction X/10**, a one-line "so what" for the long/short, and a one-line "what flips it."
+  - **Theme/macro skills** (`emerging_industry_trend`, `industry_trend_analysis`, `industry_deep_dive`, `market_sentiment_analysis`) render a directional **posture** call (e.g., theme conviction X/10 with how to express it — long basket / pair trade / underweight; or for market sentiment a Risk-On / Neutral / Risk-Off net-exposure posture with conviction X/10).
+- **Conviction scale (X/10):** 9–10 = highest-conviction book position · 7–8 = high · 5–6 = moderate / starter · 3–4 = low / watchlist · 1–2 = avoid or short candidate. This **replaces the old X/5 "Rating" blocks** — no skill should still emit an "Overall Rating X/5."
+- **Variant View — mandatory in every note.** Every skill must include a **"Variant View — Consensus vs. Our Read"** section: a small 3-column table (debate | consensus / sell-side view | our differentiated read with the number behind it), followed by a one-line **"The edge:"** bullet naming what the market is mispricing and why we think we are right. This is the buy-side value-add and is non-negotiable.
+- **Word rendering:** the Verdict / Read-Through block is rendered in bold (full-call verdicts use a colored Heading-1-style line: green `007000` for LONG / Risk-On, red `C00000` for SHORT / Risk-Off, neutral for PASS). The Variant View table follows the standard table rules below.
 
 ## Word Document Generation
 

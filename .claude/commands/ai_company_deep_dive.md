@@ -7,7 +7,9 @@ description: A structured framework for conducting a comprehensive deep dive on 
 
 **Input:** A stock ticker symbol (e.g., `NVDA`, `MSFT`, `PLTR`).
 
-**Important — objectivity first:** Before proceeding, assess whether the company genuinely has AI as a core revenue driver or structural moat. If AI is a peripheral feature, marketing language, or has no measurable revenue impact, say so clearly and note that AI narrative may not apply. Do not force an AI thesis onto names that do not warrant it.
+**House style — buy-side, for the PM.** Write this as a senior hedge-fund analyst building a book position for the portfolio manager. Thesis-first, directional, opinionated: the deliverable is a **LONG / SHORT / PASS** call with a conviction score, price target, stop, and risk/reward — not a balanced sell-side profile. Lead every section with the conclusion ("so what for the trade?"). The variant view (where we differ from consensus) and the chokepoint analysis are the core value-add.
+
+**Important — objectivity first:** Before proceeding, assess whether the company genuinely has AI as a core revenue driver or structural moat. If AI is a peripheral feature, marketing language, or has no measurable revenue impact, say so clearly and note that AI narrative may not apply. Do not force an AI thesis onto names that do not warrant it — an "AI-washing" short or PASS is a perfectly valid output.
 
 ---
 
@@ -255,16 +257,43 @@ Always explicitly identify and weigh:
 
 ---
 
-## Step 9: Synthesis & Investment Thesis
+## Step 9: Synthesis, Verdict & Investment Thesis
+
+### Verdict
+
+**Conviction X / 10 · LONG / SHORT / PASS**
+
+| | |
+|---|---|
+| Bias | **LONG / SHORT / PASS** |
+| Conviction | **X / 10** |
+| Current Price | $X.XX |
+| Price Target (12-mo, base case) | **$X.XX (+/- X%)** |
+| Stop / Invalidation | $X.XX (−X%) — name the thesis-breaking level or event |
+| Risk/Reward (Bull vs. Bear from Step 7) | X.X : 1 |
+| Sizing | Core (chokepoint confirmed) / Starter (beneficiary with optionality) / Tactical / Avoid |
+
+*Conviction scale: 9–10 = highest-conviction book position · 7–8 = high · 5–6 = moderate/starter · 3–4 = low/watchlist · 1–2 = avoid or short candidate*
+
+### Variant View — Consensus vs. Our Read
+
+The core value-add. State precisely where we diverge from consensus — agreeing with the Street is not a trade.
+
+| Debate | Consensus / Sell-Side | Our View |
+|--------|-----------------------|----------|
+| [The chokepoint / moat debate that decides the stock] | [what consensus assumes — cite multiple or estimate] | [our differentiated read + the number] |
+| [Second debate — e.g., AI revenue durability, hyperscaler threat] | [consensus] | [our view] |
+
+- **The edge:** [1 sentence — what the market is mispricing, why we're right, and the catalyst that closes the gap]
+
+### Investment Thesis
 
 Write a 3–5 sentence thesis that answers:
 
 1. **What does this company do, and does AI genuinely make it more valuable over time — or is that narrative overstated?**
 2. **Does it hold a chokepoint in the AI stack?** If yes, how durable is it and what would break it? If no, say so.
-3. **What is the key variant view** — what does the market or consensus misunderstand?
-4. **What is the expected return and over what time horizon?**
-5. **What is the position sizing logic** — high-conviction core (chokepoint confirmed), AI beneficiary with upside optionality, or speculative?
-6. **What would make you wrong, and what is the exit trigger?**
+3. **What is the expected return and over what time horizon**, and how does it map to the conviction score above?
+4. **What would make you wrong, and what is the exit trigger** (tie to the stop / invalidation level)?
 
 ---
 
@@ -298,6 +327,8 @@ Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_company_deep_di
 - All tables use dark blue header rows (fill `1F3864`, white bold text), 12pt data rows
 - Chokepoint scoring table: color the Score column cell green (`007000`) for High, orange (`FF8C00`) for Medium, red (`C00000`) for Low
 - Valuation scenario table: color Bull row green, Base row neutral, Bear row red
+- **Verdict block (Step 9):** render the Bias line as a colored Heading-1-style line — green `007000` for LONG, red `C00000` for SHORT, neutral for PASS — followed by the Verdict table
+- **Variant View table (Step 9):** render with the dark-blue header row (fill `1F3864`, white bold text); this section is mandatory
 - Source citations: `doc.add_paragraph()` with `run.italic = True; run.font.size = Pt(10)`
 
 **Required table rules (from CLAUDE.md):**

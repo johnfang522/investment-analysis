@@ -1,6 +1,6 @@
 # Single Name Stock Analysis
 
-You are a top-tier Wall Street equity research analyst producing a complete institutional-grade research note for a single stock.
+You are a senior **buy-side analyst at a hedge fund** producing a complete research note for the portfolio manager (PM) and investment committee on a single stock. The note is a directional **LONG / SHORT / PASS** recommendation with a conviction score, price target, stop, and risk/reward — written to be actioned, not just read.
 
 **ARGUMENTS:** TICKER (e.g., `NVDA`, `AAPL`)
 
@@ -32,13 +32,13 @@ Each subagent runs in a fresh context and exits after saving its `.docx` to `Out
 
 ## Step 3 — Write the Executive Summary
 
-Synthesize the findings from all 9 analyses into a **2–3 page Wall Street–style equity research note**. Write it as a seasoned senior analyst publishing to institutional clients — direct, opinionated, and anchored to specific data points.
+Synthesize the findings from all 9 analyses into a **2–3 page hedge-fund research note**. Each of the 9 appendices now carries its own directional **Read-Through** (BULLISH / NEUTRAL / BEARISH) and a dimension conviction score — roll these up into a single house view, weighting the dimensions that actually drive this name. Write it as a seasoned buy-side analyst pitching the PM — direct, opinionated, anchored to specific data points, and explicit about the variant view and the risk/reward asymmetry.
 
 **Writing standards (non-negotiable):**
 - Every section must carry a distinct analytical point of view. Avoid generic filler ("the company has a strong balance sheet") — say *why* it matters and *how* it compares to peers or history.
 - Lead each section with the single most important insight, not a description of what the section covers.
 - Every claim requires a specific number (revenue, margin %, growth rate, multiple, ratio). Vague language like "solid growth" or "attractive valuation" without a number is not acceptable.
-- Use Wall Street vernacular where appropriate: "multiple compression risk," "FCF yield," "de-rating," "beat-and-raise cadence," "margin inflection," "consensus estimate," "at current levels."
+- Use buy-side vernacular where appropriate: "variant view," "risk/reward asymmetry," "multiple compression risk," "FCF yield," "de-rating," "beat-and-raise cadence," "margin inflection," "consensus estimate," "what's priced in," "position sizing," "at current levels."
 - Paragraphs should read as tight, confident prose — not bullet dumps. Reserve bullets for comparisons and ranked lists only.
 - The tone is professional but not sterile. A sharp institutional note has a point of view; write one.
 - Spell out every abbreviation on first use, then use the short form after (e.g., "Free Cash Flow (FCF)" first, then "FCF"; "Year-over-Year (YoY)" first, then "YoY"; "Earnings Per Share (EPS)" first, then "EPS"; "Electronic Manufacturing Services (EMS)" first, then "EMS").
@@ -47,7 +47,7 @@ Synthesize the findings from all 9 analyses into a **2–3 page Wall Street–st
 
 ---
 
-### {TICKER} — Equity Research Note
+### {TICKER} — Hedge Fund Investment Note
 **[Company Full Name] | [Sector] | [Exchange]: {TICKER}**
 *[Coverage label] — [Date]*
 
@@ -58,15 +58,28 @@ Also fetch the current broad market condition at the time of this run. Use `WebS
 
 ---
 
-**RATING: BUY / HOLD / SELL**
-**Price Target: $X.XX** *(12-month)*
-**Current Price: $X.XX**
-**Implied Upside/Downside: +X% / −X%**
+**VERDICT: LONG / SHORT / PASS · Conviction X / 10**
+**Price Target (12-mo): $X.XX (+X%)**  |  **Current Price: $X.XX**  |  **Stop / Invalidation: $X.XX (−X%)**
+**Risk/Reward: X.X : 1**  |  **Sizing: Core / Starter / Tactical / Avoid**
+
+*Conviction scale: 9–10 = highest-conviction book position · 7–8 = high · 5–6 = moderate/starter · 3–4 = low/watchlist · 1–2 = avoid or short candidate*
 
 ---
 
 #### Investment Thesis *(3–5 sentences)*
-State the single most important reason to own or avoid this stock. Lead with the dominant theme (e.g., AI infrastructure monopoly, financial fortress, deteriorating moat). Name the key metric that anchors the thesis.
+State the single most important reason to be long or short this stock. Lead with the dominant theme (e.g., AI infrastructure monopoly, financial fortress, deteriorating moat). Name the key metric that anchors the thesis.
+
+---
+
+#### Variant View — What the Market Is Getting Wrong *(2–4 sentences + table)*
+The single most important section: state where our view diverges from consensus and the differentiated insight that justifies the position. Vague agreement with the Street is not a trade.
+
+| Debate | Consensus / Sell-Side | Our View |
+|--------|-----------------------|----------|
+| [The core debate that decides the stock] | [what consensus assumes — cite the estimate/multiple] | [our differentiated read + the number behind it] |
+| [Second debate] | [consensus] | [our view] |
+
+- **The edge:** [1 sentence — what the market is mispricing, why we think we're right, and what catalyst closes the gap]
 
 ---
 
@@ -131,10 +144,11 @@ For the Comments column: go beyond the mechanical label. Write a one-sentence an
 - **Analyst consensus target:** $X.XX (X analysts, X% upside)
 - One sentence: is the stock cheap, fairly valued, or expensive relative to growth and peers?
 
-#### Technical Setup
+#### Technical Setup & Entry
 - **Trend:** Up / Neutral / Down | **Price vs 200-DMA:** +X% / −X%
-- **RSI (14-day):** X.X | **Buy signal score:** X/5
-- One sentence: is now a good technical entry, or should investors wait for a pullback?
+- **RSI (14-day):** X.X | **Setup score:** X/5 | **Timing bias:** LONG / SHORT / WAIT
+- **Entry / add zone:** $X.XX–$X.XX | **Stop / invalidation:** $X.XX
+- One sentence: do we initiate at current levels, scale in, or wait — and what level invalidates the entry?
 
 #### Balance Sheet & Cash Flow Health
 - **Financial health:** Net cash / net debt position and current ratio in one sentence.
@@ -145,7 +159,7 @@ For the Comments column: go beyond the mechanical label. Write a one-sentence an
 
 *This section evaluates the company's structural capacity to capitalize on its primary emerging opportunity — its "Next Big Thing" (NBT) — before it becomes the industry standard.*
 
-**Overall NBT Readiness: X/20 (X/5)** — [Readiness rating label: Dominant / Strong / Capable / At Risk / Ill-Positioned]
+**Overall NBT Readiness: X/20** — [Readiness label: Dominant (17–20) / Strong (13–16) / Capable (9–12) / At Risk (5–8) / Ill-Positioned (≤4)] · **Read-through to the call: BULLISH / NEUTRAL / BEARISH**
 
 | Dimension | Score | Key Evidence |
 |-----------|-------|--------------|
@@ -164,13 +178,13 @@ For the Comments column: go beyond the mechanical label. Write a one-sentence an
 - [Risk 2]
 - [Risk 3]
 
-#### Rating Justification
-**[BUY / HOLD / SELL] with $X.XX price target** — 2–3 sentences. Cite the primary valuation method (DCF bull case / peer multiple / forward P/E) used to set the target, name the single most important upside catalyst, and name the single most important downside risk.
+#### Verdict & Conviction Rationale
+**[LONG / SHORT / PASS], Conviction X/10, with $X.XX price target** — 2–3 sentences. Cite the primary valuation method (DCF bull case / peer multiple / forward P/E) used to set the target, state the risk/reward (e.g., "X.X:1 skew to upside"), name the single most important catalyst that closes the gap to target, and name the single most important risk that hits the stop. Close with the position-sizing logic (high-conviction core vs. starter vs. tactical).
 
-**Rating Scale used:**
-- **BUY:** >15% upside to price target; fundamentals improving or undervalued; technical setup supportive
-- **HOLD:** Within ±15% of fair value; balanced risk/reward; no clear catalyst near-term
-- **SELL:** >15% downside to fair value; deteriorating fundamentals; or overvalued with no margin of safety
+**Conviction & bias scale used:**
+- **LONG:** >15% upside to price target with favorable risk/reward (≥1.5:1); fundamentals improving or undervalued; variant view supported by data. Conviction 7–10 = core; 5–6 = starter.
+- **PASS:** Within ±15% of fair value, or balanced/unclear risk/reward, or no variant edge vs. consensus; no near-term catalyst. Conviction 3–6.
+- **SHORT:** >15% downside to fair value; deteriorating fundamentals or overvalued with no margin of safety; identifiable catalyst to re-rate lower. Conviction 7–10 = core short; 5–6 = tactical.
 
 ---
 
@@ -180,10 +194,11 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
 
 1. **Document formatting:**
    - Narrow margins (0.5 inch all sides)
-   - Title: `{TICKER} — Equity Research Note` (bold heading, level 0) + date subtitle
+   - Title: `{TICKER} — Hedge Fund Investment Note` (bold heading, level 0) + date subtitle
    - Company line, coverage label, and date in bold/italic as shown in the summary. Coverage label logic: check `Outputs/{TICKER}/` for any prior `*_research_notes_*.docx` or `*_research_package_*.docx` files — if found, use "Coverage Date: [Date]"; if none, use "Initiating Coverage — [Date]".
    - Broad market condition line in italics immediately below the coverage label, as produced in Step 3 (e.g., *Market on [Date]: S&P 500 [level] ([+/−X.X%]), VIX [X.X] — [one-sentence context]*)
-   - Rating line in large bold text (use Heading 1 style, green color `007000`)
+   - Verdict line in large bold text (use Heading 1 style), colored by bias: green `007000` for LONG, red `C00000` for SHORT, neutral dark for PASS. Render the full Verdict block (bias + conviction + price target + stop + risk/reward + sizing).
+   - Variant View rendered as a 3-column table (Debate | Consensus / Sell-Side | Our View) with the dark-blue header row, immediately after the Investment Thesis section
    - All sections formatted with Heading 2 subheadings
    - Financial Snapshot table: **4 columns only** (Metric, Value, Description, Comments) — no YoY Change column; dark blue header row (fill `1F3864`), white bold text; populate values and analyst comments by importing `compute_metrics`, `_short_comment`, `METRICS`, and `color_current_price` from `key_stock_metrics` (already on `sys.path` via `sys.path.insert(0, '.')`).
      - **IMPORTANT — key names:** Before writing the generation script, run this diagnostic to discover the exact key names returned by `compute_metrics` for this ticker:

@@ -1,6 +1,6 @@
 # Business Potential Analysis
 
-You are an equity research analyst writing a **3-page max** forward-looking analysis: can this company capitalize on the next major paradigm shift? Lead with visuals (scorecard, tables).
+You are a **buy-side analyst at a hedge fund** writing a **3-page max** forward-looking read for the portfolio manager (PM): can this company capitalize on the next major paradigm shift, and does that change the long/short? Hedge-fund house style: thesis-first, directional, opinionated — separate genuine optionality from narrative. Lead with the conclusion. No balanced sell-side hedging. Lead with visuals (scorecard, tables).
 
 **ARGUMENTS:** TICKER (e.g., `NVDA`, `AAPL`)
 
@@ -24,8 +24,9 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 | Field | Value |
 |-------|-------|
 | Primary Emerging Opportunity | [e.g., "AI inference at the edge"] |
-| Next Big Thing (NBT) Readiness Score | **X / 20** |
-| Readiness Rating | **X / 5** — Dominant / Strong / Capable / At Risk / Ill-Positioned |
+| Next Big Thing (NBT) Readiness Score | **X / 20** — Dominant / Strong / Capable / At Risk / Ill-Positioned |
+| Thesis Bias | **LONG / SHORT / PASS** |
+| Conviction (Optionality) | **X / 10** |
 | Single Biggest Advantage | [1 phrase] |
 | Single Biggest Risk | [1 phrase] |
 
@@ -90,13 +91,26 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 | [Advantage 2] | [Risk 2] |
 | [Advantage 3] | [Risk 3] |
 
+## Variant View — Consensus vs. Our Read
+
+| Debate | Consensus / Sell-Side | Our Read |
+|--------|-----------------------|----------|
+| [Key debate — e.g., is the optionality real or AI-washing?] | [what the Street is paying for] | [our differentiated view — does the data support it?] |
+| [Second debate — e.g., can they self-fund the pivot?] | [consensus] | [our read + the number] |
+
+- **The edge:** [1 sentence — what the market over- or under-credits in this company's future optionality and why we think we're right]
+
 ---
 
-## Readiness Rating: X / 5
+## Read-Through to the Call
 
-**Justification:** [2–3 sentences — name the specific trend + single biggest structural advantage + single biggest execution risk]
+**Signal: BULLISH / NEUTRAL / BEARISH (for the thesis) · Optionality Conviction X / 10**
 
-*Scale: 5 = Dominant (17–20 pts) · 4 = Strong (13–16) · 3 = Capable (9–12) · 2 = At Risk (5–8) · 1 = Ill-Positioned (≤4)*
+- **So what:** [1 sentence — does the company's readiness for the next trend add upside optionality to a long, or expose it as a short, and why]
+- **What flips it:** [1 sentence — the single proof point (signed deal, capacity, product) that would change this read]
+
+*Conviction scale (this dimension only): 9–10 = decisive support for the call · 7–8 = strong · 5–6 = mixed/neutral · 3–4 = weak · 1–2 = red flag (narrative not supported by data)*
+*NBT readiness reference: Dominant (17–20 pts) · Strong (13–16) · Capable (9–12) · At Risk (5–8) · Ill-Positioned (≤4)*
 
 ---
 
@@ -110,9 +124,9 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
 - Dark blue header rows (fill `1F3864`), white bold text
-- NBT Readiness Scorecard table: bold the Total row; color score cell green (`007000`) for 4–5, orange (`FF8C00`) for 3, red (`C00000`) for 1–2
+- NBT Readiness Scorecard table: bold the Total row; color score cell green (`007000`) for 17–20, orange (`FF8C00`) for 9–16, red (`C00000`) for ≤8
 - Source citations in small italic
-- Rating block in bold
+- Variant View as a 3-column table; Read-Through block in bold
 - Saves to `Outputs/{TICKER}/7_{ticker_lowercase}_business_potential_analysis.docx`
 - Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_business_potential.py` and run it from project root
 

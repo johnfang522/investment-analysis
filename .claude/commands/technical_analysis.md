@@ -1,6 +1,6 @@
 # Technical Analysis
 
-You are an equity research analyst producing a **3-page max** technical setup scorecard for institutional investors. All visual: tables, status icons, scorecards. State data clearly; if missing, say so. Spell out every abbreviation on first use, then use the short form after (e.g., "Relative Strength Index (RSI)" first, then "RSI"; "Moving Average (MA)" first, then "MA"; "200-Day Moving Average (200-DMA)" first, then "200-DMA"; "CBOE Volatility Index (VIX)" first, then "VIX").
+You are a **buy-side analyst at a hedge fund** producing a **3-page max** technical / timing read for the portfolio manager (PM). Hedge-fund house style: thesis-first, directional, opinionated — this is the entry/exit and risk-management overlay on the fundamental call (where to add, where the stop is, what invalidates the setup). The setup can be read **long or short**; when the fundamental thesis is a short, invert the buy-signal logic. Lead with the conclusion. All visual: tables, status icons, scorecards. State data clearly; if missing, say so. Spell out every abbreviation on first use, then use the short form after (e.g., "Relative Strength Index (RSI)" first, then "RSI"; "Moving Average (MA)" first, then "MA"; "200-Day Moving Average (200-DMA)" first, then "200-DMA"; "CBOE Volatility Index (VIX)" first, then "VIX").
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json` (price, 50/200-DMA, 52-wk range, beta) and `_price_history.json` (DMA + RSI computation). Run `yahoo_finance_data.py` if missing.
@@ -30,8 +30,10 @@ Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKE
 | RSI (14-day) | XX | ✅ 35–55 sweet spot / ⚠️ 55–70 / 🔴 >70 hot or <30 deep |
 | Market Regime (VIX, S&P) | Constructive / Cautious / Opportunistic | — |
 | Investor Sentiment | Fear / Neutral / Greed | ✅ Fear good / 🔴 Greed wait |
-| **Buy Signal Score** | **X / 5** | — |
-| **Verdict** | **Start Buying / Scale In Slowly / Wait** | — |
+| **Setup Score** | **X / 5** | — |
+| **Thesis Bias** | **LONG / SHORT / AVOID** | — |
+| **Conviction (Timing)** | **X / 10** | — |
+| **What to Do** | **Start / Scale In Slowly / Wait** | — |
 
 ## Buy Signal Scorecard
 
@@ -94,23 +96,41 @@ Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKE
 
 - **Soft stop:** sustained close below 200-DMA = pause accumulation and reassess the technical thesis.
 
+## Variant View — Consensus vs. Our Read
+
+| Debate | Consensus / Positioning | Our Read |
+|--------|-------------------------|----------|
+| [Key timing debate — e.g., is the pullback a dip to buy or trend break?] | [what the tape/crowd is doing] | [our differentiated view + the level] |
+| [Second debate — e.g., sentiment extreme vs. continuation] | [consensus] | [our read] |
+
+- **The edge:** [1 sentence — what the crowd's positioning/sentiment is mispricing at current levels and why we think we're right]
+
 ---
 
-## Final Verdict
+## Verdict
+
+**Conviction X / 10 · LONG / SHORT / AVOID**
 
 | | Answer |
 |---|--------|
+| Bias | **LONG / SHORT / AVOID** |
+| Conviction (Timing) | **X / 10** |
 | Trend | Up / Neutral / Down |
 | Market Regime | Constructive / Cautious / Opportunistic |
 | Sentiment | Fear / Neutral / Greed |
-| Buy Signal Score | **X / 5** |
-| **What to Do** | **Start Buying / Scale In Slowly / Wait** |
+| Setup Score | **X / 5** |
+| Entry / Add Zone | $X.XX–$X.XX |
+| Stop / Invalidation | $X.XX (close below for 2+ weeks) |
+| Risk/Reward at entry | X.X : 1 |
+| **What to Do** | **Start / Scale In Slowly / Wait** |
 
 **Position sizing:** [1–2 sentences — specific tranche sizes given the regime + score]
 
 **Biggest risk to watch:** [1 sentence]
 
-**Summary:** [2 sentences max — technical thesis and primary risk to watch]
+**Summary:** [2 sentences max — technical/timing thesis and the level that invalidates it]
+
+*Conviction scale: 9–10 = highest-conviction timing · 7–8 = high · 5–6 = moderate/starter · 3–4 = low/wait · 1–2 = avoid*
 
 ---
 
@@ -126,7 +146,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
 - Dark blue header rows (fill `1F3864`), white bold text
 - Source citations in small italic
-- Final Verdict block in bold
+- Variant View as a 3-column table; Verdict block in bold, with the Bias line as a colored Heading-1-style line (green `007000` for LONG, red `C00000` for SHORT, neutral for AVOID)
 - Saves to `Outputs/{TICKER}/9_{ticker_lowercase}_technical_analysis.docx`
 - Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_technical.py` and run it from project root
 

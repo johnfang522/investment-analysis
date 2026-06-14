@@ -7,6 +7,8 @@ description: >
 
 A two-part framework for professional investors: (1) identify a credible emerging trend using 5 convergence signals, and (2) map the full value chain to surface stocks at every layer.
 
+**House style — buy-side, for the PM.** Write this as a hedge-fund analyst building a thematic book, not a strategist publishing a survey. The deliverable is actionable: a directional **theme posture** (theme conviction X/10 + how to express it — long basket, pair trade, or underweight), an explicit **variant view** on where consensus is wrong, and layer-level overweight/underweight calls. Lead with the conclusion; the signals and value chain justify it.
+
 ---
 
 ## Instructions
@@ -224,7 +226,16 @@ Present as a table:
 
 ### 5. Positioning Recommendation
 
-2–4 paragraphs. Given where we are in the cycle, suggest how to weight across layers (e.g., "overweight Infrastructure and Bottlenecks; underweight Applications until revenue models clarify"). Call out any crowding risk,
+**Open with the Variant View — Consensus vs. Our Read** (table). This is the buy-side value-add: where do we diverge from how the market is currently positioned on this theme?
+
+| Debate | Consensus / Crowded View | Our Read |
+|---|---|---|
+| [The core debate on the theme — e.g., which layer captures the economics?] | [where the market is positioned + why] | [our differentiated read + evidence] |
+| [Second debate — e.g., is the timing earlier/later than consensus thinks?] | [consensus] | [our read] |
+
+**Theme posture:** state a directional verdict — **Theme Conviction X/10** and **how to express it** (e.g., "long a basket of Layer 1 + Layer 6 names; pair against crowded Layer 4 applications," or "monitor only — too early to size"). Add a one-line **The edge:** naming what consensus is mispricing.
+
+Then 2–4 paragraphs. Given where we are in the cycle, suggest how to weight across layers (e.g., "overweight Infrastructure and Bottlenecks; underweight Applications until revenue models clarify"). Call out any crowding risk,
 valuation excess, or consensus positioning to fade. Be specific about which named companies or types look most attractive vs. most risky at this stage. Reference the TAM Expansion Analysis findings where relevant.
 
 ---
@@ -338,7 +349,9 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 
 #### Section 5 — Positioning Recommendation
 - Heading 1: "5. Positioning Recommendation"
-- Open with a **Layer Weighting Summary table** (3 columns: Layer | Weight | Rationale), where Weight is one of: Overweight / Neutral / Underweight. Keep Rationale to one short phrase.
+- **Open with the Variant View table** (3 columns: Debate | Consensus / Crowded View | Our Read), dark-blue header row.
+- Then a bold **Theme Posture** line: "Theme Conviction X/10 — [how to express it]", followed by a bold "The edge:" bullet.
+- Then a **Layer Weighting Summary table** (3 columns: Layer | Weight | Rationale), where Weight is one of: Overweight / Neutral / Underweight. Keep Rationale to one short phrase.
 - Then write **one bullet per named company or company type** you recommend acting on, formatted as: "**TICKER / Name** — [1-sentence action and reason]". Group bullets under bold sub-labels: **Overweight**, **Neutral**, **Underweight**.
 - Close with 1–2 prose paragraphs covering crowding risk, valuation caution, or entry timing nuance.
 

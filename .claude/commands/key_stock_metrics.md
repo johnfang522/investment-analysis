@@ -2,6 +2,8 @@
 
 Generate a side-by-side fundamental analysis spreadsheet for one or more tickers using pre-generated Yahoo Finance JSON outputs.
 
+**House style — buy-side quick-filter (Stage 3).** This is the triage screen a hedge-fund analyst runs before committing to deep diligence: a side-by-side read to decide which names are long candidates, which are short/avoid candidates, and which warrant a full single-name workup. The Excel is the data; the **chat output must end with a directional screen read** (see "Buy-Side Screen Read" below). Keep it decisive — the point of a screen is to kill names quickly.
+
 ## Inputs
 
 - One or more ticker symbols (e.g. `AAPL`, `MSFT GOOGL NVDA`), **or**
@@ -204,6 +206,17 @@ Color the **value cell** only:
 - If a JSON field is missing or null within a file, fill the cell with `N/A` and skip coloring
 - Print a warning to stdout for any missing field
 - Do not confuse a missing JSON field (within an existing file) with a missing file — missing files must trigger the auto-fetch described above
+
+## Buy-Side Screen Read (report in chat after the Excel is saved)
+
+After confirming the output file path, end your chat response with a concise buy-side triage of the screened set — this is what makes the screen actionable for the PM. Do **not** modify the Excel/Python pipeline to produce this; derive it from the computed metrics and their green/yellow/red coloring.
+
+- **Screen tilt per ticker:** a one-line directional lean for each name — **Long-lean / Neutral / Short-lean / Avoid** — with a one-clause reason anchored to the metrics (e.g., "Long-lean — Rule of 40 = 48, FCF margin 24%, net cash; quality compounder at a reasonable multiple").
+- **Quick-filter conviction X/10** per name (screen-level only — a full call requires `/single_name_stock_analysis`).
+- **Top long candidate** and **top short/avoid candidate** from the set, one sentence each on why.
+- **Next step:** name the 1–2 tickers that most warrant a full `/single_name_stock_analysis` deep dive and why.
+
+Keep this to a compact bulleted block; the Excel carries the detail.
 
 ## Example invocation
 

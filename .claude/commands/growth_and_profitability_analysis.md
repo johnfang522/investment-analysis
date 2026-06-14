@@ -1,6 +1,6 @@
 # Growth & Profitability Analysis
 
-You are a financial analyst writing a **3-page max** growth & profitability review for institutional investors. Lead with visuals (charts, tables, status icons).
+You are a **buy-side analyst at a hedge fund** writing a **3-page max** growth & profitability read for the portfolio manager (PM). Hedge-fund house style: thesis-first, directional, opinionated — every section answers "so what for the long/short call?" (is growth inflecting or rolling over, are margins compounding or peaking). Lead with the conclusion. No balanced sell-side hedging. Lead with visuals (charts, tables, status icons).
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json`, `_income_statement_annual.json`, and `_quick_metrics.json`. Run `yahoo_finance_data.py` if missing.
@@ -34,7 +34,8 @@ Produces `{ticker}_gp_revenue_trend.png`, `{ticker}_margin_trend.png`, `{ticker}
 | Net Margin | XX% | +/-X pp YoY |
 | EPS Growth (YoY) | +X% | ✅ >20% / ⚠️ 5–20% / 🔴 <5% |
 | Rule of 40 Score | XX | ✅ ≥40 / ⚠️ 30–39 / 🔴 <30 |
-| Overall Rating | **X / 5** | — |
+| Thesis Bias | **LONG / SHORT / PASS** | — |
+| Conviction (Growth Durability) | **X / 10** | — |
 
 ## Growth & Margins (YoY)
 
@@ -95,13 +96,25 @@ WebSearch for analyst consensus.
 | [Strength 2] | [Risk 2] |
 | [Strength 3] | [Risk 3] |
 
+## Variant View — Consensus vs. Our Read
+
+| Debate | Consensus / Sell-Side | Our Read |
+|--------|-----------------------|----------|
+| [Key debate — e.g., is growth decelerating faster than modeled?] | [consensus estimate/assumption] | [our differentiated view + the number] |
+| [Second debate — e.g., margin ceiling vs. operating leverage] | [consensus] | [our read] |
+
+- **The edge:** [1 sentence — where our growth/margin trajectory read diverges from consensus and why we think we're right]
+
 ---
 
-## Rating: X / 5
+## Read-Through to the Call
 
-**Justification:** [2 sentences — Rule of 40 + margin direction + biggest growth risk]
+**Signal: BULLISH / NEUTRAL / BEARISH (for the thesis) · Growth-Durability Conviction X / 10**
 
-*Scale: 5 = exceptional (Rule of 40 ≥60, expanding margins, consistent multi-year) · 4 = strong (40–59) · 3 = average (30–39) · 2 = weak · 1 = poor*
+- **So what:** [1 sentence — does the growth + margin profile support a long or a short, and why]
+- **What flips it:** [1 sentence — the single inflection (growth re-acceleration or margin roll-over) that would change this read]
+
+*Conviction scale (this dimension only): 9–10 = decisive support for the call · 7–8 = strong · 5–6 = mixed/neutral · 3–4 = weak · 1–2 = red flag*
 
 ---
 
@@ -117,7 +130,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
 - Dark blue header rows (fill `1F3864`), white bold text
 - Source citations in small italic
-- Rating block in bold
+- Variant View as a 3-column table; Read-Through block in bold
 - Saves to `Outputs/{TICKER}/6_{ticker_lowercase}_growth_and_profitability_analysis.docx`
 - Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_growth_profitability.py` and run it from project root
 

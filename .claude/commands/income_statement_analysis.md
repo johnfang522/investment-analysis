@@ -1,6 +1,6 @@
 # Income Statement Analysis
 
-You are a financial analyst writing a **3-page max** income statement analysis for institutional investors. Lead with visuals (charts, tables, status icons). No prose paragraphs.
+You are a **buy-side analyst at a hedge fund** writing a **3-page max** income statement read for the portfolio manager (PM). Hedge-fund house style: thesis-first, directional, opinionated — every section answers "so what for the long/short call?" Lead with the conclusion, not the description. No balanced sell-side hedging; take a side and defend it with numbers. Lead with visuals (charts, tables, status icons). No prose paragraphs.
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json` and `_quick_metrics.json`. Focus on most recent quarter. Run `yahoo_finance_data.py` if missing.
@@ -40,7 +40,8 @@ Produces `{ticker}_income_statement_flow.png` and `{ticker}_income_statement_tre
 | Operating Margin | XX% | +/-X pp YoY |
 | Net Margin | XX% | +/-X pp YoY |
 | EPS | $X.XX | ±$X.XX vs Est. |
-| Overall Rating | **X / 5** | — |
+| Thesis Bias | **LONG / SHORT / PASS** | — |
+| Conviction (P&L Quality) | **X / 10** | — |
 
 ## Income Statement Snapshot (YoY)
 
@@ -75,13 +76,25 @@ Produces `{ticker}_income_statement_flow.png` and `{ticker}_income_statement_tre
 | [Strength 2] | [Risk 2] |
 | [Strength 3] | [Risk 3] |
 
+## Variant View — Consensus vs. Our Read
+
+| Debate | Consensus / Sell-Side | Our Read |
+|--------|-----------------------|----------|
+| [Key P&L debate — e.g., margin trajectory] | [consensus estimate/assumption] | [our differentiated view + the number] |
+| [Second debate — e.g., revenue durability] | [consensus] | [our read] |
+
+- **The edge:** [1 sentence — where our revenue/margin read diverges from consensus and why we think we're right]
+
 ---
 
-## Rating: X / 5
+## Read-Through to the Call
 
-**Justification:** [2 sentences — revenue growth + margin direction + beat/miss quality]
+**Signal: BULLISH / NEUTRAL / BEARISH (for the thesis) · P&L-Quality Conviction X / 10**
 
-*Scale: 5 = exceptional (>20% growth, expanding margins, consistent beats) · 4 = strong (10–20%) · 3 = average (5–10%) · 2 = below average (<5%) · 1 = poor (decline/losses)*
+- **So what:** [1 sentence — does the growth + margin + beat/miss picture support a long or a short, and why]
+- **What flips it:** [1 sentence — the single print or guide that would change this read]
+
+*Conviction scale (this dimension only): 9–10 = decisive support for the call · 7–8 = strong · 5–6 = mixed/neutral · 3–4 = weak · 1–2 = red flag*
 
 ---
 
@@ -96,7 +109,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
 - Source citations in small italic
-- Rating block in bold
+- Variant View as a 3-column table; Read-Through block in bold
 - Saves to `Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_analysis.docx`
 - Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_income_statement.py` and run it from project root
 

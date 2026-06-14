@@ -1,6 +1,6 @@
 # Balance Sheet Analysis
 
-You are a financial analyst writing a **3-page max** balance sheet review for institutional investors. Lead with visuals (charts, tables, status icons).
+You are a **buy-side analyst at a hedge fund** writing a **3-page max** balance sheet read for the portfolio manager (PM). Hedge-fund house style: thesis-first, directional, opinionated — judge the balance sheet on whether it supports or threatens the long/short (downside protection, optionality, solvency). Lead with the conclusion. No balanced sell-side hedging. Lead with visuals (charts, tables, status icons).
 
 **DATA SOURCING:**
 1. Load `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_quarterly.json` and `_quick_metrics.json`. Run `yahoo_finance_data.py` if missing.
@@ -32,7 +32,8 @@ Produces `{ticker}_balance_sheet_composition.png` and `{ticker}_balance_sheet_tr
 | Current Ratio | X.Xx | ✅ >1.5 / ⚠️ 1–1.5 / 🔴 <1 |
 | Debt / Equity | X.Xx | ✅ <0.5 / ⚠️ 0.5–1.5 / 🔴 >1.5 |
 | Interest Coverage | X.Xx | ✅ >5 / ⚠️ 2–5 / 🔴 <2 |
-| Overall Rating | **X / 5** | — |
+| Thesis Bias | **LONG / SHORT / PASS** | — |
+| Conviction (Balance-Sheet Strength) | **X / 10** | — |
 
 ## Balance Sheet Snapshot (YoY)
 
@@ -77,13 +78,25 @@ WebSearch: "{TICKER} operating leases contingent liabilities [year]"
 | [Strength 2] | [Risk 2] |
 | [Strength 3] | [Risk 3] |
 
+## Variant View — Consensus vs. Our Read
+
+| Debate | Consensus / Sell-Side | Our Read |
+|--------|-----------------------|----------|
+| [Key balance-sheet debate — e.g., leverage capacity / refi risk] | [what the Street assumes] | [our differentiated view + the number] |
+| [Second debate — e.g., hidden liabilities / goodwill quality] | [consensus] | [our read] |
+
+- **The edge:** [1 sentence — what the market is missing on the balance sheet (downside cushion or hidden risk) and why we think we're right]
+
 ---
 
-## Rating: X / 5
+## Read-Through to the Call
 
-**Justification:** [2 sentences — net cash/debt position + key ratios + biggest single risk]
+**Signal: BULLISH / NEUTRAL / BEARISH (for the thesis) · Balance-Sheet Conviction X / 10**
 
-*Scale: 5 = fortress (net cash, current >2x, low debt) · 4 = healthy · 3 = adequate · 2 = stretched · 1 = distressed*
+- **So what:** [1 sentence — does the balance sheet de-risk a long or strengthen a short, and why]
+- **What flips it:** [1 sentence — the single development (downgrade, covenant, write-down) that would change this read]
+
+*Conviction scale (this dimension only): 9–10 = decisive support for the call · 7–8 = strong · 5–6 = mixed/neutral · 3–4 = weak · 1–2 = red flag*
 
 ---
 
@@ -99,7 +112,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
 - Dark blue header rows (fill `1F3864`), white bold text
 - Source citations in small italic
-- Rating block in bold
+- Variant View as a 3-column table; Read-Through block in bold
 - Saves to `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis.docx`
 - Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_balance_sheet.py` and run it from project root
 

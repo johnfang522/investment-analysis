@@ -13,6 +13,8 @@ A three-part framework for finding the next big investment narrative:
 The CPU narrative (2022–2024) is the archetype: technology inflection + capital concentration fired first, bottleneck (TSMC, NVIDIA/CUDA) was identifiable before mainstream coverage. The power/grid narrative (2025–2026) followed the same pattern.
 The goal is always to find the *next* one of these before the public market prices it in.
 
+**House style — buy-side, for the PM.** Write this as a hedge-fund analyst hunting an asymmetric, early-cycle bet — not a trend report. The deliverable is actionable: a directional **bottleneck posture** (conviction X/10 + how to express it) and an explicit **variant view** on what the market hasn't priced yet. The entire edge here is being early and concentrated on the chokepoint; lead with that.
+
 ---
 
 ## Instructions
@@ -245,6 +247,15 @@ Follow the table with bullets:
 
 ### 4. Positioning & Diligence
 
+**Variant View — Consensus vs. Our Read** (table). Lead with what the market has *not* yet priced — the whole point is to be early:
+
+| Debate | Consensus / What's Priced | Our Read |
+|---|---|---|
+| [The core mispricing — e.g., is the bottleneck recognized yet?] | [what the market currently assumes] | [our differentiated, earlier read + evidence] |
+| [Second debate — e.g., is this crowded or still under-owned?] | [consensus] | [our read] |
+
+**Bottleneck posture:** bold verdict — **Conviction X/10** and **how to express it** (e.g., "accumulate the Layer-6 chokepoint name on weakness; monitor Layer 1," or "watch-only — no investable chokepoint yet"). Add a one-line **The edge:** naming what the market hasn't priced.
+
 **Layer weighting given current cycle stage:**
 
 | Layer | Weight | Rationale |
@@ -350,7 +361,9 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 
 #### Section 4 — Positioning & Diligence
 - Heading 1: "4. Positioning & Diligence"
-- One Layer Weighting table: Layer | Weight | Rationale (Weight = Overweight / Neutral / Underweight)
+- **Open with the Variant View table** (3 columns: Debate | Consensus / What's Priced | Our Read), dark-blue header row.
+- Then a bold **Bottleneck Posture** line: "Conviction X/10 — [how to express it]", followed by a bold "The edge:" bullet.
+- Then one Layer Weighting table: Layer | Weight | Rationale (Weight = Overweight / Neutral / Underweight)
 - Then a bold "Risk Flags" sub-heading followed by bullet points.
 - Then a bold "Diligence Questions" sub-heading followed by numbered bullet points (Word List Number style), each specific and falsifiable.
 
