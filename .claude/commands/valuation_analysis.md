@@ -160,7 +160,8 @@ Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standa
 Import the shared helpers from `doc_utils.py`:
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
+from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
 ```
+Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 
 Confirm the output file path when done.

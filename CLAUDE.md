@@ -131,9 +131,12 @@ When writing `python-docx` table code in any skill or script:
 - All helpers live in `doc_utils.py` at the project root — generated scripts import them with:
   ```python
   import sys; sys.path.insert(0, '.')
-  from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
+  from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
   ```
   The `sys.path.insert(0, '.')` is required because scripts are saved under `Outputs/{TICKER}/` but run from the project root.
+- **Always use `fmt_value(v)` from `doc_utils` to format all dollar amounts in Word table cells** — never hardcode `/ 1e9` or append `"B"` manually. `fmt_value` auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`, else raw dollars. Pass `prefix=''` for non-dollar values.
+- **`smart_scale(values)` is defined locally in each `chart_*.py`** (not in `doc_utils`). It returns `(divisor, axis_label, suffix)` and is used to pick a shared Y-axis scale for all series on a chart. Copy the existing implementation from any `chart_*.py` when writing a new chart script.
+- **Apostrophe pitfall in generated Python scripts:** when writing string literals that contain apostrophes (e.g. `"Tesla's"`, `"Comma.ai's"`), use double-quoted strings — never single-quoted. Single-quoted strings with an apostrophe inside cause `SyntaxError: unterminated string literal` at runtime. This is the most common bug in skill-generated `generate_*.py` scripts.
 - **Every skill must call `add_footnote(doc)` immediately before `doc.save(...)`** — this appends the standard AI-generated disclaimer and "not investment advice" notice at the bottom of every Word document.
 - **Every skill must set portrait orientation and narrow margins** immediately after `doc = Document()`:
   ```python

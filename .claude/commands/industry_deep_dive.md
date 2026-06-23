@@ -191,7 +191,9 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
 3. Imports the shared helpers from `doc_utils.py`:
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
+   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+```
+Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
    ```
 4. Renders all sections with appropriate headings, paragraphs, tables, and bullet points.
 5. For all tables:

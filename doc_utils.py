@@ -66,6 +66,28 @@ def set_row_font_size(row, size=12):
                 run.font.size = Pt(size)
 
 
+def fmt_value(v, prefix='$'):
+    """Format a numeric value with smart scale: B ≥1B, M ≥1M, K ≥1K, else raw.
+    Use this in all skill-generated Word table scripts instead of hardcoding / 1e9.
+    Examples: fmt_value(1_500_000_000) → '$1.50B'
+              fmt_value(42_000_000)    → '$42.0M'
+              fmt_value(850_000)       → '$850.0K'
+              fmt_value(-5_000_000)    → '-$5.0M'
+              fmt_value(None)          → 'N/A'
+    """
+    if v is None:
+        return "N/A"
+    abs_v = abs(v)
+    sign = '-' if v < 0 else ''
+    if abs_v >= 1e9:
+        return f"{sign}{prefix}{abs_v/1e9:.2f}B"
+    if abs_v >= 1e6:
+        return f"{sign}{prefix}{abs_v/1e6:.1f}M"
+    if abs_v >= 1e3:
+        return f"{sign}{prefix}{abs_v/1e3:.1f}K"
+    return f"{sign}{prefix}{abs_v:.2f}"
+
+
 def add_footnote(doc):
     """Append a standard AI disclaimer footnote as the last paragraph of the document."""
     doc.add_paragraph()  # spacer

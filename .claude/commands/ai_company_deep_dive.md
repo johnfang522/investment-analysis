@@ -340,8 +340,9 @@ Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_company_deep_di
 **Import shared helpers from `doc_utils.py`:**
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
+from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
 ```
+Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 
 **Set portrait orientation and narrow margins immediately after `doc = Document()`:**
 ```python

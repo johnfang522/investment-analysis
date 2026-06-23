@@ -296,7 +296,9 @@ Write and execute a Python script using `.venv/Scripts/python` that:
    Import the shared helpers from `doc_utils.py` (in the project root):
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote
+   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+```
+Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
    ```
 
 6. **All non-header table cell text must use font size 12.** Call `set_row_font_size(row)` (imported above) on every data row immediately after `table.add_row()`. Do **not** call it on the header row.

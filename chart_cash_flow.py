@@ -33,6 +33,23 @@ def latest(series):
     return series[0][1] if series else None
 
 
+def smart_scale(values):
+    """Return (divisor, axis_label, suffix) based on max absolute value across all series."""
+    flat = [v for v in values if v is not None]
+    max_abs = max((abs(v) for v in flat), default=0)
+    if max_abs >= 1e9: return 1e9, 'Billions USD', 'B'
+    if max_abs >= 1e6: return 1e6, 'Millions USD', 'M'
+    if max_abs >= 1e3: return 1e3, 'Thousands USD', 'K'
+    return 1, 'USD', ''
+
+
+def sfmt(v, div, suffix, dec=2):
+    """Format a dollar value given a pre-determined scale divisor."""
+    if v is None: return ''
+    sign = '-' if v < 0 else ''
+    return f"{sign}${abs(v)/div:.{dec}f}{suffix}"
+
+
 def quarter_label(date_str):
     from datetime import datetime
     try:
@@ -67,34 +84,36 @@ def chart_waterfall(ticker, cf_data, out_path):
     capex_bridge = fcf - ocf  # negative number (steps down)
     period = period_label(ocf_s[0][0]) if ocf_s else "MRQ"
 
+    div, axis_label, suffix = smart_scale([ocf, fcf, capex_bridge])
+
     fig, ax = plt.subplots(figsize=(16, 8))
     labels = ["Operating CF", "CapEx", "Free CF"]
     colors = ["#34A853", "#EA4335", "#4285F4"]
 
     # OCF: full bar from 0
-    ax.bar(0, ocf / 1e9, color="#34A853", width=0.5)
+    ax.bar(0, ocf / div, color="#34A853", width=0.5)
     # CapEx: floating bar starting at OCF, going down to FCF
-    ax.bar(1, capex_bridge / 1e9, bottom=ocf / 1e9, color="#EA4335", width=0.5)
+    ax.bar(1, capex_bridge / div, bottom=ocf / div, color="#EA4335", width=0.5)
     # FCF: full bar from 0
-    ax.bar(2, fcf / 1e9, color="#4285F4", width=0.5)
+    ax.bar(2, fcf / div, color="#4285F4", width=0.5)
 
     # Connector lines
     for x in [0.25, 1.25]:
-        y = fcf / 1e9 if x > 1 else ocf / 1e9
+        y = fcf / div if x > 1 else ocf / div
         ax.plot([x, x + 0.5], [y, y], color="#888888", linestyle="--", linewidth=1)
 
     # Value labels
-    ax.text(0, ocf / 1e9 + abs(ocf) * 0.02 / 1e9, f"${ocf/1e9:.2f}B",
+    ax.text(0, ocf / div + abs(ocf) * 0.02 / div, sfmt(ocf, div, suffix),
             ha="center", fontsize=18, fontweight="bold")
-    ax.text(1, (ocf + capex_bridge / 2) / 1e9, f"-${abs(capex_bridge)/1e9:.2f}B",
+    ax.text(1, (ocf + capex_bridge / 2) / div, sfmt(capex_bridge, div, suffix),
             ha="center", va="center", fontsize=18, fontweight="bold", color="white")
-    fcf_offset = fcf / 1e9 + abs(ocf) * 0.02 / 1e9
-    ax.text(2, fcf_offset, f"${fcf/1e9:.2f}B",
+    fcf_offset = fcf / div + abs(ocf) * 0.02 / div
+    ax.text(2, fcf_offset, sfmt(fcf, div, suffix),
             ha="center", fontsize=18, fontweight="bold")
 
     ax.set_xticks([0, 1, 2])
     ax.set_xticklabels(labels, fontsize=17)
-    ax.set_ylabel("Billions USD", fontsize=17)
+    ax.set_ylabel(axis_label, fontsize=17)
     ax.tick_params(axis="y", labelsize=15)
     ax.set_title(f"{t} Cash Flow Waterfall ({period})", fontsize=22, fontweight="bold")
     ax.grid(axis="y", alpha=0.3)
@@ -124,9 +143,14 @@ def chart_trend(ticker, cf_data, is_data, out_path):
         smap = {d: v for d, v in series}
         return [smap.get(d, None) for d, _ in ocf_s]
 
-    ocf_v = [v / 1e9 for _, v in ocf_s]
-    fcf_v = [v / 1e9 if v else None for v in align(fcf_s)]
-    ni_v  = [v / 1e9 if v else None for v in align(ni_s)]
+    raw_ocf = [v for _, v in ocf_s]
+    raw_fcf = align(fcf_s)
+    raw_ni  = align(ni_s)
+    div, axis_label, suffix = smart_scale(raw_ocf + raw_fcf + raw_ni)
+
+    ocf_v = [v / div for v in raw_ocf]
+    fcf_v = [v / div if v is not None else None for v in raw_fcf]
+    ni_v  = [v / div if v is not None else None for v in raw_ni]
 
     fig, ax = plt.subplots(figsize=(18, 8))
     xs = list(range(len(dates)))
@@ -137,7 +161,7 @@ def chart_trend(ticker, cf_data, is_data, out_path):
         xi, yi = zip(*valid)
         ax.plot(xi, yi, color=color, linewidth=2.5, marker="o", markersize=8, label=label)
         for idx in [0, -1]:
-            ax.annotate(f"${yi[idx]:.1f}B", xy=(xi[idx], yi[idx]),
+            ax.annotate(f"${yi[idx]:.1f}{suffix}", xy=(xi[idx], yi[idx]),
                         xytext=offset, textcoords="offset points",
                         fontsize=15, fontweight="bold", color=color)
 
@@ -147,7 +171,7 @@ def chart_trend(ticker, cf_data, is_data, out_path):
 
     ax.set_xticks(xs); ax.set_xticklabels(dates, rotation=45, ha="right", fontsize=14)
     ax.tick_params(axis="y", labelsize=14)
-    ax.set_ylabel("Billions USD", fontsize=17)
+    ax.set_ylabel(axis_label, fontsize=17)
     ax.set_title(f"{t} Quarterly Cash Flow Trend", fontsize=22, fontweight="bold")
     ax.legend(fontsize=15)
     ax.grid(axis="y", alpha=0.3)

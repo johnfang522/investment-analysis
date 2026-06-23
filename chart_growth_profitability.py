@@ -31,6 +31,16 @@ def get_series(data, *keys, n=8):
     return []
 
 
+def smart_scale(values):
+    """Return (divisor, axis_label, suffix) based on max absolute value across all series."""
+    flat = [v for v in values if v is not None]
+    max_abs = max((abs(v) for v in flat), default=0)
+    if max_abs >= 1e9: return 1e9, 'Billions USD', 'B'
+    if max_abs >= 1e6: return 1e6, 'Millions USD', 'M'
+    if max_abs >= 1e3: return 1e3, 'Thousands USD', 'K'
+    return 1, 'USD', ''
+
+
 def quarter_label(date_str):
     from datetime import datetime
     try:
@@ -67,8 +77,12 @@ def chart_gp_revenue(ticker, q_data, out_path):
         smap = {d: v for d, v in series}
         return [smap.get(d, None) for d, _ in rev_s]
 
-    rev_v = [v / 1e9 for _, v in rev_s]
-    gp_v  = [v / 1e9 if v else None for v in align(gp_s)]
+    raw_rev = [v for _, v in rev_s]
+    raw_gp  = align(gp_s)
+    div, axis_label, suffix = smart_scale(raw_rev + raw_gp)
+
+    rev_v = [v / div for v in raw_rev]
+    gp_v  = [v / div if v else None for v in raw_gp]
     gm_v  = [gp / rev * 100 if gp and rev else None
              for gp, rev in zip(gp_v, rev_v)]
 
@@ -82,8 +96,8 @@ def chart_gp_revenue(ticker, q_data, out_path):
     # Label most recent bars
     for bar in [bars1[-1], bars2[-1]]:
         h = bar.get_height()
-        ax1.text(bar.get_x() + bar.get_width() / 2, h + 0.3, f"${h:.1f}B",
-                 ha="center", fontsize=15, fontweight="bold")
+        ax1.text(bar.get_x() + bar.get_width() / 2, h + abs(h) * 0.05,
+                 f"${h:.1f}{suffix}", ha="center", fontsize=15, fontweight="bold")
 
     valid_gm = [(i, v) for i, v in enumerate(gm_v) if v is not None]
     if valid_gm:
@@ -93,7 +107,7 @@ def chart_gp_revenue(ticker, q_data, out_path):
 
     ax1.set_xticks(xs); ax1.set_xticklabels(dates, rotation=45, ha="right", fontsize=14)
     ax1.tick_params(axis="y", labelsize=14); ax2.tick_params(axis="y", labelsize=14)
-    ax1.set_ylabel("Billions USD", fontsize=17); ax2.set_ylabel("Gross Margin %", fontsize=17)
+    ax1.set_ylabel(axis_label, fontsize=17); ax2.set_ylabel("Gross Margin %", fontsize=17)
     ax1.set_title(f"{t} Revenue & Gross Profit Trend", fontsize=22, fontweight="bold")
     lines1, labels1 = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()

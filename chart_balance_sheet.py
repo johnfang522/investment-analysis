@@ -34,6 +34,23 @@ def latest(series):
     return series[0][1] if series else None
 
 
+def smart_scale(values):
+    """Return (divisor, axis_label, suffix) based on max absolute value across all series."""
+    flat = [v for v in values if v is not None]
+    max_abs = max((abs(v) for v in flat), default=0)
+    if max_abs >= 1e9: return 1e9, 'Billions USD', 'B'
+    if max_abs >= 1e6: return 1e6, 'Millions USD', 'M'
+    if max_abs >= 1e3: return 1e3, 'Thousands USD', 'K'
+    return 1, 'USD', ''
+
+
+def sfmt(v, div, suffix, dec=1):
+    """Format a dollar value given a pre-determined scale divisor."""
+    if v is None: return ''
+    sign = '-' if v < 0 else ''
+    return f"{sign}${abs(v)/div:.{dec}f}{suffix}"
+
+
 def quarter_label(date_str):
     from datetime import datetime
     try:
@@ -52,8 +69,8 @@ def period_label(date_str):
         return date_str
 
 
-def B(v):
-    return f"${v/1e9:.1f}B" if v is not None else ""
+def B(v, div=1e9, suffix='B'):
+    return sfmt(v, div, suffix) if v is not None else ""
 
 
 # ── Chart 1: Balance sheet composition stacked bar ────────────────────────
@@ -83,20 +100,23 @@ def chart_composition(ticker, data, out_path):
     other_lt = max(0, (tl - cl - (ltd or 0))) if (tl and cl) else None
     period = period_label(total_assets_s[0][0]) if total_assets_s else "MRQ"
 
+    all_vals = [ta, ca, nca, cl, ltd, other_lt, eq]
+    div, axis_label, suffix = smart_scale(all_vals)
+
     fig, ax = plt.subplots(figsize=(16, 8))
 
     bar_w = 0.4
     # Assets bar
     bottoms_a, labels_a, colors_a = [], [], []
-    if ca  is not None: bottoms_a.append(ca / 1e9);  labels_a.append(f"Current Assets\n{B(ca)}");     colors_a.append("#4285F4")
-    if nca is not None: bottoms_a.append(nca / 1e9); labels_a.append(f"Non-Current Assets\n{B(nca)}"); colors_a.append("#4A90D9")
+    if ca  is not None: bottoms_a.append(ca / div);  labels_a.append(f"Current Assets\n{B(ca, div, suffix)}");     colors_a.append("#4285F4")
+    if nca is not None: bottoms_a.append(nca / div); labels_a.append(f"Non-Current Assets\n{B(nca, div, suffix)}"); colors_a.append("#4A90D9")
 
     # Funding bar
     bottoms_f, labels_f, colors_f = [], [], []
-    if cl       is not None: bottoms_f.append(cl / 1e9);       labels_f.append(f"Current Liabilities\n{B(cl)}");   colors_f.append("#EA4335")
-    if ltd      is not None: bottoms_f.append(ltd / 1e9);      labels_f.append(f"Long-term Debt\n{B(ltd)}");        colors_f.append("#F4A460")
-    if other_lt is not None: bottoms_f.append(other_lt / 1e9); labels_f.append(f"Other LT Liabilities\n{B(other_lt)}"); colors_f.append("#FA8072")
-    if eq       is not None: bottoms_f.append(eq / 1e9);       labels_f.append(f"Equity\n{B(eq)}");                 colors_f.append("#34A853")
+    if cl       is not None: bottoms_f.append(cl / div);       labels_f.append(f"Current Liabilities\n{B(cl, div, suffix)}");        colors_f.append("#EA4335")
+    if ltd      is not None: bottoms_f.append(ltd / div);      labels_f.append(f"Long-term Debt\n{B(ltd, div, suffix)}");             colors_f.append("#F4A460")
+    if other_lt is not None: bottoms_f.append(other_lt / div); labels_f.append(f"Other LT Liabilities\n{B(other_lt, div, suffix)}"); colors_f.append("#FA8072")
+    if eq       is not None: bottoms_f.append(eq / div);       labels_f.append(f"Equity\n{B(eq, div, suffix)}");                     colors_f.append("#34A853")
 
     def draw_stack(x, segments, labels, colors):
         bottom = 0
@@ -112,7 +132,7 @@ def chart_composition(ticker, data, out_path):
 
     ax.set_xticks([0, 1])
     ax.set_xticklabels(["Assets", "Funding (Liabilities + Equity)"], fontsize=17)
-    ax.set_ylabel("Billions USD", fontsize=17)
+    ax.set_ylabel(axis_label, fontsize=17)
     ax.tick_params(axis="y", labelsize=15)
     ax.set_title(f"{t} Balance Sheet Composition ({period})", fontsize=22, fontweight="bold")
     ax.grid(axis="y", alpha=0.3)
@@ -145,14 +165,21 @@ def chart_trend(ticker, data, out_path):
         smap = {d: v for d, v in series}
         return [smap.get(d, None) for d, _ in total_assets_s]
 
-    def to_b(vals):
-        return [v / 1e9 if v else None for v in vals]
+    raw_ta = [v for _, v in total_assets_s]
+    raw_eq = align(equity_s)
+    raw_tl = align(total_liab_s)
+    raw_td = align(total_debt_s)
+    raw_ca = align(cash_s)
+    div, axis_label, suffix = smart_scale(raw_ta + raw_eq + raw_tl + raw_td + raw_ca)
 
-    ta_v  = [v / 1e9 for _, v in total_assets_s]
-    eq_v  = to_b(align(equity_s))
-    tl_v  = to_b(align(total_liab_s))
-    td_v  = to_b(align(total_debt_s))
-    ca_v  = to_b(align(cash_s))
+    def to_scaled(vals):
+        return [v / div if v else None for v in vals]
+
+    ta_v  = [v / div for v in raw_ta]
+    eq_v  = to_scaled(raw_eq)
+    tl_v  = to_scaled(raw_tl)
+    td_v  = to_scaled(raw_td)
+    ca_v  = to_scaled(raw_ca)
 
     fig, ax = plt.subplots(figsize=(18, 8))
     xs = list(range(len(dates)))
@@ -163,7 +190,7 @@ def chart_trend(ticker, data, out_path):
         xi, yi = zip(*valid)
         ax.plot(xi, yi, color=color, linewidth=2.5, marker="o", markersize=7, label=label)
         for idx in [0, -1]:
-            ax.annotate(f"${yi[idx]:.1f}B", xy=(xi[idx], yi[idx]),
+            ax.annotate(f"${yi[idx]:.1f}{suffix}", xy=(xi[idx], yi[idx]),
                         xytext=(8, 6), textcoords="offset points",
                         fontsize=15, fontweight="bold", color=color)
 
@@ -175,7 +202,7 @@ def chart_trend(ticker, data, out_path):
 
     ax.set_xticks(xs); ax.set_xticklabels(dates, rotation=45, ha="right", fontsize=14)
     ax.tick_params(axis="y", labelsize=14)
-    ax.set_ylabel("Billions USD", fontsize=17)
+    ax.set_ylabel(axis_label, fontsize=17)
     ax.set_title(f"{t} Balance Sheet Trend", fontsize=22, fontweight="bold")
     ax.legend(fontsize=15)
     ax.grid(axis="y", alpha=0.3)
