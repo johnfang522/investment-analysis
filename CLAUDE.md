@@ -41,7 +41,7 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 - RSI is computed directly from `{ticker_lower}_price_history.json` (Wilder's 14-day method) inside `_calc_rsi()` — not sourced from Yahoo Finance
 - Produces `Outputs/key_stock_metrics_YYYYMMDD.xlsx` with per-ticker sheets + a `Comparison` sheet (placed first)
 - Can be run directly: `.venv/Scripts/python key_stock_metrics.py [TICKER ...]`
-- `compute_metrics(ticker)`, `_short_comment(key, val, metrics)`, `METRICS`, and `color_current_price(metrics)` are imported by the `/single_name_stock_analysis` skill's generated Word scripts — treat these as a shared library, not just a CLI script
+- `compute_metrics(ticker)`, `_short_comment(key, val, metrics)`, `METRICS`, and `color_current_price(metrics)` are imported by the `/single_stock_deep_research` skill's generated Word scripts — treat these as a shared library, not just a CLI script
 
 **`chart_*.py`** — standalone chart generators (one per analysis domain)
 - Scripts: `chart_income_statement.py`, `chart_balance_sheet.py`, `chart_cash_flow.py`, `chart_growth_profitability.py`, `chart_valuation.py`, `chart_technical.py`
@@ -57,7 +57,7 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 - **External data source gotchas baked into this script** (see also the External Data Sources section below)
 
 **`doc_utils.py`** — shared python-docx helpers
-- Provides `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=12)`, and `add_footnote(doc)`
+- Provides `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=12)`, `add_footnote(doc)`, and `fmt_value(v, prefix='$')`
 - All skill-generated Word scripts import from here; see the Word Document Generation section for the required import pattern
 - When adding a new helper needed by multiple skills, add it here rather than inline in each skill
 
@@ -94,7 +94,8 @@ The intended workflow runs in four stages:
 | 4 | `/business_potential_analysis` | TICKER | Word: `Outputs/{TICKER}/7_{ticker}_business_potential_analysis.docx` |
 | 4 | `/valuation_analysis` | TICKER | Word: `Outputs/{TICKER}/8_{ticker}_valuation_analysis.docx` |
 | 4 | `/technical_analysis` | TICKER | Word: `Outputs/{TICKER}/9_{ticker}_technical_analysis.docx` |
-| 4 | `/single_name_stock_analysis` | TICKER | Word: `Outputs/{TICKER}/{ticker}_research_package_YYYYMMDD.docx` (+ individual note + appendices) |
+| 4 | `/single_stock_deep_research` | TICKER | Word: `Outputs/{TICKER}/{ticker}_single_stock_deep_research_YYYYMMDD.docx` (package) + `{ticker}_single_stock_deep_research_notes_YYYYMMDD.docx` (note) |
+| 4 | `/single_stock_quick_research` | TICKER | Word: `Outputs/{TICKER}/{ticker}_single_stock_quick_research_YYYYMMDD.docx` |
 
 - `/market_sentiment_analysis` scores investor sentiment across 7 indicators (VIX, CNN F&G, put/call, breadth, HY OAS, Shiller CAPE, Buffett Indicator), runs `plot_market_sentiment_history.py` to generate 5-year time-series charts, embeds them in the Word report, and saves a combined dashboard PNG; on completion it prompts the user to kick off `/emerging_industry_trend`
 - `/emerging_industry_trend` scans for live bottleneck signals before the market prices them in — produces a Word doc with signal scorecard, value chain map, bottleneck analysis, and positioning; use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme; on completion it prompts the user to kick off `/industry_trend_analysis`. **Accepts a ticker as argument** (e.g. `/emerging_industry_trend NVTS`): the skill detects the ticker via `WebSearch`, maps it to its industry theme, states the mapping explicitly, then runs the full analysis on that theme — the ticker's company appears in the value chain map alongside all peers but receives no special focus. The output filename always uses the derived theme slug, never the raw ticker (e.g. `gan_sic_wbg`, not `nvts`).
@@ -105,7 +106,8 @@ The intended workflow runs in four stages:
 - `/key_stock_metrics` always re-fetches fresh data via `fetch_all()` before computing metrics, even if JSON files already exist
 - Skills read local JSON from `Outputs/` first, run `yahoo_finance_data.py` if missing, then supplement with `WebSearch` for analyst estimates, guidance, and any N/A values
 - Each analysis skill generates matplotlib charts (saved as PNGs to `Outputs/`), then writes and executes a `python-docx` script inline to embed the charts and produce the `.docx`
-- `/single_name_stock_analysis` always re-fetches fresh Yahoo Finance data and re-runs all 9 individual analyses in sequence (including `/leadership_analysis`), then synthesizes a 2–3 page hedge-fund research note (conviction score + LONG/SHORT/PASS with price target), and finally assembles all documents into a single `_research_package_` Word file with page numbers
+- `/single_stock_deep_research` always re-fetches fresh Yahoo Finance data and re-runs all 9 individual analyses in sequence (including `/leadership_analysis`), then synthesizes a 2–3 page hedge-fund research note (conviction score + LONG/SHORT/PASS with price target), and finally assembles all documents into a single `_single_stock_deep_research_` Word file with page numbers
+- `/single_stock_quick_research` is a lighter-weight, self-contained single-stock initiation note — works through six pillars (business, financial health, valuation, news/catalysts, risk, synthesis); re-fetches Yahoo Finance data first, then supplements with `WebSearch` for peer comps, analyst targets, and news; produces a single polished `.docx`; use it for quick coverage initiation where the full 9-analysis suite is overkill; also serves as the default skill when the user asks "what do you think of $TICKER" or "should I buy X"
 
 ## Hedge-Fund House Style
 
@@ -113,7 +115,7 @@ Every analysis skill is written for a **buy-side portfolio manager (PM)** to dig
 
 - **Persona:** the author is a **buy-side analyst at a hedge fund** writing for the PM. Thesis-first, directional, and opinionated. Lead each section with the conclusion ("so what for the long/short"), not a description of what the section covers. No balanced sell-side hedging — take a side and defend it with numbers.
 - **Verdict — two templates depending on skill type:**
-  - **Full-call skills** (`single_name_stock_analysis`, `ai_company_deep_dive`, `valuation_analysis`, `technical_analysis`) render a **Verdict** block with: directional bias (**LONG / SHORT / PASS**), a **Conviction score X/10**, current price, **12-month price target (+%)**, **stop / invalidation level (−%)**, **risk/reward ratio**, and **sizing** (Core / Starter / Tactical / Avoid).
+  - **Full-call skills** (`single_stock_deep_research`, `ai_company_deep_dive`, `valuation_analysis`, `technical_analysis`) render a **Verdict** block with: directional bias (**LONG / SHORT / PASS**), a **Conviction score X/10**, current price, **12-month price target (+%)**, **stop / invalidation level (−%)**, **risk/reward ratio**, and **sizing** (Core / Starter / Tactical / Avoid).
   - **Component skills** (`business_overview`, `leadership`, `income_statement`, `balance_sheet`, `cash_flow`, `growth_and_profitability`, `business_potential`) render a **Read-Through to the Call** block: a directional **Signal (BULLISH / NEUTRAL / BEARISH for the thesis)**, a **dimension conviction X/10**, a one-line "so what" for the long/short, and a one-line "what flips it."
   - **Theme/macro skills** (`emerging_industry_trend`, `industry_trend_analysis`, `industry_deep_dive`, `market_sentiment_analysis`) render a directional **posture** call (e.g., theme conviction X/10 with how to express it — long basket / pair trade / underweight; or for market sentiment a Risk-On / Neutral / Risk-Off net-exposure posture with conviction X/10).
 - **Conviction scale (X/10):** 9–10 = highest-conviction book position · 7–8 = high · 5–6 = moderate / starter · 3–4 = low / watchlist · 1–2 = avoid or short candidate. This **replaces the old X/5 "Rating" blocks** — no skill should still emit an "Overall Rating X/5."
