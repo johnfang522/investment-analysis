@@ -228,14 +228,14 @@ Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B �
    from key_stock_metrics import compute_metrics, _short_comment, METRICS, color_current_price
    ```
 
-3. **Save to**: `Outputs/{TICKER}/{ticker_lowercase}_single_stock_deep_research_notes_{YYYYMMDD}.docx`  
-   *(use today's date, e.g., `Outputs/NVDA/nvda_single_stock_deep_research_notes_20260420.docx`)*
+3. **Save to**: `Outputs/{TICKER}/{ticker_lowercase}_stock_deep_research_notes_{YYYYMMDD}.docx`  
+   *(use today's date, e.g., `Outputs/NVDA/nvda_stock_deep_research_notes_20260420.docx`)*
 
-4. **Script file location**: Save the script itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_single_stock_deep_research_notes.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_single_stock_deep_research_notes.py`
+4. **Script file location**: Save the script itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_stock_deep_research_notes.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/generate_{ticker_lowercase}_stock_deep_research_notes.py`
 
 5. Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
 
-6. **Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_single_stock_deep_research_notes_{YYYYMMDD}.docx`
+6. **Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_stock_deep_research_notes_{YYYYMMDD}.docx`
 
 ---
 
@@ -244,7 +244,7 @@ Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B �
 Write and execute a Python script (`.venv/Scripts/python`) that combines all documents into a single master file:
 
 **Source documents** (in this exact order):
-1. `Outputs/{TICKER}/{ticker_lowercase}_single_stock_deep_research_notes_{YYYYMMDD}.docx` — the research note (goes first, no appendix label)
+1. `Outputs/{TICKER}/{ticker_lowercase}_stock_deep_research_notes_{YYYYMMDD}.docx` — the research note (goes first, no appendix label)
 2. `Outputs/{TICKER}/1_{ticker_lowercase}_business_overview_analysis.docx` — Appendix A
 3. `Outputs/{TICKER}/2_{ticker_lowercase}_leadership_analysis.docx` — Appendix B
 4. `Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_analysis.docx` — Appendix C
@@ -346,7 +346,7 @@ t = ticker.lower()
 date = "{YYYYMMDD}"
 base = f"Outputs/{ticker}"
 
-target = Document(f"{base}/{t}_single_stock_deep_research_notes_{date}.docx")
+target = Document(f"{base}/{t}_stock_deep_research_notes_{date}.docx")
 
 appendices = [
     ("Appendix A", "Business Overview Analysis",        f"{base}/1_{t}_business_overview_analysis.docx"),
@@ -414,13 +414,13 @@ def add_page_numbers(doc):
 
 add_page_numbers(target)
 
-out_path = f"{base}/{t}_single_stock_deep_research_{date}.docx"
+out_path = f"{base}/{t}_stock_deep_research_{date}.docx"
 target.save(out_path)
 print(f"Saved: {out_path}")
 ```
 
-**Script file location**: Save the script itself to `Outputs/{TICKER}/assemble_{ticker_lowercase}_single_stock_deep_research.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/assemble_{ticker_lowercase}_single_stock_deep_research.py`
+**Script file location**: Save the script itself to `Outputs/{TICKER}/assemble_{ticker_lowercase}_stock_deep_research.py` and run it with `.venv/Scripts/python Outputs/{TICKER}/assemble_{ticker_lowercase}_stock_deep_research.py`
 
-**Save to**: `Outputs/{TICKER}/{ticker_lowercase}_single_stock_deep_research_{YYYYMMDD}.docx`
+**Save to**: `Outputs/{TICKER}/{ticker_lowercase}_stock_deep_research_{YYYYMMDD}.docx`
 
-**Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_single_stock_deep_research_{YYYYMMDD}.docx`
+**Print confirmation**: `Saved: Outputs/{TICKER}/{ticker_lowercase}_stock_deep_research_{YYYYMMDD}.docx`

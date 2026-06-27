@@ -134,7 +134,7 @@ And close with the research checklist:
 
 ## Output Format
 
-Default deliverable: polished **quick research notes as a `.docx`** saved to `Outputs/{TICKER}/{ticker}_single_stock_quick_research_{YYYYMMDD}.docx`. Follow the Word Document Generation conventions in CLAUDE.md: use `doc_utils.py` helpers, call `add_footnote(doc)` before saving, set portrait orientation and narrow margins.
+Default deliverable: polished **quick research notes as a `.docx`** saved to `Outputs/{TICKER}/{ticker}_stock_quick_research_{YYYYMMDD}.docx`. Follow the Word Document Generation conventions in CLAUDE.md: use `doc_utils.py` helpers, call `add_footnote(doc)` before saving, set portrait orientation and narrow margins.
 
 For a quick "what do you think of $X" with no request for a document, a tight in-chat note is fine — lead with the scorecard and recommendation, then the supporting pillars. Offer the `.docx` as a follow-up.
 
