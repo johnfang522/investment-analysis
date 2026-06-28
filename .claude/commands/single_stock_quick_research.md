@@ -36,9 +36,9 @@ Apply these throughout — they separate research from a data dump.
 
 ---
 
-## The Six Pillars
+## The Seven Pillars
 
-Work through all six in order. Each pillar ends with a verdict, not just facts.
+Work through all seven in order. Each pillar ends with a verdict, not just facts.
 
 ### Pillar 1 — The Business: Know What You Own
 The two-sentence test: if you can't explain how the company makes money in two plain sentences, you're not ready to risk capital. Dig until you can.
@@ -95,7 +95,19 @@ Run a pre-mortem: assume it's two years later and the position is down 50% — w
 
 **Verdict:** the single biggest risk, and whether the price pays you to bear it.
 
-### Pillar 6 — Synthesis: The Investment Decision
+### Pillar 6 — Business Potential: Can It Win the Next Paradigm?
+Don't conflate narrative with optionality. The question is not whether the trend is real — it's whether *this company* is structurally wired to capture it. Work through four tests:
+
+- **Value alignment.** Does the trend extend the core business, or require reinventing it? Do existing moats (data, brand, IP, distribution) transfer, or become liabilities? Is legacy revenue sticky enough to fund the pivot?
+- **Operational agility.** R&D as a % of revenue and its trajectory vs. revenue growth. Time-to-market evidence. Capacity expansion plans. Name signed contracts, customer wins, or JVs — no growth claims without specific deals.
+- **Financial runway.** Annual FCF vs. estimated trend capex/R&D: can it self-fund, or does it need outside capital? Net cash / debt position and interest coverage as the guardrails.
+- **Ecosystem control.** Does it own a toll booth — critical infrastructure, a platform standard, key IP? Is it open or closed? Is it shaping the rules, or reacting to them?
+
+Score each dimension 0–5 and sum to an **NBT Readiness Score (X/20)**: Dominant (17–20) · Strong (13–16) · Capable (9–12) · At Risk (5–8) · Ill-Positioned (≤4). Name the single biggest structural advantage and the single biggest execution risk.
+
+**Verdict:** does this readiness add real upside optionality to a long, or expose a vulnerability — and what one proof point (signed deal, capacity commitment, product launch) would change the read?
+
+### Pillar 7 — Synthesis: The Investment Decision
 Connect the dots — story, numbers, price, and mood — into one call. If the case isn't clear and data-backed, the answer is "pass." Capital deserves conviction, not hope.
 
 Deliver:
@@ -109,7 +121,7 @@ Deliver:
 
 ## Scorecard
 
-Summarize the six pillars in a scannable table before the write-up:
+Summarize the seven pillars in a scannable table before the write-up:
 
 | Pillar | Read | Notes |
 |---|---|---|
@@ -118,6 +130,7 @@ Summarize the six pillars in a scannable table before the write-up:
 | Valuation | Cheap / Fair / Expensive | one line |
 | Sentiment & catalysts | Tailwind / Neutral / Headwind | one line |
 | Risk / margin of safety | Adequate / Thin / None | one line |
+| Business potential | Dominant / Strong / Capable / At Risk / Ill-Positioned | one line |
 | **Overall** | **Buy / Hold / Avoid** | **conviction + one-line thesis** |
 
 And close with the research checklist:
@@ -129,6 +142,7 @@ And close with the research checklist:
 | Valuation | Premium or discount, and is it justified? | Triangulate multiples |
 | News & sentiment | What's the hidden risk or catalyst? | Scan live headlines |
 | Risk | What's my downside and what breaks the thesis? | Always plan the exit |
+| Business potential | Is the company positioned to win the next paradigm? | NBT Readiness Score |
 
 ---
 
@@ -143,7 +157,7 @@ Structure the note in this order:
 1. **Header** — company, ticker, current price & date, market cap, and the one-line recommendation + conviction.
 2. **Investment thesis** — 3–5 sentences: what we own, why it wins, and the variant perception.
 3. **Scorecard** (the table above).
-4. **The six pillars**, each with its facts and its verdict.
+4. **The seven pillars**, each with its facts and its verdict.
 5. **Bull / Base / Bear** scenarios with price targets and probabilities.
 6. **Risks & thesis-breakers.**
 7. **Recommendation & exit triggers.**
