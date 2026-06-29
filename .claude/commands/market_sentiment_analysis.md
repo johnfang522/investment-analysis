@@ -172,7 +172,7 @@ Save the script itself to `Outputs/generate_market_sentiment_{YYYYMMDD}.py` and 
 **Section 6 — Variant View**
 - Heading 1: `Variant View — Consensus vs. Our Read`
 - A 3-column table: `Debate | Consensus / Positioning | Our Read` (e.g., debate over whether tight credit spreads are complacency or justified; whether narrow breadth is a warning or normal late-cycle leadership)
-- One bold bullet: `The edge:` — what consensus positioning is mispricing right now and why our posture differs
+- One bold bullet: `The edge:` — what consensus positioning is mispricing right now and why our posture differs. If the indicator readings confirm the market's current risk posture, state that explicitly — a forced contrarian view is a bias, not an edge.
 
 **Section 7 — Market Opinion**
 - Heading 1: `Overall Market Opinion`

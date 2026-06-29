@@ -153,7 +153,7 @@ Follow the table with a single bold bullet: **Primary moat source:** identify th
 Then a bold **Industry Posture** verdict:
 - **Structural attractiveness:** Attractive / Mixed / Unattractive — **Conviction X/10**
 - **How to express it:** one line — e.g., "long the bottleneck/moat holders, short the commoditized integrators," or "avoid until rivalry resolves"
-- **The edge:** one sentence — what the market misunderstands about this industry's structure and why we think we're right
+- **The edge:** one sentence — what the market misunderstands about this industry's structure and why we think we're right. If the structural analysis aligns with consensus, state that explicitly — a forced variant view is a bias, not an edge.
 
 ---
 

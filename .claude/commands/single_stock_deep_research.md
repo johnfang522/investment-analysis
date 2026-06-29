@@ -161,12 +161,12 @@ For the Comments column: go beyond the mechanical label. Write a one-sentence an
 
 **Overall NBT Readiness: X/20** — [Readiness label: Dominant (17–20) / Strong (13–16) / Capable (9–12) / At Risk (5–8) / Ill-Positioned (≤4)] · **Read-through to the call: BULLISH / NEUTRAL / BEARISH**
 
-| Dimension | Score | Key Evidence |
-|-----------|-------|--------------|
-| Value Alignment (DNA) | X/5 | [One-phrase summary] |
-| Operational Agility (Engine) | X/5 | [One-phrase summary] |
-| Solvency & Buffer (Oxygen) | X/5 | [One-phrase summary] |
-| Ecosystem Power (Gravity) | X/5 | [One-phrase summary] |
+| Dimension | Score | Key Evidence (must cite source) |
+|-----------|-------|----------------------------------|
+| Value Alignment | X/5 | [One-phrase summary + source] |
+| Operational Agility | X/5 | [One-phrase summary + source] |
+| Financial Runway | X/5 | [One-phrase summary + source] |
+| Ecosystem Control | X/5 | [One-phrase summary + source] |
 
 - **Primary emerging opportunity:** [Name the specific trend — e.g., AI inference at the edge, robotic surgery expansion, autonomous vehicles]
 - **Biggest structural advantage:** [One sentence on the single dimension where the company leads and why it is defensible]

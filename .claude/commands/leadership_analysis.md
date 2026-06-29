@@ -67,6 +67,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 | [Second debate — e.g., succession / execution credibility] | [consensus] | [our read] |
 
 - **The edge:** [1 sentence — what the market misjudges about this management team and why we think we're right]
+- **Note:** If the data on management quality aligns with consensus, state that explicitly — a forced differentiated view is a bias, not an edge. Insider selling or weak ROIC is a fact, not a differentiated read.
 
 ---
 

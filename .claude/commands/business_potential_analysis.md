@@ -33,17 +33,17 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
 ## NBT Readiness Scorecard
 
-*NBT = "Next Big Thing." Four dimensions test whether the company has the DNA, Engine, Oxygen, and Gravity to win the trend.*
+*NBT = "Next Big Thing." Four dimensions test whether the company is structurally positioned to capture the trend. Each score (0–5) must be accompanied by a specific, cited data point from the JSON or WebSearch — a score without evidence is not valid.*
 
-| Dimension | Score | Key Evidence (1 phrase) |
-|-----------|-------|-------------------------|
-| 1. Value Alignment (DNA) — does the trend extend the business? | X/5 | [e.g., "Trend solves a core problem for top customers"] |
-| 2. Operational Agility (Engine) — can it pivot resources fast? | X/5 | [e.g., "R&D up X%; 12-mo time-to-market"] |
-| 3. Solvency & Buffer (Oxygen) — can it survive the trough? | X/5 | [e.g., "FCF $X.XB covers 3x trend capex"] |
-| 4. Ecosystem Power (Gravity) — will it own infrastructure? | X/5 | [e.g., "Owns the standard platform; key patent"] |
+| Dimension | Score | Key Evidence (must cite source) |
+|-----------|-------|----------------------------------|
+| 1. Value Alignment — does the trend extend the core business? | X/5 | [e.g., "Trend revenue = X% of total; moats transfer directly — source: earnings call"] |
+| 2. Operational Agility — can it pivot resources fast? | X/5 | [e.g., "R&D up X% YoY from JSON; signed deal XYZ — source: press release"] |
+| 3. Financial Runway — can it self-fund the transition? | X/5 | [e.g., "FCF $X.XB vs. trend capex $X.XB; net debt $X.XB — source: cash flow JSON"] |
+| 4. Ecosystem Control — does it own a toll booth? | X/5 | [e.g., "Controls X% of market; NVLink Fusion partnership — source: WebSearch"] |
 | **Total** | **X/20** | |
 
-## DNA — Value Alignment
+## Value Alignment
 
 | Question | Verdict | Evidence (1 phrase) |
 |----------|---------|---------------------|
@@ -51,7 +51,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 | Do current moats extend (data, brand, IP, distribution)? | ✅ / ⚠️ / 🔴 | [phrase] |
 | Is the legacy business sticky enough to fund the pivot? | ✅ / ⚠️ / 🔴 | [phrase] |
 
-## Engine — Operational Agility
+## Operational Agility
 
 | Metric | Value | Notes |
 |--------|-------|-------|
@@ -63,7 +63,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 - **Talent & infrastructure:** [1 sentence — generalists vs siloed specialists, scale-up readiness]
 - **Forward-looking proof:** name signed contracts, customer wins, JVs, capex commitments — no growth claims without specific deals.
 
-## Oxygen — Solvency & Financial Buffer
+## Financial Runway
 
 | Metric | Value |
 |--------|-------|
@@ -76,7 +76,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
 - **Legacy revenue drag:** X% of revenue tied to disrupted segments — [1 sentence]
 
-## Gravity — Positioning & Ecosystem Power
+## Ecosystem Control
 
 | Question | Verdict | Evidence (1 phrase) |
 |----------|---------|---------------------|
@@ -100,6 +100,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 | [Second debate — e.g., can they self-fund the pivot?] | [consensus] | [our read + the number] |
 
 - **The edge:** [1 sentence — what the market over- or under-credits in this company's future optionality and why we think we're right]
+- **Note:** If the NBT readiness data aligns with how the market prices the optionality, state that explicitly — a forced differentiated view is a bias, not an edge. The score is anchored to cited evidence; let the evidence lead the conclusion.
 
 ---
 

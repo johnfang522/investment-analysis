@@ -233,7 +233,7 @@ Present as a table:
 | [The core debate on the theme — e.g., which layer captures the economics?] | [where the market is positioned + why] | [our differentiated read + evidence] |
 | [Second debate — e.g., is the timing earlier/later than consensus thinks?] | [consensus] | [our read] |
 
-**Theme posture:** state a directional verdict — **Theme Conviction X/10** and **how to express it** (e.g., "long a basket of Layer 1 + Layer 6 names; pair against crowded Layer 4 applications," or "monitor only — too early to size"). Add a one-line **The edge:** naming what consensus is mispricing.
+**Theme posture:** state a directional verdict — **Theme Conviction X/10** and **how to express it** (e.g., "long a basket of Layer 1 + Layer 6 names; pair against crowded Layer 4 applications," or "monitor only — too early to size"). Add a one-line **The edge:** naming what consensus is mispricing. **If the structural analysis confirms the market's current positioning on this theme, state that explicitly — a forced variant view is a bias, not an edge.**
 
 Then 2–4 paragraphs. Given where we are in the cycle, suggest how to weight across layers (e.g., "overweight Infrastructure and Bottlenecks; underweight Applications until revenue models clarify"). Call out any crowding risk,
 valuation excess, or consensus positioning to fade. Be specific about which named companies or types look most attractive vs. most risky at this stage. Reference the TAM Expansion Analysis findings where relevant.

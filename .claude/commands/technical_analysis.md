@@ -105,6 +105,7 @@ Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKE
 | [Second debate — e.g., sentiment extreme vs. continuation] | [consensus] | [our read] |
 
 - **The edge:** [1 sentence — what the crowd's positioning/sentiment is mispricing at current levels and why we think we're right]
+- **Note:** If the technical setup aligns with consensus positioning, state that explicitly — a setup score is a measured output, not a view to force. A crowded-long setup where the technicals confirm the crowd is a risk warning, not a variant view.
 
 ---
 

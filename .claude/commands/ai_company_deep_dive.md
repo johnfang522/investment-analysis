@@ -277,7 +277,7 @@ Always explicitly identify and weigh:
 
 ### Variant View — Consensus vs. Our Read
 
-The core value-add. State precisely where we diverge from consensus — agreeing with the Street is not a trade.
+The core value-add. State precisely where we diverge from consensus, backed by a specific number. If the data aligns with consensus, say so — market alignment is not a failure, and a forced differentiated view is a bias, not an edge.
 
 | Debate | Consensus / Sell-Side | Our View |
 |--------|-----------------------|----------|

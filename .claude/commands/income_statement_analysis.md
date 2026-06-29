@@ -85,6 +85,7 @@ Produces `{ticker}_income_statement_flow.png` and `{ticker}_income_statement_tre
 | [Second debate — e.g., revenue durability] | [consensus] | [our read] |
 
 - **The edge:** [1 sentence — where our revenue/margin read diverges from consensus and why we think we're right]
+- **Note:** If the P&L data aligns with consensus estimates, state that explicitly — a forced differentiated view is a bias, not an edge.
 
 ---
 

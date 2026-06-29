@@ -89,6 +89,7 @@ Produces `{ticker}_cash_flow_waterfall.png` and `{ticker}_cash_flow_trend.png` i
 | [Second debate — e.g., earnings quality / conversion] | [consensus] | [our read] |
 
 - **The edge:** [1 sentence — where our cash-conversion read diverges from consensus and why we think we're right]
+- **Note:** If the cash flow data aligns with consensus, state that explicitly — FCF quality is a measured fact, not a view to manufacture.
 
 ---
 

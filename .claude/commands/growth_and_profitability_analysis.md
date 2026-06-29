@@ -105,6 +105,7 @@ WebSearch for analyst consensus.
 | [Second debate — e.g., margin ceiling vs. operating leverage] | [consensus] | [our read] |
 
 - **The edge:** [1 sentence — where our growth/margin trajectory read diverges from consensus and why we think we're right]
+- **Note:** If the growth and margin data aligns with consensus estimates, state that explicitly — a forced differentiated view is a bias, not an edge.
 
 ---
 

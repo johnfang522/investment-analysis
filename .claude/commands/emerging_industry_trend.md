@@ -254,7 +254,7 @@ Follow the table with bullets:
 | [The core mispricing — e.g., is the bottleneck recognized yet?] | [what the market currently assumes] | [our differentiated, earlier read + evidence] |
 | [Second debate — e.g., is this crowded or still under-owned?] | [consensus] | [our read] |
 
-**Bottleneck posture:** bold verdict — **Conviction X/10** and **how to express it** (e.g., "accumulate the Layer-6 chokepoint name on weakness; monitor Layer 1," or "watch-only — no investable chokepoint yet"). Add a one-line **The edge:** naming what the market hasn't priced.
+**Bottleneck posture:** bold verdict — **Conviction X/10** and **how to express it** (e.g., "accumulate the Layer-6 chokepoint name on weakness; monitor Layer 1," or "watch-only — no investable chokepoint yet"). Add a one-line **The edge:** naming what the market hasn't priced. **If the analysis confirms the market's current positioning on this theme, say so explicitly — a forced variant view is a bias, not an edge.**
 
 **Layer weighting given current cycle stage:**
 

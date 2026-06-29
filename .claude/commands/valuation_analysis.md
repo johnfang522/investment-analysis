@@ -87,7 +87,8 @@ WebSearch peer multiples if missing locally. Choose 2–3 direct competitors.
 | **Base** | **X%** | **X%** | **X%** | **$X.XX** | **+/- X%** |
 | Bear | X% | X% | X% | $X.XX | -X% ↓ |
 
-- **Sensitivity:** WACC and terminal growth swing implied price most — a 1% change typically moves value ±15–20%.
+- **Sensitivity:** WACC and terminal growth are the key swing factors; a ±1% move in either typically moves implied value ±15–25% — show the actual sensitivity for this company rather than citing the general rule.
+- **Probability caveat:** Assign probabilities only after stating the specific, testable assumption for each scenario (e.g., "bull assumes FY2027 revenue of $X — vs. management guide of $Y and consensus of $Z"). Probability without an underlying assumption is false precision.
 
 ## Analyst Consensus
 
@@ -116,6 +117,7 @@ WebSearch peer multiples if missing locally. Choose 2–3 direct competitors.
 | [Second debate — e.g., what the price implies vs. achievable growth] | [consensus] | [our reverse-DCF read] |
 
 - **The edge:** [1 sentence — what the market is mispricing in the valuation (too cheap / priced for perfection) and why we think we're right]
+- **Note:** If the valuation analysis supports the consensus price target range, state that explicitly — a forced differentiated view is a bias, not an edge. The multiple and DCF outputs are facts; let them lead the conclusion.
 
 ---
 

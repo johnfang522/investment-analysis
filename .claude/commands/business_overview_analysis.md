@@ -80,6 +80,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 | [Second debate — e.g., share trajectory] | [consensus] | [our read] |
 
 - **The edge:** [1 sentence — what the market is mispricing about this business and why we think we're right]
+- **Note:** If the data aligns with consensus on the business model or moat, state that explicitly — a forced differentiated view is a bias, not an edge.
 
 ---
 

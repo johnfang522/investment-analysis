@@ -87,6 +87,7 @@ WebSearch: "{TICKER} operating leases contingent liabilities [year]"
 | [Second debate — e.g., hidden liabilities / goodwill quality] | [consensus] | [our read] |
 
 - **The edge:** [1 sentence — what the market is missing on the balance sheet (downside cushion or hidden risk) and why we think we're right]
+- **Note:** If the balance sheet read aligns with consensus, state that explicitly — a clean or stressed balance sheet is a fact, not a differentiated view.
 
 ---
 
