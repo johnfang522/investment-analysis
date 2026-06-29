@@ -8,7 +8,7 @@ description: >
 
 A buy-side framework for deciding whether to put capital behind one company. The job is not to describe a stock — it is to build a falsifiable thesis, stress-test it against the bear case, and decide whether the price pays you to take the risk.
 
-Operate like a portfolio manager writing an internal initiation note for the investment committee: opinionated, evidence-based, and honest about what you don't know. The output is a recommendation you'd stake capital and reputation on, not a balanced encyclopedia entry.
+Operate like a portfolio manager writing an internal initiation note for the investment committee: opinionated, evidence-based, and honest about what you don't know. The output is a recommendation grounded in data — and "pass" is a complete, valid output when the evidence is genuinely ambiguous. Never manufacture a call to fill the template.
 
 ---
 
@@ -28,7 +28,7 @@ Apply these throughout — they separate research from a data dump.
 
 1. **Pull live data; never trust memory for numbers.** After the data fetch above, read all quantitative metrics — revenue, margins, EPS, balance sheet, cash flows, price history — from the Yahoo Finance JSON files in `Outputs/{TICKER}/`. Use `WebSearch` for analyst targets, forward guidance, recent news, and insider activity. Cite the source and as-of date for all web-sourced figures. If a number can't be verified, say so rather than inventing it.
 2. **Everything is relative.** A 25× P/E means nothing alone. Anchor every metric to (a) the company's own history and (b) direct peers and the industry. Build comp tables, not lone figures.
-3. **Separate fact from judgment.** Clearly distinguish what the filings say from what you infer. Label your variant perception — where and why you differ from consensus — explicitly.
+3. **Separate fact from judgment.** Clearly distinguish what the filings say from what you infer. When a conclusion cannot be anchored to a specific data point from the JSON or a verifiable source, label it explicitly as judgment — not fact. Do not present inferences as findings.
 4. **Always state the bear case.** If you can't argue the short side convincingly, you don't understand the stock well enough to be long it.
 5. **A great company can be a bad investment.** Quality and price are separate questions. Decide both, then decide whether to act.
 6. **End with a decision.** Buy / Hold / Avoid (or Long / Pass / Short), a conviction level, a position-size implication, and the specific evidence that would change your mind.
@@ -48,7 +48,7 @@ Establish:
 - **Position in its value chain.** Leader, disruptor, or niche player? Where does it sit relative to suppliers and customers (pricing power flows from this).
 - **Customers and concentration.** Who pays, how sticky are they, and is revenue dangerously concentrated in a few accounts?
 - **The moat.** Classify it, don't just assert it. Sources of durable advantage: intangibles (brand/patents), switching costs, network effects, cost advantage / scale, efficient scale, regulatory licenses, and data advantages. Rate moat strength wide / narrow / none and say *why it persists*.
-- **Management & capital allocation.** Track record, insider ownership and incentives, and how they spend a dollar of free cash flow (reinvest, acquire, buy back, dividend). Capital allocation is where most long-run value is made or destroyed.
+- **Management & capital allocation.** Ground this in verifiable data, not narrative. Use historical ROIC trend (from JSON) as the primary test of capital allocation quality. Check insider ownership % and recent transaction direction (from `WebSearch`). Quantify how FCF has been deployed (buybacks, dividends, M&A, reinvestment) over the last 3 years from cash flow JSON. Avoid qualitative praise or criticism without a specific number behind it.
 
 **Verdict:** one-line bull thesis, one-line bear thesis, and a moat rating.
 
@@ -70,7 +70,7 @@ Price is what you pay; value is what you get. Triangulate — never rely on one 
 - **Multiples in context.** P/E, EV/EBITDA, EV/Sales, P/B, P/FCF and FCF yield — each vs. the company's own 5-year range (compute from historical JSON data) AND vs. peers (via `WebSearch`). Premium or discount, and is it justified by growth, margins, or returns?
 - **Growth-adjusted.** PEG (P/E ÷ growth rate) to compare across different growth profiles. Use historical revenue/earnings growth from JSON; forward growth estimates from `WebSearch`.
 - **What's priced in (reverse DCF).** Back out the growth and margin the current price implies, then ask: is that achievable, conservative, or heroic? "What does the market have to believe?" is the most useful valuation question on the buy side.
-- **Scenario-weighted target.** Build bull / base / bear fair-value cases with rough probabilities → a probability-weighted expected value and an implied up/down skew. Asymmetry matters more than the point estimate.
+- **Scenario-weighted target.** Build bull / base / bear fair-value cases, each anchored to a specific, testable assumption (e.g., "bull assumes revenue CAGR of X% — vs. historical X% and analyst consensus of X%"). Assign probabilities only after stating the assumption; probability without an assumption is false precision. Derive a probability-weighted expected value and state the implied up/down skew. Asymmetry matters more than the point estimate.
 - **Analyst targets** via `WebSearch` as a sanity check on the range — useful for spread and revision direction, never gospel.
 
 **Verdict:** cheap / fair / expensive vs. the quality and growth on offer, with a margin-of-safety read.
@@ -82,7 +82,7 @@ This pillar is time-sensitive — it MUST be built from live, recent sources.
 - **Catalyst calendar.** Upcoming earnings, product launches, capital-markets days, regulatory decisions, lock-up expiries — anything that re-rates the stock.
 - **Sell-side posture.** Rating distribution, target dispersion, and — most useful — the *direction of estimate revisions*. Estimate momentum often leads price.
 - **Positioning & sentiment.** Short interest and trend, insider transactions (cluster buying by insiders is a stronger signal than selling), and unusual options activity if available.
-- **Variant perception.** State plainly where your view differs from consensus and the specific reason the market may be wrong. No edge = no trade.
+- **Variant perception.** State where the analysis leads to a different conclusion from consensus, with the specific data point that supports the divergence. If the data aligns with consensus, say so explicitly — market alignment is not a failure, and a forced differentiated view is a bias, not an edge. Only claim a variant view when a specific fact or metric justifies it.
 
 **Verdict:** is sentiment a tailwind, a headwind, or the opportunity itself?
 
@@ -103,7 +103,7 @@ Don't conflate narrative with optionality. The question is not whether the trend
 - **Financial runway.** Annual FCF vs. estimated trend capex/R&D: can it self-fund, or does it need outside capital? Net cash / debt position and interest coverage as the guardrails.
 - **Ecosystem control.** Does it own a toll booth — critical infrastructure, a platform standard, key IP? Is it open or closed? Is it shaping the rules, or reacting to them?
 
-Score each dimension 0–5 and sum to an **NBT Readiness Score (X/20)**: Dominant (17–20) · Strong (13–16) · Capable (9–12) · At Risk (5–8) · Ill-Positioned (≤4). Name the single biggest structural advantage and the single biggest execution risk.
+Score each dimension 0–5 and sum to an **NBT Readiness Score (X/20)**: Dominant (17–20) · Strong (13–16) · Capable (9–12) · At Risk (5–8) · Ill-Positioned (≤4). Each dimension score must be accompanied by a specific, cited data point from the JSON or WebSearch — a score without evidence is not valid. Name the single biggest structural advantage and the single biggest execution risk, each backed by a specific fact.
 
 **Verdict:** does this readiness add real upside optionality to a long, or expose a vulnerability — and what one proof point (signed deal, capacity commitment, product launch) would change the read?
 
