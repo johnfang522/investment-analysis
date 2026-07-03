@@ -9,6 +9,8 @@ description: >
 
 A disciplined funnel for surfacing stocks with genuine outsized-return potential. The premise: multi-baggers are not found by predicting the future better — they are found by fishing where the structural odds are best and filtering hard for a specific, well-documented trait set.
 
+**Qualifying bar: 5x+ over the holding period.** A name does not need 10x or 100x DNA to make the shortlist — genuine, evidence-backed 5x potential is a sufficient outcome for this mandate. Treat 10x-100x candidates as the top of the distribution, not the entry requirement.
+
 The output is a **scored shortlist of 3–7 names**, each with a one-paragraph hook, ready to hand to the single_stock_quick_research (or single_stock_deep_research) skill for further deep dive. This skill generates and ranks ideas; it does not issue Buy/Hold/Sell calls.
 
 ---
@@ -36,6 +38,8 @@ Ground every screen in what the historical population of 10x–100x stocks actua
 
 The lesson: the winners rarely looked glamorous. They looked small, profitable, founder-driven, and structurally advantaged in a market that could grow for decades.
 
+**Note on the 5x bar specifically:** the base rates above describe the extreme (10x-100x) end of the distribution — smaller, longer, more painful, more ignored than a 5x needs to be. A 5x candidate can be larger, faster, and better-covered than a 100-bagger's starting profile and still clear this mandate. Don't force a 5x candidate to meet 100-bagger-grade extremity on every trait — score it on its own merits against the thresholds below, which are already calibrated to the 5x bar.
+
 ---
 
 ## The Funnel
@@ -46,7 +50,7 @@ Pick one (or run several in parallel):
 
 1. **Theme-driven:** Identify a credible secular theme, then map its value chain and fish in the least-crowded, highest-moat layers: raw infrastructure suppliers ("picks & shovels"), adjacent beneficiaries (incumbents with a new tailwind but no theme label — least crowded), and bottleneck/chokepoint assets (single-source inputs everyone must buy — highest structural moat). Avoid end-user application names: they are usually crowded and fully priced by the time a theme is visible.
    (If an investor-trend-framework skill is installed, use it for this step; otherwise apply the heuristic above directly.)
-2. **Neglect-driven:** Small-caps with < 5 analysts, recent spin-offs, post-IPO busts trading below IPO price with improving fundamentals, "boring" industries with a consolidator.
+2. **Neglect-driven:** Small/mid-caps with < 15 analysts, recent spin-offs, post-IPO busts trading below IPO price with improving fundamentals, "boring" industries with a consolidator.
 3. **Quality-screen-driven:** Universe screen on the quantitative gate below, theme-agnostic.
 
 State explicitly which hunting ground is being used and why.
@@ -59,15 +63,15 @@ A candidate must clear most of these to advance:
 
 | Filter | Threshold | Rationale |
 |---|---|---|
-| Market cap | < $5B, prefer < $1.5B | Room to 10x; survivable size |
-| Revenue growth | > 15% (3-yr CAGR or clear acceleration) | The growth engine exists |
-| Gross margin | > 40% (or top-quartile for its industry) | Pricing power headroom |
-| ROIC | > 15%, or clearly inflecting toward it | Reinvestment creates value |
-| Balance sheet | Net cash or net debt/EBITDA < 2x | Survives the inevitable drawdown |
-| Dilution | Share count growth < 3%/yr | Growth is self-funded |
-| Analyst coverage | < 10 analysts | Rerating engine not yet fired |
+| Market cap | < $15B, prefer < $5B | Room to 5x; a 5x from a larger base is still plausible, unlike a 10x-100x |
+| Revenue growth | > 10% (3-yr CAGR or clear acceleration) | The growth engine exists — doesn't need to be explosive to compound to 5x over 5-10 yrs |
+| Gross margin | > 35% (or top-quartile for its industry) | Pricing power headroom |
+| ROIC | > 12%, or clearly inflecting toward it | Reinvestment creates value |
+| Balance sheet | Net cash or net debt/EBITDA < 2.5x | Survives the inevitable drawdown |
+| Dilution | Share count growth < 4%/yr | Growth is mostly self-funded |
+| Analyst coverage | < 20 analysts | Some rerating room still available; doesn't need to be totally undiscovered for a 5x |
 
-Exceptions are allowed with justification (e.g., a chokepoint asset may carry more debt), but every exception must be named as a risk.
+Thresholds above are calibrated to the 5x qualifying bar (looser than a 10x-100x screen would require). Exceptions are still allowed with justification (e.g., a chokepoint asset may carry more debt), but every exception must be named as a risk.
 
 ### Stage 3 — Multi-Bagger DNA Score
 
@@ -75,27 +79,27 @@ Score survivors on ten traits, 0 (absent) / 1 (partial) / 2 (strong), citing evi
 
 | # | Trait | What "strong" looks like |
 |---|---|---|
-| 1 | Small starting size | Market cap under ~$1–3B; big enough to survive, small enough to 10x |
-| 2 | High ROIC | ROIC > 15–20%, well above cost of capital |
-| 3 | Reinvestment runway | Can redeploy most cash flow at those returns for 10+ yrs (TAM penetration < ~20%) |
+| 1 | Small starting size | Market cap under ~$1–5B; a 5x from here is plausible without needing micro-cap extremity |
+| 2 | High ROIC | ROIC > 12–15%, above cost of capital |
+| 3 | Reinvestment runway | Can redeploy most cash flow at those returns for 5–10 yrs (TAM penetration < ~30%) |
 | 4 | Twin-engine setup | Entry multiple at or below market/peers, so growth AND rerating can both work |
 | 5 | Owner-operator | Founder-led or manager with 5%+ ownership; skin in the game |
-| 6 | Under-followed | < 10 analysts; low institutional ownership; no index crowding yet |
+| 6 | Under-followed | < 15–20 analysts; some rerating room still available |
 | 7 | Gross-margin strength | High and stable/rising gross margin = pricing power headroom |
-| 8 | Self-funding | Growth financed internally, not by serial dilution or debt |
+| 8 | Self-funding | Growth financed mostly internally, not by heavy serial dilution or debt |
 | 9 | Moat that scales | Advantage strengthens with size (network effects, data, unit cost) |
-| 10 | Long secular tailwind | Rides a decade-plus theme with segment-level revenue proof |
+| 10 | Long secular tailwind | Rides a multi-year theme with segment-level revenue proof |
 
-**Interpretation:**
+**Interpretation (recalibrated to the 5x qualifying bar):**
 
 | Score | Read |
 |---|---|
-| 16–20 | Rare — genuine multi-bagger DNA; top of the shortlist |
-| 11–15 | Promising — advances; name which missing traits are fixable vs. structural |
-| 6–10 | Ordinary — may be a fine stock, but not an outsized-return candidate |
-| 0–5 | Pass for this mandate |
+| 16–20 | Rare — 10x-100x-grade DNA; top of the shortlist |
+| 8–15 | **Qualifies — credible 5x+ case; advances.** Name which missing traits are fixable vs. structural |
+| 4–7 | Ordinary — may be a fine stock, but the 5x case isn't well-supported yet |
+| 0–3 | Pass for this mandate |
 
-Rank the shortlist by score. Only names scoring **11+** advance.
+Rank the shortlist by score. Names scoring **8+** advance (this is the 5x-calibrated bar — reserve the 16–20 "rare" band for genuine 10x-100x candidates, but don't require it for the shortlist).
 
 ### Stage 4 — The Twin-Engine Check (per finalist)
 
@@ -106,13 +110,13 @@ For each finalist, show the return decomposition explicitly:
 - Plausible exit multiple (what does this business trade at if it works?)
 - **Implied multiple-of-money** = growth compounding × multiple change
 
-| Scenario | EPS/FCF CAGR | Exit multiple | 10-yr multiple of money |
+| Scenario | EPS/FCF CAGR | Exit multiple | 5–10-yr multiple of money |
 |---|---|---|---|
 | Engine works, rerates | | | |
 | Engine works, no rerate | | | |
 | Engine stalls | | | |
 
-If the "no rerate" row still produces a solid return, the setup is resilient. If the thesis *requires* rerating, say so — that is a narrower, riskier bet.
+The bar to clear is **5x, not 10x** — a scenario that lands at ~4-6x on a 5-10 year horizon is a pass, not a near-miss. If the "no rerate" row still produces at least ~5x, the setup is resilient. If the thesis *requires* rerating to reach 5x, say so — that is a narrower, riskier bet, but can still qualify if the rerate assumption is well-evidenced.
 
 ### Stage 5 — Shortlist Output
 
@@ -132,7 +136,7 @@ End with the handoff line: recommend a full bottom-up deep dive on the top 1–3
 - **Story stocks with no gross margin** — narrative without unit economics 
 - **Serial diluters** — "growth" funded by your ownership shrinking
 - **Binary outcomes** — single-drug biotechs, single-contract defense names (lottery tickets, not compounders — unless explicitly requested)
-- **Already-crowded theme darlings** — > 20 analysts, meme status, or valuation already pricing the bull case (the rerating engine is spent)
+- **Already-crowded theme darlings** — > 30 analysts, meme status, or valuation already pricing the bull case (the rerating engine is spent)
 - **Melting-ice-cube cheapness** — low multiple on declining revenue is a value trap, not a coiled spring
 - **AI-washing** — theme exposure claimed in the deck but absent from the revenue mix; demand segment-level proof
 
@@ -150,9 +154,11 @@ End with the handoff line: recommend a full bottom-up deep dive on the top 1–3
 
 ## Output Format
 
-Default deliverable: a **`.docx` idea-generation memo**, built with `python-docx` per this project's Word Document Generation conventions (import helpers from `doc_utils.py`, portrait/narrow-margin sections, `add_footnote(doc)` before save), saved to `Outputs/multibagger_screener_{theme_or_date}_{YYYYMMDD}.docx`, structured as: hunting-ground rationale → funnel summary (how many screened → gated → scored) → shortlist table → per-name hooks with DNA scorecards → twin-engine tables → anti-pattern exclusions worth noting → handoff recommendation.
+**Always produce the `.docx` memo — this is not optional and does not depend on whether any name qualifies.** Build it with `python-docx` per this project's Word Document Generation conventions (import helpers from `doc_utils.py`, portrait/narrow-margin sections, `add_footnote(doc)` before save), saved to `Outputs/multibagger_screener_{theme_or_date}_{YYYYMMDD}.docx`, structured as: hunting-ground rationale → funnel summary (how many screened → gated → scored) → quantitative gate table → shortlist table → per-name hooks with DNA scorecards → twin-engine tables (for names that scored 8+) → anti-pattern exclusions worth noting → handoff recommendation.
 
-For a quick take in chat: shortlist table + hooks only.
+**A null result (zero names clearing the 8+ DNA threshold) still gets the full memo**, not just a chat message. State plainly in the Shortlist section that no names qualify, why (cite the specific gate/DNA failures), and the recommended next step (broaden the hunting ground, or revisit a name once its fundamentals inflect). Reporting "nothing qualifies" with evidence is a valid, complete deliverable — never force a pick to avoid an empty shortlist.
+
+In chat, always confirm the saved `.docx` path after generating it. You may also give a short in-chat summary (shortlist table + hooks, or the null-result explanation) alongside the file, but the file itself is mandatory on every run.
 
 ---
 
