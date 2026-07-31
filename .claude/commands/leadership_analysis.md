@@ -91,6 +91,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - Bullets as Word list items
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
+- Dark blue header rows (fill `1F3864`), white bold text
 - Source citations in small italic
 - Variant View as a 3-column table; Read-Through block in bold
 - Saves to `Outputs/{TICKER}/2_{ticker_lowercase}_leadership_analysis.docx`

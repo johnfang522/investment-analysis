@@ -1,7 +1,8 @@
 """
-Plots 5-year time series for all 7 market sentiment indicators.
+Plots 5-year time series for the 7 market sentiment indicators plus
+Treasury yields, the US fiscal picture, and margin debt (10 charts total).
 Saves individual PNGs to Outputs/ and a combined summary PNG.
-Run from project root: .venv/Scripts/python Outputs/plot_market_sentiment_history.py
+Run from project root: .venv/Scripts/python plot_market_sentiment_history.py
 """
 import sys, os, warnings, re, json, io
 warnings.filterwarnings("ignore")
@@ -18,7 +19,7 @@ from datetime import datetime, timedelta
 OUT = "Outputs"
 os.makedirs(OUT, exist_ok=True)
 
-END       = datetime(2026, 5, 30)
+END       = datetime(2026, 7, 31)
 START     = END - timedelta(days=5 * 365 + 5)
 START_STR = START.strftime("%Y-%m-%d")
 END_STR   = END.strftime("%Y-%m-%d")
@@ -68,7 +69,7 @@ def add_current(ax, series, fmt="{:.1f}", color=C_RED, offset=(8, 8)):
         bbox=dict(boxstyle="round,pad=0.2", fc="white", ec=color, lw=0.8),
     )
 
-def fetch_fred(series_id, rename=None, timeout=60):
+def fetch_fred(series_id, rename=None, timeout=60, start=None):
     url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}"
     try:
         r = requests.get(url, headers=HDR, timeout=timeout)
@@ -87,7 +88,7 @@ def fetch_fred(series_id, rename=None, timeout=60):
         col = rename or series_id
         df = df[[val_col]].rename(columns={val_col: col})
         df[col] = pd.to_numeric(df[col], errors="coerce")
-        return df[df.index >= START_STR]
+        return df[df.index >= (start or START_STR)]
     except Exception as e:
         print(f"  FRED fetch failed ({series_id}): {e}")
         return pd.DataFrame()
@@ -219,7 +220,8 @@ buffett = pd.Series(dtype=float)
 # GDP (quarterly) from FRED — normalise ratio to known anchor: ~233% on 2026-05-22
 ftw_raw = yf.download("^FTW5000", start=START_STR, end=END_STR, progress=False)
 if not ftw_raw.empty:
-    ftw = ftw_raw["Close"].squeeze().dropna()
+    ftw_col = ftw_raw["Close"]
+    ftw = (ftw_col.iloc[:, 0] if hasattr(ftw_col, "columns") else ftw_col).dropna()
     gdp_df = fetch_fred("GDP", rename="GDP")
     if not gdp_df.empty:
         gdp_ff = gdp_df["GDP"].resample("D").ffill()
@@ -358,6 +360,123 @@ if not skew.empty:
 else:
     print("  SKEW data unavailable — skipping chart")
 
+# ──────────────── 8. Treasury Yields (10Y, 2Y, curve) ───────────────────────
+print("Fetching Treasury yields from FRED...")
+d10 = fetch_fred("DGS10", rename="Y10")
+d02 = fetch_fred("DGS2",  rename="Y2")
+
+if not d10.empty and not d02.empty:
+    y10 = d10["Y10"].dropna()
+    y2  = d02["Y2"].dropna()
+    common = y10.index.intersection(y2.index)
+    curve  = y10.loc[common] - y2.loc[common]
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 7), sharex=True,
+                                   gridspec_kw={"height_ratios": [2, 1]})
+    ax1.plot(y10.index, y10, color=C_BLUE,   lw=1.8, label="10-Year")
+    ax1.plot(y2.index,  y2,  color=C_ORANGE, lw=1.8, label="2-Year")
+    ax1.axhline(4.5, color=C_ORANGE, lw=1.0, ls="--", label="4.5% — equity valuation headwind")
+    ax1.axhline(5.0, color=C_RED,    lw=1.0, ls="--", label="5.0% — danger zone")
+    add_current(ax1, y10, fmt="{:.2f}%", color=C_RED)
+    ax1.set_ylabel("Yield (%)")
+    ax1.set_title("US Treasury Yields — 10Y vs 2Y (5-Year)")
+    ax1.legend(fontsize=9)
+
+    ax2.fill_between(curve.index, curve, where=(curve >= 0), color=C_GREEN, alpha=0.35, label="Normal (10Y > 2Y)")
+    ax2.fill_between(curve.index, curve, where=(curve <  0), color=C_RED,   alpha=0.35, label="Inverted")
+    ax2.plot(curve.index, curve, color="#333333", lw=1.0)
+    ax2.axhline(0, color="#666666", lw=0.8)
+    ax2.set_ylabel("10Y − 2Y (pp)")
+    ax2.legend(fontsize=8, loc="lower right")
+    fmt_xaxis(ax2)
+    fig.tight_layout()
+    save_fig(fig, "sentiment_treasury_yields.png")
+    print(f"  Yields: 10Y={y10.iloc[-1]:.2f}%, 2Y={y2.iloc[-1]:.2f}%, curve={curve.iloc[-1]:+.2f}pp")
+else:
+    print("  Treasury yield data unavailable — skipping chart")
+
+# ──────────────── 9. US Fiscal — Deficit & Net Interest ─────────────────────
+print("Fetching fiscal data from FRED...")
+# MTSDS133FMS is monthly, $ millions, deficit months negative. Fetch extra
+# history so the 12-month rolling window is complete at the chart's left edge.
+fiscal_start = (START - timedelta(days=400)).strftime("%Y-%m-%d")
+mts_df = fetch_fred("MTSDS133FMS", rename="DEFICIT", start=fiscal_start)
+int_df = fetch_fred("A091RC1Q027SBEA", rename="INTEREST")
+
+if not mts_df.empty:
+    deficit_12m = (-mts_df["DEFICIT"].rolling(12, min_periods=12).sum() / 1e6).dropna()
+    deficit_12m = deficit_12m[deficit_12m.index >= START_STR]
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 7), sharex=True,
+                                   gridspec_kw={"height_ratios": [2, 1]})
+    ax1.fill_between(deficit_12m.index, deficit_12m, alpha=0.15, color=C_RED)
+    ax1.plot(deficit_12m.index, deficit_12m, color=C_RED, lw=1.8)
+    ax1.axhline(1.0, color=C_ORANGE, lw=1.0, ls="--", label="$1T")
+    ax1.axhline(2.0, color=C_RED,    lw=1.0, ls="--", label="$2T — heavy issuance zone")
+    add_current(ax1, deficit_12m, fmt="${:.2f}T", color=C_RED)
+    ax1.set_ylabel("Trailing 12M Deficit ($T)")
+    ax1.set_title("US Federal Deficit (Trailing 12M) & Net Interest Outlays (5-Year)")
+    ax1.legend(fontsize=9)
+
+    if not int_df.empty:
+        interest = int_df["INTEREST"].dropna()  # quarterly, SAAR, $B
+        ax2.fill_between(interest.index, interest, alpha=0.15, color=C_PURPLE)
+        ax2.plot(interest.index, interest, color=C_PURPLE, lw=1.8)
+        add_current(ax2, interest, fmt="${:.0f}B", color=C_PURPLE)
+        ax2.set_ylabel("Net Interest (SAAR, $B)")
+    else:
+        ax2.text(0.5, 0.5, "Net interest data unavailable", ha="center", va="center",
+                 transform=ax2.transAxes, fontsize=10, color="#888888")
+    fmt_xaxis(ax2)
+    fig.tight_layout()
+    save_fig(fig, "sentiment_fiscal.png")
+    print(f"  Fiscal: trailing-12M deficit=${deficit_12m.iloc[-1]:.2f}T")
+else:
+    print("  Fiscal deficit data unavailable — skipping chart")
+
+# ──────────────── 10. Margin Debt (level + % of GDP) ────────────────────────
+print("Fetching margin debt from FRED...")
+# Z.1 quarterly margin loans (broker-dealer receivables from customers), $ millions.
+# FINRA's monthly series is more current but has no free CSV endpoint.
+md_df  = fetch_fred("BOGZ1FL663067003Q", rename="MARGIN")
+gdp_md = fetch_fred("GDP", rename="GDP")
+
+if not md_df.empty and not gdp_md.empty:
+    margin_b  = (md_df["MARGIN"].dropna() / 1e3)          # $B
+    gdp_ff    = gdp_md["GDP"].resample("D").ffill()       # $B
+    common    = margin_b.index.intersection(gdp_ff.index)
+    md_gdp    = (margin_b.loc[common] / gdp_ff.loc[common]) * 100
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 7), sharex=True,
+                                   gridspec_kw={"height_ratios": [1, 1]})
+    ax1.fill_between(margin_b.index, margin_b, alpha=0.15, color=C_PURPLE)
+    ax1.plot(margin_b.index, margin_b, color=C_PURPLE, lw=1.8)
+    add_current(ax1, margin_b, fmt="${:.0f}B", color=C_PURPLE)
+    ax1.set_ylabel("Margin Loans ($B)")
+    ax1.set_title("Margin Debt — Level & % of GDP (5-Year, quarterly Fed Z.1)")
+
+    ax2.fill_between(md_gdp.index, md_gdp, alpha=0.15, color=C_RED)
+    ax2.plot(md_gdp.index, md_gdp, color=C_RED, lw=1.8)
+    ax2.axhline(2.6, color=C_GREEN,  lw=1.0, ls="--", label="2.6% — 2007 peak")
+    ax2.axhline(2.8, color=C_ORANGE, lw=1.0, ls="--", label="2.8% — 2000 peak")
+    ax2.axhline(3.8, color=C_RED,    lw=1.0, ls="--", label="3.8% — 2021 peak")
+    add_current(ax2, md_gdp, fmt="{:.2f}%", color=C_RED)
+    ax2.set_ylabel("Margin Debt / GDP (%)")
+    ax2.legend(fontsize=9, loc="lower right")
+    ax2.annotate(
+        "Note: plotted line is the Fed Z.1 broker-dealer margin-loans series, a narrower measure than\n"
+        "FINRA's monthly margin statistics (the basis for the 2000/2007/2021 peak reference lines).\n"
+        "Compare the FINRA-basis current reading from the report text against those peaks, not this line.",
+        xy=(0.01, 0.63), xycoords="axes fraction", fontsize=8, color="#666666",
+        bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="#cccccc", lw=0.8),
+    )
+    fmt_xaxis(ax2)
+    fig.tight_layout()
+    save_fig(fig, "sentiment_margin_debt.png")
+    print(f"  Margin: ${margin_b.iloc[-1]:.0f}B, {md_gdp.iloc[-1]:.2f}% of GDP")
+else:
+    print("  Margin debt data unavailable — skipping chart")
+
 # ──────────────── Combined Summary Dashboard ─────────────────────────────────
 print("\nBuilding combined dashboard...")
 chart_order = [
@@ -368,6 +487,9 @@ chart_order = [
     ("sentiment_hy_oas.png",     "HY OAS Spread"),
     ("sentiment_cape.png",       "Shiller CAPE"),
     ("sentiment_buffett.png",    "Buffett Indicator"),
+    ("sentiment_treasury_yields.png", "Treasury Yields"),
+    ("sentiment_fiscal.png",     "US Fiscal"),
+    ("sentiment_margin_debt.png", "Margin Debt"),
 ]
 available = [(os.path.join(OUT, f), t) for f, t in chart_order if os.path.exists(os.path.join(OUT, f))]
 
@@ -383,8 +505,8 @@ if available:
         axes[i].axis("off")
     for j in range(len(available), len(axes)):
         axes[j].axis("off")
-    fig.suptitle("Market Sentiment Dashboard — May 23, 2026", fontsize=16, fontweight="bold", y=1.005)
+    fig.suptitle(f"Market Sentiment Dashboard — {END.strftime('%B %d, %Y')}", fontsize=16, fontweight="bold", y=1.005)
     fig.tight_layout()
     save_fig(fig, f"sentiment_dashboard_{END.strftime('%Y%m%d')}.png")
 
-print(f"\nDone. {len(available)}/7 charts saved to Outputs/")
+print(f"\nDone. {len(available)}/{len(chart_order)} charts saved to Outputs/")

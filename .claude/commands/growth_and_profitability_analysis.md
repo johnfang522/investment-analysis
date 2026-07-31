@@ -6,8 +6,8 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** growth &
 1. **Always re-download first:** `.venv/Scripts/python -c "from yahoo_finance_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json`, `_income_statement_annual.json`, and `_quick_metrics.json`.
 3. Use quarterly JSON for current/prior-year quarter; annual JSON for multi-year CAGRs.
-3. Compute EPS = Net Income / Shares Outstanding (`sharesOutstanding`) if EPS field is missing.
-4. WebSearch only for forward analyst estimates / guidance.
+4. Compute EPS = Net Income / Shares Outstanding (`sharesOutstanding`) if EPS field is missing.
+5. WebSearch only for forward analyst estimates / guidance.
 
 **Always YoY. Never sequential quarters.**
 

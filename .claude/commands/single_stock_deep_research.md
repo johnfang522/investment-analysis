@@ -26,11 +26,11 @@ Execute in this exact order:
 8. Subagent → `.claude/commands/valuation_analysis.md` for {TICKER}
 9. Subagent → `.claude/commands/technical_analysis.md` for {TICKER}
 
-Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`. Do not carry skill output into the orchestrator's context — the orchestrator proceeds to Step 3 once all 9 subagents have completed.
+Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`. Do not carry skill output into the orchestrator's context — the orchestrator proceeds to Step 2 once all 9 subagents have completed.
 
 ---
 
-## Step 3 — Write the Executive Summary
+## Step 2 — Write the Executive Summary
 
 Synthesize the findings from all 9 analyses into a **2–3 page hedge-fund research note**. Each of the 9 appendices now carries its own directional **Read-Through** (BULLISH / NEUTRAL / BEARISH) and a dimension conviction score — roll these up into a single house view, weighting the dimensions that actually drive this name. Write it as a seasoned buy-side analyst pitching the PM — direct, opinionated, anchored to specific data points, and explicit about the variant view and the risk/reward asymmetry.
 
@@ -188,7 +188,7 @@ For the Comments column: go beyond the mechanical label. Write a one-sentence an
 
 ---
 
-## Step 4 — Build the Research Note (Word)
+## Step 3 — Build the Research Note (Word)
 
 Write and execute a Python script (`.venv/Scripts/python`) that creates the summary document from the executive summary above:
 
@@ -196,7 +196,7 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
    - Narrow margins (0.5 inch all sides)
    - Title: `{TICKER} — Hedge Fund Investment Note` (bold heading, level 0) + date subtitle
    - Company line, coverage label, and date in bold/italic as shown in the summary. Coverage label logic: check `Outputs/{TICKER}/` for any prior `*_research_notes_*.docx` or `*_research_package_*.docx` files — if found, use "Coverage Date: [Date]"; if none, use "Initiating Coverage — [Date]".
-   - Broad market condition line in italics immediately below the coverage label, as produced in Step 3 (e.g., *Market on [Date]: S&P 500 [level] ([+/−X.X%]), VIX [X.X] — [one-sentence context]*)
+   - Broad market condition line in italics immediately below the coverage label, as produced in Step 2 (e.g., *Market on [Date]: S&P 500 [level] ([+/−X.X%]), VIX [X.X] — [one-sentence context]*)
    - Verdict line in large bold text (use Heading 1 style), colored by bias: green `007000` for LONG, red `C00000` for SHORT, neutral dark for PASS. Render the full Verdict block (bias + conviction + price target + stop + risk/reward + sizing).
    - Variant View rendered as a 3-column table (Debate | Consensus / Sell-Side | Our View) with the dark-blue header row, immediately after the Investment Thesis section
    - All sections formatted with Heading 2 subheadings
@@ -209,8 +209,8 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
        print(list(m.keys()))
        ```
        Use only the keys that appear in this output. Do NOT invent key names from memory (e.g. do not assume `currentPrice`, `rsi14`, `marketCap` — the actual keys are snake_case such as `current_price`, `rsi`, `market_cap`). Every `m.get(...)` call in the generated script must use a key confirmed by this diagnostic.
-     - **Description column**: populate with the formula + benchmark text from the Financial Snapshot table template in Step 3 (hardcode per metric — these are static reference descriptions, not computed values).
-     - **Comments column**: populate with the analyst commentary you wrote in Step 3 (the actual one-sentence assessment for this ticker, not the bracketed template text). This is the substantive column — each cell must contain a specific, data-driven sentence, not a placeholder.
+     - **Description column**: populate with the formula + benchmark text from the Financial Snapshot table template in Step 2 (hardcode per metric — these are static reference descriptions, not computed values).
+     - **Comments column**: populate with the analyst commentary you wrote in Step 2 (the actual one-sentence assessment for this ticker, not the bracketed template text). This is the substantive column — each cell must contain a specific, data-driven sentence, not a placeholder.
      - Apply background color to the **Value cell** (not Comments) using this logic:
        - Use `color_current_price(metrics)` for Current Price — **this function returns an openpyxl `PatternFill` object, not a plain hex string**. Extract the 6-digit hex from it with: `fill = color_current_price(m); hex_color = fill.fgColor.rgb[-6:]` (the `.rgb` attribute is an 8-char string like `'00C6EFCE'`; take the last 6 chars).
        - For all other metrics, use `_short_comment(key, val, metrics)` to get the label, then map: positive keywords (Strong, High quality, Ideal, Good, Very conservative, Very safe, Very liquid, Solid, Healthy, Undervalued, Cheap, High yield, Sustainable) → Green (`C6EFCE`); borderline keywords (Decent, Neutral, Moderate, Adequate, Borderline, Fair) → Yellow (`FFEB9C`); warning keywords (Watch, Slow, Thin, Below threshold, At risk, Liquidity risk, Overbought, Expensive, High risk, Low, Warning, Unsustainable) → Pink (`FFC7CE`); no fill for informational rows (52-Week Low, 52-Week High, Market Cap, Revenue TTM) and N/A values
@@ -223,10 +223,9 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
    ```python
    import sys; sys.path.insert(0, '.')
    from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
    from key_stock_metrics import compute_metrics, _short_comment, METRICS, color_current_price
    ```
+   Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 
 3. **Save to**: `Outputs/{TICKER}/{ticker_lowercase}_stock_deep_research_notes_{YYYYMMDD}.docx`  
    *(use today's date, e.g., `Outputs/NVDA/nvda_stock_deep_research_notes_20260420.docx`)*
@@ -239,7 +238,7 @@ Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B �
 
 ---
 
-## Step 5 — Assemble the Complete Research Package (Word)
+## Step 4 — Assemble the Complete Research Package (Word)
 
 Write and execute a Python script (`.venv/Scripts/python`) that combines all documents into a single master file:
 

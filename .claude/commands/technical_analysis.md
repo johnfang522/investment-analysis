@@ -6,7 +6,7 @@ You are a **buy-side analyst at a hedge fund** producing a **3-page max** techni
 1. **Always re-download first:** `.venv/Scripts/python -c "from yahoo_finance_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json` (price, 50/200-DMA, 52-wk range, beta) and `_price_history.json` (DMA + RSI computation).
 3. WebSearch only for VIX, CNN Fear & Greed, AAII sentiment, put/call, MACD cross-check.
-3. Leave N/A if missing; note assumption used.
+4. Leave N/A if missing; note assumption used.
 
 **SOURCE CITATIONS:** `Source: URL` indented below web-sourced lines.
 

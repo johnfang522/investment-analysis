@@ -49,7 +49,7 @@ For **every metric**, always attempt to source values from `_quick_metrics.json`
 | Operating Margin | `operatingMargins` (already a ratio, use directly) |
 | Net Income Margin | `profitMargins` (already a decimal ratio, use directly) |
 | ROE | `returnOnEquity` |
-| D/E | `debtToEquity` (already a ratio; use directly, divide by 100 if >10 to normalize) |
+| D/E | `debtToEquity` (Yahoo returns a **percentage**, e.g. `173` = 173%; the script divides by 100 to get the ratio — do not double-divide) |
 | Interest Coverage | `ebitda` (numerator) — fallback to income statement; denominator from income statement |
 | Current Ratio | `currentRatio` |
 | FCF Margin | `freeCashflow` (numerator) + `totalRevenue` (denominator) |
@@ -80,7 +80,7 @@ Only used when a quick metrics field is missing or null:
 #### Notes on quick metrics normalization
 
 - `returnOnEquity`: already a decimal ratio (e.g. 0.45 = 45%) — use as-is
-- `debtToEquity`: Yahoo returns this as a plain ratio (e.g. 1.73) — use as-is, no division needed
+- `debtToEquity`: Yahoo returns this as a **percentage** (e.g. `173` = 173%) — `key_stock_metrics.py` always divides by 100 to convert to a ratio; do not divide again
 - `operatingMargins`: already a decimal ratio — use as-is
 - `grossMargins`: already a decimal ratio — use as-is
 - `profitMargins`: already a decimal ratio — use as-is
@@ -212,9 +212,9 @@ Color the **value cell** only:
 After confirming the output file path, end your chat response with a concise buy-side triage of the screened set — this is what makes the screen actionable for the PM. Do **not** modify the Excel/Python pipeline to produce this; derive it from the computed metrics and their green/yellow/red coloring.
 
 - **Screen tilt per ticker:** a one-line directional lean for each name — **Long-lean / Neutral / Short-lean / Avoid** — with a one-clause reason anchored to the metrics (e.g., "Long-lean — Rule of 40 = 48, FCF margin 24%, net cash; quality compounder at a reasonable multiple").
-- **Quick-filter conviction X/10** per name (screen-level only — a full call requires `/single_name_stock_analysis`).
+- **Quick-filter conviction X/10** per name (screen-level only — a full call requires `/single_stock_quick_research` or `/single_stock_deep_research`).
 - **Top long candidate** and **top short/avoid candidate** from the set, one sentence each on why.
-- **Next step:** name the 1–2 tickers that most warrant a full `/single_name_stock_analysis` deep dive and why.
+- **Next step:** name the 1–2 tickers that most warrant a full `/single_stock_deep_research` (or lighter `/single_stock_quick_research`) workup and why.
 
 Keep this to a compact bulleted block; the Excel carries the detail.
 

@@ -192,9 +192,8 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
    ```python
    import sys; sys.path.insert(0, '.')
    from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
    ```
+   Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 4. Renders all sections with appropriate headings, paragraphs, tables, and bullet points.
 5. For all tables:
    - Always initialize with `rows=1` (header only), then `table.add_row()` per data row.
@@ -209,7 +208,7 @@ Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B �
 7. Renders **Section 6 — Variant View & Industry Posture**: the 3-column Variant View table (dark-blue header row), then the bold Industry Posture verdict (color the attractiveness label green `007000` for Attractive, neutral for Mixed, red `C00000` for Unattractive).
 8. Ends with a **Sources** section (Heading 1) listing all URLs cited as bullet points.
 9. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-9. Saves the file to the output path and prints the path.
+10. Saves the file to the output path and prints the path.
 
 ---
 

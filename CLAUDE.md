@@ -12,6 +12,10 @@ Always use the project's virtual environment:
 
 Key dependencies: `yfinance`, `openpyxl`, `python-docx`, `matplotlib`, `numpy`.
 
+There is no test suite, linter, or build step — verification means running the relevant script and inspecting the file it writes to `Outputs/`.
+
+`Outputs/`, `.venv/`, and `__pycache__/` are gitignored: generated artifacts (JSON, PNG, Word, Excel) are never committed. The tracked surface is the Python libraries at the project root, `.claude/commands/`, `references/`, `tickers.txt`, and this file.
+
 ## Project Overview
 
 This is an investment analysis toolkit that fetches financial data from Yahoo Finance and runs structured equity research analyses via Claude Code slash commands (skills).
@@ -24,7 +28,7 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 ## Core Scripts
 
 **`yahoo_finance_data.py`** — data fetching library
-- `fetch_all(tickers)` — fetches all data types for a list of tickers; call this to pre-populate data
+- `fetch_all(tickers)` — fetches all data types for a list of tickers; call this to pre-populate data. Per-ticker failures are caught and printed, not fatal. TTM computation requires ≥4 quarters of history, so recent IPOs raise `ValueError` and land in the results dict as `{"error": ...}`
 - `load_tickers()` — reads `tickers.txt` (ignores `#` comments and blank lines)
 - Individual getters: `get_income_statements()`, `get_balance_sheets()`, `get_cash_flow_statements()`, `get_quick_metrics()`, `get_price_history(ticker, years=3)`
 - JSON output path: `Outputs/{TICKER}/` (e.g., `Outputs/NVDA/`) — one subfolder per ticker, created automatically
@@ -50,7 +54,7 @@ This is an investment analysis toolkit that fetches financial data from Yahoo Fi
 - Each script reads its required JSON files from `Outputs/{TICKER}/` directly — run `yahoo_finance_data.py` first if JSON is missing
 
 **`plot_market_sentiment_history.py`** — persistent market sentiment chart generator
-- Fetches 5-year time-series data for all 7 sentiment indicators and saves PNGs to `Outputs/`
+- Fetches 5-year time-series data for the 7 sentiment indicators plus Treasury yields (FRED `DGS10`/`DGS2` with a 10Y−2Y curve panel), the US fiscal picture (FRED `MTSDS133FMS` trailing-12M deficit + `A091RC1Q027SBEA` net interest), and margin debt (FRED `BOGZ1FL663067003Q` quarterly Z.1 margin loans, level + % of GDP) — 10 charts total — and saves PNGs to `Outputs/`
 - Run from the project root: `.venv/Scripts/python plot_market_sentiment_history.py`
 - Unlike the ephemeral `generate_*.py` / `assemble_*.py` scripts in `Outputs/`, this lives at the project root and is tracked in git
 - Update the `END` date constant at the top before each run
@@ -79,7 +83,7 @@ The intended workflow runs in four stages:
 
 | Stage | Skill | Argument | Output |
 |---|---|---|---|
-| 1 | `/market_sentiment_analysis` | _(none)_ | Word: `Outputs/market_sentiment_{YYYYMMDD}.docx` + 7 PNGs + dashboard PNG |
+| 1 | `/market_sentiment_analysis` | _(none)_ | Word: `Outputs/market_sentiment_analysis_{YYYYMMDD}.docx` + 10 PNGs + dashboard PNG |
 | 2 | `/theme_discovery_scanner` | CHANNEL/SECTOR hint or _(none)_ | Word: `Outputs/theme_discovery_scan_{YYYYMMDD}.docx` |
 | 2 | `/emerging_industry_trend` | THEME, TICKER, or _(none)_ | Word: `Outputs/emerging_industry_trends_{theme}_{YYYYMMDD}.docx` |
 | 2 | `/industry_trend_analysis` | THEME or TICKER | Word: `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.docx` |
@@ -99,7 +103,7 @@ The intended workflow runs in four stages:
 | 4 | `/single_stock_deep_research` | TICKER | Word: `Outputs/{TICKER}/{ticker}_stock_deep_research_YYYYMMDD.docx` (package) + `{ticker}_stock_deep_research_notes_YYYYMMDD.docx` (note) |
 | 4 | `/single_stock_quick_research` | TICKER | Word: `Outputs/{TICKER}/{ticker}_stock_quick_research_YYYYMMDD.docx` |
 
-- `/market_sentiment_analysis` scores investor sentiment across 7 indicators (VIX, CNN F&G, put/call, breadth, HY OAS, Shiller CAPE, Buffett Indicator), runs `plot_market_sentiment_history.py` to generate 5-year time-series charts, embeds them in the Word report, and saves a combined dashboard PNG; on completion it prompts the user to kick off `/emerging_industry_trend`
+- `/market_sentiment_analysis` scores investor sentiment across 7 indicators (VIX, CNN F&G, put/call, breadth, HY OAS, Shiller CAPE, Buffett Indicator), then applies a forward-looking **Macro & Policy Overlay** (Fed commentary, interest-rate guidance vs. market-implied path, US fiscal deficit/issuance, Treasury yields — each rated Tailwind / Neutral / Headwind for the next 3–6 months; the overlay can cap or boost the final posture but does not enter the composite score) and a **Market Leverage (margin debt) analysis** (level, margin/GDP vs. the 2000/2007/2021 peaks, YoY growth vs. historical crash clusters — rated Low / Elevated / Critical), runs `plot_market_sentiment_history.py` to generate 5-year time-series charts, embeds them in the Word report (Overall Market Opinion is the closing section), and saves a combined dashboard PNG; on completion it prompts the user to kick off `/emerging_industry_trend`
 - `/theme_discovery_scanner` is the **Stage 2 entry point** — a systematic five-channel scan (capital flows, talent migration, incumbents' fear, science, cost curves) that *discovers* pre-consensus candidate themes and maintains a ranked watchlist, the step that runs *before* `/emerging_industry_trend`; use it when the user has no specific theme in mind ("what's emerging right now", "what should I be watching", "scan for new opportunities", "build a theme watchlist"). Each finding must pass a three-part qualification filter (specificity, pre-consensus, public-market path); candidates showing 2+ convergence signals are flagged as **promotion calls** that hand off to `/emerging_industry_trend`; runs standalone with no argument (full ad-hoc scan) or accepts a channel/sector hint; on completion it offers to promote a candidate into `/emerging_industry_trend`
 - `/emerging_industry_trend` scans for live bottleneck signals before the market prices them in — produces a Word doc with signal scorecard, value chain map, bottleneck analysis, and positioning; use it before `/industry_trend_analysis` when you want to surface *what* to research, not just map a known theme; on completion it prompts the user to kick off `/industry_trend_analysis`. **Accepts a ticker as argument** (e.g. `/emerging_industry_trend NVTS`): the skill detects the ticker via `WebSearch`, maps it to its industry theme, states the mapping explicitly, then runs the full analysis on that theme — the ticker's company appears in the value chain map alongside all peers but receives no special focus. The output filename always uses the derived theme slug, never the raw ticker (e.g. `gan_sic_wbg`, not `nvts`).
 - `/industry_trend_analysis` maps a known macro theme across its full value chain — identifies investable stocks at each layer (infrastructure, enablers, integrators, applications, adjacent beneficiaries, bottlenecks) and produces a Word doc with thesis, value chain table, TAM expansion analysis, stock shortlist, and risks. **Also accepts a ticker as argument** with the same ticker-to-theme mapping logic as `/emerging_industry_trend`; the document title reflects the derived theme with a "Triggered by: [TICKER]" subtitle when a ticker was the input.
@@ -132,7 +136,7 @@ When writing `python-docx` table code in any skill or script:
 - **Always initialize tables with `rows=1`** (header only), then call `table.add_row()` for each data row — do NOT use `rows=1+len(data)` upfront, which creates blank rows between the header and data
 - **Every table must call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added** — calling before rows are added means new rows won't inherit the settings. Never call them at table creation time; always call them after the last `table.add_row()`.
   - `autofit_table` — sets `tblW`/`tblLayout` to autofit and strips all fixed `w:tcW` cell widths; never use `table.columns[i].width` or any fixed-width assignment
-  - `add_table_borders` — applies a thin single border (`sz=4`, `val="single"`, `color="000000"`) to all four sides of every cell via `w:tcBorders`
+  - `add_table_borders` — applies a thin single border (`sz=4`, `val="single"`, `color="000000"`) to all four sides plus inner dividers (`insideH`/`insideV`) of every cell via `w:tcBorders`
 - **All non-header table cell text must use font size 12.** Call `set_row_font_size(row)` on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
 - All helpers live in `doc_utils.py` at the project root — generated scripts import them with:
   ```python
@@ -187,7 +191,9 @@ Non-obvious facts about external APIs used by the market sentiment charts and sk
 - Incompatible with Python 3.14+ (imports `distutils`, which was removed in 3.12). Do not use it in this project; fetch FRED data directly via `requests` instead.
 
 **`references/` directory**
-- The files `references/scoring-tables.md` and `references/bubble-framework.md` are referenced in the `/market_sentiment_analysis` skill but **do not exist on disk**. The skill uses inline fallback scoring logic. If you create these files, the skill will read them; until then, scoring tables are embedded in the skill instructions themselves.
+- `references/scoring-tables.md` — per-indicator 0–100 conversion bands, composite weights (credit heaviest at 20%), and composite zone labels for `/market_sentiment_analysis`; if an indicator is unavailable, drop it and renormalize the weights
+- `references/bubble-framework.md` — the six bubble warning conditions, the conditions-firing → Low/Moderate/Elevated/Extreme verdict mapping, and historical analogues for calibration
+- Both are read by `/market_sentiment_analysis` Steps 2–3; keep the thresholds here and in the skill's inline summary consistent when editing either
 
 ## Adding a New Skill
 
@@ -205,6 +211,3 @@ To add a new analysis skill:
 - JSON files are the persistent data cache — delete and re-fetch if data is stale; Word/PNG files are overwritten on each run
 - `generate_*.py`, `assemble_*.py`, and `compute_*.py` scripts generated by skills are saved to `Outputs/{TICKER}/` (not the project root) — safe to delete at any time
 
-## Known Stale Files
-
-- `single_stock_research.txt` at the project root is a superseded precursor to `/single_stock_quick_research` — same frontmatter/purpose, but it is a loose `.txt` file, not a registered skill under `.claude/commands/`, so it is never invoked. Do not treat it as active; prefer `.claude/commands/single_stock_quick_research.md` as the source of truth.

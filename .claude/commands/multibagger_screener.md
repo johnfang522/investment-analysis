@@ -49,7 +49,7 @@ The lesson: the winners rarely looked glamorous. They looked small, profitable, 
 Pick one (or run several in parallel):
 
 1. **Theme-driven:** Identify a credible secular theme, then map its value chain and fish in the least-crowded, highest-moat layers: raw infrastructure suppliers ("picks & shovels"), adjacent beneficiaries (incumbents with a new tailwind but no theme label — least crowded), and bottleneck/chokepoint assets (single-source inputs everyone must buy — highest structural moat). Avoid end-user application names: they are usually crowded and fully priced by the time a theme is visible.
-   (If an investor-trend-framework skill is installed, use it for this step; otherwise apply the heuristic above directly.)
+   (Use `/industry_trend_analysis` — or `/emerging_industry_trend` for undiscovered themes — for this step when a full value chain map is needed; otherwise apply the heuristic above directly.)
 2. **Neglect-driven:** Small/mid-caps with < 15 analysts, recent spin-offs, post-IPO busts trading below IPO price with improving fundamentals, "boring" industries with a consolidator.
 3. **Quality-screen-driven:** Universe screen on the quantitative gate below, theme-agnostic.
 

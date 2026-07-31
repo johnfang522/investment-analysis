@@ -6,8 +6,8 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** valuatio
 1. **Always re-download first:** `.venv/Scripts/python -c "from yahoo_finance_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`, `_income_statement_annual.json`, `_income_statement_quarterly.json`, `_balance_sheet_quarterly.json`, `_cash_flow_statement_annual.json`.
 3. Use quick_metrics first for market data (price, P/E, P/B, EV/EBITDA, analyst targets, ROE, ROA).
-3. Annual income statement for multi-year CAGRs; cash flow annual for FCF history (DCF).
-4. WebSearch only for items genuinely missing (peer multiples, industry averages, WACC). Leave N/A if not found.
+4. Annual income statement for multi-year CAGRs; cash flow annual for FCF history (DCF).
+5. WebSearch only for items genuinely missing (peer multiples, industry averages, WACC). Leave N/A if not found.
 
 **STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→. Spell out every abbreviation on first use, then use the short form after (e.g., "Price-to-Earnings (P/E)" first, then "P/E"; "Discounted Cash Flow (DCF)" first, then "DCF"; "Weighted Average Cost of Capital (WACC)" first, then "WACC"; "Enterprise Value / Earnings Before Interest, Taxes, Depreciation & Amortization (EV/EBITDA)" first, then "EV/EBITDA").
 
