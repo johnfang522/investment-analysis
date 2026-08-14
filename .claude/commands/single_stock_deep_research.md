@@ -47,7 +47,7 @@ Synthesize the findings from all 9 analyses into a **2–3 page hedge-fund resea
 
 ---
 
-### {TICKER} — Hedge Fund Investment Note
+### {TICKER} — Comprehensive Investment Research Package
 **[Company Full Name] | [Sector] | [Exchange]: {TICKER}**
 *[Coverage label] — [Date]*
 
@@ -194,7 +194,7 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
 
 1. **Document formatting:**
    - Narrow margins (0.5 inch all sides)
-   - Title: `{TICKER} — Hedge Fund Investment Note` (bold heading, level 0) + date subtitle
+   - Title: `{TICKER} — Comprehensive Investment Research Package` (bold heading, level 0) + date subtitle
    - Company line, coverage label, and date in bold/italic as shown in the summary. Coverage label logic: check `Outputs/{TICKER}/` for any prior `*_research_notes_*.docx` or `*_research_package_*.docx` files — if found, use "Coverage Date: [Date]"; if none, use "Initiating Coverage — [Date]".
    - Broad market condition line in italics immediately below the coverage label, as produced in Step 2 (e.g., *Market on [Date]: S&P 500 [level] ([+/−X.X%]), VIX [X.X] — [one-sentence context]*)
    - Verdict line in large bold text (use Heading 1 style), colored by bias: green `007000` for LONG, red `C00000` for SHORT, neutral dark for PASS. Render the full Verdict block (bias + conviction + price target + stop + risk/reward + sizing).
