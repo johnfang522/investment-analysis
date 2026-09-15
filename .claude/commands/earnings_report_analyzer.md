@@ -16,7 +16,7 @@ The core discipline of this skill: never stop at the headline beat/miss. Most of
 
 ## Data Sourcing
 
-1. **Always re-download first:** `.venv/Scripts/python -c "from yahoo_finance_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
+1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json` (last 4-8 quarters for margin/growth trend), `_income_statement_annual.json`, `_cash_flow_statement_quarterly.json`, `_balance_sheet_quarterly.json`, and `_quick_metrics.json` (price reaction context, analyst estimates).
 3. WebSearch for what the JSON cannot provide: the press release / shareholder letter, the earnings call transcript (or at least the Q&A section), the guidance given last quarter (to compare against this quarter's actual and new guidance), and any specific 10-Q/10-K risk-factor language worth verifying.
 4. If any input isn't available, proceed with what exists and flag the gap in the final output rather than skipping the analysis.

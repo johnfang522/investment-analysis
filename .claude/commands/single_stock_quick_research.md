@@ -16,7 +16,7 @@ Operate like a portfolio manager writing an internal initiation note for the inv
 
 **Always re-download Yahoo Finance data before reading any JSON.** Run this first:
 
-`.venv/Scripts/python -c "from yahoo_finance_data import fetch_all; fetch_all(['{TICKER}'])"`
+`.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"`
 
 This overwrites any stale cached files. Only then read `Outputs/{TICKER}/{ticker_lowercase}_*.json` for quantitative metrics (financials, price history, balance sheet, cash flows). Use `WebSearch` only for qualitative or forward-looking information (analyst targets, news, insider activity, guidance) — not for numbers available in the JSON.
 

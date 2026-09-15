@@ -15,14 +15,14 @@ description: A structured framework for conducting a comprehensive deep dive on 
 
 ## Data Setup
 
-Always re-fetch fresh Yahoo Finance data before reading any JSON files:
+Always re-fetch fresh data before reading any JSON files (income statement / balance sheet / cash flow from SEC EDGAR, quote data and price history from Yahoo Finance):
 
 1. Run the following to force-refresh all data for the ticker:
    ```python
-   from yahoo_finance_data import fetch_all
+   from get_financial_data import fetch_all
    fetch_all(["TICKER"])
    ```
-   Execute this via `.venv/Scripts/python -c "from yahoo_finance_data import fetch_all; fetch_all(['TICKER'])"` before reading any JSON.
+   Execute this via `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['TICKER'])"` before reading any JSON.
 
 2. After fetching, read the following files from `Outputs/{TICKER}/`:
    - `{ticker_lower}_quick_metrics.json` — key ratios and price data

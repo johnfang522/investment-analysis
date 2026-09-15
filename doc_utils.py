@@ -88,6 +88,26 @@ def fmt_value(v, prefix='$'):
     return f"{sign}{prefix}{abs_v:.2f}"
 
 
+def add_source_note(paragraph_or_cell, source):
+    """
+    Append a small italic gray "Source: ..." run citing where a figure or
+    table came from — SEC EDGAR, Yahoo Finance, a hybrid of both, or a
+    WebSearch citation. Accepts a docx Paragraph (appends inline, e.g. right
+    after a stated figure) or a table cell (appends as that cell's own
+    trailing run, e.g. a small note under a financial-snapshot table).
+    Use the labels compute_metrics(ticker, with_sources=True) already
+    returns (key_stock_metrics.SRC_SEC / SRC_YAHOO / SRC_HYBRID /
+    SRC_COMPUTED / SRC_NA) when citing a metrics-table figure, or a short
+    plain-text citation (e.g. "WebSearch — Coherent Q4 FY2026 press
+    release") for a qualitative figure pulled from web research.
+    """
+    para = paragraph_or_cell.paragraphs[0] if hasattr(paragraph_or_cell, "paragraphs") else paragraph_or_cell
+    run = para.add_run(f"  [Source: {source}]")
+    run.font.size = Pt(8)
+    run.font.italic = True
+    run.font.color.rgb = RGBColor(0x80, 0x80, 0x80)
+
+
 def add_footnote(doc):
     """Append a standard AI disclaimer footnote as the last paragraph of the document."""
     doc.add_paragraph()  # spacer

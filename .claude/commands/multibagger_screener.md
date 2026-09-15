@@ -57,7 +57,7 @@ State explicitly which hunting ground is being used and why.
 
 ### Stage 2 — Quantitative Gate (hard filters)
 
-Pull live data. For any candidate ticker, source market cap, growth, margins, ROIC, balance sheet, and share count from Yahoo Finance first — run `fetch_all([tickers])` (from `yahoo_finance_data.py`) and read the resulting `Outputs/{TICKER}/` JSON files (`{ticker_lower}_quick_metrics.json`, income/balance/cash-flow statements). Only fall back to `WebSearch` for fields Yahoo Finance doesn't carry (analyst coverage counts, insider ownership %, spin-off/IPO context) or for names not yet in `tickers.txt`/`Outputs/`.
+Pull live data. For any candidate ticker, source market cap, growth, margins, ROIC, balance sheet, and share count from `get_financial_data.py` first — run `fetch_all([tickers])` and read the resulting `Outputs/{TICKER}/` JSON files (`{ticker_lower}_quick_metrics.json` from Yahoo Finance; income/balance/cash-flow statements from SEC EDGAR). Only fall back to `WebSearch` for fields neither source carries (analyst coverage counts, insider ownership %, spin-off/IPO context) or for names not yet in `tickers.txt`/`Outputs/`.
 
 A candidate must clear most of these to advance:
 
@@ -144,7 +144,7 @@ End with the handoff line: recommend a full bottom-up deep dive on the top 1–3
 
 ## Operating Principles
 
-1. **Live data only, Yahoo Finance first.** Market caps, growth rates, and multiples must be pulled fresh with as-of dates — via `fetch_all()`/`Outputs/{TICKER}/` JSON before any `WebSearch`. Reserve `WebSearch` for what Yahoo Finance can't provide (coverage counts, ownership, qualitative context). Never screen from memory.
+1. **Live data only, `get_financial_data.py` first.** Market caps, growth rates, and multiples must be pulled fresh with as-of dates — via `fetch_all()`/`Outputs/{TICKER}/` JSON before any `WebSearch`. Reserve `WebSearch` for what neither Yahoo Finance nor SEC EDGAR can provide (coverage counts, ownership, qualitative context). Never screen from memory.
 2. **Base rates over stories.** Every shortlisted name should rhyme with the historical winner profile; every deviation is a named risk.
 3. **Prefer boring-but-advantaged over exciting-but-contested.** 
 4. **The shortlist is hypotheses, not picks.** No position without the full deep dive.

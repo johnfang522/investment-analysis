@@ -1,13 +1,13 @@
 # Key Stock Metrics
 
-Generate a side-by-side fundamental analysis spreadsheet for one or more tickers using pre-generated Yahoo Finance JSON outputs.
+Generate a side-by-side fundamental analysis spreadsheet for one or more tickers. Income statement, balance sheet, and cash flow data come from SEC EDGAR (`sec_edgar_data.py`) rather than Yahoo Finance, since Yahoo is often stale for weeks after an earnings release; market-quote data with no SEC EDGAR equivalent (price, market cap, P/E, dividend yield, etc.) still comes from Yahoo Finance's quick metrics.
 
 **House style — buy-side quick-filter (Stage 3).** This is the triage screen a hedge-fund analyst runs before committing to deep diligence: a side-by-side read to decide which names are long candidates, which are short/avoid candidates, and which warrant a full single-name workup. The Excel is the data; the **chat output must end with a directional screen read** (see "Buy-Side Screen Read" below). Keep it decisive — the point of a screen is to kill names quickly.
 
 ## Inputs
 
 - One or more ticker symbols (e.g. `AAPL`, `MSFT GOOGL NVDA`), **or**
-- No arguments — in which case load tickers from `tickers.txt` in the project root by calling `load_tickers()` from `yahoo_finance_data.py`
+- No arguments — in which case load tickers from `tickers.txt` in the project root by calling `load_tickers()` from `get_financial_data.py`
 
 ## Required JSON files (per ticker, lowercase)
 
@@ -25,7 +25,7 @@ For each `{ticker}`:
 
 **Always re-fetch fresh data before computing metrics**, regardless of whether JSON files already exist.
 
-1. Call `fetch_all(tickers)` from `yahoo_finance_data.py` for all tickers being processed.
+1. Call `fetch_all(tickers)` from `get_financial_data.py` for all tickers being processed — this fetches income statement / balance sheet / cash flow from SEC EDGAR (`sec_edgar_data.py`), plus quick_metrics and price history from Yahoo Finance.
 2. If a ticker fetch fails, print an error and skip it (do not include it in the Excel output).
 3. After fetching, verify the files exist before proceeding.
 
@@ -37,57 +37,53 @@ Run `key_stock_metrics.py` (located in the project root) to compute the metrics 
 
 ### Data sourcing rules
 
-For **every metric**, always attempt to source values from `_quick_metrics.json` first. Only fall back to the detailed financial statement files if the field is absent or null in quick metrics.
+**Statement-derived metrics** (revenue, growth, margins, ROE, D/E, interest coverage, current ratio, FCF margin, Rule of 40, payout ratio) source primarily from the SEC EDGAR statement JSON files, falling back to `_quick_metrics.json` only if the SEC-derived value is unavailable (e.g. a filer doesn't use the expected XBRL tag).
 
-#### Quick metrics fields to try first (per metric)
+**Hybrid metrics** (Trailing P/E, Price/Sales) combine SEC EDGAR fundamentals with Yahoo's current price, since SEC filings report historical financial statements, not trading prices — there is no SEC EDGAR substitute for "current price" at all.
+
+**Market-quote metrics** (price, 52-week range, market cap, Forward P/E, PEG, dividend yield, sector) have no SEC EDGAR equivalent and always source from `_quick_metrics.json`. Forward P/E and PEG specifically can *never* be computed from SEC EDGAR, even partially — both require forward-looking consensus analyst estimates (next-FY EPS, expected growth rate), and SEC filings only ever contain actual reported historicals.
+
+#### Statement-derived metrics — primary source (SEC EDGAR JSON)
+
+| Metric | Primary source | Fallback (quick metrics field) |
+|---|---|---|
+| Revenue (TTM) | `Total Revenue` from `_income_statement_ttm.json` | `totalRevenue` |
+| Revenue Growth Rate | Two most recent annual periods in `_income_statement_annual.json` | `revenueGrowth` |
+| Gross Margin | `(Total Revenue - Cost Of Revenue) / Total Revenue` (TTM) | `grossMargins` |
+| Operating Margin | `Operating Income / Total Revenue` (TTM) | `operatingMargins` |
+| Net Income Margin | `Net Income / Total Revenue` (TTM) | `profitMargins` |
+| ROE | `Net Income (TTM) / Stockholders Equity` (most recent quarter) | `returnOnEquity` |
+| D/E | `Total Debt / Stockholders Equity` (most recent quarter) | `debtToEquity` (Yahoo returns a **percentage**, e.g. `173` = 173%; divide by 100 — do not double-divide) |
+| Interest Coverage | `Operating Income (TTM) / abs(Interest Expense (TTM))` | — (N/A if Interest Expense is zero or missing) |
+| Current Ratio | `Current Assets / Current Liabilities` (most recent quarter) | `currentRatio` |
+| FCF Margin | `Free Cash Flow (TTM) / Total Revenue (TTM)` | `freeCashflow / totalRevenue` |
+| Rule of 40 | Computed from Revenue Growth Rate + Operating Margin above | — |
+| Payout Ratio | `abs(Cash Dividends Paid (TTM)) / Net Income (TTM)` | `payoutRatio` |
+
+#### Hybrid metrics — SEC EDGAR fundamentals + Yahoo price
+
+| Metric | Primary source | Fallback (quick metrics field) |
+|---|---|---|
+| Trailing P/E | `currentPrice / Diluted EPS (TTM)` — only when Diluted EPS > 0 | `trailingPE` |
+| Price / Sales | `(currentPrice × Shares Outstanding) / Total Revenue (TTM)` — Shares Outstanding from the balance sheet JSON's `"Shares Outstanding"` field (SEC's `dei:EntityCommonStockSharesOutstanding`, filing cover page) | `priceToSalesTrailing12Months` |
+
+#### Market-quote metrics — always from quick metrics
 
 | Metric | Quick metrics field(s) |
 |---|---|
-| Revenue (TTM) | `totalRevenue` |
-| Revenue Growth Rate | `revenueGrowth` (already a ratio, use directly) |
-| Gross Margin | `grossMargins` (already a decimal ratio, use directly) |
-| Operating Margin | `operatingMargins` (already a ratio, use directly) |
-| Net Income Margin | `profitMargins` (already a decimal ratio, use directly) |
-| ROE | `returnOnEquity` |
-| D/E | `debtToEquity` (Yahoo returns a **percentage**, e.g. `173` = 173%; the script divides by 100 to get the ratio — do not double-divide) |
-| Interest Coverage | `ebitda` (numerator) — fallback to income statement; denominator from income statement |
-| Current Ratio | `currentRatio` |
-| FCF Margin | `freeCashflow` (numerator) + `totalRevenue` (denominator) |
-| Revenue Growth Rate (for Rule of 40) | `revenueGrowth` (already a ratio, use directly) |
-| Operating Margin (for Rule of 40) | `operatingMargins` (same as above) |
 | Current Price | `currentPrice`, fallback `regularMarketPrice` |
 | 52-Week Low | `fiftyTwoWeekLow` |
 | 52-Week High | `fiftyTwoWeekHigh` |
 | Market Cap | `marketCap` |
-| Trailing P/E | `trailingPE` |
 | Forward P/E | `forwardPE` |
 | PEG Ratio | `pegRatio`, fallback to `trailingPegRatio` |
-| Price / Sales | `priceToSalesTrailing12Months` |
-| Dividend Yield | `trailingAnnualDividendYield` |
+| Dividend Yield | `trailingAnnualDividendYield`, fallback `dividendYield` (Yahoo's forward-estimate field, sometimes a percentage — divide by 100) |
 
-#### Fallback: detailed financial statements
+#### Notes on normalization
 
-Only used when a quick metrics field is missing or null:
-
-- **Income statement fallback**: use TTM figures from `_income_statement_ttm.json`
-- **Balance sheet fallback**: use most recent quarter (first column) from `_balance_sheet_quarterly.json`
-- **Cash flow fallback**: use TTM figures from `_cash_flow_statement_ttm.json`
-- **Revenue growth fallback**: compute from two most recent annual periods in `_income_statement_annual.json`
-- **Interest Coverage fallback**: compute `EBIT / Interest Expense` from TTM income statement; EBIT = Operating Income TTM; Interest Expense field is `InterestExpense` or `Interest Expense` (use absolute value as denominator)
-- **Current Ratio fallback**: `Current Assets / Current Liabilities` from most recent quarter balance sheet
-- **Gross Margin fallback**: `(Total Revenue - Cost of Revenue) / Total Revenue` from TTM income statement
-
-#### Notes on quick metrics normalization
-
-- `returnOnEquity`: already a decimal ratio (e.g. 0.45 = 45%) — use as-is
+- `returnOnEquity`, `operatingMargins`, `grossMargins`, `profitMargins`, `revenueGrowth`, `currentRatio`: already decimal ratios — use as-is
 - `debtToEquity`: Yahoo returns this as a **percentage** (e.g. `173` = 173%) — `key_stock_metrics.py` always divides by 100 to convert to a ratio; do not divide again
-- `operatingMargins`: already a decimal ratio — use as-is
-- `grossMargins`: already a decimal ratio — use as-is
-- `profitMargins`: already a decimal ratio — use as-is
-- `revenueGrowth`: already a decimal ratio — use as-is
-- `freeCashflow`: raw dollar value — divide by `totalRevenue` from quick metrics (also raw dollars) to get FCF margin
-- `totalRevenue`: raw dollar value — display in billions (divide by 1,000,000,000), formatted as `$X.XXB`
-- `currentRatio`: already a plain ratio — use as-is
+- SEC EDGAR `Cost Of Revenue`, `Operating Income`, `Free Cash Flow`, and `Total Debt` may be derived (not directly tagged) by `sec_edgar_data.py` when a filer doesn't use the expected XBRL tag — see that script's backfill logic; treat them the same as directly-tagged values
 
 ### Metrics to compute
 
@@ -112,7 +108,7 @@ Compute from `{ticker}_price_history.json` using Wilder's smoothed 14-day RSI.
 - Comments: no threshold coloring — informational context only
 
 #### 6. Revenue (TTM)
-`Revenue = totalRevenue from quick metrics (or Total Revenue from TTM income statement)`
+`Revenue = Total Revenue from TTM income statement (SEC EDGAR), fallback totalRevenue from quick metrics`
 - Display in billions: `$X.XXB`
 - Comments: no threshold coloring — informational context only (leave cell uncolored)
 
@@ -180,11 +176,12 @@ Pull directly from `_quick_metrics.json`:
 ### Output format (Excel)
 
 #### Per-ticker sheets
-Each ticker gets its own sheet named by ticker symbol. Layout the metrics as a **flat table** with three columns: `Metric | Value | Comment`.
+Each ticker gets its own sheet named by ticker symbol. Layout the metrics as a **flat table** with four columns: `Metric | Value | Comment | Source`.
 
 - **Metric**: bold numbered metric name (e.g. `1. Return on Equity (ROE)`)
-- **Value**: the computed value, color-coded (green/yellow/red)
+- **Value**: the computed value, color-coded (green/yellow/red); also carries an Excel comment (hover-note) citing its source, same text as the Source column
 - **Comment**: short benchmark qualifier (e.g. `Ideal (≥20%)`)
+- **Source**: where this metric's value actually came from for this ticker — `SEC EDGAR`, `Yahoo Finance`, `Hybrid (SEC EDGAR + Yahoo Finance)`, `Computed (Yahoo Finance price history)`, or `N/A (no data available)`. Get this from `compute_metrics(ticker, with_sources=True)`, which returns `(results, sources)` — never hardcode a metric's source, since fallback means the actual source can differ by ticker even for the same metric.
 
 No description or benchmark rows on ticker sheets — those live only on the Comparison sheet.
 
@@ -195,11 +192,12 @@ Color the **value cell** only:
 
 #### Summary Comparison sheet
 - Named `Comparison`, placed as the first sheet
-- **Top section**: flat comparison table — tickers as columns, metrics as rows, values only with green/yellow/red coloring for quick side-by-side review
-- **Bottom section**: hierarchical metric descriptions and benchmarks — for each metric, list its description and benchmark thresholds. This is the only place descriptions and benchmarks appear.
+- **Top section**: flat comparison table — tickers as columns, metrics as rows, values only with green/yellow/red coloring for quick side-by-side review. Each value cell carries an Excel comment (hover-note) citing its source, since sources can differ by ticker for the same metric — there isn't room for a visible per-ticker Source column here without doubling the sheet width.
+- **Middle section**: hierarchical metric descriptions and benchmarks — for each metric, list its description and benchmark thresholds. This is the only place descriptions and benchmarks appear.
+- **Bottom section**: a "Data Source Legend" explaining each of the five source labels (SEC EDGAR / Yahoo Finance / Hybrid / Computed / N/A), plus a note to hover over any value cell for its specific source.
 
 - Format all ratio/margin cells as percentages where appropriate
-- Use `openpyxl` for Excel generation (already available in the project venv)
+- Use `openpyxl` for Excel generation (already available in the project venv); use `openpyxl.comments.Comment` for the hover-note source citations
 
 ### Error handling
 
@@ -227,6 +225,6 @@ The user may say:
 - "Run key metrics for AAPL"
 - "Compare AAPL and TSLA using key metrics"
 
-If no tickers are provided in the message, call `load_tickers()` from `yahoo_finance_data.py` to read `tickers.txt`. If the file is empty or missing, print an error and stop.
+If no tickers are provided in the message, call `load_tickers()` from `get_financial_data.py` to read `tickers.txt`. If the file is empty or missing, print an error and stop.
 
 Parse the tickers, generate the script, execute it, and report the output file path when done.
