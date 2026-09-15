@@ -19,7 +19,7 @@ from datetime import datetime, timedelta
 OUT = "Outputs"
 os.makedirs(OUT, exist_ok=True)
 
-END       = datetime(2026, 7, 31)
+END       = datetime(2026, 9, 15)
 START     = END - timedelta(days=5 * 365 + 5)
 START_STR = START.strftime("%Y-%m-%d")
 END_STR   = END.strftime("%Y-%m-%d")
@@ -224,18 +224,30 @@ if not ftw_raw.empty:
     ftw = (ftw_col.iloc[:, 0] if hasattr(ftw_col, "columns") else ftw_col).dropna()
     gdp_df = fetch_fred("GDP", rename="GDP")
     if not gdp_df.empty:
-        gdp_ff = gdp_df["GDP"].resample("D").ffill()
+        # GDP is quarterly; resample to daily and forward-fill all the way
+        # through END so ffill extends past the last reported quarter to
+        # cover ^FTW5000's (possibly more recent) date range.
+        gdp_ff = gdp_df["GDP"].reindex(
+            pd.date_range(gdp_df.index.min(), END, freq="D")
+        ).ffill()
         common = ftw.index.intersection(gdp_ff.index)
-        if len(common) > 20:
+        if len(common) > 5:
             raw_ratio = ftw.loc[common] / gdp_ff.loc[common]
-            # Scale to % using known anchor: Buffett ≈ 233% on 2026-05-22
-            anchor_date = pd.Timestamp("2026-05-22")
+            # Scale to % using known current anchor: Buffett Indicator ≈ 238%
+            # as of 2026-09-09 (web search); anchor to the most recent
+            # available date rather than a fixed historical date, since
+            # ^FTW5000's yfinance history window can start later than START.
+            anchor_date = common.max()
             anchor_raw  = raw_ratio.asof(anchor_date)
             if pd.notna(anchor_raw) and anchor_raw > 0:
-                scale   = 233.0 / anchor_raw
+                scale   = 238.0 / anchor_raw
                 buffett = (raw_ratio * scale).clip(lower=0)
                 buffett = buffett[buffett.index >= START_STR]
                 print(f"  Buffett: {len(buffett)} rows, current={buffett.iloc[-1]:.1f}%")
+            else:
+                print("  Buffett anchor lookup failed — skipping Buffett chart")
+        else:
+            print(f"  Buffett: only {len(common)} overlapping dates — skipping Buffett chart")
     else:
         print("  GDP fetch failed — skipping Buffett chart")
 else:
