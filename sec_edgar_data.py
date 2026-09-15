@@ -69,8 +69,8 @@ BALANCE_SHEET_TAGS = {
     "Cash And Cash Equivalents": ["CashAndCashEquivalentsAtCarryingValue"],
     "Total Liabilities": ["Liabilities"],
     "Current Liabilities": ["LiabilitiesCurrent"],
-    "Long Term Debt": ["LongTermDebtNoncurrent"],
-    "_ShortTermDebt": ["DebtCurrent", "LongTermDebtCurrent"],
+    "Long Term Debt": ["LongTermDebtNoncurrent", "LongTermNotesAndLoans", "LongTermNotesPayable"],
+    "_ShortTermDebt": ["DebtCurrent", "LongTermDebtCurrent", "NotesPayableCurrent"],
     "Stockholders Equity": ["StockholdersEquity"],
     # Mezzanine/temporary equity (e.g. redeemable convertible preferred
     # stock) sits on the balance sheet between Liabilities and permanent
@@ -259,7 +259,45 @@ def _extract_tag_series(facts: dict, tags: list[str], unit: str = "USD", instant
     return {} if instant else {"quarterly": {}, "annual": {}}
 
 
-def _build_duration_statement(facts: dict, tag_map: dict, unit_overrides: dict = None) -> dict:
+STALE_LINE_ITEM_DAYS = 500
+
+
+def _drop_stale_line_items(items: dict, anchor_key: str, days: int = STALE_LINE_ITEM_DAYS) -> None:
+    """
+    Mutates `items` ({line_item: {date_str: value}}) in place: any non-anchor
+    line item whose most recent date is more than `days` older than the
+    anchor line item's most recent date is cleared to {} — i.e. treated as
+    unavailable rather than served next to current data for everything else.
+
+    This is the generic fix for a filer that stops tagging a concept
+    entirely, with no successor tag anywhere in its filings (e.g. Oracle
+    hasn't tagged CostOfRevenue/GrossProfit since FY2018; the mechanism
+    applies just the same to any balance sheet or cash flow line item for
+    any ticker). It's distinct from the freshness-based tag SELECTION in
+    _extract_tag_series, which only helps when a fresher candidate tag
+    exists to select — here there may be none. Left unchecked, a chart or
+    metric silently mixes years-old data for one line item next to the
+    current filing's data for every other line item — e.g. implying a
+    small, stale quarter's Gross Profit belongs to the current, much larger
+    quarter's Revenue.
+
+    Always check against the statement's own most recently filed measure
+    (the anchor) — never a hardcoded date — so this holds for every ticker
+    and updates automatically as new quarters are filed.
+    """
+    anchor_series = items.get(anchor_key)
+    if not anchor_series:
+        return
+    anchor_latest = max(date.fromisoformat(d) for d in anchor_series)
+    for line_item, series in items.items():
+        if line_item == anchor_key or not series:
+            continue
+        item_latest = max(date.fromisoformat(d) for d in series)
+        if (anchor_latest - item_latest).days > days:
+            items[line_item] = {}
+
+
+def _build_duration_statement(facts: dict, tag_map: dict, unit_overrides: dict = None, anchor_key: str = None) -> dict:
     unit_overrides = unit_overrides or {}
     quarterly, annual = {}, {}
     for line_item, tags in tag_map.items():
@@ -267,14 +305,26 @@ def _build_duration_statement(facts: dict, tag_map: dict, unit_overrides: dict =
         series = _extract_tag_series(facts, tags, unit=unit, instant=False)
         quarterly[line_item] = series["quarterly"]
         annual[line_item] = series["annual"]
+
+    # Check quarterly against the quarterly anchor and annual against the
+    # annual anchor separately (not combined) — a line item could have
+    # stale quarterly data but current annual data, or vice versa, and
+    # combining them could mask either case.
+    if anchor_key:
+        _drop_stale_line_items(quarterly, anchor_key)
+        _drop_stale_line_items(annual, anchor_key)
+
     return {"quarterly": quarterly, "annual": annual}
 
 
-def _build_instant_statement(facts: dict, tag_map: dict) -> dict:
-    return {
+def _build_instant_statement(facts: dict, tag_map: dict, anchor_key: str = None) -> dict:
+    statement = {
         line_item: _extract_tag_series(facts, tags, unit="USD", instant=True)
         for line_item, tags in tag_map.items()
     }
+    if anchor_key:
+        _drop_stale_line_items(statement, anchor_key)
+    return statement
 
 
 def _best_ttm(statement: dict, anchor_key: str) -> dict:
@@ -383,7 +433,15 @@ def _backfill_income_statement(statement: dict) -> None:
 
 
 def _backfill_balance_sheet(statement: dict) -> None:
-    """Total Debt = Long Term Debt + short-term/current portion of debt."""
+    """
+    Total Debt = Long Term Debt + short-term/current portion of debt.
+
+    Total Liabilities, where untagged (e.g. Oracle doesn't tag an aggregate
+    us-gaap:Liabilities figure at all): Total Assets - Stockholders Equity -
+    Temporary Equity, an exact accounting identity (Assets = Liabilities +
+    Temporary Equity + Stockholders Equity), not an estimate — only used to
+    fill dates missing from the direct tag, never to override it.
+    """
     lt_debt = statement.get("Long Term Debt", {})
     st_debt = statement.get("_ShortTermDebt", {})
     total_debt = {}
@@ -392,6 +450,15 @@ def _backfill_balance_sheet(statement: dict) -> None:
     statement["Total Debt"] = dict(sorted(total_debt.items()))
     for key in _INTERNAL_KEYS:
         statement.pop(key, None)
+
+    assets = statement.get("Total Assets", {})
+    equity = statement.get("Stockholders Equity", {})
+    temp_equity = statement.get("Temporary Equity", {})
+    total_liab = statement.setdefault("Total Liabilities", {})
+    for end_date in set(assets) & set(equity):
+        if end_date not in total_liab:
+            total_liab[end_date] = assets[end_date] - equity[end_date] - temp_equity.get(end_date, 0)
+    statement["Total Liabilities"] = dict(sorted(total_liab.items()))
 
 
 def _backfill_cash_flow(statement: dict) -> None:
@@ -407,7 +474,7 @@ def _backfill_cash_flow(statement: dict) -> None:
 
 
 def get_income_statement(facts: dict) -> dict:
-    statement = _build_duration_statement(facts, INCOME_STATEMENT_TAGS, INCOME_STATEMENT_UNITS)
+    statement = _build_duration_statement(facts, INCOME_STATEMENT_TAGS, INCOME_STATEMENT_UNITS, anchor_key="Total Revenue")
     _backfill_income_statement(statement)
     return statement
 
@@ -430,14 +497,14 @@ def _get_shares_outstanding(facts: dict) -> dict:
 
 def get_balance_sheet(facts: dict) -> dict:
     # Balance sheet items are instant facts (a single as-of date), not spans.
-    statement = _build_instant_statement(facts, BALANCE_SHEET_TAGS)
+    statement = _build_instant_statement(facts, BALANCE_SHEET_TAGS, anchor_key="Total Assets")
     _backfill_balance_sheet(statement)
     statement["Shares Outstanding"] = _get_shares_outstanding(facts)
     return statement
 
 
 def get_cash_flow_statement(facts: dict) -> dict:
-    statement = _build_duration_statement(facts, CASH_FLOW_TAGS)
+    statement = _build_duration_statement(facts, CASH_FLOW_TAGS, anchor_key="Operating Cash Flow")
     _backfill_cash_flow(statement)
     return statement
 

@@ -93,10 +93,15 @@ def chart_flow(ticker, data, out_path):
     if rev is None:
         print(f"  [income flow] Missing Revenue for {ticker}"); return
 
-    # Derive missing values
+    # Derive missing values. Note: when both cogs and gp are missing (e.g. a
+    # filer that stopped tagging Cost of Revenue/Gross Profit in XBRL with
+    # no successor, like ORCL since FY2018), the gp = rev * 0.5 fallback
+    # below is a rough placeholder, not a real figure — cogs must still be
+    # re-derived from it afterward, or it stays None and crashes _chart_flow_sankey/_waterfall's abs(cogs).
     if cogs is None and gp is not None: cogs = rev - gp
     if gp   is None and cogs is not None: gp = rev - cogs
     if gp   is None: gp = rev * 0.5
+    if cogs is None: cogs = rev - gp
     opex = latest(opex_s)
     if opex is None: opex = gp - oi if oi is not None else None
     if oi   is None: oi = gp - (opex or 0)
