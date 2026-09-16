@@ -52,7 +52,7 @@ INCOME_STATEMENT_TAGS = {
     # SG&A/R&D-only opex — see _backfill_income_statement below.
     "_TotalCostsAndExpenses": ["OperatingExpenses", "CostsAndExpenses"],
     "Operating Income": ["OperatingIncomeLoss"],
-    "Net Income": ["NetIncomeLoss"],
+    "Net Income": ["NetIncomeLoss", "ProfitLoss"],
     "Interest Expense": ["InterestExpense", "InterestExpenseOperating", "InterestExpenseNonoperating", "InterestExpenseDebt", "InterestIncomeExpenseNonoperatingNet"],
     "Diluted EPS": ["EarningsPerShareDiluted"],
     "Basic EPS": ["EarningsPerShareBasic"],
