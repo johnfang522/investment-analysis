@@ -78,7 +78,8 @@ This is an investment analysis toolkit that fetches financial data from SEC EDGA
 - Fetches 5-year time-series data for the 7 sentiment indicators plus Treasury yields (FRED `DGS10`/`DGS2` with a 10Y−2Y curve panel), the US fiscal picture (FRED `MTSDS133FMS` trailing-12M deficit + `A091RC1Q027SBEA` net interest), and margin debt (FRED `BOGZ1FL663067003Q` quarterly Z.1 margin loans, level + % of GDP) — 10 charts total — and saves PNGs to `Outputs/`
 - Run from the project root: `.venv/Scripts/python plot_market_sentiment_history.py`
 - Unlike the ephemeral `generate_*.py` / `assemble_*.py` scripts in `Outputs/`, this lives at the project root and is tracked in git
-- Update the `END` date constant at the top before each run
+- `END` defaults to today (`datetime.now()`); pass a `YYYY-MM-DD` CLI arg to override for a reproducible historical run — no file edit needed
+- `BUFFETT_ANCHOR_VALUE` (top of file) must be updated to the current Buffett Indicator reading (from a web search) before each run — there is no free live API for it, so a stale anchor silently drifts the Buffett chart and current-reading out of date
 - **External data source gotchas baked into this script** (see also the External Data Sources section below)
 
 **`doc_utils.py`** — shared python-docx helpers

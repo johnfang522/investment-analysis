@@ -193,7 +193,7 @@ Before writing the Word document, generate historical time-series charts for all
 - **Fiscal:** FRED `MTSDS133FMS` (monthly federal surplus/deficit) is in **$ millions with deficit months negative** — take the rolling 12-month sum, negate, and divide by 1e6 to plot the trailing-12M deficit in $T (positive = deficit); fetch it with a start date ~13 months before the chart window so the rolling window is complete at the left edge. `A091RC1Q027SBEA` (federal net interest outlays) is quarterly, SAAR, in $B — plot in a lower panel
 - **Margin debt:** FRED `BOGZ1FL663067003Q` (Z.1 "security brokers and dealers; margin loans receivable") is **quarterly, in $ millions** — divide by 1e3 for $B on the level panel; divide by FRED `GDP` (in $B) and ×100 for the margin/GDP panel, with reference lines at 2.6% (2007 peak), 2.8% (2000 peak), and 3.8% (2021 peak). FINRA's monthly margin statistics are more current than the quarterly Z.1 series but have no free CSV endpoint — the current reading comes from the Step 1 web search, the chart from FRED
 
-The script template is in `plot_market_sentiment_history.py` from the prior session — update the `END` date to today before running.
+`plot_market_sentiment_history.py` at the project root is the persistent script (write it only if it doesn't exist yet). It defaults `END` to today automatically — no date edit needed before running. Before running it, update `BUFFETT_ANCHOR_VALUE` (near the top of the file) to the current Buffett Indicator reading from the Step 1 web search, since there is no free live API for it and a stale anchor silently drifts the whole Buffett chart/current-reading out of date.
 
 ---
 

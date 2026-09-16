@@ -3,6 +3,8 @@ Plots 5-year time series for the 7 market sentiment indicators plus
 Treasury yields, the US fiscal picture, and margin debt (10 charts total).
 Saves individual PNGs to Outputs/ and a combined summary PNG.
 Run from project root: .venv/Scripts/python plot_market_sentiment_history.py
+Optional: pass an end date as the first CLI arg (YYYY-MM-DD) to override
+today, e.g. .venv/Scripts/python plot_market_sentiment_history.py 2026-09-15
 """
 import sys, os, warnings, re, json, io
 warnings.filterwarnings("ignore")
@@ -19,10 +21,18 @@ from datetime import datetime, timedelta
 OUT = "Outputs"
 os.makedirs(OUT, exist_ok=True)
 
-END       = datetime(2026, 9, 15)
+# Defaults to today; pass YYYY-MM-DD as argv[1] to override (e.g. for a
+# reproducible historical run) instead of editing this file.
+END       = datetime.strptime(sys.argv[1], "%Y-%m-%d") if len(sys.argv) > 1 else datetime.now()
 START     = END - timedelta(days=5 * 365 + 5)
 START_STR = START.strftime("%Y-%m-%d")
 END_STR   = END.strftime("%Y-%m-%d")
+
+# Buffett Indicator has no free live API — anchor value must be refreshed
+# from a web search each run (see /market_sentiment_analysis Step 1) and
+# passed here; without a fresh value the Buffett chart/current-reading will
+# silently drift from the true current level over time.
+BUFFETT_ANCHOR_VALUE = 238.0   # % Market Cap/GDP, as of 2026-09-09 (web search)
 
 STYLE = {
     "figure.facecolor": "white",
@@ -217,7 +227,7 @@ print("Fetching Buffett Indicator (FTW5000 / GDP proxy)...")
 buffett = pd.Series(dtype=float)
 
 # Wilshire 5000 was removed from FRED in June 2024; use ^FTW5000 from Yahoo Finance
-# GDP (quarterly) from FRED — normalise ratio to known anchor: ~233% on 2026-05-22
+# GDP (quarterly) from FRED — normalise ratio to BUFFETT_ANCHOR_VALUE (top of file)
 ftw_raw = yf.download("^FTW5000", start=START_STR, end=END_STR, progress=False)
 if not ftw_raw.empty:
     ftw_col = ftw_raw["Close"]
@@ -233,14 +243,14 @@ if not ftw_raw.empty:
         common = ftw.index.intersection(gdp_ff.index)
         if len(common) > 5:
             raw_ratio = ftw.loc[common] / gdp_ff.loc[common]
-            # Scale to % using known current anchor: Buffett Indicator ≈ 238%
-            # as of 2026-09-09 (web search); anchor to the most recent
-            # available date rather than a fixed historical date, since
-            # ^FTW5000's yfinance history window can start later than START.
+            # Scale to % using BUFFETT_ANCHOR_VALUE; anchor to the most
+            # recent available date rather than a fixed historical date,
+            # since ^FTW5000's yfinance history window can start later than
+            # START.
             anchor_date = common.max()
             anchor_raw  = raw_ratio.asof(anchor_date)
             if pd.notna(anchor_raw) and anchor_raw > 0:
-                scale   = 238.0 / anchor_raw
+                scale   = BUFFETT_ANCHOR_VALUE / anchor_raw
                 buffett = (raw_ratio * scale).clip(lower=0)
                 buffett = buffett[buffett.index >= START_STR]
                 print(f"  Buffett: {len(buffett)} rows, current={buffett.iloc[-1]:.1f}%")
