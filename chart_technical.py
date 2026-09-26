@@ -75,6 +75,7 @@ def main():
     disp_prices = all_prices[display_mask]
 
     # MAs computed on full history, then sliced
+    ma20  = np.array(moving_average(all_prices.tolist(), 20))[display_mask]
     ma50  = np.array(moving_average(all_prices.tolist(), 50))[display_mask]
     ma100 = np.array(moving_average(all_prices.tolist(), 100))[display_mask]
     ma200 = np.array(moving_average(all_prices.tolist(), 200))[display_mask]
@@ -90,6 +91,7 @@ def main():
         ax.axvspan(disp_dates[i - 1], disp_dates[i], alpha=0.08, color=color, linewidth=0)
 
     ax.plot(disp_dates, disp_prices, color="#4285F4", linewidth=2.5, label="Price")
+    ax.plot(disp_dates, ma20,  color="#34A853", linewidth=1.5, label="20-DMA")
     ax.plot(disp_dates, ma50,  color="#F4B400", linewidth=2, label="50-DMA")
     ax.plot(disp_dates, ma100, color="#8F5DB7", linewidth=2, label="100-DMA")
     ax.plot(disp_dates, ma200, color="#EA4335", linewidth=2, label="200-DMA")

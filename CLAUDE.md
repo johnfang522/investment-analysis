@@ -51,7 +51,7 @@ This is an investment analysis toolkit that fetches financial data from SEC EDGA
 - `get_price_history(ticker, years=3)` — returns a `{"YYYY-MM-DD": price}` dict; used by technical analysis charts and RSI
 - JSON output path: `Outputs/{TICKER}/` (e.g., `Outputs/NVDA/`) — one subfolder per ticker, created automatically
 - `{ticker_lower}` means `ticker.lower()` (e.g., `NVDA` → `nvda`); used in all JSON filenames
-- JSON filenames within the folder: `{ticker_lower}_quick_metrics.json`, `{ticker_lower}_balance_sheet_quarterly.json`, `{ticker_lower}_price_history.json`, and `{ticker_lower}_{income_statement|cash_flow_statement}_{quarterly|annual|ttm}.json` (the latter two groups now written by `sec_edgar_data.py`, not this module)
+- JSON filenames written by this module: `{ticker_lower}_quick_metrics.json` and `{ticker_lower}_price_history.json` only. The statement files in the same folder — `{ticker_lower}_balance_sheet_quarterly.json` and `{ticker_lower}_{income_statement|cash_flow_statement}_{quarterly|annual|ttm}.json` — are all written by `sec_edgar_data.py`, not this module
 - Do not import this module directly from skills — go through `get_financial_data.py`
 
 **`key_stock_metrics.py`** — Excel report generator
@@ -71,6 +71,7 @@ This is an investment analysis toolkit that fetches financial data from SEC EDGA
 **`chart_*.py`** — standalone chart generators (one per analysis domain)
 - Scripts: `chart_income_statement.py`, `chart_balance_sheet.py`, `chart_cash_flow.py`, `chart_growth_profitability.py`, `chart_valuation.py`, `chart_technical.py`
 - Each takes a single `TICKER` positional argument and saves PNG(s) to `Outputs/{TICKER}/`; e.g. `.venv/Scripts/python chart_technical.py NVDA`
+- `chart_technical.py` plots price with the 20/50/100/200-day moving averages (`_ta_price_ma.png`) plus a Wilder RSI chart (`_ta_rsi.png`)
 - Skills call these scripts rather than generating matplotlib code inline; if a chart needs updating, edit the corresponding `chart_*.py`
 - Each script reads its required JSON files from `Outputs/{TICKER}/` directly — run `get_financial_data.py` first if JSON is missing
 
@@ -83,7 +84,7 @@ This is an investment analysis toolkit that fetches financial data from SEC EDGA
 - **External data source gotchas baked into this script** (see also the External Data Sources section below)
 
 **`doc_utils.py`** — shared python-docx helpers
-- Provides `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=12)`, `add_footnote(doc)`, and `fmt_value(v, prefix='$')`
+- Provides `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=12)`, `add_footnote(doc)`, `fmt_value(v, prefix='$')`, and `add_source_note(paragraph_or_cell, source)` (used for the per-figure source citations)
 - All skill-generated Word scripts import from here; see the Word Document Generation section for the required import pattern
 - When adding a new helper needed by multiple skills, add it here rather than inline in each skill
 
@@ -133,6 +134,8 @@ The intended workflow runs in four stages:
 - `/industry_deep_dive` analyzes the structural mechanics of an industry (Porter's Five Forces, business model economics, competitive landscape, barriers to entry) — use it when you want to understand *how* an industry works, not just which stocks benefit; accepts either a theme name or a ticker symbol
 - `/ai_company_deep_dive` conducts a rigorous multi-dimensional deep dive on a specific ticker with AI exposure — classifies its position in the AI stack, scores its chokepoint strength, analyzes revenue quality and moat, and builds a 3-scenario investment thesis; always re-fetches fresh data via `fetch_all()` (from `get_financial_data.py`) before reading JSON; explicitly flags names where the AI narrative is not supported by the data; output titled "{TICKER} — Company Deep Dive"
 - `/multibagger_screener` is an idea-generation funnel (not a single-name analysis) for surfacing stocks with outsized 5x/10x/100x return potential — screens a theme-driven or quality-screen-driven hunting ground against historical multi-bagger base rates (small, long holding period, painful drawdowns, twin-engined growth + multiple expansion, under-covered), producing a scored 3-7 name shortlist with hooks and DNA scorecards; issues no Buy/Hold/Sell calls — hands names off to `/single_stock_quick_research` or `/single_stock_deep_research` for the actual call; runs standalone but can optionally chain from `/industry_trend_analysis` or `/emerging_industry_trend` for the theme-driven hunting ground
+- `/balance_sheet_analysis` includes an **Off-Balance-Sheet (OBS) Analysis** section: a 7-category scored checklist (leases, SPEs/VIEs, guarantees, JV/equity-method, pensions, purchase obligations, SBC dilution; 0–2 each, total /14) plus an OBS-adjusted vs. reported leverage table. SEC EDGAR JSON has no footnote data, so this section is sourced from 10-K/10-Q footnotes via `WebSearch`, cited by filing and date
+- `/technical_analysis` includes a **Moving Averages — Distance from Spot** section (20/50/100/200-day levels, % distance, slope, MA stack, crosses) and a **Price Momentum — Near-Term vs Mid-Term** section (1W–12M returns vs. S&P 500, aligned/diverging call); MAs and returns are computed from `_price_history.json`, not `_quick_metrics.json`
 - `/key_stock_metrics` with no args reads from `tickers.txt`; all other skills require a TICKER or THEME argument
 - `/key_stock_metrics` always re-fetches fresh data via `fetch_all()` before computing metrics, even if JSON files already exist
 - Skills read local JSON from `Outputs/` first, run `get_financial_data.py` if missing, then supplement with `WebSearch` for analyst estimates, guidance, and any N/A values

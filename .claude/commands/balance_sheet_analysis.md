@@ -5,7 +5,7 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** balance 
 **DATA SOURCING:**
 1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_quarterly.json` and `_quick_metrics.json`.
-3. WebSearch only for items genuinely missing (interest coverage, off-balance-sheet items). Leave N/A if not found.
+3. WebSearch only for items genuinely missing (interest coverage; all off-balance-sheet items — see the OBS Analysis section, which requires 10-K/10-Q footnote research). Leave N/A if not found.
 
 **Always YoY (latest qtr vs same qtr last year). Never sequential quarters.**
 
@@ -33,6 +33,7 @@ Produces `{ticker}_balance_sheet_composition.png` and `{ticker}_balance_sheet_tr
 | Current Ratio | X.Xx | ✅ >1.5 / ⚠️ 1–1.5 / 🔴 <1 |
 | Debt / Equity | X.Xx | ✅ <0.5 / ⚠️ 0.5–1.5 / 🔴 >1.5 |
 | Interest Coverage | X.Xx | ✅ >5 / ⚠️ 2–5 / 🔴 <2 |
+| OBS Risk Score | X / 14 | ✅ 0–3 / ⚠️ 4–7 / 🔴 8+ |
 | Thesis Bias | **LONG / SHORT / PASS** | — |
 | Conviction (Balance-Sheet Strength) | **X / 10** | — |
 
@@ -66,10 +67,35 @@ Produces `{ticker}_balance_sheet_composition.png` and `{ticker}_balance_sheet_tr
 
 - **Trend:** liquidity improving ↑ / steady → / tightening ↓ — [1 sentence]
 
-## Hidden Risks
+## Off-Balance-Sheet (OBS) Analysis
 
-WebSearch: "{TICKER} operating leases contingent liabilities [year]"
-- Material off-balance items (leases, lawsuits, pensions, purchase commitments). If none: "No significant off-balance-sheet concerns identified."
+*Forensic layer: what liabilities sit outside reported debt, and what is "true" leverage once they are added back?* SEC EDGAR JSON has no footnote data, so source everything from the latest 10-K/10-Q footnotes via WebSearch (terms: "{TICKER} 10-K commitments and contingencies", "variable interest entity", "operating lease maturity", "pension funded status", "purchase obligations", "guarantees", "equity method investees"). Cite filing + date for every figure. Leave N/A if not found — never guess.
+
+**Score each category 0–2** (0 = none/immaterial ✅ · 1 = present, moderate ⚠️ · 2 = material or structured to stay off-balance-sheet 🔴):
+
+| # | Category | What to check | Finding | Score |
+|---|----------|---------------|---------|-------|
+| 1 | Leases | Post-ASC 842 (Accounting Standards Codification)/IFRS 16 most operating leases are on-balance-sheet — check lease footnote: total future minimum payments vs. capitalized liability; synthetic leases, sale-leasebacks (retail, airlines, shipping) | [$ / none] | 0–2 |
+| 2 | SPEs / VIEs / securitization | Special Purpose Entities (SPEs) and Variable Interest Entities (VIEs): unconsolidated stakes with guarantees or first-loss exposure; receivables sold to a trust (retained interest only on balance sheet) | [$ / none] | 0–2 |
+| 3 | Guarantees & contingencies | Third-party debt/loan guarantees, warranty exposure, litigation disclosed but not reserved | [$ / none] | 0–2 |
+| 4 | Joint ventures / equity-method | Company's share of JV debt (equity method shows one net line only); proportional-consolidation debt | [$ / none] | 0–2 |
+| 5 | Pension & post-retirement | Funded status (underfunding), discount-rate and return assumptions vs. peers (aggressive = understated liability) | [$ / none] | 0–2 |
+| 6 | Purchase obligations / take-or-pay | Non-cancelable supply commitments and minimum purchases in the footnote table — debt-like | [$ / none] | 0–2 |
+| 7 | Stock-Based Compensation (SBC) dilution | Not classic OBS, but a non-cash add-back: SBC as % of Free Cash Flow (FCF) and net share-count change; compute SBC-adjusted FCF | [% / none] | 0–2 |
+
+- **OBS Risk Score:** **X / 14** — ✅ 0–3 clean · ⚠️ 4–7 watch · 🔴 8+ material hidden leverage
+- **Structured-to-hide flag:** [Yes/No — any arrangement that appears designed specifically to stay off-balance-sheet; this signal matters more than the dollar amount]
+
+**Adjusted vs. Reported Leverage** — add back capitalized lease-equivalents not already in debt, proportional JV debt, unfunded pension deficit, and material guarantees:
+
+| Metric | Reported | OBS-Adjusted | Gap |
+|--------|----------|--------------|-----|
+| Total Debt | $X.XB | $X.XB | +X% |
+| Debt / Equity | X.Xx | X.Xx | +X.Xx |
+| Net Debt / EBITDA | X.Xx | X.Xx | +X.Xx |
+
+- **So what:** [1 sentence — is the gap large enough (e.g., >0.5x Net Debt / EBITDA) to change the balance-sheet conviction? A big gap is a red flag.]
+- If nothing material: "No significant off-balance-sheet concerns identified." and skip the adjusted table.
 
 ## Strengths vs Risks
 
@@ -113,7 +139,8 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
 - **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
 - Dark blue header rows (fill `1F3864`), white bold text
-- Source citations in small italic
+- Source citations in small italic (OBS figures: cite the 10-K/10-Q filing and date)
+- OBS section: scored checklist table + adjusted-vs-reported leverage table, both following the table rules
 - Variant View as a 3-column table; Read-Through block in bold
 - Saves to `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis.docx`
 - Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_balance_sheet.py` and run it from project root

@@ -19,7 +19,7 @@ You are a **buy-side analyst at a hedge fund** producing a **3-page max** techni
 ```
 .venv/Scripts/python chart_technical.py {TICKER}
 ```
-Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKER}/`.
+Produces `{ticker}_ta_price_ma.png` (price with 20/50/100/200-DMA) and `{ticker}_ta_rsi.png` in `Outputs/{TICKER}/`.
 
 ## At a Glance
 
@@ -27,6 +27,8 @@ Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKE
 |-------|-------|--------|
 | Current Price | $X.XX | — |
 | Trend (vs 200-DMA) | Up / Neutral / Down | ✅ / ⚠️ / 🔴 |
+| Spot vs 20 / 50 / 100 / 200-DMA | ±X% / ±X% / ±X% / ±X% | MA stack Bullish / Mixed / Bearish |
+| Momentum (Near-term / Mid-term) | Pos / Neu / Neg · Pos / Neu / Neg | Aligned / Diverging |
 | Drawdown from 52-wk High | -X% | ✅ Shallow <10 / ⚠️ 10–20 / 🔴 >20 |
 | RSI (14-day) | XX | ✅ 35–55 sweet spot / ⚠️ 55–70 / 🔴 >70 hot or <30 deep |
 | Market Regime (VIX, S&P) | Constructive / Cautious / Opportunistic | — |
@@ -50,6 +52,38 @@ Produces `{ticker}_ta_price_ma.png` and `{ticker}_ta_rsi.png` in `Outputs/{TICKE
 | | **Total** | — | **X / 5** |
 
 **Interpretation:** 4–5 = Strong Buy Signal · 2–3 = Moderate (start small) · 0–1 = Wait
+
+## Moving Averages — Distance from Spot
+
+*Compute all four Simple Moving Averages (SMAs) from `_price_history.json` closes (last N trading days); do not rely on quick_metrics for 20/100-DMA. Distance = (Spot ÷ MA − 1) × 100.*
+
+| Moving Average | Level | Spot vs MA | Position | Slope (vs 10 days ago) |
+|----------------|-------|-----------|----------|------------------------|
+| 20-DMA | $X.XX | +X.X% / −X.X% | ✅ Above / 🔴 Below | ↑ / → / ↓ |
+| 50-DMA | $X.XX | +X.X% / −X.X% | ✅ / 🔴 | ↑ / → / ↓ |
+| 100-DMA | $X.XX | +X.X% / −X.X% | ✅ / 🔴 | ↑ / → / ↓ |
+| 200-DMA | $X.XX | +X.X% / −X.X% | ✅ / 🔴 | ↑ / → / ↓ |
+
+- **MA stack:** Bullish (20 > 50 > 100 > 200) / Bearish (reverse) / Mixed — [1 sentence]
+- **Nearest support / resistance:** [the closest MA below spot and closest above, with % distance]
+- **Stretch flag:** ⚠️ if spot is >10% above the 50-DMA or >20% above the 200-DMA (extended); 🔴 if >10% below the 200-DMA and the 200-DMA is falling.
+- **Recent crosses:** [Golden cross (50 over 200) / Death cross / none in last 60 days — with date]
+
+## Price Momentum — Near-Term vs Mid-Term
+
+*Price returns from `_price_history.json` (trading-day offsets: 5d, 21d ≈ 1M, 63d ≈ 3M, 126d ≈ 6M, 252d ≈ 12M). Compare to S&P 500 (`SPY` via yfinance) over the same windows.*
+
+| Horizon | Window | Stock Return | S&P 500 | Relative | Signal |
+|---------|--------|-------------|---------|----------|--------|
+| Near-term | 1 week | +X.X% | +X.X% | ±X.X pts | ✅ / ⚠️ / 🔴 |
+| Near-term | 1 month | +X.X% | +X.X% | ±X.X pts | ✅ / ⚠️ / 🔴 |
+| Mid-term | 3 months | +X.X% | +X.X% | ±X.X pts | ✅ / ⚠️ / 🔴 |
+| Mid-term | 6 months | +X.X% | +X.X% | ±X.X pts | ✅ / ⚠️ / 🔴 |
+| Mid-term | 12 months (ex-last month) | +X.X% | +X.X% | ±X.X pts | ✅ / ⚠️ / 🔴 |
+
+- **Near-term momentum (≤1M):** Positive / Neutral / Negative — anchored on spot vs 20-DMA, 1M return and RSI direction. [1 sentence]
+- **Mid-term momentum (3–12M):** Positive / Neutral / Negative — anchored on spot vs 50/100/200-DMA, 3M/6M relative strength. [1 sentence]
+- **Momentum alignment:** Aligned bullish / Aligned bearish / **Diverging** (e.g., near-term bounce inside a mid-term downtrend = counter-trend rally, don't chase; near-term dip inside a mid-term uptrend = pullback buy candidate). [1 sentence on which applies and what it means for entry timing]
 
 ## Trend & Pullback
 
