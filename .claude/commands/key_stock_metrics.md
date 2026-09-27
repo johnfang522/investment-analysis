@@ -205,6 +205,14 @@ Color the **value cell** only:
 - Print a warning to stdout for any missing field
 - Do not confuse a missing JSON field (within an existing file) with a missing file — missing files must trigger the auto-fetch described above
 
+## REIT Handling (apply to any ticker that is a REIT)
+
+Definitions are in `references/reit-framework.md`. Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+
+- The Excel is built by `compute_metrics()` and stays GAAP-based, so for a REIT several columns (Trailing/Forward P/E, PEG, Payout Ratio, ROE, Interest Coverage, Current Ratio, FCF Margin, Rule of 40) are **not meaningful** and must not be used to rank it against operating companies; do not change the Excel metrics, but flag each REIT in the chat output.
+- In the Buy-Side Screen Read, mark every REIT and screen it on REIT measures instead: AFFO per share and payout ratio (non-GAAP, from the latest release), dividend yield and its spread to the 10-year, and net debt/EBITDAre. Source these via `WebSearch` with date and label them non-GAAP; mark them N/A if not found.
+- Recommend the full single-name workup for REITs that pass the screen, since the deep-research and quick-research skills apply this framework.
+
 ## Buy-Side Screen Read (report in chat after the Excel is saved)
 
 After confirming the output file path, end your chat response with a concise buy-side triage of the screened set — this is what makes the screen actionable for the PM. Do **not** modify the Excel/Python pipeline to produce this; derive it from the computed metrics and their green/yellow/red coloring.

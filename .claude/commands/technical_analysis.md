@@ -10,6 +10,12 @@ You are a **buy-side analyst at a hedge fund** producing a **3-page max** techni
 
 **SOURCE CITATIONS:** `Source: URL` indented below web-sourced lines.
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep every section above. Dividend payers need a **price basis check**: `_price_history.json` is fetched with yfinance's default `auto_adjust=True`, so closes are dividend-adjusted while spot is not. For a REIT (yield above ~2%) recompute the moving averages, returns, RSI and 52-week closing high/low from **unadjusted** closes (`history(period="3y", auto_adjust=False)` into a scratch file; do not overwrite the project JSON), regenerate the chart from the same series if `chart_technical.py` would otherwise mislead, and state the basis in the note.
+- Add relative strength vs a REIT benchmark (VNQ or XLRE) and SPY over the same windows, and relate the price move to the 10-year Treasury yield (source the level and date; mark the start date of a yield move N/A if unsourced).
+- Use the same bias, stop, entry zone and risk/reward everywhere in the note, and reconcile the closing low against the Yahoo intraday 52-week low.
+
 ---
 
 **Data as of**: [Date of latest price_history entry]

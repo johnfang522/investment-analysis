@@ -11,6 +11,13 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** cash flo
 
 **STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→. Spell out every abbreviation on first use, then use the short form after (e.g., "Operating Cash Flow (OCF)" first, then "OCF"; "Free Cash Flow (FCF)" first, then "FCF"; "Capital Expenditures (CapEx)" first, then "CapEx").
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep every section above, but do not headline generic free cash flow: acquisitions and development are the REIT's growth spend and may not sit in a capex line. Show operating cash flow, investing (acquisitions and dispositions) and financing (debt, equity issued, dividends paid), and compute **operating-cash-flow dividend coverage** and the **AFFO payout ratio** (non-GAAP).
+- Show how acquisition volume was funded (public equity vs debt vs retained cash flow vs dispositions); mark any residual as computed, not reported, and state whether volume is on a 100% or pro-rata basis.
+- If SEC EDGAR lacks capex, free cash flow, dividends or debt/equity issuance lines, say so and do not fabricate them: take them from the 10-Q cash flow statement or the release (cite it); the waterfall chart may be unavailable, and the document should say so.
+- For non-net-lease REITs include recurring capex, tenant improvements and leasing commissions in the AFFO discussion.
+
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:

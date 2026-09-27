@@ -17,6 +17,12 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** income s
 
 **SOURCE CITATIONS:** `Source: URL` indented below web-sourced lines.
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep the GAAP income statement from SEC EDGAR, but add a **GAAP-to-FFO/AFFO bridge** (real-estate depreciation and amortization, impairments, gains on property sales, straight-line rent adjustments) from the earnings release, and make **AFFO per share** the headline earnings measure. Label FFO/AFFO non-GAAP and quote the company's own reconciliation.
+- Gross margin is structurally high for triple-net leases and is not a pricing-power signal; show same-store NOI/rent growth, occupancy and NOI/EBITDAre margin instead where disclosed.
+- Flag one-offs that swing GAAP EPS (impairments, gains on sale) so a GAAP jump is not read as a trend; compare against company AFFO-per-share guidance and consensus, searching the release for the guidance range and how it changed.
+
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:

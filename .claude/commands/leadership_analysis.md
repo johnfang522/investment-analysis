@@ -16,6 +16,12 @@ This ensures `Outputs/{TICKER}/` JSON files are current before reading any metri
 
 **SOURCE CITATIONS:** `Source: URL` indented below the bullet.
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep every section above and add a **REIT capital-allocation lens** to the scorecard: acquisition yield vs cost of capital (investment spread), equity issued above or below NAV, leverage discipline (net debt/EBITDAre), AFFO-per-share growth vs guidance track record, dividend-growth record, and any private-capital fund or joint-venture strategy.
+- Check whether the REIT is internally or externally managed (fees, conflicts of interest) and whether executive pay is tied to AFFO per share and total shareholder return.
+- Use sourced figures only; mark NAV, cost of capital and guidance hit-rate N/A if they cannot be found.
+
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:

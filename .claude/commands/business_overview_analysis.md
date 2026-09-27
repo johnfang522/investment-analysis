@@ -14,6 +14,13 @@ This overwrites any stale cached files. Only then read `Outputs/{TICKER}/{ticker
 
 **SOURCE CITATIONS:** `Source: URL` on indented line below web-sourced content. Yahoo data needs no citation.
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep every section above, but describe the business by **portfolio**, not product lines: rent mix by property type, geography and tenant industry (% of annualized base rent), property count, occupancy, weighted-average lease term (WALT), same-store rent/NOI growth, and top-10/20 tenant concentration.
+- In At a Glance and any snapshot, lead with **FFO/AFFO per share (non-GAAP), dividend per share and yield** instead of GAAP EPS; keep GAAP revenue from SEC EDGAR and label FFO/AFFO non-GAAP.
+- Moat = cost of capital (ratings, debt maturity), scale, tenant relationships and sourcing pipeline, asset location and lease quality; competitors are other REITs and private capital, and the sector-specific checklist is in section 7 of the reference.
+- Take portfolio KPIs from the earnings release (8-K Exhibit 99.1), supplemental and call (cite filing and date); leave a KPI N/A rather than guess, and show a range where sources disagree.
+
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:

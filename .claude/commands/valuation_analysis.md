@@ -11,6 +11,12 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** valuatio
 
 **STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→. Spell out every abbreviation on first use, then use the short form after (e.g., "Price-to-Earnings (P/E)" first, then "P/E"; "Discounted Cash Flow (DCF)" first, then "DCF"; "Weighted Average Cost of Capital (WACC)" first, then "WACC"; "Enterprise Value / Earnings Before Interest, Taxes, Depreciation & Amortization (EV/EBITDA)" first, then "EV/EBITDA").
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep every section above (including the charts), but value the REIT on **P/AFFO and P/FFO** vs peers and its own history, **dividend yield and its spread to the 10-year Treasury** (source the current yield and date), **implied cap rate vs acquisition yields**, and **NAV premium/discount** if analyst NAV is sourced (else N/A).
+- Replace the free-cash-flow DCF with a **dividend discount model or an AFFO-growth total-return build** (yield + AFFO/share growth ± multiple change, on price alone and including dividends) with explicit assumptions and a sensitivity on the required return. Trailing/forward GAAP P/E, PEG and generic FCF yield are shown only as "not meaningful for a REIT", and `chart_valuation.py` output uses those GAAP multiples, so say so under the charts.
+- Peer multiples: mark N/A unless the multiple itself is sourced (a peer's AFFO guidance is not a P/AFFO multiple). The LONG/PASS/SHORT rules and the requirement to keep verdict, target, stop and risk/reward consistent are unchanged.
+
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:

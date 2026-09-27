@@ -11,6 +11,13 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** balance 
 
 **STYLE:** Bullets only — 1 short sentence. Tables for all numbers. Bold key metrics. Status icons: ✅ ⚠️ 🔴 / ↑↓→. Spell out every abbreviation on first use, then use the short form after (e.g., "Property, Plant & Equipment (PP&E)" first, then "PP&E"; "Most Recent Quarter (MRQ)" first, then "MRQ").
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep every section above. Add REIT leverage and liquidity metrics: **net debt / annualized adjusted EBITDAre**, fixed-charge coverage, debt maturity ladder, weighted-average maturity and rate, fixed vs floating share, unsecured vs secured mix, liquidity (cash + undrawn revolver), and credit ratings (cite source and date).
+- Current, quick and cash ratios and generic Debt/Equity do not apply to an unclassified REIT balance sheet: show them as N/A or "not meaningful" and lead with the REIT measures. Compute interest coverage on an EBITDAre basis, not GAAP operating income.
+- SEC EDGAR `Total Debt` is frequently untagged for REITs: sum notes payable, term loans, credit facility and mortgages from the latest 10-Q balance sheet and state which figure you used.
+- In the Off-Balance-Sheet section pay particular attention to unconsolidated joint ventures and funds (equity-method stakes, pro-rata debt, any guarantees), ground leases where the REIT is lessee, forward equity agreements and development/purchase commitments, and note large goodwill/lease intangibles after mergers.
+
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:

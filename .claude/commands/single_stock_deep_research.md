@@ -6,6 +6,17 @@ You are a senior **buy-side analyst at a hedge fund** producing a complete resea
 
 ---
 
+## REIT Handling (apply only when the company is a REIT)
+
+Definitions, metric substitutions and data sources are in `references/reit-framework.md`. Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+
+- **Pass REIT context to every subagent in Step 1:** append to each subagent prompt "This company is a REIT: follow the REIT HANDLING block in the skill file and `references/reit-framework.md`, use AFFO (non-GAAP) not GAAP EPS, and mark metrics that are not meaningful for a REIT." Also pass any established, sourced facts from earlier subagents (for example FFO/AFFO, guidance, leverage) and tell later subagents to reconcile, not restate, discrepancies.
+- In Step 2, keep the 19-row Financial Snapshot but write **"not meaningful for a REIT"** in the value or comment for GAAP-based rows (trailing/forward P/E, PEG, payout ratio, ROE, GAAP interest coverage, current ratio, FCF margin, Rule of 40), and add the REIT read in the Comments column: P/AFFO, AFFO payout, net debt/EBITDAre, dividend yield spread to the 10-year, occupancy/WALT. In Step 3 color-code only metrics that are meaningful for a REIT.
+- The Growth Outlook section uses AFFO-per-share CAGR and guidance (non-GAAP, labeled) instead of EPS CAGR; the Valuation section uses P/AFFO, yield spread, implied cap rate/NAV and a dividend discount model instead of EV/EBITDA and P/S; the Technical section must use unadjusted (price-only) closes (see the technical skill); the NBT section follows the REIT rules in the business potential skill.
+- The Verdict still uses the standard LONG/PASS/SHORT rules; state total return both on price and including dividends, and show risk/reward consistently across the note. Where subagent documents disagree with each other, resolve the disagreement before writing the summary.
+
+---
+
 ## Step 1 — Run All 9 Individual Analyses via Subagents
 
 Spawn each analysis as a **separate subagent** using the Agent tool, one at a time (wait for each to complete before spawning the next). Each subagent receives a self-contained prompt instructing it to read and execute the relevant skill file for {TICKER}.

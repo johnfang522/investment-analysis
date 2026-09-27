@@ -29,6 +29,15 @@ The core discipline of this skill: never stop at the headline beat/miss. Most of
 
 ---
 
+## REIT Handling (apply only when the company is a REIT)
+
+Definitions, metric substitutions and data sources are in `references/reit-framework.md`. Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+
+- Score the same seven dimensions with REIT inputs: **headline quality** = AFFO per share (non-GAAP) vs guidance and consensus (not GAAP EPS); **margin trajectory** = same-store NOI/rent growth, occupancy and leasing spreads; **growth durability** = acquisition/development volume and investment spread, plus AFFO-per-share growth vs revenue growth (dilution); **balance sheet/cash flow quality** = net debt/EBITDAre, liquidity, AFFO payout and operating-cash-flow coverage; **management commentary** = guidance change (raise/cut), cost-of-capital and funding language; **red flags** = impairments, tenant credit, lease expiries, off-balance-sheet exposure; **valuation reality check** = P/AFFO and yield spread to the 10-year.
+- Search the release/supplemental for the AFFO guidance range and how it changed versus last quarter, and label FFO/AFFO non-GAAP.
+
+---
+
 ## Step 1 — Gather Inputs
 
 Confirm the following are collected before scoring (per Data Sourcing above):

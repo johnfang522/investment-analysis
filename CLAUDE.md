@@ -48,7 +48,7 @@ This is an investment analysis toolkit that fetches financial data from SEC EDGA
 
 **`yahoo_finance_data.py`** — quote/market data fetching library; retained only for data with no SEC EDGAR equivalent
 - `get_quick_metrics()` — market cap, P/E, dividend yield, beta, analyst targets, sector, etc. (the `stock.info` dict)
-- `get_price_history(ticker, years=3)` — returns a `{"YYYY-MM-DD": price}` dict; used by technical analysis charts and RSI
+- `get_price_history(ticker, years=3)` — returns a `{"YYYY-MM-DD": price}` dict; used by technical analysis charts and RSI. **Closes are dividend-adjusted** (yfinance's default `auto_adjust=True`) while `current_price` and the 52-week range from quick metrics are not, so for material dividend payers (yield above ~2%, e.g. REITs) older prices, moving averages and closing highs/lows are understated; the technical skill recomputes from unadjusted closes (`auto_adjust=False`) for those names
 - JSON output path: `Outputs/{TICKER}/` (e.g., `Outputs/NVDA/`) — one subfolder per ticker, created automatically
 - `{ticker_lower}` means `ticker.lower()` (e.g., `NVDA` → `nvda`); used in all JSON filenames
 - JSON filenames written by this module: `{ticker_lower}_quick_metrics.json` and `{ticker_lower}_price_history.json` only. The statement files in the same folder — `{ticker_lower}_balance_sheet_quarterly.json` and `{ticker_lower}_{income_statement|cash_flow_statement}_{quarterly|annual|ttm}.json` — are all written by `sec_edgar_data.py`, not this module
@@ -226,6 +226,7 @@ Non-obvious facts about external APIs used by the market sentiment charts and sk
 - `references/scoring-tables.md` — per-indicator 0–100 conversion bands, composite weights (credit heaviest at 20%), and composite zone labels for `/market_sentiment_analysis`; if an indicator is unavailable, drop it and renormalize the weights
 - `references/bubble-framework.md` — the six bubble warning conditions, the conditions-firing → Low/Moderate/Elevated/Extreme verdict mapping, and historical analogues for calibration
 - Both are read by `/market_sentiment_analysis` Steps 2–3; keep the thresholds here and in the skill's inline summary consistent when editing either
+- `references/reit-framework.md` — REIT detection (`industry` starts with `REIT` / `sector` = `Real Estate`; mortgage REITs excluded), the generic-to-REIT metric substitutions (AFFO/FFO for EPS, P/AFFO, AFFO payout, net debt/EBITDAre, dividend-yield spread to the 10-year, implied cap rate/NAV, dividend discount model), data-source caveats (SEC EDGAR is GAAP-only and often lacks Total Debt/capex/dividend lines for REITs), and the unadjusted-price rule for dividend payers. Every single-stock skill (`business_overview`, `leadership`, `income_statement`, `balance_sheet`, `cash_flow`, `growth_and_profitability`, `business_potential`, `valuation`, `technical`, `single_stock_deep_research`, `single_stock_quick_research`, `earnings_report_analyzer`, `ai_company_deep_dive`, `key_stock_metrics`) carries a short `REIT HANDLING` block that points here and applies only when the company is a REIT; keep the block and the reference consistent when editing either
 
 ## Adding a New Skill
 

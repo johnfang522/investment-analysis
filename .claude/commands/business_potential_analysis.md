@@ -14,6 +14,12 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** forward-
 
 **SOURCE CITATIONS:** `Source: URL` indented below web-sourced lines.
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep every section above. Identify the REIT's emerging opportunity from sourced evidence: acquisition pipeline and addressable market, development, geographic expansion, new asset classes, and private-capital funds or joint ventures (capital-light, fee-generating growth).
+- Financial runway = liquidity (cash + undrawn revolver), credit ratings, net debt/EBITDAre and the spread of acquisition yield over cost of capital; ecosystem control = tenant relationships and sourcing pipeline. R&D and headcount rows are generally not applicable.
+- NBT Spend Ratio = trend-related deployment (for example a data-center joint venture or a new fund) over operating cash flow or AFFO; if trend-specific amounts are unsourced, use total investment as a labeled proxy or mark N/A. Cite each figure and show source disagreements as a range.
+
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:

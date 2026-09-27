@@ -36,6 +36,17 @@ Apply these throughout — they separate research from a data dump.
 
 ---
 
+## REIT Handling (apply only when the company is a REIT)
+
+Definitions, metric substitutions and data sources are in `references/reit-framework.md`. Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+
+- Work the seven pillars with REIT metrics: **business** = portfolio, occupancy, WALT, tenant concentration; **financial health** = net debt/EBITDAre, fixed-charge coverage, maturities, liquidity, ratings (not current ratio or Debt/Equity); **valuation** = P/AFFO vs peers, dividend yield spread to the 10-year, implied cap rate and NAV, dividend discount model (not GAAP P/E or free-cash-flow DCF).
+- Earnings quality = AFFO per share (non-GAAP) vs GAAP EPS, with the depreciation/impairment/gain-on-sale bridge; the dividend-safety test is the **AFFO payout ratio** and operating-cash-flow coverage, not Yahoo's GAAP payout ratio.
+- Bull/bear cases should turn on the rate outlook (10-year yield), the acquisition spread over cost of capital and funding mix, and lease/occupancy risk; the scorecard and "what changes my mind" must name a yield or AFFO-growth trigger.
+- Recompute technical indicators from unadjusted closes for dividend payers (see the technical skill) and keep the verdict, target, stop and risk/reward consistent.
+
+---
+
 ## The Seven Pillars
 
 Work through all seven in order. Each pillar ends with a verdict, not just facts.

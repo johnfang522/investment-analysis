@@ -36,6 +36,15 @@ Always re-fetch fresh data before reading any JSON files (income statement / bal
 
 ---
 
+## REIT Handling (apply only when the company is a REIT)
+
+Definitions, metric substitutions and data sources are in `references/reit-framework.md`. Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block. This applies mainly to **data-center REITs** (for example Equinix, Digital Realty) that qualify as AI infrastructure.
+
+- Keep every step. For the AI-stack position and chokepoint analysis use REIT-specific evidence: contracted and installed megawatts, utilization and pre-leasing, power availability and interconnect density, development yield vs cost of capital, backlog, hyperscaler/AI-tenant concentration, and lease terms.
+- Financial deep dive and valuation use AFFO/FFO, P/AFFO, net debt/EBITDAre, dividend yield spread and NAV/implied cap rate rather than GAAP EPS, P/E or free-cash-flow DCF (see the reference); label non-GAAP measures and keep the verdict, target, stop and risk/reward consistent.
+
+---
+
 ## Step 1: Classify the Company
 
 First, identify which layer of the AI stack the company occupies — this shapes every subsequent lens. If the company does not clearly fit any layer, say so and note it may not be an AI investment.

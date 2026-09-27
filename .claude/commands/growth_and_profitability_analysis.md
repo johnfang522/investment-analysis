@@ -13,6 +13,12 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** growth &
 
 **STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→. Spell out every abbreviation on first use, then use the short form after (e.g., "Compound Annual Growth Rate (CAGR)" first, then "CAGR"; "Year-over-Year (YoY)" first, then "YoY").
 
+**REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
+- Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
+- Keep every section above. Build growth from **AFFO per share** (multi-year CAGR sourced by year from company filings), same-store NOI/rent growth, occupancy, and acquisition/development volume at what yield spread; explain any gap between revenue growth and AFFO-per-share growth (share issuance, financing cost, dilution) with sourced numbers.
+- GAAP EPS growth, ROE and the Rule of 40 are not meaningful for a REIT: keep the rows, mark them "not meaningful for a REIT" or not applicable, and do not color-code them. Show GAAP margins with a note on what drives them (depreciation, impairments), and NOI/EBITDAre margin where disclosed.
+- Include the dividend growth record and the AFFO payout ratio in the profitability read.
+
 ---
 
 FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
