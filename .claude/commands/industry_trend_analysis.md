@@ -1,13 +1,15 @@
 ---
 description: >
-  A structured framework for professional investors to identify emerging macro themes ("the next big thing") and map their full value chain to surface investable stocks at every layer. Use this skill whenever the user asks about spotting trends, identifying emerging themes, finding value chain plays, picking stocks in a new technology cycle, or mapping who wins in a given sector shift. Also trigger when the user asks questions like "what's the next big thing in X", "where should I invest in the AI/energy/biotech/etc. trend", "who are the picks-and-shovels plays", "which stocks benefit from X", or "help me build an investment thesis around Y". Always use this skill for investor-facing trend and theme analysis — do not rely on ad-hoc responses.
+  A structured framework for professional investors to identify emerging macro themes ("the next big thing"), map their full value chain to surface investable stocks at every layer, and define the conditions under which the theme is peaking or reversing. Use this skill whenever the user asks about spotting trends, identifying emerging themes, finding value chain plays, picking stocks in a new technology cycle, or mapping who wins in a given sector shift. Also trigger when the user asks questions like "what's the next big thing in X", "where should I invest in the AI/energy/biotech/etc. trend", "who are the picks-and-shovels plays", "which stocks benefit from X", or "help me build an investment thesis around Y". Also trigger for the exit side of a theme: "is this theme peaking", "is the X trade over", "when should I sell out of this theme", "how do I know this trend is reversing", "what would break this thesis", "is this a bubble", or "what are the warning signs for X". Always use this skill for investor-facing trend and theme analysis — do not rely on ad-hoc responses.
 ---
 
 # Industry Trend Analysis Framework
 
-A two-part framework for professional investors: (1) identify a credible emerging trend using 5 convergence signals, and (2) map the full value chain to surface stocks at every layer.
+A three-part framework for professional investors: (1) identify a credible emerging trend using 5 convergence signals, (2) map the full value chain to surface stocks at every layer, and (3) define in advance the conditions under which the theme is peaking or reversing — the exit discipline.
 
-**House style — buy-side, for the PM.** Write this as a hedge-fund analyst building a thematic book, not a strategist publishing a survey. The deliverable is actionable: a directional **theme posture** (theme conviction X/10 + how to express it — long basket, pair trade, or underweight), an explicit **variant view** on where consensus is wrong, and layer-level overweight/underweight calls. Lead with the conclusion; the signals and value chain justify it.
+**House style — buy-side, for the PM.** Write this as a hedge-fund analyst building a thematic book, not a strategist publishing a survey. The deliverable is actionable: a directional **theme posture** (theme conviction X/10 + how to express it — long basket, pair trade, or underweight), an explicit **variant view** on where consensus is wrong, layer-level overweight/underweight calls, and **pre-committed exit tripwires**. Lead with the conclusion; the signals and value chain justify it.
+
+**Entry logic and exit logic are separate disciplines.** A theme that clears the convergence test is not thereby safe to hold indefinitely — most thematic capital is lost not by picking the wrong theme but by holding the right theme past its peak. Part 3 is therefore mandatory in every run, including when the theme scores 4–5/5 on convergence. The strongest themes generate the most complacency.
 
 ---
 
@@ -138,6 +140,100 @@ For each layer provide: definition, named companies or company types relevant to
 
 ---
 
+## Part 3 — Peak & Reversal Detection: The 6 Exhaustion Signals
+
+Part 1 asks "is this trend real?" Part 3 asks "**when does being right stop paying?**" These are the conditions under which the theme is topping out or breaking down, defined *before* the position is on, so the exit is a rule rather than a reaction.
+
+A theme rarely dies from one cause. Watch for **2 or more** exhaustion signals firing simultaneously — the same convergence logic as Part 1, inverted.
+
+### Exhaustion Signal 1: Convergence Signal Inversion
+The five entry signals are not one-time tests — they are live instruments that can roll over. Re-check each and flag deterioration:
+- **Technology inflection stalls:** the cost curve flattens; performance-per-dollar gains fall below ~20% per year; the next node/generation slips repeatedly.
+- **Regulatory door closes:** subsidies expire or are clawed back, tariffs or export controls land, a mandate is repealed, liability frameworks turn hostile.
+- **Behavior reverts:** cohort retention decays, reorder rates fall, pilot-to-production conversion stalls (the "everyone piloted, nobody deployed" signature).
+- **Capital flow decelerates:** down rounds and flat rounds appear; the top-quartile funds that concentrated early stop following on; deal count falls while deal size rises (late-stage markup activity, not new conviction).
+- **Narrative saturates:** mainstream/consumer media coverage peaks, theme-named ETFs launch, the keynote slot moves *back* to a breakout session, talent starts leaving for the next theme.
+- **Question to answer:** Which of the 5 entry signals that justified the position no longer hold?
+
+### Exhaustion Signal 2: Supply Catch-Up & Capacity Overshoot
+The single most reliable killer of Layer 1 (Infrastructure) returns, and the earliest to be observable in hard data.
+- Lead times shorten materially (the classic tell — customers stop pre-ordering because they no longer fear being shut out).
+- Book-to-bill falls below 1.0; backlog coverage shrinks quarter over quarter; order cancellations or push-outs appear in disclosures.
+- Announced industry capacity additions exceed credible demand growth for the same period — sum the announcements across all producers, not just the leader.
+- Inventory builds in the channel; days-of-inventory rises while revenue growth decelerates.
+- Spot pricing falls below contract pricing (demand is no longer clearing at the margin).
+- **Question to answer:** Is the scarcity that made this layer profitable being engineered away, and on what timeline do the announced additions land?
+
+### Exhaustion Signal 3: Valuation & Crowding Extremes
+Positioning risk rather than fundamental risk — this is what turns a modest earnings miss into a 40% drawdown.
+- Multiple expansion is outpacing estimate revisions: the stock is rising on re-rating, not on numbers going up. Decompose the return into multiple change vs. estimate change.
+- Thematic ETF launches and AUM inflows accelerate; the theme acquires its own index.
+- Short interest collapses across the basket; sell-side ratings cluster at Buy with no Sell ratings.
+- The issuance window opens: IPOs, secondaries, convertibles, SPACs priced into strength — companies are selling equity to the theme, which is the insiders' own verdict on price.
+- Insider selling accelerates; lock-up expiries cluster.
+- Correlation within the basket rises toward 1 — names stop trading on fundamentals and start trading as a single factor, which is both a crowding signal and a warning that diversification within the theme is illusory.
+- **Question to answer:** What is priced in, and who is left to buy?
+
+### Exhaustion Signal 4: Unit Economics & Margin Erosion
+The theme keeps growing but stops being profitable — volume without economics.
+- Gross margins compress across *multiple* companies in the same layer simultaneously (a single company is execution; the whole layer is structural).
+- Average selling prices decline faster than unit-cost declines.
+- The number of credible competitors in a layer rises sharply; differentiation collapses into price.
+- Customers begin dual-sourcing or in-sourcing the layer's product (as covered in the value chain, the first sign a moat was positional rather than structural).
+- Incremental returns on invested capital fall below the cost of capital even as revenue grows.
+- **Question to answer:** Is growth still creating value, or is the industry now competing the economics away?
+
+### Exhaustion Signal 5: Demand-Side Funding Stress
+Ask the question thematic investors most often skip: **who actually pays, and with whose money?** Demand funded by something other than the customer's own operating cash flow is the most fragile demand there is.
+- End demand depends on venture funding, government grants, subsidy programs, or a single well-capitalized buyer.
+- Customer concentration is rising, not falling, as the theme scales.
+- Vendor financing, circular deals, or equity-for-revenue arrangements appear (supplier invests in customer, customer buys supplier's product — revenue that is really the supplier's own capital returning).
+- Backlog is dominated by contracts with weak counterparties, long dated-delivery, or non-binding terms.
+- Customers' own funding conditions deteriorate — for a picks-and-shovels position, the customer's balance sheet is your revenue forecast.
+- **Question to answer:** If capital markets closed for 12 months, what share of this theme's demand disappears?
+
+### Exhaustion Signal 6: Macro & Policy Regime Shift
+Thematic equities are long-duration assets; the discount rate is a first-order driver of the multiple regardless of fundamentals.
+- Real rates rise materially — long-duration, back-end-loaded cash flows de-rate first and hardest.
+- Credit spreads widen, closing the financing window for capital-intensive build-outs.
+- The subsidy or industrial-policy regime underwriting the theme faces an election, expiry, or budget reconciliation.
+- Trade policy: export controls, tariffs, or localization mandates fragment the supply chain or the addressable market.
+- Energy, input, or labor cost shocks break the cost curve the thesis assumed.
+- **Question to answer:** Does this theme require a specific macro or policy regime to work, and how durable is that regime?
+
+### Peak Verdict Mapping
+| Exhaustion signals firing | Verdict | Action |
+|---|---|---|
+| 0–1 | **Intact** — trend healthy | Hold / continue building on weakness |
+| 2 | **Late-cycle** — first cracks | Stop adding; tighten stops; rotate toward Layer 6 (bottlenecks) and Layer 5 (adjacent) |
+| 3 | **Peaking** — distribution underway | Trim into strength; cut the most crowded/highest-multiple layer first |
+| 4+ | **Reversing** — regime change | Exit the theme basket; only structurally moated bottleneck names survive a full cycle down |
+
+### Layer Sequencing — What Breaks First
+Layers do not peak simultaneously. Expect this order, and use it to decide what to cut first:
+1. **Layer 4 (Applications)** and the most narrative-driven names de-rate first — highest multiples, thinnest moats, most retail ownership.
+2. **Layer 3 (Integrators)** follows as commoditization compresses the systems-integration premium.
+3. **Layer 1 (Infrastructure)** breaks when capacity catches up — often the most violent move, because the scarcity premium unwinds fast and capex commitments are already sunk.
+4. **Layer 2 (Enablers)** holds longer on recurring revenue, but re-rates as customer growth slows.
+5. **Layer 5 (Adjacent Beneficiaries)** and **Layer 6 (Bottlenecks)** are last and least — Layer 6 by definition survives the cycle, which is why it is the defensive core of a thematic book.
+
+### The False-Alarm Test — Correction or Regime Change?
+Most thematic drawdowns are not peaks. Before acting on exhaustion signals, run this discrimination test — selling a healthy theme into a mid-cycle correction is as costly as holding a dead one:
+- **Are the fundamentals confirming?** A price drawdown with backlog, bookings, lead times and estimate revisions still rising is a positioning flush, not a peak. A drawdown *with* deteriorating order data is the real thing.
+- **Is it theme-specific or market-wide?** Compare the basket to the broad index and to comparable long-duration baskets. A theme falling with everything else is a discount-rate event; a theme falling alone is a thesis event.
+- **Which signals are firing?** Signals 2 and 4 (supply catch-up, margin erosion) are *structural* and hard to reverse. Signals 3 and 6 (crowding, macro) are *cyclical* and frequently reverse — crowding unwinds create the best entry points in an intact theme.
+- **Has the end state changed?** Restate the Section 1 "end state" in one sentence. If it is still credible on the same timeline, the theme is intact and the drawdown is an entry. If the timeline has slipped by years or the end state now requires a technology or subsidy that is not arriving, the theme has changed.
+
+### Historical Calibration
+Use these as base rates for what a peak actually looked like in real time, and name the closest analogue for the theme under analysis:
+- **Dot-com (2000):** narrative saturation plus an issuance window wide open; infrastructure (telecom/fiber) overbuilt by a factor of 10x and took a decade to absorb.
+- **Solar (2008, 2011):** subsidy-dependent demand plus Chinese capacity overshoot — Signals 2, 5 and 6 firing together.
+- **Shale (2014):** capital-markets-funded demand met an OPEC supply decision; the funding-stress signal was visible in negative free cash flow years before the break.
+- **3D printing (2014), cannabis (2019), EV/SPAC (2021):** classic Signal 3 peaks — thematic ETF launches and issuance windows marked the top within quarters, with fundamentals rolling over later.
+- **Crypto (2022):** macro regime shift (Signal 6) plus circular/vendor-financed demand (Signal 5).
+
+---
+
 ## Output Format
 
 Produce the following sections in order:
@@ -240,9 +336,55 @@ valuation excess, or consensus positioning to fade. Be specific about which name
 
 ---
 
-### 6. Key Diligence Questions
+### 6. Peak & Reversal Watch — When to Be Concerned
+
+The exit discipline. This section is **mandatory in every run**, including when convergence scores 4–5/5. Lead with the verdict, then the evidence.
+
+**6a. Exhaustion Scorecard**
+
+Score each of the 6 exhaustion signals as ✅ Firing / ⚠️ Early warning / ❌ Not yet, with specific current evidence found via `WebSearch` — lead times, book-to-bill, pricing data, ETF launches, funding rounds, policy calendars. Where a signal is not yet firing, still name the **specific metric and threshold** that would make it fire.
+
+| Exhaustion Signal | Status | Evidence / What Would Trip It |
+|---|---|---|
+| 1. Convergence Signal Inversion | ✅ / ⚠️ / ❌ | ... |
+| 2. Supply Catch-Up & Capacity Overshoot | ✅ / ⚠️ / ❌ | ... |
+| 3. Valuation & Crowding Extremes | ✅ / ⚠️ / ❌ | ... |
+| 4. Unit Economics & Margin Erosion | ✅ / ⚠️ / ❌ | ... |
+| 5. Demand-Side Funding Stress | ✅ / ⚠️ / ❌ | ... |
+| 6. Macro & Policy Regime Shift | ✅ / ⚠️ / ❌ | ... |
+
+**Peak verdict:** X/6 signals firing — [Intact / Late-cycle / Peaking / Reversing]. Estimated time to peak: [quarters or years, with the reasoning]. This verdict must be **consistent with** the Section 2 cycle stage — if Section 2 says "early cycle" and this section says "peaking", resolve the contradiction explicitly rather than publishing both.
+
+**6b. Tripwires — Pre-Committed Exit Triggers**
+
+The core deliverable of this section: named, observable, falsifiable tripwires with the action attached. No vague language ("watch for slowing growth") — every tripwire needs a **number or event**, a **source where it is observable**, and the **portfolio action** it triggers. Produce 5–8 rows covering at least three different exhaustion signals.
+
+| # | Tripwire (specific, measurable) | Signal | Where Observed | Action if Triggered |
+|---|---|---|---|---|
+| 1 | [e.g., "Lead times for [component] fall below X weeks, or book-to-bill prints <1.0 for two consecutive quarters"] | 2 | [e.g., quarterly earnings calls of named suppliers; SEMI/industry data] | [e.g., "Cut Layer 1 exposure by half"] |
+
+**6c. Watch Calendar — Dated Catalysts**
+
+List the specific dated or near-dated events over the next 12–18 months that could confirm or break the theme. Use `WebSearch` to find real dates. Each entry: date/window, event, and which way it cuts.
+
+| Date / Window | Event | Bullish if... | Bearish if... |
+|---|---|---|---|
+
+**6d. False-Alarm Test**
+
+Apply the four discrimination questions (fundamentals confirming, theme-specific vs. market-wide, structural vs. cyclical signals, has the end state changed) to this specific theme. Write 4 bullets, one per question, each naming the actual metric to check. State explicitly which exhaustion signals for *this* theme would be structural (act on) versus cyclical (likely a buying opportunity).
+
+**6e. Closest Historical Analogue**
+
+Name the single closest historical peak analogue for this theme in 2–4 sentences. State what marked that top in real time, what the drawdown was from peak to trough, how long it took to recover (or whether it did), and the one concrete way this theme differs from that analogue. Be honest where the comparison is unflattering — a forced reassurance is worth nothing to the PM.
+
+---
+
+### 7. Key Diligence Questions
 
 List 3–5 specific questions an investor must be able to answer before committing capital. Make them precise and falsifiable — not generic ("understand the market size") but specific ("can actuator cost reach $X/unit at scale needed for sub-$50K robot BOM?").
+
+At least one question must address the **downside/exit case** — the specific thing that would have to be true for the theme to peak within the investment horizon.
 
 ---
 
@@ -253,6 +395,8 @@ Before writing the output:
 1. Use `WebSearch` to gather current evidence for each of the 5 signals (recent cost curve data, regulatory filings, funding rounds, talent moves, conference coverage).
 2. Use `WebSearch` to identify named public and private companies at each value chain layer for the specific theme.
 3. Use `WebSearch` to check current valuations and analyst sentiment for the most prominent public names, to inform the positioning recommendation.
+4. Use `WebSearch` to gather current evidence for the 6 exhaustion signals — this is separate research from step 1, not a re-reading of it. Look specifically for: lead times and book-to-bill commentary from named suppliers' most recent earnings calls, announced capacity additions across the whole layer (sum them), average selling price and gross margin trends, thematic ETF launches and AUM flows, short interest and insider transactions, down rounds or flat rounds, customer concentration and vendor-financing arrangements, and the dated policy/subsidy/election calendar for the next 12–18 months.
+5. Use `WebSearch` to confirm the facts of the historical analogue named in Section 6e — the actual peak date, drawdown magnitude, and recovery time. Do not rely on memory for these figures.
 
 Cite specific data points, dates, and sources inline where they add credibility.
 Do not rely on training data alone for company names, funding amounts, or regulatory status — these change rapidly.
@@ -282,7 +426,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
        section.left_margin = Inches(0.75)
        section.right_margin = Inches(0.75)
    ```
-3. Renders all 6 output sections with appropriate headings, paragraphs, tables, and bullet points as specified below. Follow the per-section formatting rules exactly.
+3. Renders all 7 output sections with appropriate headings, paragraphs, tables, and bullet points as specified below. Follow the per-section formatting rules exactly.
 4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
 5. **Every table must use AutoFit to Contents and have visible borders — applied AFTER all rows are added.** The critical rule: `autofit_table` and `add_table_borders` must be called **after** all data rows have been added to the table, not at creation time. Rows added after these helpers are called will not inherit the settings. Use this pattern for every table without exception:
    ```python
@@ -354,10 +498,19 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 - Then a bold **Theme Posture** line: "Theme Conviction X/10 — [how to express it]", followed by a bold "The edge:" bullet.
 - Then a **Layer Weighting Summary table** (3 columns: Layer | Weight | Rationale), where Weight is one of: Overweight / Neutral / Underweight. Keep Rationale to one short phrase.
 - Then write **one bullet per named company or company type** you recommend acting on, formatted as: "**TICKER / Name** — [1-sentence action and reason]". Group bullets under bold sub-labels: **Overweight**, **Neutral**, **Underweight**.
-- Close with 1–2 prose paragraphs covering crowding risk, valuation caution, or entry timing nuance.
+- Close with 1–2 prose paragraphs covering crowding risk, valuation caution, or entry timing nuance. Reference the Section 6 peak verdict explicitly — the layer weightings must be consistent with it (a "Peaking" verdict cannot sit alongside an Overweight on Layer 4 Applications without a stated reason).
 
-#### Section 6 — Key Diligence Questions
-- Heading 1: "6. Key Diligence Questions"
+#### Section 6 — Peak & Reversal Watch
+- Heading 1: "6. Peak & Reversal Watch — When to Be Concerned"
+- Open with a bold **Peak Verdict** paragraph: "Peak Verdict: X/6 exhaustion signals firing — [Intact / Late-cycle / Peaking / Reversing]. Estimated time to peak: [...]." Color the verdict run: green `007000` for Intact, dark yellow `BF8F00` for Late-cycle, orange `FF8C00` for Peaking, red `C00000` for Reversing.
+- **6a. Exhaustion Scorecard** — Heading 2. Table with columns: Exhaustion Signal | Status | Evidence / What Would Trip It. Dark-blue header row (`1F3864`), white bold text. Shade the **Status** cell of each data row: ✅ Firing → `FFC7CE` (pink), ⚠️ Early warning → `FFEB9C` (yellow), ❌ Not yet → `C6EFCE` (green). Note the inversion versus the Section 2 signal table — here a firing signal is *bad news*, so the color logic is deliberately reversed. Add a one-line italic note under the table stating this, so a reader flipping between the two tables is not misled.
+- **6b. Tripwires** — Heading 2. Table with columns: # | Tripwire | Signal | Where Observed | Action if Triggered. 5–8 data rows. Dark-blue header row. Bold the text in the "Action if Triggered" column.
+- **6c. Watch Calendar** — Heading 2. Table with columns: Date / Window | Event | Bullish if... | Bearish if... Dark-blue header row. Order rows chronologically.
+- **6d. False-Alarm Test** — Heading 2. Four bullet points, one per discrimination question, each naming the specific metric to check. Follow with one bold line: "**Structural signals for this theme (act on):** ... · **Cyclical signals (likely buy the dip):** ..."
+- **6e. Closest Historical Analogue** — Heading 2. One short prose paragraph (2–4 sentences), then a small 2-column table (Metric | Value) covering: Analogue, Peak date, Peak-to-trough drawdown, Recovery time, Key difference vs. this theme.
+
+#### Section 7 — Key Diligence Questions
+- Heading 1: "7. Key Diligence Questions"
 - Write each question as a **numbered bullet** (Word List Number style). Each question must be specific and falsifiable — include concrete thresholds, named companies, or specific timeframes. No generic questions.
 
 ---
@@ -376,3 +529,13 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 **Verdict:** 4/5 signals — strong conviction, early cycle positioning.
 
 **Layer priorities at this stage:** Infrastructure (actuator makers, force sensors, simulation software) and Bottlenecks (NVIDIA sim platforms, specialized motor controller IP) over Applications (too early, no established revenue model at scale).
+
+**Peak & reversal check:**
+- Convergence inversion ❌ — all four firing signals still intact; cost curves still breaking
+- Supply catch-up ❌ — actuator and force-sensor lead times still extended; no credible capacity overshoot yet
+- Crowding ⚠️ — humanoid-robotics ETFs launched and the issuance window is open; sell-side ratings clustering at Buy
+- Unit economics ⚠️ — bill-of-materials falling, but no company yet demonstrates positive gross margin at volume
+- Demand-side funding ✅ — demand is overwhelmingly venture- and OEM-subsidized pilots rather than customer operating budgets; this is the fragile link
+- Macro/policy ❌ — no subsidy dependency; labor-shortage driver is demographic, not policy
+
+**Peak verdict:** 1 firing + 2 early warnings — **Intact, with the funding-stress signal as the live risk.** The tripwire that matters most is not a price level but a conversion rate: if pilot-to-production conversion stalls below ~20% through two consecutive fiscal years while venture funding decelerates, the theme is a decade early rather than three years early. Closest analogue: 3D printing circa 2014 — same signature of real technology, genuine enterprise pilots, and demand that never crossed from innovation budgets into operating budgets.
