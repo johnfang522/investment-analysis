@@ -142,64 +142,31 @@ For each layer provide: definition, named companies or company types relevant to
 
 ## Part 3 — Peak & Reversal Detection: The 6 Exhaustion Signals
 
-Part 1 asks "is this trend real?" Part 3 asks "**when does being right stop paying?**" These are the conditions under which the theme is topping out or breaking down, defined *before* the position is on, so the exit is a rule rather than a reaction.
-
-A theme rarely dies from one cause. Watch for **2 or more** exhaustion signals firing simultaneously — the same convergence logic as Part 1, inverted.
+Part 1 asks "is this trend real?" Part 3 asks "**when does being right stop paying?**" Define exit conditions *before* the position is on, so the exit is a rule, not a reaction. A theme rarely dies from one cause — watch for **2 or more** signals firing (the same convergence logic as Part 1, inverted).
 
 ### Exhaustion Signal 1: Convergence Signal Inversion
-The five entry signals are not one-time tests — they are live instruments that can roll over. Re-check each and flag deterioration:
-- **Technology inflection stalls:** the cost curve flattens; performance-per-dollar gains fall below ~20% per year; the next node/generation slips repeatedly.
-- **Regulatory door closes:** subsidies expire or are clawed back, tariffs or export controls land, a mandate is repealed, liability frameworks turn hostile.
-- **Behavior reverts:** cohort retention decays, reorder rates fall, pilot-to-production conversion stalls (the "everyone piloted, nobody deployed" signature).
-- **Capital flow decelerates:** down rounds and flat rounds appear; the top-quartile funds that concentrated early stop following on; deal count falls while deal size rises (late-stage markup activity, not new conviction).
-- **Narrative saturates:** mainstream/consumer media coverage peaks, theme-named ETFs launch, the keynote slot moves *back* to a breakout session, talent starts leaving for the next theme.
-- **Question to answer:** Which of the 5 entry signals that justified the position no longer hold?
+The 5 entry signals can roll over — recheck each for deterioration: tech cost curve flattens (<~20%/yr gains, node slips) · subsidies/mandates get clawed back or reversed · retention/reorder/pilot-to-production stalls · capital decelerates (down rounds, fewer deals but bigger size) · narrative saturates (media peak, theme ETFs launch, talent exits).
+**Question:** Which of the 5 entry signals no longer hold?
 
 ### Exhaustion Signal 2: Supply Catch-Up & Capacity Overshoot
-The single most reliable killer of Layer 1 (Infrastructure) returns, and the earliest to be observable in hard data.
-- Lead times shorten materially (the classic tell — customers stop pre-ordering because they no longer fear being shut out).
-- Book-to-bill falls below 1.0; backlog coverage shrinks quarter over quarter; order cancellations or push-outs appear in disclosures.
-- Announced industry capacity additions exceed credible demand growth for the same period — sum the announcements across all producers, not just the leader.
-- Inventory builds in the channel; days-of-inventory rises while revenue growth decelerates.
-- Spot pricing falls below contract pricing (demand is no longer clearing at the margin).
-- **Question to answer:** Is the scarcity that made this layer profitable being engineered away, and on what timeline do the announced additions land?
+The most reliable killer of Layer 1 (Infrastructure) returns, and earliest visible in hard data: lead times shorten · book-to-bill falls below 1.0, backlog shrinks, cancellations appear · announced industry capacity (summed across all producers) exceeds credible demand growth · channel inventory builds as growth decelerates · spot pricing falls below contract pricing.
+**Question:** Is the scarcity being engineered away, and on what timeline?
 
 ### Exhaustion Signal 3: Valuation & Crowding Extremes
-Positioning risk rather than fundamental risk — this is what turns a modest earnings miss into a 40% drawdown.
-- Multiple expansion is outpacing estimate revisions: the stock is rising on re-rating, not on numbers going up. Decompose the return into multiple change vs. estimate change.
-- Thematic ETF launches and AUM inflows accelerate; the theme acquires its own index.
-- Short interest collapses across the basket; sell-side ratings cluster at Buy with no Sell ratings.
-- The issuance window opens: IPOs, secondaries, convertibles, SPACs priced into strength — companies are selling equity to the theme, which is the insiders' own verdict on price.
-- Insider selling accelerates; lock-up expiries cluster.
-- Correlation within the basket rises toward 1 — names stop trading on fundamentals and start trading as a single factor, which is both a crowding signal and a warning that diversification within the theme is illusory.
-- **Question to answer:** What is priced in, and who is left to buy?
+Positioning risk, not fundamental risk — turns a modest miss into a 40% drawdown: multiple expansion outpaces estimate revisions (decompose the return) · thematic ETF/AUM inflows accelerate · short interest collapses, ratings cluster at Buy · issuance window opens (IPOs, secondaries, converts, SPACs priced into strength) · insider selling accelerates, lock-ups cluster · intra-basket correlation rises toward 1.
+**Question:** What is priced in, and who is left to buy?
 
 ### Exhaustion Signal 4: Unit Economics & Margin Erosion
-The theme keeps growing but stops being profitable — volume without economics.
-- Gross margins compress across *multiple* companies in the same layer simultaneously (a single company is execution; the whole layer is structural).
-- Average selling prices decline faster than unit-cost declines.
-- The number of credible competitors in a layer rises sharply; differentiation collapses into price.
-- Customers begin dual-sourcing or in-sourcing the layer's product (as covered in the value chain, the first sign a moat was positional rather than structural).
-- Incremental returns on invested capital fall below the cost of capital even as revenue grows.
-- **Question to answer:** Is growth still creating value, or is the industry now competing the economics away?
+Growth continues but profitability doesn't: gross margins compress across *multiple* companies in the layer simultaneously (structural, not one-off execution) · ASPs fall faster than unit costs · competitor count rises, differentiation collapses to price · customers dual-source or in-source · incremental ROIC falls below cost of capital.
+**Question:** Is growth still creating value, or is the layer competing the economics away?
 
 ### Exhaustion Signal 5: Demand-Side Funding Stress
-Ask the question thematic investors most often skip: **who actually pays, and with whose money?** Demand funded by something other than the customer's own operating cash flow is the most fragile demand there is.
-- End demand depends on venture funding, government grants, subsidy programs, or a single well-capitalized buyer.
-- Customer concentration is rising, not falling, as the theme scales.
-- Vendor financing, circular deals, or equity-for-revenue arrangements appear (supplier invests in customer, customer buys supplier's product — revenue that is really the supplier's own capital returning).
-- Backlog is dominated by contracts with weak counterparties, long dated-delivery, or non-binding terms.
-- Customers' own funding conditions deteriorate — for a picks-and-shovels position, the customer's balance sheet is your revenue forecast.
-- **Question to answer:** If capital markets closed for 12 months, what share of this theme's demand disappears?
+Who actually pays, and with whose money? Demand not funded by the customer's own operating cash flow is the most fragile kind: end demand depends on venture/government/subsidy funding or one buyer · customer concentration rises · vendor financing or circular equity-for-revenue deals appear · backlog is weak-counterparty or non-binding · customers' own funding conditions deteriorate.
+**Question:** If capital markets closed for 12 months, what share of demand disappears?
 
 ### Exhaustion Signal 6: Macro & Policy Regime Shift
-Thematic equities are long-duration assets; the discount rate is a first-order driver of the multiple regardless of fundamentals.
-- Real rates rise materially — long-duration, back-end-loaded cash flows de-rate first and hardest.
-- Credit spreads widen, closing the financing window for capital-intensive build-outs.
-- The subsidy or industrial-policy regime underwriting the theme faces an election, expiry, or budget reconciliation.
-- Trade policy: export controls, tariffs, or localization mandates fragment the supply chain or the addressable market.
-- Energy, input, or labor cost shocks break the cost curve the thesis assumed.
-- **Question to answer:** Does this theme require a specific macro or policy regime to work, and how durable is that regime?
+Thematic equities are long-duration assets — the discount rate drives the multiple regardless of fundamentals: real rates rise materially · credit spreads widen, closing the financing window · the underwriting subsidy/policy regime faces election, expiry, or reconciliation risk · trade policy fragments the supply chain or TAM · input/energy/labor cost shocks break the cost curve.
+**Question:** Does this theme require a specific macro/policy regime, and how durable is it?
 
 ### Peak Verdict Mapping
 | Exhaustion signals firing | Verdict | Action |
