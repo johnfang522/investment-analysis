@@ -205,7 +205,7 @@ Save the script itself to `Outputs/generate_market_sentiment_analysis_{YYYYMMDD}
 
 ### Document structure
 
-**Portrait, narrow margins** (top/bottom 0.5", left/right 0.75") — see the standard block in CLAUDE.md.
+Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see the standard block in CLAUDE.md.
 
 **Title block**
 - Title: `Market Sentiment Analysis` (bold, centered, 18pt)
@@ -235,14 +235,14 @@ Save the script itself to `Outputs/generate_market_sentiment_analysis_{YYYYMMDD}
 - For each of the 7 indicators, a Heading 2 with the indicator name, then:
   - A short table: `Current Value | Score | Trend | Signal` (single data row)
   - A bullet or two of interpretation
-  - **Embed the corresponding time-series chart PNG** using `doc.add_picture(chart_path, width=Inches(6.5))` immediately after the table — use the filenames from the table in Step 4.5
+  - **Embed the corresponding time-series chart PNG** using `doc.add_picture(chart_path, width=Inches(9.5))` immediately after the table — use the filenames from the table in Step 4.5
 - Same table rules: `rows=1`, `add_row()`, `set_row_font_size()`, `autofit_table()`, `add_table_borders()`
 
 **Section 5 — Macro & Policy Outlook**
 - Heading 1: `Macro & Policy Outlook (Next 3–6 Months)`
 - A table with columns: `Factor | Current Reading | Expected Path (3–6 mo) | Market Impact | Signal` — one row each for `Fed commentary`, `Rate guidance`, `Fiscal deficit`, `Treasury yields`; Signal values: `Tailwind` / `Neutral` / `Headwind`
 - Same table rules: `rows=1`, `add_row()`, `set_row_font_size()`, `autofit_table()`, `add_table_borders()`
-- **Embed `sentiment_treasury_yields.png` and `sentiment_fiscal.png`** with `doc.add_picture(path, width=Inches(6.5))`
+- **Embed `sentiment_treasury_yields.png` and `sentiment_fiscal.png`** with `doc.add_picture(path, width=Inches(9.5))`
 - One short paragraph per factor: what was said / what is priced, and how it feeds through to market sentiment over the next few months (per Step 3.5)
 - A bold line: `Net macro overlay: Tailwind / Neutral / Headwind` — plus the posture adjustment applied, or "no adjustment; composite stands"
 - A short bullet list of **dated upcoming catalysts** (next FOMC meeting, next CPI/PCE print, next quarterly refunding announcement) with what each could change
@@ -251,7 +251,7 @@ Save the script itself to `Outputs/generate_market_sentiment_analysis_{YYYYMMDD}
 - Heading 1: `Market Leverage — Margin Debt`
 - Bold rating line: `Margin Picture: Low / Elevated / Critical`
 - A table with columns: `Dimension | Current Reading | Historical Benchmark | Signal` — one row each for `Level ($B/$T)`, `Margin Debt / GDP`, `YoY Growth Rate` (benchmarks: the 2000/2007/2021 peaks per Step 3.7)
-- **Embed `sentiment_margin_debt.png`** with `doc.add_picture(path, width=Inches(6.5))`
+- **Embed `sentiment_margin_debt.png`** with `doc.add_picture(path, width=Inches(9.5))`
 - The **critical-level crash record table** from Step 3.7 (`Episode | Margin signal at the peak | What followed`) rendered as a 3-column table
 - One short paragraph: which historical episode today's readings most resemble, why margin debt is an amplifier rather than a timing trigger, and how this rating feeds the Bubble Risk verdict
 - Same table rules: `rows=1`, `add_row()`, `set_row_font_size()`, `autofit_table()`, `add_table_borders()`
@@ -283,7 +283,7 @@ Save the script itself to `Outputs/generate_market_sentiment_analysis_{YYYYMMDD}
 
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
 ```
 Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 

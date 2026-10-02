@@ -176,29 +176,21 @@ After producing the full analysis in chat, save it as a Word document using `pyt
 Write and execute a Python script (save it to `Outputs/generate_industry_deep_dive_{theme}.py`) using `.venv/Scripts/python` that:
 
 1. Creates the document with a title heading matching the industry name.
-2. **Sets portrait orientation and narrow page margins** immediately after `Document()`:
+2. **Sets the house format (landscape, narrow margins, Arial 10pt)** immediately after `Document()`:
    ```python
-   from docx.shared import Inches
-   for section in doc.sections:
-       section.orientation = 0  # WD_ORIENT.PORTRAIT
-       section.page_width = Inches(8.5)
-       section.page_height = Inches(11)
-       section.top_margin = Inches(0.5)
-       section.bottom_margin = Inches(0.5)
-       section.left_margin = Inches(0.75)
-       section.right_margin = Inches(0.75)
+   setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
    ```
 3. Imports the shared helpers from `doc_utils.py`:
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+   from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
    ```
    Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 4. Renders all sections with appropriate headings, paragraphs, tables, and bullet points.
 5. For all tables:
    - Always initialize with `rows=1` (header only), then `table.add_row()` per data row.
    - Call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added.
-   - Call `set_row_font_size(row, size=11)` on every non-header data row immediately after `table.add_row()`.
+   - Call `set_row_font_size(row)` on every non-header data row immediately after `table.add_row()`.
 6. Applies color fills to the Porter's Five Forces table rows using `w:shd`:
    - Threat of New Entrants: `D6E4F0` (light blue)
    - Bargaining Power of Suppliers: `D5E8D4` (light green)

@@ -105,7 +105,7 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 ## Save to Word Document
 
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see the standard block in CLAUDE.md
+- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see the standard block in CLAUDE.md
 - Title: `{TICKER} — Business Overview` (bold, centered) + date subtitle
 - Section headings as Heading 1
 - Bullets as Word list items (not raw `-`)
@@ -121,7 +121,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 Import the shared helpers from `doc_utils.py` (in the project root):
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
 ```
 Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 

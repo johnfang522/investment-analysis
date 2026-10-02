@@ -79,7 +79,7 @@ This is an investment analysis toolkit that fetches financial data from SEC EDGA
 - **External data source gotchas baked into this script** (see also the External Data Sources section below)
 
 **`doc_utils.py`** — shared python-docx helpers
-- Provides `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=12)`, `add_footnote(doc)`, `fmt_value(v, prefix='$')`, and `add_source_note(paragraph_or_cell, source)` (used for the per-figure source citations)
+- Provides `setup_document(doc)` / `apply_house_style(doc)` (landscape, narrow margins, Arial 10pt), `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=10)`, `add_footnote(doc)`, `fmt_value(v, prefix='$')`, and `add_source_note(paragraph_or_cell, source)` (used for the per-figure source citations)
 - All skill-generated Word scripts import from here; see the Word Document Generation section for the required import pattern
 - When adding a new helper needed by multiple skills, add it here rather than inline in each skill
 
@@ -159,11 +159,11 @@ When writing `python-docx` table code in any skill or script:
 - **Every table must call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added** — calling before rows are added means new rows won't inherit the settings. Never call them at table creation time; always call them after the last `table.add_row()`.
   - `autofit_table` — sets `tblW`/`tblLayout` to autofit and strips all fixed `w:tcW` cell widths; never use `table.columns[i].width` or any fixed-width assignment
   - `add_table_borders` — applies a thin single border (`sz=4`, `val="single"`, `color="000000"`) to all four sides plus inner dividers (`insideH`/`insideV`) of every cell via `w:tcBorders`
-- **All non-header table cell text must use font size 12.** Call `set_row_font_size(row)` on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
+- **All non-header table cell text must use font size 10 (Arial).** Call `set_row_font_size(row)` on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
 - All helpers live in `doc_utils.py` at the project root — generated scripts import them with:
   ```python
   import sys; sys.path.insert(0, '.')
-  from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+  from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
   ```
   The `sys.path.insert(0, '.')` is required because scripts are saved under `Outputs/{TICKER}/` but run from the project root.
 - **Always use `fmt_value(v)` from `doc_utils` to format all dollar amounts in Word table cells** — never hardcode `/ 1e9` or append `"B"` manually. `fmt_value` auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`, else raw dollars. Pass `prefix=''` for non-dollar values.
@@ -175,18 +175,12 @@ When writing `python-docx` table code in any skill or script:
   - When a figure is pulled directly from a JSON file (income statement / balance sheet / cash flow → "SEC EDGAR"; quick_metrics / price_history → "Yahoo Finance") rather than through `compute_metrics()`, cite it the same way using the matching plain-text label.
   - When a figure comes from `WebSearch` (analyst estimates, guidance, news, peer comps), cite the source name/publication and date, consistent with how skills already handle citations for qualitative claims — the source-citation requirement isn't new for WebSearch-derived figures, just now explicit that it applies to *every* number, not only web-sourced ones.
   - `key_stock_metrics.py`'s Excel output is the reference implementation: ticker sheets get a visible "Source" column, the Comparison sheet uses an Excel comment/hover-note per cell plus a legend, and every value cell also carries the hover-note as the literal footnote.
-- **Every skill must set portrait orientation and narrow margins** immediately after `doc = Document()`:
+- **House format — every Word document is landscape Letter (11" × 8.5"), narrow 0.5" margins on all sides, Arial throughout, 10pt for all text except headings** (Title / Heading N styles keep their sizes). Call `setup_document(doc)` immediately after `doc = Document()`:
   ```python
-  from docx.shared import Inches
-  for section in doc.sections:
-      section.orientation = 0  # WD_ORIENT.PORTRAIT
-      section.page_width = Inches(8.5)
-      section.page_height = Inches(11)
-      section.top_margin = Inches(0.5)
-      section.bottom_margin = Inches(0.5)
-      section.left_margin = Inches(0.75)
-      section.right_margin = Inches(0.75)
+  setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
   ```
+  Don't set explicit run sizes on body text, table cells, citations or captions — 10pt is the default. `add_footnote(doc)` re-applies the format via `apply_house_style(doc)`, which also forces any explicit non-heading run size below 14pt down to 10pt, so a stray `Pt(12)` can't break the house style. Embed full-width charts at `width=Inches(9.5)` (`doc_utils.CHART_WIDTH`).
+- **Never place two tables back to back.** Word merges adjacent tables into one, putting the second table onto the first's column grid, so columns collapse to a character wide. `autofit_table()` now inserts a spacer paragraph automatically when a table directly follows another one. Still, put a heading, caption or source line between tables.
 
 ## External Data Sources
 

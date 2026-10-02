@@ -381,17 +381,9 @@ After producing the full analysis, save it as a Word document using `python-docx
 
 Write and execute a Python script using `.venv/Scripts/python` that:
 1. Creates the document with a title heading matching the **derived theme name** (never the raw ticker). If the argument was a ticker, add a subtitle line: `"Triggered by: [TICKER] — mapped to [Theme Name]"`.
-2. **Set portrait orientation and narrow page margins** immediately after creating the document:
+2. **Set the house format (landscape, narrow margins, Arial 10pt)** immediately after creating the document:
    ```python
-   from docx.shared import Inches
-   for section in doc.sections:
-       section.orientation = 0  # WD_ORIENT.PORTRAIT
-       section.page_width = Inches(8.5)
-       section.page_height = Inches(11)
-       section.top_margin = Inches(0.5)
-       section.bottom_margin = Inches(0.5)
-       section.left_margin = Inches(0.75)
-       section.right_margin = Inches(0.75)
+   setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
    ```
 3. Renders all 7 output sections with appropriate headings, paragraphs, tables, and bullet points as specified below. Follow the per-section formatting rules exactly.
 4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
@@ -407,11 +399,11 @@ Write and execute a Python script using `.venv/Scripts/python` that:
    Import the shared helpers from `doc_utils.py` (in the project root):
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+   from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
    ```
    Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 
-6. **All non-header table cell text must use font size 12.** Call `set_row_font_size(row)` (imported above) on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
+6. **All non-header table cell text must use font size 10 (Arial).** Call `set_row_font_size(row)` (imported above) on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
 7. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
 8. Saves the file to the output path above.
 

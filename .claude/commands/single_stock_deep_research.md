@@ -210,7 +210,7 @@ For the Comments column: go beyond the mechanical label. Write a one-sentence an
 Write and execute a Python script (`.venv/Scripts/python`) that creates the summary document from the executive summary above:
 
 1. **Document formatting:**
-   - Narrow margins (0.5 inch all sides)
+   - Call `setup_document(doc)` right after `Document()`: landscape, narrow margins (0.5 inch all sides), Arial 10pt body text
    - Title: `{TICKER} — Comprehensive Investment Research Package` (bold heading, level 0) + date subtitle
    - Company line, coverage label, and date in bold/italic as shown in the summary. Coverage label logic: check `Outputs/{TICKER}/` for any prior `*_research_notes_*.docx` or `*_research_package_*.docx` files — if found, use "Coverage Date: [Date]"; if none, use "Initiating Coverage — [Date]".
    - Broad market condition line in italics immediately below the coverage label, as produced in Step 2 (e.g., *Market on [Date]: S&P 500 [level] ([+/−X.X%]), VIX [X.X] — [one-sentence context]*)
@@ -239,7 +239,7 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
    Import the shared helpers from `doc_utils.py` and metric helpers from `key_stock_metrics.py` (both in the project root):
    ```python
    import sys; sys.path.insert(0, '.')
-   from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+   from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
    from key_stock_metrics import compute_metrics, _short_comment, METRICS, color_current_price
    ```
    Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
@@ -353,6 +353,8 @@ from docx.shared import RGBColor
 from docx.parts.image import ImagePart
 from docx.opc.packuri import PackURI
 from copy import deepcopy
+import sys; sys.path.insert(0, '.')
+from doc_utils import apply_house_style
 
 # ... define append_doc and copy_images helpers above ...
 
@@ -427,6 +429,7 @@ def add_page_numbers(doc):
         p._p.append(r6)
 
 add_page_numbers(target)
+apply_house_style(target)   # landscape, narrow margins, Arial 10pt across the merged package
 
 out_path = f"{base}/{t}_stock_deep_research_{date}.docx"
 target.save(out_path)

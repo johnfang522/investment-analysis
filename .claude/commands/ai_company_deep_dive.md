@@ -327,18 +327,18 @@ After completing all 9 steps above, write and execute a Python script using `pyt
 Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_company_deep_dive.py` and run it from the project root.
 
 **Document structure:**
-- Portrait orientation, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
+- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see CLAUDE.md
 - Title: use `doc.add_heading('{TICKER} — Company Deep Dive', 0)` (Heading 0 style, NOT a custom-sized run) + `doc.add_paragraph(date_label)` as plain subtitle
 - Each Step becomes a `doc.add_heading('Step N: ...', 1)` section; sub-headings use level 2
-- All body narrative text: `doc.add_paragraph()` with an explicit 12pt run — do NOT leave font size unset; always call `run.font.size = Pt(12)` on every body paragraph run
+- All body narrative text: `doc.add_paragraph()` in Arial 10pt (the default after `setup_document(doc)`) — do not set a different size on body runs
 - **Use bullet points liberally.** Any time content is a list — advantages, observations, risks, factors, named items — use `bullet()` instead of embedding it as "(1)...(2)...(3)..." inside a prose paragraph. Never inline numbered items like "(1) ... (2) ... (3) ..." inside a single `body()` call; always split each into its own `bullet()` call. Lead with a short `body()` intro line (e.g. `body(doc, 'Key observations:')`) then follow with individual `bullet()` calls.
-- Bullet points: use `doc.add_paragraph(style='List Bullet')` + `p.add_run(text)` with `run.font.size = Pt(12)`
-- All tables use dark blue header rows (fill `1F3864`, white bold text), 12pt data rows
+- Bullet points: use `doc.add_paragraph(style='List Bullet')` + `p.add_run(text)` (Arial 10pt by default — no explicit size)
+- All tables use dark blue header rows (fill `1F3864`, white bold text), 10pt data rows
 - Chokepoint scoring table: color the Score column cell green (`007000`) for High, orange (`FF8C00`) for Medium, red (`C00000`) for Low
 - Valuation scenario table: color Bull row green, Base row neutral, Bear row red
 - **Verdict block (Step 9):** render the Bias line as a colored Heading-1-style line — green `007000` for LONG, red `C00000` for SHORT, neutral for PASS — followed by the Verdict table
 - **Variant View table (Step 9):** render with the dark-blue header row (fill `1F3864`, white bold text); this section is mandatory
-- Source citations: `doc.add_paragraph()` with `run.italic = True; run.font.size = Pt(10)`
+- Source citations: `doc.add_paragraph()` with `run.italic = True` (10pt)
 
 **Required table rules (from CLAUDE.md):**
 - Initialize every table with `rows=1` (header only), then call `table.add_row()` for each data row — never use `rows=1+len(data)` upfront
@@ -349,21 +349,13 @@ Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_company_deep_di
 **Import shared helpers from `doc_utils.py`:**
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
+from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
 ```
 Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 
-**Set portrait orientation and narrow margins immediately after `doc = Document()`:**
+**Set the house format (landscape, narrow margins, Arial 10pt) immediately after `doc = Document()`:**
 ```python
-from docx.shared import Inches
-for section in doc.sections:
-    section.orientation = 0
-    section.page_width = Inches(8.5)
-    section.page_height = Inches(11)
-    section.top_margin = Inches(0.5)
-    section.bottom_margin = Inches(0.5)
-    section.left_margin = Inches(0.75)
-    section.right_margin = Inches(0.75)
+setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
 ```
 
 Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.

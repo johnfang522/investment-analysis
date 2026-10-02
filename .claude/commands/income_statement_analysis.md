@@ -219,9 +219,9 @@ The price overlay reads `{ticker}_price_history.json` (Yahoo Finance daily close
 ## Save to Word Document
 
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
+- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see CLAUDE.md
 - Title: `{TICKER} — Income Statement` (bold, centered) + date subtitle
-- **Embed three charts at `width=Inches(7.0)`**: flow under the Snapshot; under Income Statement Trend, annual trend → annual table, then quarterly trend → quarterly table; no chart under Consensus Outlook (the table only)
+- **Embed three charts at `width=Inches(9.5)`**: flow under the Snapshot; under Income Statement Trend, annual trend → annual table, then quarterly trend → quarterly table; no chart under Consensus Outlook (the table only)
 - Build the two trend tables by looping over `annual_trend_rows(TICKER)` and `quarterly_trend_rows(TICKER)`; each row dict has `period`, `kind` (`actual` / `ttm` / `estimate`), `revenue`, `gross_profit`, `operating_income`, `net_income` (raw dollars or `None`) and `rev_yoy` (decimal or `None`)
 - The "Latest Quarter — What Drove the Numbers" section: both tables (drivers, revenue vs. consensus) plus the two bullets, with a source line (filing / release / transcript + date) under the tables
 - Section headings as Heading 1
@@ -239,7 +239,7 @@ Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standa
 Import the shared helpers from `doc_utils.py`:
 ```python
 import sys; sys.path.insert(0, '.')
-from doc_utils import autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value, add_source_note
+from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value, add_source_note
 from chart_income_statement import annual_trend_rows, quarterly_trend_rows
 ```
 Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
