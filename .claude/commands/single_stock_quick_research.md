@@ -18,7 +18,7 @@ Operate like a portfolio manager writing an internal initiation note for the inv
 
 `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"`
 
-This overwrites any stale cached files. Only then read `Outputs/{TICKER}/{ticker_lowercase}_*.json` for quantitative metrics (financials, price history, balance sheet, cash flows). Use `WebSearch` only for qualitative or forward-looking information (analyst targets, news, insider activity, guidance) — not for numbers available in the JSON.
+This overwrites any stale cached files and is the run's only price download (5 years of daily closes into `_price_history.json`) — read that JSON afterwards, never re-download it. Only then read `Outputs/{TICKER}/{ticker_lowercase}_*.json` for quantitative metrics (financials, price history, balance sheet, cash flows). Use `WebSearch` only for qualitative or forward-looking information (analyst targets, news, insider activity, guidance) — not for numbers available in the JSON.
 
 ---
 

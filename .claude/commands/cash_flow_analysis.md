@@ -3,9 +3,11 @@
 You are a **buy-side analyst at a hedge fund** writing a **3-page max** cash flow read for the portfolio manager (PM). Hedge-fund house style: thesis-first, directional, opinionated — judge cash generation and capital allocation on whether they support the long/short (FCF quality, self-funding, earnings-to-cash conversion). Lead with the conclusion. No balanced sell-side hedging. Lead with visuals (charts, tables, status icons).
 
 **DATA SOURCING:**
-1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
+1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'], price_history=False)"` — overwrites stale JSON before reading anything (`price_history=False`: this skill never reads price history, so it is not downloaded.). **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_cash_flow_statement_quarterly.json` and `_quick_metrics.json`.
-3. WebSearch only for items genuinely missing (interest expense, dividend totals). Leave N/A if not found.
+3. Load `_income_statement_quarterly.json` / `_income_statement_ttm.json` for net income (the cash flow JSON has no net income line).
+4. **WebSearch for the net-income-to-cash bridge — required.** SEC EDGAR JSON carries only operating cash flow, capex, investing/financing flows, dividends and free cash flow — it has *no* depreciation, stock-based compensation or working-capital lines. Pull the latest-quarter (and prior-year quarter, for the YoY) cash flow statement from the 10-Q/10-K or earnings release, plus the CFO commentary on the call or in the MD&A explaining cash flow: depreciation & amortization, stock-based compensation (SBC), other non-cash items (impairments, deferred taxes, gains/losses), and each working-capital change (receivables, inventory, payables, deferred revenue, accrued/other). Cite the filing/release and date for every figure. Leave a line N/A rather than guessing; if the statement is YTD-cumulative, derive the discrete quarter by subtraction and say so.
+5. WebSearch also for other items genuinely missing (interest expense, dividend totals). Leave N/A if not found.
 
 **Always YoY. Never sequential quarters.**
 
@@ -16,6 +18,7 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** cash flo
 - Keep every section above, but do not headline generic free cash flow: acquisitions and development are the REIT's growth spend and may not sit in a capex line. Show operating cash flow, investing (acquisitions and dispositions) and financing (debt, equity issued, dividends paid), and compute **operating-cash-flow dividend coverage** and the **AFFO payout ratio** (non-GAAP).
 - Show how acquisition volume was funded (public equity vs debt vs retained cash flow vs dispositions); mark any residual as computed, not reported, and state whether volume is on a 100% or pro-rata basis.
 - If SEC EDGAR lacks capex, free cash flow, dividends or debt/equity issuance lines, say so and do not fabricate them: take them from the 10-Q cash flow statement or the release (cite it); the waterfall chart may be unavailable, and the document should say so.
+- In the "Net Income → Free Cash Flow" section, a REIT's bridge is net income → real-estate depreciation & amortization, impairments and gains on sale → FFO/AFFO → operating cash flow; do not present FCF ÷ net income as the headline conversion (net income is depressed by real-estate depreciation, so the ratio is routinely well above 1x and not meaningful).
 - For non-net-lease REITs include recurring capex, tenant improvements and leasing commissions in the AFFO discussion.
 
 ---
@@ -29,7 +32,9 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 ```
 .venv/Scripts/python chart_cash_flow.py {TICKER}
 ```
-Produces `{ticker}_cash_flow_waterfall.png` and `{ticker}_cash_flow_trend.png` in `Outputs/{TICKER}/`.
+Produces in `Outputs/{TICKER}/`:
+- `{ticker}_cash_flow_waterfall.png` — latest-quarter bridge: operating cash flow → capex → free cash flow
+- `{ticker}_cash_flow_trend.png` — **grouped bars, not lines**: net income, operating cash flow and free cash flow (in that order, left to right) for each of the **last 8 quarters**, every bar labeled with its amount. The Free CF bar also shows that quarter's **FCF ÷ net income** (e.g. "1.6x NI"; "n/m" when net income is ≤ 0 or the ratio exceeds 10x). Read the conversion trend straight off the labels and cite those same figures (SEC EDGAR) in the section below rather than re-deriving them.
 
 ## At a Glance
 
@@ -57,6 +62,33 @@ Produces `{ticker}_cash_flow_waterfall.png` and `{ticker}_cash_flow_trend.png` i
 | FCF / Net Income | X.Xx | X.Xx | — |
 
 - **What drove the change:** [1 sentence — working capital, CapEx surge, etc.]
+
+## Net Income → Free Cash Flow: How Much Actually Converted?
+
+*Answer directly: **of every $1.00 of net income, $X.XX became free cash flow** (latest quarter) and $X.XX on a trailing-twelve-month (TTM) basis. Then bridge net income to free cash flow with the sourced line items (DATA SOURCING step 4) so the PM can see why the ratio is above or below 1x.*
+
+| Conversion | Latest Qtr | Prior-Yr Qtr | TTM |
+|------------|-----------|--------------|-----|
+| Net Income | $X.XB | $X.XB | $X.XB |
+| Operating Cash Flow (OCF) | $X.XB | $X.XB | $X.XB |
+| Free Cash Flow (FCF) | $X.XB | $X.XB | $X.XB |
+| OCF ÷ Net Income | X.Xx | X.Xx | X.Xx |
+| FCF ÷ Net Income (cash per $1 of earnings) | X.Xx | X.Xx | X.Xx |
+| FCF after SBC (FCF − SBC) ÷ Net Income | X.Xx | X.Xx | X.Xx |
+
+| Bridge (latest quarter) | $ | What drove it (sourced) |
+|-------------------------|---|-------------------------|
+| Net income | $X.XB | — |
+| + Depreciation & amortization | +$X.XB | [e.g., acquisition-intangible amortization from the X deal] |
+| + Stock-based compensation | +$X.XB | [non-cash, but real dilution cost] |
+| + Other non-cash items | ±$X.XB | [impairments, deferred taxes, gains/losses on investments] |
+| ± Working capital | ±$X.XB | [receivables / inventory / payables / deferred revenue — which line moved and why] |
+| **= Operating cash flow** | $X.XB | — |
+| − Capital expenditures | −$X.XB | [what the spend is for] |
+| **= Free cash flow** | $X.XB | — |
+
+- **Why conversion is [above / below] 1x:** [1 sentence — the biggest bridge item, quantified, and whether it is recurring (D&A, SBC) or timing (working capital)]
+- **Quality of the conversion:** ✅ Durable (driven by non-cash charges that recur) / ⚠️ Timing-dependent (working-capital release or build that will reverse) / 🔴 Flattering (one-off or SBC-inflated) — [1 sentence; if net income was ≤ 0 or swung on one-offs, say conversion is not meaningful and compare FCF with OCF margin instead]
 
 ## Capital Allocation
 
@@ -116,7 +148,8 @@ Produces `{ticker}_cash_flow_waterfall.png` and `{ticker}_cash_flow_trend.png` i
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
 - Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
 - Title: `{TICKER} — Cash Flow` (bold, centered) + date subtitle
-- **Embed both chart images at `width=Inches(7.0)`** to fill the full text width
+- **Embed both chart images at `width=Inches(7.0)`** to fill the full text width: the waterfall under the Cash Flow Snapshot table, the 8-quarter trend chart at the top of the "Net Income → Free Cash Flow" section, above its two tables. Small italic source line under each chart ("SEC EDGAR")
+- The "Net Income → Free Cash Flow" section: the conversion table and the bridge table (both following the table rules), then the two bullets, with a source line naming the filing/release and date for the bridge items
 - Section headings as Heading 1
 - Bullets as Word list items
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.

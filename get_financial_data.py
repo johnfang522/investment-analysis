@@ -48,7 +48,7 @@ def load_tickers(path: str = None) -> list[str]:
         ]
 
 
-def fetch_all(tickers: list[str]) -> dict:
+def fetch_all(tickers: list[str], price_history: bool = True) -> dict:
     """
     Pre-generate all available data for a list of tickers: income statement,
     balance sheet, and cash flow statement from SEC EDGAR
@@ -57,6 +57,10 @@ def fetch_all(tickers: list[str]) -> dict:
 
     Args:
         tickers (list[str]): List of ticker symbols.
+        price_history (bool): Download the 5-year daily price history. Default True. Pass False
+            for skills that never read `_price_history.json` (it is the slowest Yahoo download),
+            and when a parent skill (e.g. /single_stock_deep_research) already downloaded it
+            at its start — price history should be downloaded once per skill run, up front.
 
     Returns:
         dict: Keyed by ticker symbol, each value is a dict with keys
@@ -70,7 +74,7 @@ def fetch_all(tickers: list[str]) -> dict:
             results[ticker] = {
                 "sec_statements": fetch_edgar_statements(ticker),
                 "quick_metrics": get_quick_metrics(ticker),
-                "price_history": get_price_history(ticker),
+                "price_history": get_price_history(ticker) if price_history else None,
             }
             print(f"  {ticker} done.")
         except Exception as e:

@@ -3,7 +3,7 @@
 You are a **buy-side analyst at a hedge fund** producing a **3-page max** technical / timing read for the portfolio manager (PM). Hedge-fund house style: thesis-first, directional, opinionated — this is the entry/exit and risk-management overlay on the fundamental call (where to add, where the stop is, what invalidates the setup). The setup can be read **long or short**; when the fundamental thesis is a short, invert the buy-signal logic. Lead with the conclusion. All visual: tables, status icons, scorecards. State data clearly; if missing, say so. Spell out every abbreviation on first use, then use the short form after (e.g., "Relative Strength Index (RSI)" first, then "RSI"; "Moving Average (MA)" first, then "MA"; "200-Day Moving Average (200-DMA)" first, then "200-DMA"; "CBOE Volatility Index (VIX)" first, then "VIX").
 
 **DATA SOURCING:**
-1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
+1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything. This is the run's only price download (5 years of daily closes, written to `_price_history.json`); chart scripts and calculations only read that JSON, never re-download it. **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json` (price, 50/200-DMA, 52-wk range, beta) and `_price_history.json` (DMA + RSI computation).
 3. WebSearch only for VIX, CNN Fear & Greed, AAII sentiment, put/call, MACD cross-check.
 4. Leave N/A if missing; note assumption used.
@@ -12,7 +12,7 @@ You are a **buy-side analyst at a hedge fund** producing a **3-page max** techni
 
 **REIT HANDLING (apply only if the company is a REIT — definitions and data sources in `references/reit-framework.md`):**
 - Detect: `_quick_metrics.json` `industry` starts with `REIT` (or `sector` is `Real Estate`). Equity REITs follow this block; mortgage REITs (`REIT - Mortgage`) are financials, so flag it and use book value, price/book and net interest spread instead. Not a REIT: ignore this block.
-- Keep every section above. Dividend payers need a **price basis check**: `_price_history.json` is fetched with yfinance's default `auto_adjust=True`, so closes are dividend-adjusted while spot is not. For a REIT (yield above ~2%) recompute the moving averages, returns, RSI and 52-week closing high/low from **unadjusted** closes (`history(period="3y", auto_adjust=False)` into a scratch file; do not overwrite the project JSON), regenerate the chart from the same series if `chart_technical.py` would otherwise mislead, and state the basis in the note.
+- Keep every section above. Dividend payers need a **price basis check**: `_price_history.json` is fetched with yfinance's default `auto_adjust=True`, so closes are dividend-adjusted while spot is not. For a REIT (yield above ~2%) recompute the moving averages, returns, RSI and 52-week closing high/low from **unadjusted** closes (`history(period="5y", auto_adjust=False)` into a scratch file; do not overwrite the project JSON), regenerate the chart from the same series if `chart_technical.py` would otherwise mislead, and state the basis in the note.
 - Add relative strength vs a REIT benchmark (VNQ or XLRE) and SPY over the same windows, and relate the price move to the 10-year Treasury yield (source the level and date; mark the start date of a yield move N/A if unsourced).
 - Use the same bias, stop, entry zone and risk/reward everywhere in the note, and reconcile the closing low against the Yahoo intraday 52-week low.
 
@@ -77,7 +77,7 @@ Produces `{ticker}_ta_price_ma.png` (price with 20/50/100/200-DMA) and `{ticker}
 
 ## Price Momentum — Near-Term vs Mid-Term
 
-*Price returns from `_price_history.json` (trading-day offsets: 5d, 21d ≈ 1M, 63d ≈ 3M, 126d ≈ 6M, 252d ≈ 12M). Compare to S&P 500 (`SPY` via yfinance) over the same windows.*
+*Price returns from `_price_history.json` (trading-day offsets: 5d, 21d ≈ 1M, 63d ≈ 3M, 126d ≈ 6M, 252d ≈ 12M). Compare to S&P 500 (`SPY` via yfinance, one download of period `5y` for this skill run) over the same windows.*
 
 | Horizon | Window | Stock Return | S&P 500 | Relative | Signal |
 |---------|--------|-------------|---------|----------|--------|
@@ -189,7 +189,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - Dark blue header rows (fill `1F3864`), white bold text
 - Source citations in small italic
 - Variant View as a 3-column table; Verdict block in bold, with the Bias line as a colored Heading-1-style line (green `007000` for LONG, red `C00000` for SHORT, neutral for AVOID)
-- Saves to `Outputs/{TICKER}/9_{ticker_lowercase}_technical_analysis.docx`
+- Saves to `Outputs/{TICKER}/8_{ticker_lowercase}_technical_analysis.docx`
 - Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_technical.py` and run it from project root
 
 Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.

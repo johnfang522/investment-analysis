@@ -3,7 +3,7 @@ chart_balance_sheet.py TICKER
 
 Generates two charts saved to Outputs/{TICKER}/:
   1. {ticker}_balance_sheet_composition.png — Stacked bar (most recent quarter)
-  2. {ticker}_balance_sheet_trend.png       — Trend line (last 8 quarters)
+  2. {ticker}_balance_sheet_trend.png       — Grouped bars, every bar labeled (last 8 quarters)
 """
 import json, sys, os
 import matplotlib
@@ -181,30 +181,32 @@ def chart_trend(ticker, data, out_path):
     td_v  = to_scaled(raw_td)
     ca_v  = to_scaled(raw_ca)
 
-    fig, ax = plt.subplots(figsize=(18, 8))
-    xs = list(range(len(dates)))
-
-    def plot_line(vals, label, color):
-        valid = [(i, v) for i, v in zip(xs, vals) if v is not None]
-        if not valid: return
-        xi, yi = zip(*valid)
-        ax.plot(xi, yi, color=color, linewidth=2.5, marker="o", markersize=7, label=label)
-        for idx in [0, -1]:
-            ax.annotate(f"${yi[idx]:.1f}{suffix}", xy=(xi[idx], yi[idx]),
-                        xytext=(8, 6), textcoords="offset points",
-                        fontsize=15, fontweight="bold", color=color)
-
-    plot_line(ta_v, "Total Assets",      "#4285F4")
-    plot_line(eq_v, "Total Equity",      "#34A853")
-    plot_line(tl_v, "Total Liabilities", "#EA4335")
-    plot_line(td_v, "Total Debt",        "#F4B400")
-    plot_line(ca_v, "Cash",              "#8F5DB7")
+    series = [(ta_v, "Total Assets",      "#4285F4"),
+              (eq_v, "Total Equity",      "#34A853"),
+              (tl_v, "Total Liabilities", "#EA4335"),
+              (td_v, "Total Debt",        "#F4B400"),
+              (ca_v, "Cash",              "#8F5DB7")]
+    n = len(series)
+    w, step, sp = 0.2, 0.21, 1.3  # bar width, spacing within a quarter group, spacing between groups
+    fig, ax = plt.subplots(figsize=(24, 8))
+    xs = [i * sp for i in range(len(dates))]
+    for j, (vals, label, color) in enumerate(series):
+        offs = (j - (n - 1) / 2) * step
+        valid = [(x + offs, v) for x, v in zip(xs, vals) if v is not None]
+        if not valid: continue
+        ax.bar([x for x, _ in valid], [v for _, v in valid], width=w, color=color, label=label, zorder=2)
+        for x, v in valid:  # label every bar
+            ax.annotate(f"{'-' if v < 0 else ''}${abs(v):.1f}{suffix}", xy=(x, max(v, 0)), xytext=(0, 4),
+                        textcoords="offset points", ha="center", va="bottom",
+                        fontsize=10, fontweight="bold", color=color, zorder=6)
+    ax.axhline(0, color="black", linewidth=0.8)
+    ax.set_ylim(top=ax.get_ylim()[1] * 1.08)
 
     ax.set_xticks(xs); ax.set_xticklabels(dates, rotation=45, ha="right", fontsize=14)
     ax.tick_params(axis="y", labelsize=14)
     ax.set_ylabel(axis_label, fontsize=17)
     ax.set_title(f"{t} Balance Sheet Trend", fontsize=22, fontweight="bold")
-    ax.legend(fontsize=15)
+    ax.legend(fontsize=15, loc="upper left")
     ax.grid(axis="y", alpha=0.3)
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")

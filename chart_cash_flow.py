@@ -3,7 +3,7 @@ chart_cash_flow.py TICKER
 
 Generates two charts saved to Outputs/{TICKER}/:
   1. {ticker}_cash_flow_waterfall.png — Waterfall bar (most recent quarter)
-  2. {ticker}_cash_flow_trend.png     — Trend line (last 8 quarters)
+  2. {ticker}_cash_flow_trend.png     — Grouped bars, every bar labeled (last 8 quarters); Free CF bars also show FCF / net income
 """
 import json, sys, os
 import matplotlib
@@ -148,32 +148,33 @@ def chart_trend(ticker, cf_data, is_data, out_path):
     raw_ni  = align(ni_s)
     div, axis_label, suffix = smart_scale(raw_ocf + raw_fcf + raw_ni)
 
-    ocf_v = [v / div for v in raw_ocf]
-    fcf_v = [v / div if v is not None else None for v in raw_fcf]
-    ni_v  = [v / div if v is not None else None for v in raw_ni]
-
-    fig, ax = plt.subplots(figsize=(18, 8))
-    xs = list(range(len(dates)))
-
-    def plot_line(vals, label, color, offset=(8, 6)):
-        valid = [(i, v) for i, v in zip(xs, vals) if v is not None]
-        if not valid: return
-        xi, yi = zip(*valid)
-        ax.plot(xi, yi, color=color, linewidth=2.5, marker="o", markersize=8, label=label)
-        for idx in [0, -1]:
-            ax.annotate(f"${yi[idx]:.1f}{suffix}", xy=(xi[idx], yi[idx]),
-                        xytext=offset, textcoords="offset points",
-                        fontsize=15, fontweight="bold", color=color)
-
-    plot_line(ocf_v, "Operating CF", "#34A853", offset=(8, 8))
-    plot_line(fcf_v, "Free CF",      "#4285F4", offset=(8, -14))
-    plot_line(ni_v,  "Net Income",   "#F4B400", offset=(8, 6))
+    series = [([v / div if v is not None else None for v in raw_ni], "Net Income", "#F4B400"),
+              ([v / div for v in raw_ocf], "Operating CF", "#34A853"),
+              ([v / div if v is not None else None for v in raw_fcf], "Free CF", "#4285F4")]
+    n = len(series)
+    w, step, sp = 0.5, 0.55, 2.0  # bar width, spacing within a quarter group, spacing between groups
+    fig, ax = plt.subplots(figsize=(24, 8))
+    xs = [i * sp for i in range(len(dates))]
+    for j, (vals, label, color) in enumerate(series):
+        offs = (j - (n - 1) / 2) * step
+        valid = [(k, x + offs, v) for k, (x, v) in enumerate(zip(xs, vals)) if v is not None]
+        if not valid: continue
+        ax.bar([x for _, x, _ in valid], [v for _, _, v in valid], width=w, color=color, label=label, zorder=2)
+        for k, x, v in valid:  # label every bar; Free CF also shows its conversion of net income
+            text = f"{'-' if v < 0 else ''}${abs(v):.2f}{suffix}"
+            if label == "Free CF":
+                ni = raw_ni[k]
+                text += ("\n" + f"({raw_fcf[k] / ni:.1f}x NI)") if ni and ni > 0 and raw_fcf[k] / ni < 10 else "\n" + "(n/m)"
+            ax.annotate(text, xy=(x, max(v, 0)), xytext=(0, 4), textcoords="offset points",
+                        ha="center", va="bottom", fontsize=10.5, fontweight="bold", color=color, zorder=6)
+    ax.axhline(0, color="black", linewidth=0.8)
+    ax.set_ylim(top=ax.get_ylim()[1] * 1.1)
 
     ax.set_xticks(xs); ax.set_xticklabels(dates, rotation=45, ha="right", fontsize=14)
     ax.tick_params(axis="y", labelsize=14)
     ax.set_ylabel(axis_label, fontsize=17)
     ax.set_title(f"{t} Quarterly Cash Flow Trend", fontsize=22, fontweight="bold")
-    ax.legend(fontsize=15)
+    ax.legend(fontsize=15, loc="upper left")
     ax.grid(axis="y", alpha=0.3)
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")

@@ -3,7 +3,7 @@
 You are a **buy-side analyst at a hedge fund** writing a **3-page max** balance sheet read for the portfolio manager (PM). Hedge-fund house style: thesis-first, directional, opinionated — judge the balance sheet on whether it supports or threatens the long/short (downside protection, optionality, solvency). Lead with the conclusion. No balanced sell-side hedging. Lead with visuals (charts, tables, status icons).
 
 **DATA SOURCING:**
-1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
+1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'], price_history=False)"` — overwrites stale JSON before reading anything (`price_history=False`: this skill never reads price history, so it is not downloaded.). **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_quarterly.json` and `_quick_metrics.json`.
 3. WebSearch only for items genuinely missing (interest coverage; all off-balance-sheet items — see the OBS Analysis section, which requires 10-K/10-Q footnote research). Leave N/A if not found.
 
@@ -29,7 +29,9 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 ```
 .venv/Scripts/python chart_balance_sheet.py {TICKER}
 ```
-Produces `{ticker}_balance_sheet_composition.png` and `{ticker}_balance_sheet_trend.png` in `Outputs/{TICKER}/`.
+Produces in `Outputs/{TICKER}/`:
+- `{ticker}_balance_sheet_composition.png` — latest-quarter stacked bars: assets (current / non-current) vs. funding (current liabilities, long-term debt, other long-term liabilities, equity)
+- `{ticker}_balance_sheet_trend.png` — **grouped bars, not lines**: total assets, total equity, total liabilities, total debt and cash for each of the **last 8 quarters** (x-axis "Qtr Ended Mon YYYY"), with **every bar labeled** with its amount. Read the leverage and liquidity trend straight off the labels — cash vs. debt direction, liabilities vs. equity growth — and cite those same figures (SEC EDGAR) in the Trend bullet rather than re-deriving them. Total Debt is `0`/blank for filers that don't tag it (see CLAUDE.md); if that bar is missing or looks wrong, fall back to `_quick_metrics.json` or the 10-Q and say so under the chart.
 
 ## At a Glance
 
@@ -140,7 +142,7 @@ Produces `{ticker}_balance_sheet_composition.png` and `{ticker}_balance_sheet_tr
 Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
 - Portrait, narrow margins (top/bottom 0.5", left/right 0.75") — see CLAUDE.md
 - Title: `{TICKER} — Balance Sheet` (bold, centered) + date subtitle
-- **Embed both chart images at `width=Inches(7.0)`** to fill the full text width
+- **Embed both chart images at `width=Inches(7.0)`** to fill the full text width: composition under the Balance Sheet Snapshot table, the 8-quarter trend chart under Liquidity & Leverage (next to the Trend bullet). Add a small italic source line under each ("SEC EDGAR")
 - Section headings as Heading 1
 - Bullets as Word list items
 - **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.

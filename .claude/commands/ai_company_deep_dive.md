@@ -22,7 +22,7 @@ Always re-fetch fresh data before reading any JSON files (income statement / bal
    from get_financial_data import fetch_all
    fetch_all(["TICKER"])
    ```
-   Execute this via `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['TICKER'])"` before reading any JSON.
+   Execute this via `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['TICKER'])"` before reading any JSON. This is the run's only price download (5 years of daily closes into `_price_history.json`); read that JSON afterwards, never re-download it.
 
 2. After fetching, read the following files from `Outputs/{TICKER}/`:
    - `{ticker_lower}_quick_metrics.json` — key ratios and price data

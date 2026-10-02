@@ -16,7 +16,7 @@ The core discipline of this skill: never stop at the headline beat/miss. Most of
 
 ## Data Sourcing
 
-1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
+1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything. This is the run's only price download (5 years of daily closes, written to `_price_history.json`); chart scripts and calculations only read that JSON, never re-download it. **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json` (last 4-8 quarters for margin/growth trend), `_income_statement_annual.json`, `_cash_flow_statement_quarterly.json`, `_balance_sheet_quarterly.json`, and `_quick_metrics.json` (price reaction context, analyst estimates).
 3. WebSearch for what the JSON cannot provide: the press release / shareholder letter, the earnings call transcript (or at least the Q&A section), the guidance given last quarter (to compare against this quarter's actual and new guidance), and any specific 10-Q/10-K risk-factor language worth verifying.
 4. If any input isn't available, proceed with what exists and flag the gap in the final output rather than skipping the analysis.
@@ -153,8 +153,10 @@ Always produce a saved `.docx` document containing:
 3. **Bright spots** — 3-5 bullets, most durable first.
 4. **Risk headwinds** — 3-5 bullets, most structural/urgent first.
 5. **Embedded charts** — run the existing chart scripts rather than generating new matplotlib code inline:
-   - `.venv/Scripts/python chart_growth_profitability.py {TICKER}` → embed `{ticker}_margin_trend.png` under Margin Trajectory and `{ticker}_yoy_growth.png` under Growth Durability
-   - `.venv/Scripts/python chart_income_statement.py {TICKER}` → embed `{ticker}_income_statement_trend.png` for the headline-quality trend context
+   - `.venv/Scripts/python chart_income_statement.py {TICKER}` (works without a consensus file — the trends then show actuals only; write `{ticker}_consensus_estimates.json` first if you want consensus revenue bars). Every bar is labeled with amount, YoY growth and margin (gross / operating / net), and the share price runs on the right axis, so the same charts cover both dimensions:
+     - embed `{ticker}_income_statement_quarterly_trend.png` under **Margin Trajectory** (last 8 quarters — read the margin labels and the print's price reaction) and as the headline-quality trend context
+     - embed `{ticker}_income_statement_annual_trend.png` under **Growth Durability** (fiscal-year revenue and net income YoY growth)
+     - optionally embed `{ticker}_income_statement_flow.png` (latest-quarter revenue → net income flow with margins) under Headline Quality
 6. **Net verdict** — score, classification, and a short paragraph on whether the stock's reaction looks justified.
 7. **Read-Through to the Call** block (bold, per above).
 8. **Variant View** as a 3-column table (per above).

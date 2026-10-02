@@ -5,7 +5,7 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** forward-
 **ARGUMENTS:** TICKER (e.g., `NVDA`, `AAPL`)
 
 **DATA SOURCING:**
-1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
+1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'], price_history=False)"` — overwrites stale JSON before reading anything (`price_history=False`: this skill never reads price history, so it is not downloaded.). **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`, `_income_statement_annual.json`, `_cash_flow_statement_annual.json`.
 3. WebSearch for R&D breakdown, partnerships, patent filings, regulatory positioning, product roadmap, capacity plans.
 4. Leave N/A if not found.
@@ -135,7 +135,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - NBT Readiness Scorecard table: bold the Total row; color score cell green (`007000`) for 17–20, orange (`FF8C00`) for 9–16, red (`C00000`) for ≤8
 - Source citations in small italic
 - Variant View as a 3-column table; Read-Through block in bold
-- Saves to `Outputs/{TICKER}/7_{ticker_lowercase}_business_potential_analysis.docx`
+- Saves to `Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_analysis.docx`
 - Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_business_potential.py` and run it from project root
 
 Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.

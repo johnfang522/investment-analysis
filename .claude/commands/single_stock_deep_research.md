@@ -17,13 +17,17 @@ Definitions, metric substitutions and data sources are in `references/reit-frame
 
 ---
 
-## Step 1 — Run All 9 Individual Analyses via Subagents
+## Step 0 — Download All Data Once, Up Front
+
+Before spawning any subagent, run once: `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"`. This is the **only** download for the whole run — SEC EDGAR statements, Yahoo quote data and the **5-year** Yahoo price history (`_price_history.json`). Check the printed price-history line (`first date -> last date`): it should start about five years before today (a shorter span is fine only for a recently listed company). Subagents and the chart/Word scripts then read the JSON; none of them re-downloads anything, price history included. (The one exception is the REIT technical recompute on unadjusted closes, which writes a scratch file and must also request 5 years.)
+
+## Step 1 — Run All 8 Individual Analyses via Subagents
 
 Spawn each analysis as a **separate subagent** using the Agent tool, one at a time (wait for each to complete before spawning the next). Each subagent receives a self-contained prompt instructing it to read and execute the relevant skill file for {TICKER}.
 
 For each skill, use this prompt template:
 
-> Read the file `.claude/commands/{skill_filename}` and execute all instructions in it for ticker {TICKER}. The working directory is the investment-analysis project root. Use `.venv/Scripts/python` to run any Python scripts.
+> Read the file `.claude/commands/{skill_filename}` and execute all instructions in it for ticker {TICKER}. The working directory is the investment-analysis project root. Use `.venv/Scripts/python` to run any Python scripts. All data (including the 5-year price history) was already downloaded by the parent in Step 0, so skip the skill's own "re-download first" / `fetch_all` step and read the existing JSON in `Outputs/{TICKER}/`.
 
 Execute in this exact order:
 
@@ -32,18 +36,19 @@ Execute in this exact order:
 3. Subagent → `.claude/commands/income_statement_analysis.md` for {TICKER}
 4. Subagent → `.claude/commands/balance_sheet_analysis.md` for {TICKER}
 5. Subagent → `.claude/commands/cash_flow_analysis.md` for {TICKER}
-6. Subagent → `.claude/commands/growth_and_profitability_analysis.md` for {TICKER}
-7. Subagent → `.claude/commands/business_potential_analysis.md` for {TICKER}
-8. Subagent → `.claude/commands/valuation_analysis.md` for {TICKER}
-9. Subagent → `.claude/commands/technical_analysis.md` for {TICKER}
+6. Subagent → `.claude/commands/business_potential_analysis.md` for {TICKER}
+7. Subagent → `.claude/commands/valuation_analysis.md` for {TICKER}
+8. Subagent → `.claude/commands/technical_analysis.md` for {TICKER}
 
-Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`. Do not carry skill output into the orchestrator's context — the orchestrator proceeds to Step 2 once all 9 subagents have completed.
+Growth and profitability (multi-year trend, CAGRs, Rule of 40, and 2–3 years of consensus estimates) is covered inside the income statement analysis — there is no separate growth subagent. Output filenames are numbered 1–8 consecutively.
+
+Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`. Do not carry skill output into the orchestrator's context — the orchestrator proceeds to Step 2 once all 8 subagents have completed.
 
 ---
 
 ## Step 2 — Write the Executive Summary
 
-Synthesize the findings from all 9 analyses into a **2–3 page hedge-fund research note**. Each of the 9 appendices now carries its own directional **Read-Through** (BULLISH / NEUTRAL / BEARISH) and a dimension conviction score — roll these up into a single house view, weighting the dimensions that actually drive this name. Write it as a seasoned buy-side analyst pitching the PM — direct, opinionated, anchored to specific data points, and explicit about the variant view and the risk/reward asymmetry.
+Synthesize the findings from all 8 analyses into a **2–3 page hedge-fund research note**. Each of the 8 appendices now carries its own directional **Read-Through** (BULLISH / NEUTRAL / BEARISH) and a dimension conviction score — roll these up into a single house view, weighting the dimensions that actually drive this name. Write it as a seasoned buy-side analyst pitching the PM — direct, opinionated, anchored to specific data points, and explicit about the variant view and the risk/reward asymmetry.
 
 **Writing standards (non-negotiable):**
 - Every section must carry a distinct analytical point of view. Avoid generic filler ("the company has a strong balance sheet") — say *why* it matters and *how* it compares to peers or history.
@@ -144,8 +149,9 @@ For the Comments column: go beyond the mechanical label. Write a one-sentence an
 | 19. Dividend Payout Ratio | X% or N/A | Formula: Total dividends paid (TTM) / Net Income (TTM). Benchmark: <50% = Sustainable; 50–75% = Moderate; 75–100% = High; >100% = Unsustainable (paying from reserves or borrowings). | [e.g., "Payout ratio of X% [leaves substantial retained earnings for reinvestment and buybacks / is elevated and may constrain future dividend growth if earnings disappoint / is unsustainable without a recovery in net income]."] |
 
 #### Growth Outlook
-- **Revenue 3-Year CAGR:** X% (from growth & profitability analysis)
-- **EPS 3-Year CAGR:** X%
+- **Revenue 3-Year CAGR:** X% (from income statement analysis)
+- **EPS 3-Year CAGR:** X% (compute from `_income_statement_annual.json` Diluted EPS; cite SEC EDGAR)
+- **Consensus revenue / EPS CAGR (next 2–3 FYs):** X% / X% (from income statement analysis)
 - **Forward EPS estimate (next FY):** $X.XX (+X% vs trailing)
 - One sentence: is growth accelerating, decelerating, or stable?
 
@@ -260,10 +266,9 @@ Write and execute a Python script (`.venv/Scripts/python`) that combines all doc
 4. `Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_analysis.docx` — Appendix C
 5. `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis.docx` — Appendix D
 6. `Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_analysis.docx` — Appendix E
-7. `Outputs/{TICKER}/6_{ticker_lowercase}_growth_and_profitability_analysis.docx` — Appendix F
-8. `Outputs/{TICKER}/7_{ticker_lowercase}_business_potential_analysis.docx` — Appendix G
-9. `Outputs/{TICKER}/8_{ticker_lowercase}_valuation_analysis.docx` — Appendix H
-10. `Outputs/{TICKER}/9_{ticker_lowercase}_technical_analysis.docx` — Appendix I
+7. `Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_analysis.docx` — Appendix F
+8. `Outputs/{TICKER}/7_{ticker_lowercase}_valuation_analysis.docx` — Appendix G
+9. `Outputs/{TICKER}/8_{ticker_lowercase}_technical_analysis.docx` — Appendix H
 
 **Merge logic:**
 
@@ -364,10 +369,9 @@ appendices = [
     ("Appendix C", "Income Statement Analysis",         f"{base}/3_{t}_income_statement_analysis.docx"),
     ("Appendix D", "Balance Sheet Analysis",            f"{base}/4_{t}_balance_sheet_analysis.docx"),
     ("Appendix E", "Cash Flow Analysis",                f"{base}/5_{t}_cash_flow_analysis.docx"),
-    ("Appendix F", "Growth & Profitability Analysis",   f"{base}/6_{t}_growth_and_profitability_analysis.docx"),
-    ("Appendix G", "Business Potential Analysis",       f"{base}/7_{t}_business_potential_analysis.docx"),
-    ("Appendix H", "Valuation Analysis",                f"{base}/8_{t}_valuation_analysis.docx"),
-    ("Appendix I", "Technical Analysis",                f"{base}/9_{t}_technical_analysis.docx"),
+    ("Appendix F", "Business Potential Analysis",       f"{base}/6_{t}_business_potential_analysis.docx"),
+    ("Appendix G", "Valuation Analysis",                f"{base}/7_{t}_valuation_analysis.docx"),
+    ("Appendix H", "Technical Analysis",                f"{base}/8_{t}_technical_analysis.docx"),
 ]
 
 for label, title, path in appendices:

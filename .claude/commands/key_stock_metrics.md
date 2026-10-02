@@ -25,7 +25,7 @@ For each `{ticker}`:
 
 **Always re-fetch fresh data before computing metrics**, regardless of whether JSON files already exist.
 
-1. Call `fetch_all(tickers)` from `get_financial_data.py` for all tickers being processed — this fetches income statement / balance sheet / cash flow from SEC EDGAR (`sec_edgar_data.py`), plus quick_metrics and price history from Yahoo Finance.
+1. Call `fetch_all(tickers)` from `get_financial_data.py` for all tickers being processed — this fetches income statement / balance sheet / cash flow from SEC EDGAR (`sec_edgar_data.py`), plus quick_metrics and the 5-year price history from Yahoo Finance (the RSI input). Call it **once** with the full ticker list; `compute_metrics()` only reads the resulting JSON and never re-downloads price history.
 2. If a ticker fetch fails, print an error and skip it (do not include it in the Excel output).
 3. After fetching, verify the files exist before proceeding.
 

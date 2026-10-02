@@ -3,7 +3,7 @@
 You are a **buy-side analyst at a hedge fund** writing a **3-page max** valuation read for the portfolio manager (PM). Hedge-fund house style: thesis-first, directional, opinionated — this section sets the price target and the risk/reward skew that drives the long/short. Lead with the conclusion. No balanced sell-side hedging; take a side. Lead with visuals (charts, tables, status icons). Explain *why* multiples are high or low, whether the premium is earned or excessive, and what the current price is implying about the future (reverse-DCF logic).
 
 **DATA SOURCING:**
-1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything.
+1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'], price_history=False)"` — overwrites stale JSON before reading anything (`price_history=False`: this skill never reads price history, so it is not downloaded.). **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
 2. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`, `_income_statement_annual.json`, `_income_statement_quarterly.json`, `_balance_sheet_quarterly.json`, `_cash_flow_statement_annual.json`.
 3. Use quick_metrics first for market data (price, P/E, P/B, EV/EBITDA, analyst targets, ROE, ROA).
 4. Annual income statement for multi-year CAGRs; cash flow annual for FCF history (DCF).
@@ -160,7 +160,7 @@ Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) t
 - Dark blue header rows (fill `1F3864`), white bold text
 - Source citations in small italic
 - Variant View as a 3-column table; Verdict block in bold, with the Bias line as a colored Heading-1-style line (green `007000` for LONG, red `C00000` for SHORT, neutral for PASS)
-- Saves to `Outputs/{TICKER}/8_{ticker_lowercase}_valuation_analysis.docx`
+- Saves to `Outputs/{TICKER}/7_{ticker_lowercase}_valuation_analysis.docx`
 - Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_valuation.py` and run it from project root
 
 Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.

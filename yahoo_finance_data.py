@@ -47,7 +47,7 @@ def get_quick_metrics(ticker: str) -> dict:
     return data
 
 
-def get_price_history(ticker: str, years: int = 3) -> dict:
+def get_price_history(ticker: str, years: int = 5) -> dict:
     """
     Retrieve daily closing price history for a stock.
 
@@ -56,7 +56,7 @@ def get_price_history(ticker: str, years: int = 3) -> dict:
 
     Args:
         ticker (str): The stock ticker symbol (e.g., "AAPL", "MSFT"). Case-insensitive.
-        years (int): Number of years of history to fetch. Defaults to 3.
+        years (int): Number of years of history to fetch. Defaults to 5.
 
     Returns:
         dict: Date strings ("YYYY-MM-DD") mapped to adjusted closing prices.
@@ -85,6 +85,10 @@ def get_price_history(ticker: str, years: int = 3) -> dict:
     output_file = os.path.join(output_path, f"{ticker.lower()}_price_history.json")
     with open(output_file, "w") as f:
         json.dump(data, f, indent=4)
+
+    if data:
+        days = sorted(data)
+        print(f"  {ticker} price history: {days[0]} -> {days[-1]} ({len(days)} days, requested {years}y)")
 
     return data
 

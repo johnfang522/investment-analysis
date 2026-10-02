@@ -57,7 +57,7 @@ State explicitly which hunting ground is being used and why.
 
 ### Stage 2 — Quantitative Gate (hard filters)
 
-Pull live data. For any candidate ticker, source market cap, growth, margins, ROIC, balance sheet, and share count from `get_financial_data.py` first — run `fetch_all([tickers])` and read the resulting `Outputs/{TICKER}/` JSON files (`{ticker_lower}_quick_metrics.json` from Yahoo Finance; income/balance/cash-flow statements from SEC EDGAR). Only fall back to `WebSearch` for fields neither source carries (analyst coverage counts, insider ownership %, spin-off/IPO context) or for names not yet in `tickers.txt`/`Outputs/`.
+Pull live data. For any candidate ticker, source market cap, growth, margins, ROIC, balance sheet, and share count from `get_financial_data.py` first — run `fetch_all([tickers], price_history=False)` (this screener never reads price history) and read the resulting `Outputs/{TICKER}/` JSON files (`{ticker_lower}_quick_metrics.json` from Yahoo Finance; income/balance/cash-flow statements from SEC EDGAR). Only fall back to `WebSearch` for fields neither source carries (analyst coverage counts, insider ownership %, spin-off/IPO context) or for names not yet in `tickers.txt`/`Outputs/`.
 
 A candidate must clear most of these to advance:
 
