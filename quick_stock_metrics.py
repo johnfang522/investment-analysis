@@ -603,7 +603,7 @@ def _add_source_note(cell, source):
     """Attach a hover-note (Excel's native footnote) citing where a value came from."""
     if not source:
         return
-    cell.comment = Comment(f"Source: {source}", "key_stock_metrics.py")
+    cell.comment = Comment(f"Source: {source}", "quick_stock_metrics.py")
 
 
 def _write_value_cell(ws, row, col, val, m, ticker_metrics=None, source=None):
@@ -737,6 +737,87 @@ def write_comparison_sheet(wb, tickers, all_metrics, all_sources=None):
             value="Hover over any value cell (in this sheet or a ticker sheet) to see its specific source.").font = ITALIC_SM
 
 
+# ── Summary sheet (buy-side screen read) ──────────────────────────────────────
+# The screen read is analyst judgment written by the /quick_stock_metrics skill
+# after the workbook is built, so it arrives as a JSON file rather than being
+# computed here:
+#   {"title": "...", "as_of": "YYYY-MM-DD",
+#    "rows": [{"ticker": "AVGO", "tilt": "Long-lean", "conviction": "7/10", "reason": "..."}],
+#    "top_long": "...", "top_short": "...", "next_step": ["..."], "notes": ["..."]}
+
+TILT_FILLS = [("long", GREEN), ("short", PINK), ("avoid", PINK), ("neutral", YELLOW)]
+
+
+def _tilt_fill(tilt):
+    t = (tilt or "").lower()
+    for key, fill in TILT_FILLS:   # first match wins: "Neutral / short-lean" -> pink
+        if key in t:
+            return fill
+    return None
+
+
+def write_summary_sheet(wb, summary):
+    """Add (or replace) a 'Summary' sheet, placed first, holding the screen-read table and notes."""
+    if "Summary" in wb.sheetnames:
+        wb.remove(wb["Summary"])
+    ws = wb.create_sheet(title="Summary", index=0)
+    wrap = Alignment(wrap_text=True, vertical="top")
+    for col, width in zip("ABCD", (12, 22, 12, 100)):
+        ws.column_dimensions[col].width = width
+
+    ws.cell(row=1, column=1, value=summary.get("title", "Screen read")).font = Font(bold=True, size=13)
+    if summary.get("as_of"):
+        ws.cell(row=2, column=1, value=f"As of {summary['as_of']}").font = ITALIC_SM
+
+    row = 4
+    for col, h in enumerate(("Ticker", "Tilt", "Conviction", "Why"), start=1):
+        c = ws.cell(row=row, column=col, value=h)
+        c.font = HDR_FONT; c.fill = HDR_FILL; c.alignment = Alignment(horizontal="center")
+    for r in summary.get("rows", []):
+        row += 1
+        ws.cell(row=row, column=1, value=r.get("ticker")).font = BOLD
+        tc = ws.cell(row=row, column=2, value=r.get("tilt"))
+        fill = _tilt_fill(r.get("tilt"))
+        if fill:
+            tc.fill = fill
+        ws.cell(row=row, column=3, value=r.get("conviction")).alignment = Alignment(horizontal="center", vertical="top")
+        ws.cell(row=row, column=4, value=r.get("reason")).alignment = wrap
+        for col in (1, 2):
+            ws.cell(row=row, column=col).alignment = Alignment(vertical="top")
+
+    def section(label, items):
+        nonlocal row
+        items = [items] if isinstance(items, str) else (items or [])
+        if not items:
+            return
+        row += 2
+        ws.cell(row=row, column=1, value=label).font = BOLD
+        for text in items:
+            row += 1
+            ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=4)
+            c = ws.cell(row=row, column=1, value=text)
+            c.alignment = wrap
+            ws.row_dimensions[row].height = 15 * max(1, len(text) // 140 + 1)
+
+    section("Top long candidate", summary.get("top_long"))
+    section("Top short / avoid candidate", summary.get("top_short"))
+    section("Next step", summary.get("next_step"))
+    section("Data notes", summary.get("notes"))
+    ws.freeze_panes = "A5"
+    return ws
+
+
+def add_summary(xlsx_path, summary_path):
+    """Load an existing workbook, add the Summary sheet from a JSON file, and save in place."""
+    from openpyxl import load_workbook
+    with open(summary_path, encoding="utf-8") as f:
+        summary = json.load(f)
+    wb = load_workbook(xlsx_path)
+    write_summary_sheet(wb, summary)
+    wb.save(xlsx_path)
+    print(f"Added Summary sheet: {xlsx_path}")
+
+
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 def main(tickers):
@@ -754,13 +835,20 @@ def main(tickers):
 
     write_comparison_sheet(wb, tickers, all_metrics, all_sources=all_sources)
 
-    out = f"Outputs/key_stock_metrics_{date.today().strftime('%Y%m%d')}.xlsx"
+    out = f"Outputs/quick_stock_metrics_{date.today().strftime('%Y%m%d')}.xlsx"
     wb.save(out)
     print(f"Saved: {out}")
     return out
 
 
 if __name__ == "__main__":
+    # Add the screen-read Summary sheet to an existing workbook:
+    #   python quick_stock_metrics.py --summary SUMMARY.json [WORKBOOK.xlsx]
+    # (workbook defaults to today's Outputs/quick_stock_metrics_YYYYMMDD.xlsx)
+    if len(sys.argv) > 2 and sys.argv[1] == "--summary":
+        xlsx = sys.argv[3] if len(sys.argv) > 3 else f"Outputs/quick_stock_metrics_{date.today().strftime('%Y%m%d')}.xlsx"
+        add_summary(xlsx, sys.argv[2])
+        sys.exit(0)
     if len(sys.argv) > 1:
         tickers = [t.upper() for t in sys.argv[1:]]
     else:

@@ -225,7 +225,7 @@ def add_source_note(paragraph_or_cell, source):
     after a stated figure) or a table cell (appends as that cell's own
     trailing run, e.g. a small note under a financial-snapshot table).
     Use the labels compute_metrics(ticker, with_sources=True) already
-    returns (key_stock_metrics.SRC_SEC / SRC_YAHOO / SRC_HYBRID /
+    returns (quick_stock_metrics.SRC_SEC / SRC_YAHOO / SRC_HYBRID /
     SRC_COMPUTED / SRC_NA) when citing a metrics-table figure, or a short
     plain-text citation (e.g. "WebSearch — Coherent Q4 FY2026 press
     release") for a qualitative figure pulled from web research.

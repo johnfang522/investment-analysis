@@ -38,7 +38,7 @@ Shared guidance for every single-stock skill when the company is an equity Real 
 
 - **SEC EDGAR JSON is GAAP only** and often incomplete for REITs: `Total Debt` may be untagged, and capex/free-cash-flow, dividends paid, debt issued/repaid and equity issued lines can be missing. Say so instead of fabricating them, and reconcile debt against the latest 10-Q balance sheet (notes payable + term loans + credit facility + mortgages) stating which figure was used.
 - **FFO, AFFO, occupancy, WALT, same-store growth, leverage, maturity ladder, acquisitions and guidance** come from the earnings release (8-K Exhibit 99.1), the supplemental package and the call transcript via `WebSearch`/`WebFetch`. Cite the filing and date.
-- **Yahoo `payoutRatio`** is GAAP-based and misleading for a REIT (it can exceed 200%); `key_stock_metrics._short_comment` already warns about this. Do not use it as the dividend-safety test.
+- **Yahoo `payoutRatio`** is GAAP-based and misleading for a REIT (it can exceed 200%); `quick_stock_metrics._short_comment` already warns about this. Do not use it as the dividend-safety test.
 - **Sources disagree.** Where the release, call and supplemental give different values (for example initial cash yield, acquisition volume on a 100% vs pro-rata basis, fixed-rate share), show the range and label it unreconciled rather than picking one silently. State which basis (100%, pro-rata, consolidated) each figure uses.
 
 ## 5. Valuation and the rate link

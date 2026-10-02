@@ -1,11 +1,10 @@
 # One ticker per line. Lines starting with '#' are ignored.
-ABBV
-CLX
-ES
-JNJ
-KMB
-KVUE
-MCD
-O
-PG
-SJM
+AMD
+AVGO
+COHR
+INTC
+LITE
+MU
+MRVL
+NVDA
+QCOM

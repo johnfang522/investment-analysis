@@ -1,8 +1,8 @@
-# Key Stock Metrics
+# Quick Stock Metrics
 
 Generate a side-by-side fundamental analysis spreadsheet for one or more tickers. Income statement, balance sheet, and cash flow data come from SEC EDGAR (`sec_edgar_data.py`) rather than Yahoo Finance, since Yahoo is often stale for weeks after an earnings release; market-quote data with no SEC EDGAR equivalent (price, market cap, P/E, dividend yield, etc.) still comes from Yahoo Finance's quick metrics.
 
-**House style — buy-side quick-filter (Stage 3).** This is the triage screen a hedge-fund analyst runs before committing to deep diligence: a side-by-side read to decide which names are long candidates, which are short/avoid candidates, and which warrant a full single-name workup. The Excel is the data; the **chat output must end with a directional screen read** (see "Buy-Side Screen Read" below). Keep it decisive — the point of a screen is to kill names quickly.
+**House style — buy-side quick-filter (Stage 3).** This is the triage screen a hedge-fund analyst runs before committing to deep diligence: a side-by-side read to decide which names are long candidates, which are short/avoid candidates, and which warrant a full single-name workup. The Excel is the data plus a **Summary** sheet carrying the directional screen read, and the **chat output must end with the same screen read** (see "Buy-Side Screen Read" below). Keep it decisive — the point of a screen is to kill names quickly.
 
 ## Inputs
 
@@ -33,7 +33,7 @@ Do this **before** writing any Excel output.
 
 ## Your task
 
-Run `key_stock_metrics.py` (located in the project root) to compute the metrics below for each ticker, then output an Excel file `Outputs/key_stock_metrics_YYYYMMDD.xlsx` where YYYYMMDD is today's date.
+Run `quick_stock_metrics.py` (located in the project root) to compute the metrics below for each ticker, then output an Excel file `Outputs/quick_stock_metrics_YYYYMMDD.xlsx` where YYYYMMDD is today's date. If some tickers failed to fetch, pass the surviving tickers explicitly: `.venv/Scripts/python quick_stock_metrics.py T1 T2 ...`, since the no-argument run reads `tickers.txt` and stops on the first missing file.
 
 ### Data sourcing rules
 
@@ -82,7 +82,7 @@ Run `key_stock_metrics.py` (located in the project root) to compute the metrics 
 #### Notes on normalization
 
 - `returnOnEquity`, `operatingMargins`, `grossMargins`, `profitMargins`, `revenueGrowth`, `currentRatio`: already decimal ratios — use as-is
-- `debtToEquity`: Yahoo returns this as a **percentage** (e.g. `173` = 173%) — `key_stock_metrics.py` always divides by 100 to convert to a ratio; do not divide again
+- `debtToEquity`: Yahoo returns this as a **percentage** (e.g. `173` = 173%) — `quick_stock_metrics.py` always divides by 100 to convert to a ratio; do not divide again
 - SEC EDGAR `Cost Of Revenue`, `Operating Income`, `Free Cash Flow`, and `Total Debt` may be derived (not directly tagged) by `sec_edgar_data.py` when a filer doesn't use the expected XBRL tag — see that script's backfill logic; treat them the same as directly-tagged values
 
 ### Metrics to compute
@@ -190,8 +190,14 @@ Color the **value cell** only:
 - Yellow fill if borderline
 - Red fill if below threshold / warning zone
 
+#### Summary sheet (the screen read)
+- Named `Summary`, placed as the **first** sheet; added after the workbook is built (see "Buy-Side Screen Read" below)
+- Title "Screen read (screen-level only; a full call needs a research skill)" and an as-of date
+- Table: `Ticker | Tilt | Conviction | Why`, dark-blue header row; the Tilt cell is filled green for Long-lean, yellow for Neutral, pink for Short-lean / Avoid
+- Below the table: **Top long candidate**, **Top short / avoid candidate**, **Next step**, and **Data notes** (excluded or substituted tickers, and metrics that are wrong or meaningless for a ticker, with the reason)
+
 #### Summary Comparison sheet
-- Named `Comparison`, placed as the first sheet
+- Named `Comparison`, placed second (right after `Summary`)
 - **Top section**: flat comparison table — tickers as columns, metrics as rows, values only with green/yellow/red coloring for quick side-by-side review. Each value cell carries an Excel comment (hover-note) citing its source, since sources can differ by ticker for the same metric — there isn't room for a visible per-ticker Source column here without doubling the sheet width.
 - **Middle section**: hierarchical metric descriptions and benchmarks — for each metric, list its description and benchmark thresholds. This is the only place descriptions and benchmarks appear.
 - **Bottom section**: a "Data Source Legend" explaining each of the five source labels (SEC EDGAR / Yahoo Finance / Hybrid / Computed / N/A), plus a note to hover over any value cell for its specific source.
@@ -213,26 +219,47 @@ Definitions are in `references/reit-framework.md`. Detect: `_quick_metrics.json`
 - In the Buy-Side Screen Read, mark every REIT and screen it on REIT measures instead: AFFO per share and payout ratio (non-GAAP, from the latest release), dividend yield and its spread to the 10-year, and net debt/EBITDAre. Source these via `WebSearch` with date and label them non-GAAP; mark them N/A if not found.
 - Recommend the full single-name workup for REITs that pass the screen, since the deep-research and quick-research skills apply this framework.
 
-## Buy-Side Screen Read (report in chat after the Excel is saved)
+## Buy-Side Screen Read (Summary sheet + chat, after the Excel is saved)
 
-After confirming the output file path, end your chat response with a concise buy-side triage of the screened set — this is what makes the screen actionable for the PM. Do **not** modify the Excel/Python pipeline to produce this; derive it from the computed metrics and their green/yellow/red coloring.
+After the workbook is saved, write a concise buy-side triage of the screened set — this is what makes the screen actionable for the PM. Derive it from the computed metrics and their green/yellow/red coloring (plus any WebSearch facts, e.g. REIT measures, cited with source and date); `compute_metrics()` does not produce it.
+
+Before writing it, sanity-check the numbers you will lean on: negative book equity makes ROE and D/E meaningless; a huge one-quarter GAAP loss or gain distorts net margin, ROE and trailing P/E; an FCF margin far below the net margin usually means capex came back untagged and the metric fell back to Yahoo's narrower FCF; a very low forward P/E on a cyclical (memory, commodities) usually means peak earnings. Put each such finding in the Data notes rather than ranking on it.
 
 - **Screen tilt per ticker:** a one-line directional lean for each name — **Long-lean / Neutral / Short-lean / Avoid** — with a one-clause reason anchored to the metrics (e.g., "Long-lean — Rule of 40 = 48, FCF margin 24%, net cash; quality compounder at a reasonable multiple").
 - **Quick-filter conviction X/10** per name (screen-level only — a full call requires `/single_stock_quick_research` or `/single_stock_deep_research`).
 - **Top long candidate** and **top short/avoid candidate** from the set, one sentence each on why.
 - **Next step:** name the 1–2 tickers that most warrant a full `/single_stock_deep_research` (or lighter `/single_stock_quick_research`) workup and why.
 
-Keep this to a compact bulleted block; the Excel carries the detail.
+**Write it into the workbook.** Save the screen read as JSON to `Outputs/quick_stock_metrics_summary_YYYYMMDD.json`:
+
+```json
+{
+  "title": "Screen read (screen-level only; a full call needs a research skill)",
+  "as_of": "YYYY-MM-DD",
+  "rows": [
+    {"ticker": "AVGO", "tilt": "Long-lean", "conviction": "7/10", "reason": "18.3x forward P/E, PEG 0.35, 48% operating margin ..."}
+  ],
+  "top_long": "AVGO: one sentence on why.",
+  "top_short": "INTC: one sentence on why.",
+  "next_step": ["/single_stock_deep_research AVGO: why.", "/single_stock_quick_research MU: why."],
+  "notes": ["Excluded / substituted tickers and data caveats, one per item."]
+}
+```
+
+Order `rows` from most long-leaning to most short-leaning. Then add the sheet with
+`PYTHONIOENCODING=utf-8 .venv/Scripts/python quick_stock_metrics.py --summary Outputs/quick_stock_metrics_summary_YYYYMMDD.json` (it defaults to today's workbook; pass the `.xlsx` path as a third argument otherwise). This loads the workbook, adds or replaces the `Summary` sheet as the first sheet, and saves it in place — re-run it after editing the JSON.
+
+**Then report the same read in chat** as a compact table plus the top long / top short / next-step lines and the data notes; the Excel carries the metric detail.
 
 ## Example invocation
 
 The user may say:
-- `/key_stock_metrics` — load tickers from `tickers.txt`
-- `/key_stock_metrics AAPL` — single ticker
-- `/key_stock_metrics MSFT GOOGL NVDA` — explicit list
-- "Run key metrics for AAPL"
-- "Compare AAPL and TSLA using key metrics"
+- `/quick_stock_metrics` — load tickers from `tickers.txt`
+- `/quick_stock_metrics AAPL` — single ticker
+- `/quick_stock_metrics MSFT GOOGL NVDA` — explicit list
+- "Run quick metrics for AAPL"
+- "Compare AAPL and TSLA using quick metrics"
 
 If no tickers are provided in the message, call `load_tickers()` from `get_financial_data.py` to read `tickers.txt`. If the file is empty or missing, print an error and stop.
 
-Parse the tickers, generate the script, execute it, and report the output file path when done.
+Parse the tickers, run the script, add the Summary sheet, and report the output file path and the screen read when done.

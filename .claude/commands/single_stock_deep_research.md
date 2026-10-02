@@ -106,12 +106,12 @@ The single most important section: state where our view diverges from consensus 
 
 #### Financial Snapshot
 
-Compute all metric values by calling `compute_metrics("{TICKER}")` from `key_stock_metrics.py` (project root). This function reads `_quick_metrics.json` first for every field, and falls back to the detailed TTM/quarterly/annual JSON files automatically — do not re-derive the formulas inline. Generate the comment label for each metric using `_short_comment(key, val, metrics)` from the same file.
+Compute all metric values by calling `compute_metrics("{TICKER}")` from `quick_stock_metrics.py` (project root). This function reads `_quick_metrics.json` first for every field, and falls back to the detailed TTM/quarterly/annual JSON files automatically — do not re-derive the formulas inline. Generate the comment label for each metric using `_short_comment(key, val, metrics)` from the same file.
 
 To extract the values, run a short inline Python script:
 ```python
 import sys; sys.path.insert(0, '.')
-from key_stock_metrics import compute_metrics, _short_comment, METRICS
+from quick_stock_metrics import compute_metrics, _short_comment, METRICS
 m = compute_metrics("{TICKER}")
 for metric in METRICS:
     val = m.get(metric["key"])
@@ -217,11 +217,11 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
    - Verdict line in large bold text (use Heading 1 style), colored by bias: green `007000` for LONG, red `C00000` for SHORT, neutral dark for PASS. Render the full Verdict block (bias + conviction + price target + stop + risk/reward + sizing).
    - Variant View rendered as a 3-column table (Debate | Consensus / Sell-Side | Our View) with the dark-blue header row, immediately after the Investment Thesis section
    - All sections formatted with Heading 2 subheadings
-   - Financial Snapshot table: **4 columns only** (Metric, Value, Description, Comments) — no YoY Change column; dark blue header row (fill `1F3864`), white bold text; populate values and analyst comments by importing `compute_metrics`, `_short_comment`, `METRICS`, and `color_current_price` from `key_stock_metrics` (already on `sys.path` via `sys.path.insert(0, '.')`).
+   - Financial Snapshot table: **4 columns only** (Metric, Value, Description, Comments) — no YoY Change column; dark blue header row (fill `1F3864`), white bold text; populate values and analyst comments by importing `compute_metrics`, `_short_comment`, `METRICS`, and `color_current_price` from `quick_stock_metrics` (already on `sys.path` via `sys.path.insert(0, '.')`).
      - **IMPORTANT — key names:** Before writing the generation script, run this diagnostic to discover the exact key names returned by `compute_metrics` for this ticker:
        ```python
        import sys; sys.path.insert(0, '.')
-       from key_stock_metrics import compute_metrics
+       from quick_stock_metrics import compute_metrics
        m = compute_metrics("{TICKER}")
        print(list(m.keys()))
        ```
@@ -236,11 +236,11 @@ Write and execute a Python script (`.venv/Scripts/python`) that creates the summ
 
 2. **Tables**: initialize with `rows=1` (header only), then `table.add_row()` per data row. **Every table**: call `autofit_table(table)` then `add_table_borders(table)` after all rows are added.
 
-   Import the shared helpers from `doc_utils.py` and metric helpers from `key_stock_metrics.py` (both in the project root):
+   Import the shared helpers from `doc_utils.py` and metric helpers from `quick_stock_metrics.py` (both in the project root):
    ```python
    import sys; sys.path.insert(0, '.')
    from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-   from key_stock_metrics import compute_metrics, _short_comment, METRICS, color_current_price
+   from quick_stock_metrics import compute_metrics, _short_comment, METRICS, color_current_price
    ```
    Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
 

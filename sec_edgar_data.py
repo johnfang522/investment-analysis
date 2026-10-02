@@ -12,7 +12,7 @@ income statement, balance sheet, and cash flow statement.
 
 Output JSON uses the same file paths and Yahoo-style line-item names
 (e.g. "Total Revenue", "Operating Income") as the old yahoo_finance_data.py
-statement fetchers, so chart_*.py and key_stock_metrics.py did not need to
+statement fetchers, so chart_*.py and quick_stock_metrics.py did not need to
 change their field lookups.
 
 Usage:
@@ -37,7 +37,7 @@ TICKER_CIK_URL = "https://www.sec.gov/files/company_tickers.json"
 COMPANY_FACTS_URL = "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
 
 # US-GAAP XBRL tags to pull for each statement, keyed by the Yahoo-style line
-# item name that chart_*.py / key_stock_metrics.py already look for. Each tag
+# item name that chart_*.py / quick_stock_metrics.py already look for. Each tag
 # list is a priority-ordered set of fallback tags — companies don't always
 # use the exact same tag (e.g. some use "Revenues" instead of
 # "RevenueFromContractWithCustomerExcludingAssessedTax") — the first one
@@ -514,7 +514,7 @@ def fetch_edgar_statements(ticker: str) -> dict:
     Fetch income statement, balance sheet, and cash flow data for a ticker
     directly from SEC EDGAR and save each as JSON to Outputs/{TICKER}/,
     using the same file paths yahoo_finance_data.py's statement fetchers
-    used to write (so chart_*.py / key_stock_metrics.py need no path changes).
+    used to write (so chart_*.py / quick_stock_metrics.py need no path changes).
 
     Output files:
         Outputs/{TICKER}/{ticker_lower}_income_statement_quarterly.json
