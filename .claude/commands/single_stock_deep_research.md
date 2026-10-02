@@ -272,7 +272,7 @@ Write and execute a Python script (`.venv/Scripts/python`) that combines all doc
 
 **Merge logic:**
 
-Use `python-docx` to copy elements across documents. Use this helper pattern to append one document's body into another:
+Use `python-docx` to copy elements across documents. Every appendix starts on a new page (`page_break_before` on its heading), and the end of the research note carries an **Appendices** list whose entries are internal hyperlinks to bookmarks on each appendix heading. Insert copied elements *before* the body's final `w:sectPr`. Word misplaces anything appended after it, which is how page breaks between appendices used to get lost. Use this helper pattern:
 
 ```python
 from docx import Document
@@ -280,8 +280,57 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from copy import deepcopy
 
+def _bookmark_name(label):
+    """'Appendix A' -> 'appendix_a' (bookmark target for the appendix index links)."""
+    return label.lower().replace(" ", "_")
+
+
+_bookmark_id = [100]
+
+
+def _add_bookmark(paragraph, name):
+    """Wrap a paragraph in a Word bookmark so internal hyperlinks can jump to it."""
+    _bookmark_id[0] += 1
+    start = OxmlElement('w:bookmarkStart')
+    start.set(qn('w:id'), str(_bookmark_id[0]))
+    start.set(qn('w:name'), name)
+    end = OxmlElement('w:bookmarkEnd')
+    end.set(qn('w:id'), str(_bookmark_id[0]))
+    paragraph._p.insert(1 if paragraph._p.pPr is not None else 0, start)   # after pPr
+    paragraph._p.append(end)
+
+
+def _body_append(target, elem):
+    """Insert before the body's final sectPr. Anything appended after it is misplaced by Word
+    (this is how page breaks between appendices used to get lost)."""
+    sectPr = target.element.body.find(qn('w:sectPr'))
+    if sectPr is not None:
+        sectPr.addprevious(elem)
+    else:
+        target.element.body.append(elem)
+
+
+def add_appendix_index(target, appendices):
+    """List the appendices at the end of the research note; each entry links to its appendix's first page."""
+    target.add_heading("Appendices", level=2)
+    for label, title, _ in appendices:
+        p = target.add_paragraph(style="List Bullet")
+        link = OxmlElement('w:hyperlink')
+        link.set(qn('w:anchor'), _bookmark_name(label))
+        link.set(qn('w:history'), '1')
+        r = OxmlElement('w:r')
+        rPr = OxmlElement('w:rPr')
+        color = OxmlElement('w:color'); color.set(qn('w:val'), '0563C1')
+        u = OxmlElement('w:u'); u.set(qn('w:val'), 'single')
+        rPr.append(color); rPr.append(u); r.append(rPr)
+        t = OxmlElement('w:t'); t.set(qn('xml:space'), 'preserve'); t.text = f"{label} — {title}"
+        r.append(t)
+        link.append(r)
+        p._p.append(link)
+
+
 def append_doc(target, source_path, appendix_label, appendix_title):
-    """Append a page break, appendix heading, then all body elements from source."""
+    """Append an appendix heading (starting a new page, bookmarked for the index) then all body elements from source."""
     src = Document(source_path)
 
     # Register images into target first (deduplication by content hash)
@@ -291,18 +340,11 @@ def append_doc(target, source_path, appendix_label, appendix_title):
             new_rId = _add_image_to_target(target, rel.target_part)
             rId_map[rel.rId] = new_rId
 
-    # Page break before each appendix
-    p = OxmlElement('w:p')
-    r = OxmlElement('w:r')
-    br = OxmlElement('w:br')
-    br.set(qn('w:type'), 'page')
-    r.append(br)
-    p.append(r)
-    target.element.body.append(p)
-
-    # Appendix label heading (e.g. "Appendix A — Business Overview Analysis")
+    # Appendix label heading (e.g. "Appendix A — Business Overview Analysis") — always starts a new page
     heading = target.add_heading(f"{appendix_label} — {appendix_title}", level=1)
+    heading.paragraph_format.page_break_before = True
     heading.runs[0].font.color.rgb = RGBColor(0x1F, 0x38, 0x64)
+    _add_bookmark(heading, _bookmark_name(appendix_label))
 
     # Copy body elements, remapping image rIds only within the copied elements
     for elem in src.element.body:
@@ -314,7 +356,7 @@ def append_doc(target, source_path, appendix_label, appendix_title):
                 for attr in list(node.attrib):
                     if node.attrib[attr] in rId_map:
                         node.attrib[attr] = rId_map[node.attrib[attr]]
-        target.element.body.append(copied)
+        _body_append(target, copied)
 ```
 
 Copy images: images must be registered into the target package with unique partnames before copying elements, to avoid duplicate zip entries that corrupt the file. Use this approach — images are deduplicated by SHA-1 hash of their bytes, and each unique image gets a unique partname:
@@ -333,7 +375,7 @@ def _add_image_to_target(target_doc, src_img_part):
     if sha1 not in _image_registry:
         _image_counter[0] += 1
         ext = src_img_part.partname.ext
-        partname = PackURI(f"/word/media/img_merged_{_image_counter[0]}{ext}")
+        partname = PackURI(f"/word/media/img_merged_{_image_counter[0]}.{ext}")
         _image_registry[sha1] = ImagePart(partname, src_img_part.content_type, blob)
     img_part = _image_registry[sha1]
     return target_doc.part.relate_to(img_part,
@@ -356,7 +398,7 @@ from copy import deepcopy
 import sys; sys.path.insert(0, '.')
 from doc_utils import apply_house_style
 
-# ... define append_doc and copy_images helpers above ...
+# ... define the merge helpers above (append_doc, add_appendix_index, _add_image_to_target, ...) ...
 
 ticker = "{TICKER}"
 t = ticker.lower()
@@ -376,8 +418,9 @@ appendices = [
     ("Appendix H", "Technical Analysis",                f"{base}/8_{t}_technical_analysis.docx"),
 ]
 
+add_appendix_index(target, appendices)      # linked list of appendices at the end of the research note
 for label, title, path in appendices:
-    append_doc(target, path, label, title)   # adds page break + heading + body elements (images handled inside)
+    append_doc(target, path, label, title)   # new-page bookmarked heading + body elements (images handled inside)
 
 def add_page_numbers(doc):
     """Add 'Page X of Y' footer to every section in the document."""

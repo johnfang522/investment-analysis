@@ -13,6 +13,7 @@ except headings (Title / Heading N styles keep their larger sizes).
 """
 
 from docx.enum.section import WD_ORIENT
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.shared import Inches, Pt, RGBColor
@@ -86,12 +87,15 @@ def setup_document(doc):
 
 def apply_house_style(doc):
     """
-    Enforce the house format on a finished document: re-applies setup_document() and
-    normalizes every run to Arial, forcing any explicit non-heading size below
-    HEADING_MIN_PT down to BODY_PT. add_footnote() calls this, so every skill's output
-    conforms even if its generated script hardcoded Pt(12) somewhere.
+    Enforce the house format on a finished document: re-applies setup_document(),
+    centers every table on the page, and normalizes every run to Arial, forcing any
+    explicit non-heading size below HEADING_MIN_PT down to BODY_PT. add_footnote() calls
+    this, so every skill's output conforms even if its generated script hardcoded Pt(12)
+    somewhere or skipped autofit_table().
     """
     setup_document(doc)
+    for tbl in doc.element.body.iter(qn('w:tbl')):
+        _center_table(tbl)
     containers = [doc]
     for section in doc.sections:
         containers += [section.header, section.footer]
@@ -119,11 +123,20 @@ def _separate_from_previous_table(table):
         tbl.addprevious(spacer)
 
 
+def _center_table(tbl):
+    """Center a table horizontally on the page (w:jc=center, no left indent)."""
+    tblPr = tbl.tblPr
+    tblPr.alignment = WD_TABLE_ALIGNMENT.CENTER
+    ind = tblPr.find(qn('w:tblInd'))
+    if ind is not None:
+        tblPr.remove(ind)
+
+
 def autofit_table(table):
     """
     Set table layout to autofit and strip all fixed w:tcW cell-width overrides.
-    Also inserts a spacer paragraph if this table directly follows another table,
-    so Word does not merge the two.
+    Also centers the table on the page and inserts a spacer paragraph if this table
+    directly follows another table, so Word does not merge the two.
     """
     _separate_from_previous_table(table)
     tbl = table._tbl
@@ -139,6 +152,10 @@ def autofit_table(table):
             el.set(qn(k), v)
         if el not in list(tblPr):
             tblPr.append(el)
+    look = tblPr.find(qn('w:tblLook'))
+    if look is not None:
+        tblPr.append(look)   # schema order: tblLook must stay last, after tblLayout
+    _center_table(tbl)
     for row in table.rows:
         for cell in row.cells:
             tc = cell._tc

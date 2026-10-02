@@ -79,7 +79,7 @@ This is an investment analysis toolkit that fetches financial data from SEC EDGA
 - **External data source gotchas baked into this script** (see also the External Data Sources section below)
 
 **`doc_utils.py`** — shared python-docx helpers
-- Provides `setup_document(doc)` / `apply_house_style(doc)` (landscape, narrow margins, Arial 10pt), `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=10)`, `add_footnote(doc)`, `fmt_value(v, prefix='$')`, and `add_source_note(paragraph_or_cell, source)` (used for the per-figure source citations)
+- Provides `setup_document(doc)` / `apply_house_style(doc)` (landscape, narrow margins, Arial 10pt, centered tables), `autofit_table(table)`, `add_table_borders(table)`, `set_row_font_size(row, size=10)`, `add_footnote(doc)`, `fmt_value(v, prefix='$')`, and `add_source_note(paragraph_or_cell, source)` (used for the per-figure source citations)
 - All skill-generated Word scripts import from here; see the Word Document Generation section for the required import pattern
 - When adding a new helper needed by multiple skills, add it here rather than inline in each skill
 
@@ -157,7 +157,7 @@ Every analysis skill is written for a **buy-side portfolio manager (PM)** to dig
 When writing `python-docx` table code in any skill or script:
 - **Always initialize tables with `rows=1`** (header only), then call `table.add_row()` for each data row — do NOT use `rows=1+len(data)` upfront, which creates blank rows between the header and data
 - **Every table must call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added** — calling before rows are added means new rows won't inherit the settings. Never call them at table creation time; always call them after the last `table.add_row()`.
-  - `autofit_table` — sets `tblW`/`tblLayout` to autofit and strips all fixed `w:tcW` cell widths; never use `table.columns[i].width` or any fixed-width assignment
+  - `autofit_table` — sets `tblW`/`tblLayout` to autofit, strips all fixed `w:tcW` cell widths, and centers the table on the page; never use `table.columns[i].width` or any fixed-width assignment, and don't set `table.alignment` yourself (`apply_house_style()`, run by `add_footnote()`, also re-centers every table as a backstop)
   - `add_table_borders` — applies a thin single border (`sz=4`, `val="single"`, `color="000000"`) to all four sides plus inner dividers (`insideH`/`insideV`) of every cell via `w:tcBorders`
 - **All non-header table cell text must use font size 10 (Arial).** Call `set_row_font_size(row)` on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
 - All helpers live in `doc_utils.py` at the project root — generated scripts import them with:
