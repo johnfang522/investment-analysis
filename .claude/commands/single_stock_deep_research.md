@@ -42,7 +42,7 @@ Execute in this exact order:
 
 Growth and profitability (multi-year trend, CAGRs, Rule of 40, and 2–3 years of consensus estimates) is covered inside the income statement analysis — there is no separate growth subagent. Output filenames are numbered 1–8 consecutively.
 
-Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`, returning only the short reply above. Skills that use `report_renderer.py` (currently `/cash_flow_analysis`) also write `Outputs/{TICKER}/{n}_{ticker_lowercase}_{skill}_summary.json` — the same contract in machine-readable form. Proceed to Step 2 once all 8 subagents have completed.
+Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`, returning only the short reply above. Every component skill renders through `report_renderer.py`, so each also writes `Outputs/{TICKER}/{n}_{ticker_lowercase}_{skill}_summary.json` — the same contract in machine-readable form. Proceed to Step 2 once all 8 subagents have completed.
 
 ---
 
