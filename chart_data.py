@@ -15,7 +15,10 @@ Schemas (values are raw numbers in the `unit`, None for a missing point):
                estimates), "dashed": true, "width": px (lines)
                chart options: "category_notes": [str|None, ...] (tooltip header + data-table column),
                "refs": [{"value": 70, "label": "Overbought"}, ...] (dashed reference lines),
-               "y_min" / "y_max" (fixed axis bounds)
+               "y_min" / "y_max" (fixed axis bounds),
+               "overlay" (bar charts only): a line on its own right-hand axis, lifted above the bars —
+               {"name": str, "unit": "price", "slot": int, "points": [per-category value|None] (diamond markers,
+               labeled), "daily": {"x": [fractional category index], "y": [...], "last_label": str} (optional)}
                units: "usd" ($ auto-scaled B/M/K), "price" ($X.XX), "pct", "x" (multiples), "num"
   waterfall:  {"kind": "waterfall", "title": str, "unit": "usd",
                "steps": [{"label": str, "value": num, "total": bool}, ...]}

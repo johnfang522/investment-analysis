@@ -150,6 +150,7 @@
     } else {
       th("Period");
       data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
       if (data.category_notes) th("Note");
       var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
       data.categories.forEach(function (cat, i) {
@@ -159,6 +160,10 @@
           var c = r.insertCell(); c.className = "num";
           c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
         });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
         if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
       });
     }
@@ -188,18 +193,52 @@
       });
       box.appendChild(b);
     });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
     cap.appendChild(box);
   }
 
   // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
   function drawSeriesChart(canvas, data, state, tip) {
     var kind = data.kind;
-    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(380, Math.max(240, W * 0.42)));
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
     var m = { top: 16, right: 16, bottom: 34, left: 62 };
-    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    if (ov) m.right = 64;
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom, band = iw / n;
     var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
       "aria-label": data.title + " — use left and right arrow keys to read values" });
-    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
     var vals = [];
     shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
     var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
@@ -212,16 +251,33 @@
     if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
     else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
     else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
-    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
-    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = ov ? Math.round(ih * 0.34) : 0;   // the overlay line lives in the band above the bars
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
     var g = el("g", {}, svg);
     ticks.forEach(function (t) {
       if (t < lo - 1e-9 || t > hi + 1e-9) return;
       el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
       text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
     });
-    var n = data.categories.length, band = iw / n, labelIdx;
-    if (n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0])) labelIdx = dateTicks(data.categories, iw);
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
     else {
       var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
       labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
@@ -233,36 +289,93 @@
       el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
       if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
     });
-    var marks = el("g", {}, svg);
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
     if (kind === "bar") {
-      var k = shown.length, gap = 2;
-      var bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
-      var groupW = bw * k + gap * (k - 1);
       shown.forEach(function (o, j) {
         o.s.values.forEach(function (v, i) {
           if (v === null) return;
-          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap);
-          el("path", { d: barPath(x, bw, y(0), y(v)), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
         });
       });
     } else {
+      var ends = [];
       shown.forEach(function (o) {
-        var d = "", pen = false;
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
         o.s.values.forEach(function (v, i) {
           if (v === null) { pen = false; return; }
-          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true;
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
         });
-        el("path", { d: d, fill: "none", stroke: colorOf(o.s, o.i), "stroke-width": o.s.width || 2,
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
           "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
           "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
-        for (var i = o.s.values.length - 1; i >= 0; i--) {
-          if (o.s.values[i] !== null) {
-            el("circle", { cx: m.left + band * (i + 0.5), cy: y(o.s.values[i]), r: 4, fill: colorOf(o.s, o.i),
-              stroke: "var(--surface)", "stroke-width": 2 }, marks);
-            break;
-          }
-        }
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
       });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = m.top + 18, bot2 = m.top + ovBand + padTop * 0.6;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          pointLabel(labels, Math.min(W - m.right - lt.length * CHAR_W / 2, lx), y2(lyv) - 9, lt, { style: "fill:" + color2 });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          pointLabel(labels, cx, cy + 17, fOv(v), { style: "fill:" + color2 });
+        });
+      }
     }
     // hover layer
     var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
@@ -279,6 +392,7 @@
         return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
           note: o.s.notes ? o.s.notes[i] : null };
       });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
       var scale = canvas.clientWidth / W;
       rows = rows.filter(function (r) { return r.value !== "N/A"; });
       var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
@@ -374,14 +488,14 @@
     var cap = fig.querySelector("figcaption");
     var canvas = document.createElement("div"); canvas.className = "viz-canvas";
     fig.insertBefore(canvas, cap.nextSibling);
-    var state = { visible: (data.series || []).map(function () { return true; }) };
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
     var tip = tooltip(canvas), svg = null;
     function draw() {
       var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
       if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
       svg = next;
     }
-    if (data.series && data.series.length > 1) legend(cap, data, state, data.kind, draw);
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
     dataTable(fig, data);
     var src = fig.querySelector(".source");
     if (src) fig.appendChild(src);

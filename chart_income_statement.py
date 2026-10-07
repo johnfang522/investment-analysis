@@ -645,13 +645,13 @@ def chart_bars(ticker, rows, title, out_path, quarterly=False):
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
-    _save_bars_data(rows, yoy, px, title, out_path)
+    _save_bars_data(rows, yoy, px, _daily_price(ticker, rows, list(range(len(rows)))), title, out_path)
     print(f"  Saved: {out_path}")
 
 
-def _save_bars_data(rows, yoy, px, title, out_path):
+def _save_bars_data(rows, yoy, px, daily, title, out_path):
     """Sidecar for the HTML report: same bars, consensus revenue as a faded revenue-colored series, and the
-    period-end share price in the tooltip header instead of a second y-axis."""
+    share price as a right-axis overlay (period-end closes plus the daily closes, x in category-index units)."""
     from datetime import datetime
     series = []
     for j, (key, name, *_) in enumerate(LINE_ITEMS):
@@ -685,8 +685,17 @@ def _save_bars_data(rows, yoy, px, title, out_path):
         if i in px:
             bits.append(f"close ${px[i]:,.2f}")
         cnotes.append(" · ".join(bits) or None)
-    save_chart_data(out_path, {"kind": "bar", "title": title, "unit": "usd", "categories": cats,
-                               "category_notes": cnotes, "series": series})
+    data = {"kind": "bar", "title": title, "unit": "usd", "categories": cats,
+            "category_notes": cnotes, "series": series}
+    if px:
+        overlay = {"name": "Share price", "unit": "price", "slot": 7,
+                   "points": [round(px[i], 2) if i in px else None for i in range(len(rows))]}
+        if daily:
+            dx, dy, last_day = daily
+            overlay["daily"] = {"x": [round(float(x), 4) for x in dx], "y": [round(v, 2) for v in dy],
+                                "last_label": f"Latest ${dy[-1]:,.2f} ({last_day})"}
+        data["overlay"] = overlay
+    save_chart_data(out_path, data)
 
 
 def main():
