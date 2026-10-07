@@ -247,7 +247,7 @@ Before writing it, sanity-check the numbers you will lean on: negative book equi
 ```
 
 Order `rows` from most long-leaning to most short-leaning. Then add the sheet with
-`PYTHONIOENCODING=utf-8 .venv/Scripts/python quick_stock_metrics.py --summary Outputs/quick_stock_metrics_summary_YYYYMMDD.json` (it defaults to today's workbook; pass the `.xlsx` path as a third argument otherwise). This loads the workbook, adds or replaces the `Summary` sheet as the first sheet, and saves it in place — re-run it after editing the JSON.
+`PYTHONIOENCODING=utf-8 .venv/Scripts/python quick_stock_metrics.py --summary Outputs/quick_stock_metrics_summary_YYYYMMDD.json` (it defaults to today's workbook; pass the `.xlsx` path as a third argument otherwise). This loads the workbook, adds or replaces the `Summary` sheet as the first sheet, and saves it in place, then rewrites the interactive web page `Outputs/quick_stock_metrics_YYYYMMDD.html` (screen read + a sortable, benchmark-colored comparison grid; the plain run writes the grid-only version) and refreshes `Outputs/index.html` — re-run it after editing the JSON.
 
 **Then report the same read in chat** as a compact table plus the top long / top short / next-step lines and the data notes; the Excel carries the metric detail.
 

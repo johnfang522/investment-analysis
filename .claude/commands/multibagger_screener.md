@@ -154,11 +154,11 @@ End with the handoff line: recommend a full bottom-up deep dive on the top 1–3
 
 ## Output Format
 
-**Always produce the `.docx` memo — this is not optional and does not depend on whether any name qualifies.** Build it with `python-docx` per this project's Word Document Generation conventions (import helpers from `doc_utils.py`, `setup_document(doc)` for landscape/narrow-margin/Arial-10pt formatting, `add_footnote(doc)` before save), saved to `Outputs/multibagger_screener_{theme_or_date}_{YYYYMMDD}.docx`, structured as: hunting-ground rationale → funnel summary (how many screened → gated → scored) → quantitative gate table → shortlist table → per-name hooks with DNA scorecards → twin-engine tables (for names that scored 8+) → anti-pattern exclusions worth noting → handoff recommendation.
+**Always produce the `.docx` memo — this is not optional and does not depend on whether any name qualifies.** Build it as a JSON report spec rendered by `report_renderer.py` (see `references/report-spec.md`, section "Market / theme reports"; no python-docx script) — spec `Outputs/multibagger_screener_{theme_or_date}_{YYYYMMDD}_spec.json` with `"output": "Outputs/multibagger_screener_{theme_or_date}_{YYYYMMDD}.docx"` (the interactive `.html` is written next to it; gate and shortlist tables use `"sortable": true`), structured as: hunting-ground rationale → funnel summary (how many screened → gated → scored) → quantitative gate table → shortlist table → per-name hooks with DNA scorecards → twin-engine tables (for names that scored 8+) → anti-pattern exclusions worth noting → handoff recommendation.
 
 **A null result (zero names clearing the 8+ DNA threshold) still gets the full memo**, not just a chat message. State plainly in the Shortlist section that no names qualify, why (cite the specific gate/DNA failures), and the recommended next step (broaden the hunting ground, or revisit a name once its fundamentals inflect). Reporting "nothing qualifies" with evidence is a valid, complete deliverable — never force a pick to avoid an empty shortlist.
 
-In chat, always confirm the saved `.docx` path after generating it. You may also give a short in-chat summary (shortlist table + hooks, or the null-result explanation) alongside the file, but the file itself is mandatory on every run.
+In chat, always confirm the saved `.html` and `.docx` paths after generating them. You may also give a short in-chat summary (shortlist table + hooks, or the null-result explanation) alongside the file, but the file itself is mandatory on every run.
 
 ---
 
@@ -168,7 +168,7 @@ This skill is fully standalone. If the following happen to be installed, use the
 
 - `/industry_trend_analysis` (or `/emerging_industry_trend` for undiscovered themes) — for the theme-driven hunting ground in Stage 1.
 - `/single_stock_quick_research` (or `/single_stock_deep_research` for the full suite) — for the post-shortlist handoff.
-- `python-docx` via `doc_utils.py` — for the memo deliverable, following this project's Word Document Generation conventions.
+- `report_renderer.py` — renders the memo spec to Word + an interactive web page (`references/report-spec.md`).
 
 ---
 

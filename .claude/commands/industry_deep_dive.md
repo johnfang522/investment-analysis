@@ -167,40 +167,20 @@ Then save as a Word document.
 
 ## Document Output
 
-After producing the full analysis in chat, save it as a Word document using `python-docx`.
+After producing the full analysis in chat, save it as a Word document plus an interactive web page.
 
 - **Output path:** `Outputs/industry_deep_dive_{theme}_{yyyymmdd}.docx`
   - Replace `{theme}` with the industry name lowercased, spaces replaced with underscores (e.g., `gpu_compute`, `optical_interconnect`).
   - Replace `{yyyymmdd}` with today's date in YYYYMMDD format.
 
-Write and execute a Python script (save it to `Outputs/generate_industry_deep_dive_{theme}.py`) using `.venv/Scripts/python` that:
+Do not write a python-docx script. Write the analysis as a JSON report spec and render it, following `references/report-spec.md` (block types, rules, final reply), section "Market / theme reports":
 
-1. Creates the document with a title heading matching the industry name.
-2. **Sets the house format (landscape, narrow margins, Arial 10pt)** immediately after `Document()`:
-   ```python
-   setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
-   ```
-3. Imports the shared helpers from `doc_utils.py`:
-   ```python
-   import sys; sys.path.insert(0, '.')
-   from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-   ```
-   Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-4. Renders all sections with appropriate headings, paragraphs, tables, and bullet points.
-5. For all tables:
-   - Always initialize with `rows=1` (header only), then `table.add_row()` per data row.
-   - Call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added.
-   - Call `set_row_font_size(row)` on every non-header data row immediately after `table.add_row()`.
-6. Applies color fills to the Porter's Five Forces table rows using `w:shd`:
-   - Threat of New Entrants: `D6E4F0` (light blue)
-   - Bargaining Power of Suppliers: `D5E8D4` (light green)
-   - Bargaining Power of Buyers: `FFF2CC` (light yellow)
-   - Threat of Substitutes: `FCE4D6` (light orange)
-   - Competitive Rivalry: `F4CCCC` (light red/pink)
-7. Renders **Section 6 — Variant View & Industry Posture**: the 3-column Variant View table (dark-blue header row), then the bold Industry Posture verdict (color the attractiveness label green `007000` for Attractive, neutral for Mixed, red `C00000` for Unattractive).
-8. Ends with a **Sources** section (Heading 1) listing all URLs cited as bullet points.
-9. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-10. Saves the file to the output path and prints the path.
+1. Spec: `Outputs/industry_deep_dive_{theme}_{yyyymmdd}_spec.json` with `"output": "Outputs/industry_deep_dive_{theme}_{yyyymmdd}.docx"` (no `"ticker"`).
+2. `"title"`: the industry name. Render every section per the rules below.
+3. Porter's Five Forces table: fill every cell of each data row — New Entrants `D6E4F0`, Suppliers `D5E8D4`, Buyers `FFF2CC`, Substitutes `FCE4D6`, Rivalry `F4CCCC`.
+4. Section 6: a `variant_view` block, then the Industry Posture verdict as a `paragraph` with `color` (`007000` Attractive · none for Mixed · `C00000` Unattractive).
+5. Sources: `heading` + a `bullets` block of `[title](url)` links.
+6. Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/industry_deep_dive_{theme}_{yyyymmdd}_spec.json` — writes the `.docx`, an interactive `.html` next to it, and refreshes the `Outputs/index.html` library page.
 
 ---
 
@@ -219,7 +199,7 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
 #### Section 2 — Business Model & Economics
 - Heading 1: "2. Business Model & Economics"
 - Three sub-headings (Heading 2): "Revenue Model", "Margin Profile", "Capital Intensity"
-- Each sub-heading followed by bullet points (Word List Bullet style).
+- Each sub-heading followed by a `bullets` block.
 
 #### Section 3 — Competitive Landscape
 - Heading 1: "3. Competitive Landscape"
@@ -229,7 +209,7 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
 #### Section 4 — Key Industry Dynamics
 - Heading 1: "4. Key Industry Dynamics"
 - Three sub-headings (Heading 2): "Growth Drivers", "Headwinds & Risks", "Secular Trends"
-- Each sub-heading followed by bullet points (Word List Bullet style).
+- Each sub-heading followed by a `bullets` block.
 
 #### Section 5 — Barriers to Entry & Moat Sources
 - Heading 1: "5. Barriers to Entry & Moat Sources"
@@ -238,9 +218,9 @@ Write and execute a Python script (save it to `Outputs/generate_industry_deep_di
 
 #### Section 6 — Variant View & Industry Posture
 - Heading 1: "6. Variant View & Industry Posture"
-- One table: Debate | Consensus View | Our Read (3 columns), dark-blue header row.
+- A `variant_view` block (Debate | Consensus View | Our Read).
 - After the table, the bold **Industry Posture** verdict: structural attractiveness label + Conviction X/10, a "How to express it" line, and a bold "The edge:" bullet.
 
 #### Section 7 — Sources
 - Heading 1: "7. Sources"
-- Bullet list of all URLs cited during the analysis (title + URL).
+- `bullets` block of `[title](url)` links for every URL cited.

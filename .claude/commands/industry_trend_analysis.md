@@ -372,40 +372,19 @@ Do not rely on training data alone for company names, funding amounts, or regula
 
 ## Document Output
 
-After producing the full analysis, save it as a Word document using `python-docx`.
+After producing the full analysis, save it as a Word document plus an interactive web page.
 
 - **Output path:** `Outputs/industry_trend_analysis_{theme}_{yyyymmdd}.docx`
   - `{theme}` is always the **derived theme name**, lowercased with spaces replaced by underscores — never the raw ticker symbol (e.g., `gan_sic_wbg`, `physical_ai`, `energy_storage`). If the argument was a ticker, use the theme you mapped it to.
   - Replace `{yyyymmdd}` with today's date in YYYYMMDD format.
   - Example: `Outputs/industry_trend_analysis_physical_ai_20260420.docx`
 
-Write and execute a Python script using `.venv/Scripts/python` that:
-1. Creates the document with a title heading matching the **derived theme name** (never the raw ticker). If the argument was a ticker, add a subtitle line: `"Triggered by: [TICKER] — mapped to [Theme Name]"`.
-2. **Set the house format (landscape, narrow margins, Arial 10pt)** immediately after creating the document:
-   ```python
-   setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
-   ```
-3. Renders all 7 output sections with appropriate headings, paragraphs, tables, and bullet points as specified below. Follow the per-section formatting rules exactly.
-4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
-5. **Every table must use AutoFit to Contents and have visible borders — applied AFTER all rows are added.** The critical rule: `autofit_table` and `add_table_borders` must be called **after** all data rows have been added to the table, not at creation time. Rows added after these helpers are called will not inherit the settings. Use this pattern for every table without exception:
-   ```python
-   table = doc.add_table(rows=1, cols=N)
-   # ... populate header row ...
-   # ... add all data rows with table.add_row() ...
-   autofit_table(table)      # call AFTER all rows are added
-   add_table_borders(table)  # call AFTER all rows are added
-   ```
+Do not write a python-docx script. Write the analysis as a JSON report spec and render it, following `references/report-spec.md` (block types, rules, final reply), section "Market / theme reports":
 
-   Import the shared helpers from `doc_utils.py` (in the project root):
-   ```python
-   import sys; sys.path.insert(0, '.')
-   from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-   ```
-   Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-6. **All non-header table cell text must use font size 10 (Arial).** Call `set_row_font_size(row)` (imported above) on every data row immediately after `table.add_row()`. Do **not** call it on the header row.
-7. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-8. Saves the file to the output path above.
+1. Spec: `Outputs/industry_trend_analysis_{theme}_{yyyymmdd}_spec.json` with `"output": "Outputs/industry_trend_analysis_{theme}_{yyyymmdd}.docx"` (no `"ticker"`).
+2. `"title"`: the **derived theme name** (never the raw ticker); if the argument was a ticker, `"subtitle"`: "Triggered by: [TICKER] — mapped to [Theme Name]".
+3. Render all 7 output sections per the rules below (Heading 1 = `heading`, Heading 2 = `heading` with `"level": 2`, tables = `table`, bold lines = `**...**`).
+4. Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/industry_trend_analysis_{theme}_{yyyymmdd}_spec.json` — writes the `.docx`, an interactive `.html` next to it, and refreshes the `Outputs/index.html` library page.
 
 ---
 
@@ -428,7 +407,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
   2. A **one-sentence italicized definition** of what this layer means for the specific theme
   3. A **per-layer table** with columns: Company / Type | Ticker | Description | Moat Strength | Cycle Timing | Key Risk
      - **Description** is a 1–2 sentence plain-language summary of what the company does and why it is relevant to this theme
-     - Apply the layer's background fill color to every data row (not the header row) using the `w:shd` XML element:
+     - `fills`: give every cell of every data row the layer's color:
        - Layer 1 — Infrastructure: `D6E4F0` (light blue)
        - Layer 2 — Enablers: `D5E8D4` (light green)
        - Layer 3 — Integrators: `FFF2CC` (light yellow)
@@ -453,7 +432,7 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 
 #### Section 5 — Positioning Recommendation
 - Heading 1: "5. Positioning Recommendation"
-- **Open with the Variant View table** (3 columns: Debate | Consensus / Crowded View | Our Read), dark-blue header row.
+- **Open with a `variant_view` block** (Debate | Consensus / Crowded View | Our Read).
 - Then a bold **Theme Posture** line: "Theme Conviction X/10 — [how to express it]", followed by a bold "The edge:" bullet.
 - Then a **Layer Weighting Summary table** (3 columns: Layer | Weight | Rationale), where Weight is one of: Overweight / Neutral / Underweight. Keep Rationale to one short phrase.
 - Then write **one bullet per named company or company type** you recommend acting on, formatted as: "**TICKER / Name** — [1-sentence action and reason]". Group bullets under bold sub-labels: **Overweight**, **Neutral**, **Underweight**.
@@ -461,16 +440,16 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 
 #### Section 6 — Peak & Reversal Watch
 - Heading 1: "6. Peak & Reversal Watch — When to Be Concerned"
-- Open with a bold **Peak Verdict** paragraph: "Peak Verdict: X/6 exhaustion signals firing — [Intact / Late-cycle / Peaking / Reversing]. Estimated time to peak: [...]." Color the verdict run: green `007000` for Intact, dark yellow `BF8F00` for Late-cycle, orange `FF8C00` for Peaking, red `C00000` for Reversing.
-- **6a. Exhaustion Scorecard** — Heading 2. Table with columns: Exhaustion Signal | Status | Evidence / What Would Trip It. Dark-blue header row (`1F3864`), white bold text. Shade the **Status** cell of each data row: ✅ Firing → `FFC7CE` (pink), ⚠️ Early warning → `FFEB9C` (yellow), ❌ Not yet → `C6EFCE` (green). Note the inversion versus the Section 2 signal table — here a firing signal is *bad news*, so the color logic is deliberately reversed. Add a one-line italic note under the table stating this, so a reader flipping between the two tables is not misled.
-- **6b. Tripwires** — Heading 2. Table with columns: # | Tripwire | Signal | Where Observed | Action if Triggered. 5–8 data rows. Dark-blue header row. Bold the text in the "Action if Triggered" column.
-- **6c. Watch Calendar** — Heading 2. Table with columns: Date / Window | Event | Bullish if... | Bearish if... Dark-blue header row. Order rows chronologically.
+- Open with a bold **Peak Verdict** paragraph: "Peak Verdict: X/6 exhaustion signals firing — [Intact / Late-cycle / Peaking / Reversing]. Estimated time to peak: [...]." Make it a `paragraph` with `color`: `007000` for Intact, `BF8F00` for Late-cycle, `FF8C00` for Peaking, `C00000` for Reversing.
+- **6a. Exhaustion Scorecard** — Heading 2. Table with columns: Exhaustion Signal | Status | Evidence / What Would Trip It. `fills` on the **Status** cell of each data row: ✅ Firing → `FFC7CE` (pink), ⚠️ Early warning → `FFEB9C` (yellow), ❌ Not yet → `C6EFCE` (green). Note the inversion versus the Section 2 signal table — here a firing signal is *bad news*, so the color logic is deliberately reversed. Add a one-line italic note under the table stating this, so a reader flipping between the two tables is not misled.
+- **6b. Tripwires** — Heading 2. Table with columns: # | Tripwire | Signal | Where Observed | Action if Triggered. 5–8 data rows. Bold the "Action if Triggered" cells with `**...**`.
+- **6c. Watch Calendar** — Heading 2. Table with columns: Date / Window | Event | Bullish if... | Bearish if... Order rows chronologically.
 - **6d. False-Alarm Test** — Heading 2. Four bullet points, one per discrimination question, each naming the specific metric to check. Follow with one bold line: "**Structural signals for this theme (act on):** ... · **Cyclical signals (likely buy the dip):** ..."
 - **6e. Closest Historical Analogue** — Heading 2. One short prose paragraph (2–4 sentences), then a small 2-column table (Metric | Value) covering: Analogue, Peak date, Peak-to-trough drawdown, Recovery time, Key difference vs. this theme.
 
 #### Section 7 — Key Diligence Questions
 - Heading 1: "7. Key Diligence Questions"
-- Write each question as a **numbered bullet** (Word List Number style). Each question must be specific and falsifiable — include concrete thresholds, named companies, or specific timeframes. No generic questions.
+- Write the questions as a `bullets` block with `"numbered": true`. Each question must be specific and falsifiable — include concrete thresholds, named companies, or specific timeframes. No generic questions.
 
 ---
 

@@ -170,38 +170,16 @@ Explicitly state which candidates (if any) now meet the **2+ signal** promotion 
 
 ## Document Output
 
-After producing the full analysis in chat, save it as a Word document using `python-docx`.
+After producing the full analysis in chat, save it as a Word document plus an interactive web page.
 
 - **Output path:** `Outputs/theme_discovery_scan_{yyyymmdd}.docx` (this is a cross-theme, non-ticker skill → save to the `Outputs/` root, not a ticker subfolder). Replace `{yyyymmdd}` with today's date in YYYYMMDD format.
 
-Write and execute a Python script using `.venv/Scripts/python` that:
+Do not write a python-docx script. Write the analysis as a JSON report spec and render it, following `references/report-spec.md` (block types, rules, final reply), section "Market / theme reports":
 
-1. Creates the document with a title heading "Theme Discovery Scan — [Month YYYY]".
-2. **Set the house format (landscape, narrow margins, Arial 10pt)** immediately after creating the document:
-   ```python
-   setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
-   ```
-3. Renders all output sections (Scan Posture, Scan Summary, Ranked Watchlist, Promotion Calls, Variant View) with appropriate headings, paragraphs, tables, and bullet points.
-4. For all tables, uses `python-docx` table objects. **Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row.** Never pass a pre-sized `rows` count.
-5. **Every table must call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows are added:**
-   ```python
-   table = doc.add_table(rows=1, cols=N)
-   # ... populate header row ...
-   # ... add all data rows with table.add_row() ...
-   autofit_table(table)      # call AFTER all rows are added
-   add_table_borders(table)  # call AFTER all rows are added
-   ```
-   Import the shared helpers from `doc_utils.py` (in the project root):
-   ```python
-   import sys; sys.path.insert(0, '.')
-   from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-   ```
-   Use `fmt_value(v)` for any dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-6. **All non-header table cell text must use font size 10 (Arial).** Call `set_row_font_size(row)` on every data row immediately after `table.add_row()` — never on the header row.
-7. **Apostrophe pitfall:** when writing string literals containing apostrophes (e.g. `"Incumbents' Fear"`), use double-quoted Python strings — never single-quoted — to avoid `SyntaxError: unterminated string literal`.
-8. Ends with a **Sources** section listing all URLs cited during the analysis as bullet points (title + URL).
-9. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-10. Saves the file to the output path above and prints the path.
+1. Spec: `Outputs/theme_discovery_scan_{yyyymmdd}_spec.json` with `"output": "Outputs/theme_discovery_scan_{yyyymmdd}.docx"` (no `"ticker"`).
+2. `"title"`: "Theme Discovery Scan — [Month YYYY]"; blocks for Scan Posture, Scan Summary, Ranked Watchlist (a `table` with `"sortable": true`), Promotion Calls and Variant View (`variant_view`), in that order.
+3. End with a Sources section: `heading` "Sources" + a `bullets` block of `[title](url)` links for every URL cited.
+4. Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/theme_discovery_scan_{yyyymmdd}_spec.json` — writes the `.docx`, an interactive `.html` next to it, and refreshes the `Outputs/index.html` library page.
 
 Keep the in-chat response to a concise summary of the top-ranked candidates and any promotion calls, then link the saved document.
 

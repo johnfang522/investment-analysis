@@ -24,9 +24,9 @@ On a `ValueError` (unknown block, missing key, ragged row) fix the spec and re-r
 | Block | Shape | Notes |
 |---|---|---|
 | heading | `{"type": "heading", "text": "At a Glance"}` | each `##` section of the skill's outline; `"level": 2` for a sub-heading |
-| paragraph | `{"type": "paragraph", "text": "..."}` | rare — house style is bullets |
-| bullets | `{"type": "bullets", "items": ["**Label:** text", ...]}` | |
-| table | `{"type": "table", "headers": [...], "rows": [[...]], "source": "...", "bold_rows": [i], "fills": [[row, col, "C6EFCE"]], "sortable": true}` | every table has a `source`; fills: `C6EFCE` good / `FFEB9C` watch / `FFC7CE` bad / `F2F2F2` estimate; `sortable` only for peer/screen tables |
+| paragraph | `{"type": "paragraph", "text": "...", "color": "007000"}` | rare — house style is bullets; `color` makes a bold verdict-style line (`007000` green · `C00000` red · `BF8F00` dark yellow · `FF8C00` orange) |
+| bullets | `{"type": "bullets", "items": ["**Label:** text", ...], "numbered": true}` | `numbered` for diligence / follow-up questions (Word List Number) |
+| table | `{"type": "table", "headers": [...], "rows": [[...]], "source": "...", "bold_rows": [i], "fills": [[row, col, "C6EFCE"]], "sortable": true}` | every table has a `source`; fills: `C6EFCE` good / `FFEB9C` watch / `FFC7CE` bad / `F2F2F2` estimate, or any pastel hex for row coloring (e.g. value-chain layers — fill every cell of the row); score cells that a skill colors green/orange/red use the good/watch/bad fills; `sortable` only for peer/screen tables |
 | chart | `{"type": "chart", "path": "Outputs/NVDA/nvda_cash_flow_trend.png", "source": "SEC EDGAR"}` | interactive in HTML automatically when the chart script wrote a sidecar |
 | source | `{"type": "source", "text": "..."}` | standalone citation line |
 | variant_view | `{"type": "variant_view", "rows": [[debate, consensus, our_read]], "source": "...", "edge": "...", "note": "..."}` | renders its own heading — mandatory in every note |
@@ -39,10 +39,16 @@ On a `ValueError` (unknown block, missing key, ragged row) fix the spec and re-r
 
 - Follow the skill's outline in order; `variant_view`, `read_through` and `verdict` replace the matching `##` sections (no extra heading block).
 - Paste figures exactly as `digest.py` / `compute_metrics()` print them; don't recompute or reformat a figure a script already gives. Format any other dollar amount like `fmt_value()` (`$1.23B`, `$45.6M`).
-- Text formatting: `**bold**`, `*italic*`; a `\n` escape inside a JSON string is a line break in a table cell. Status icons (✅ ⚠️ 🔴 ↑ ↓ →) go straight into the text.
+- Text formatting: `**bold**`, `*italic*`, `[title](url)` links (clickable on the web page; the Word file shows the address); a `\n` escape inside a JSON string is a line break in a table cell. Status icons (✅ ⚠️ 🔴 ↑ ↓ →) go straight into the text.
 - Every quantitative figure carries a source — in the table's `source`, a `source` block, or inline.
 - `summary.key_figures`: the 5–8 numbers `/single_stock_deep_research` most needs from this dimension, each with its source. The first three also appear as header tiles on the web page, so keep values short (put context in parentheses: `"$21.40B (+58.9% YoY)"`).
 - `summary.thesis_bias` mirrors the skill's Thesis Bias row; signal and conviction are taken from the `read_through` / `verdict` block automatically.
+
+## Market / theme reports (no ticker)
+
+- Omit `"ticker"`; the spec, `.docx` and `.html` go in the `Outputs/` root (`"output": "Outputs/theme_discovery_scan_20261007.docx"`, spec `Outputs/theme_discovery_scan_20261007_spec.json`). The library page lists them under Market & Themes.
+- Theme/macro posture calls (theme conviction, Risk-On / Risk-Off) go in a `verdict` block (`bias` = the posture, e.g. `RISK-OFF`, `OVERWEIGHT`) or a colored `paragraph`; put the conviction in `summary` as `"signal"` / `"conviction"` only when there is a `verdict` block.
+- A Sources section is a `bullets` block of `[title](url)` links.
 
 ## Final reply
 

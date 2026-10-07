@@ -159,7 +159,7 @@ And close with the research checklist:
 
 ## Output Format
 
-Default deliverable: polished **quick research notes as a `.docx`** saved to `Outputs/{TICKER}/{ticker}_stock_quick_research_{YYYYMMDD}.docx`. Follow the Word Document Generation conventions in CLAUDE.md: use `doc_utils.py` helpers, call `add_footnote(doc)` before saving, call `setup_document(doc)` right after `Document()` (landscape, narrow margins, Arial 10pt).
+Default deliverable: polished **quick research notes** as a `.docx` plus an interactive web page, saved as `Outputs/{TICKER}/{ticker}_stock_quick_research_{YYYYMMDD}.docx` / `.html`. Do not write a python-docx script: write a JSON report spec `Outputs/{TICKER}/{ticker}_stock_quick_research_{YYYYMMDD}_spec.json` (`"skill": "quick_research"`) and render it with `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py <spec>`, following `references/report-spec.md`. The recommendation is a `verdict` block (bias, conviction, price, target, stop, risk/reward, sizing); the variant perception is a `variant_view` block; comps tables use `"sortable": true`; the Scorecard's figures come from `digest.py {TICKER} metrics` (with their source labels).
 
 For a quick "what do you think of $X" with no request for a document, a tight in-chat note is fine — lead with the scorecard and recommendation, then the supporting pillars. Offer the `.docx` as a follow-up.
 

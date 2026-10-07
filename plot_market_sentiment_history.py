@@ -18,6 +18,8 @@ import matplotlib.dates as mdates
 import requests
 from datetime import datetime, timedelta
 
+from chart_data import save_chart_data
+
 OUT = "Outputs"
 os.makedirs(OUT, exist_ok=True)
 
@@ -109,6 +111,28 @@ def save_fig(fig, name):
     plt.close(fig)
     print(f"  Saved {path}")
 
+
+def save_series_data(name, title, unit, series, refs=(), y_min=None, y_max=None, weekly=True):
+    """Sidecar for the interactive HTML report: line chart of `series` ({label: pd.Series}) on one axis,
+    resampled to weekly closes (daily series) so the page stays light. `refs` = [(value, label), ...]."""
+    try:
+        frame = pd.concat({k: v.squeeze() for k, v in series.items() if v is not None and len(v)}, axis=1)
+        if weekly and len(frame) > 400:
+            frame = frame.resample("W-FRI").last()
+        frame = frame.dropna(how="all")
+        data = {"kind": "line", "title": title, "unit": unit,
+                "categories": [d.strftime("%Y-%m-%d") for d in frame.index],
+                "series": [{"name": k, "values": [None if pd.isna(v) else round(float(v), 2) for v in frame[k]]}
+                           for k in frame.columns],
+                "refs": [{"value": v, "label": l} for v, l in refs]}
+        if y_min is not None:
+            data["y_min"] = y_min
+        if y_max is not None:
+            data["y_max"] = y_max
+        save_chart_data(os.path.join(OUT, name), data)
+    except Exception as e:   # the PNG is the deliverable; a failed sidecar only loses interactivity
+        print(f"  chart data skipped for {name}: {e}")
+
 # ─────────────────────────── 1. VIX ─────────────────────────────────────────
 print("Fetching VIX...")
 vix = yf.download("^VIX", start=START_STR, end=END_STR, progress=False)["Close"].squeeze().dropna()
@@ -125,6 +149,8 @@ ax.set_ylabel("VIX Level")
 ax.legend(fontsize=9, loc="upper right")
 fmt_xaxis(ax)
 fig.tight_layout()
+save_series_data("sentiment_vix.png", "VIX — CBOE Volatility Index", "num", {"VIX": vix},
+                 [(15, "15 complacency"), (20, "20 caution"), (30, "30 fear")])
 save_fig(fig, "sentiment_vix.png")
 
 # ──────────────────── 2. Market Breadth: RSP vs SPY ─────────────────────────
@@ -155,6 +181,8 @@ ax2.set_ylabel("RSP − SPY (pp)")
 ax2.legend(fontsize=8, loc="lower left")
 fmt_xaxis(ax2)
 fig.tight_layout()
+save_series_data("sentiment_breadth.png", "Market Breadth — RSP vs SPY (indexed to 100)", "num",
+                 {"RSP (equal-weight)": rsp_idx, "SPY (cap-weight)": spy_idx})
 save_fig(fig, "sentiment_breadth.png")
 
 # ─────────────────────── 3. HY OAS Spread ───────────────────────────────────
@@ -178,6 +206,8 @@ if not hy.empty:
     ax.legend(fontsize=9)
     fmt_xaxis(ax)
     fig.tight_layout()
+    save_series_data("sentiment_hy_oas.png", "High-Yield OAS (bps)", "num", {"HY OAS (bps)": hy_bps},
+                     [(300, "300 complacency"), (500, "500 neutral"), (700, "700 stress")])
     save_fig(fig, "sentiment_hy_oas.png")
 else:
     print("  Skipping HY OAS chart — data unavailable")
@@ -218,6 +248,8 @@ if not cape_series.empty:
     ax.legend(fontsize=9)
     fmt_xaxis(ax)
     fig.tight_layout()
+    save_series_data("sentiment_cape.png", "Shiller CAPE", "num", {"CAPE": cape_series},
+                     [(35, "35 bubble warning"), (25, "25 expensive"), (17, "17 long-run avg")])
     save_fig(fig, "sentiment_cape.png")
 else:
     print("  Skipping CAPE chart — data unavailable")
@@ -276,6 +308,8 @@ if not buffett.empty:
     ax.legend(fontsize=9)
     fmt_xaxis(ax)
     fig.tight_layout()
+    save_series_data("sentiment_buffett.png", "Buffett Indicator (% of GDP)", "pct", {"Buffett Indicator": buffett},
+                     [(160, "160% bubble warning"), (120, "120% overvalued"), (100, "100% fair value")])
     save_fig(fig, "sentiment_buffett.png")
 else:
     print("  Skipping Buffett chart — data unavailable")
@@ -345,6 +379,8 @@ if not fg_series.empty:
     ax.legend(fontsize=9)
     fmt_xaxis(ax)
     fig.tight_layout()
+    save_series_data("sentiment_fear_greed.png", "CNN Fear & Greed Index", "num", {"Fear & Greed": fg_series},
+                     [(75, "75 extreme greed"), (25, "25 extreme fear")], y_min=0, y_max=100, weekly=False)
     save_fig(fig, "sentiment_fear_greed.png")
 else:
     print("  CNN F&G historical data unavailable — skipping chart")
@@ -377,6 +413,9 @@ if not skew.empty:
     )
     fmt_xaxis(ax)
     fig.tight_layout()
+    save_series_data("sentiment_putcall.png", "CBOE SKEW Index (put-demand proxy)", "num",
+                     {"SKEW (20-day avg)": skew_smooth},
+                     [(150, "150 elevated tail risk"), (135, "135 caution"), (115, "115 complacency")])
     save_fig(fig, "sentiment_putcall.png")
     print(f"  SKEW: {len(skew)} rows, current={skew.iloc[-1]:.1f}")
 else:
@@ -412,6 +451,9 @@ if not d10.empty and not d02.empty:
     ax2.legend(fontsize=8, loc="lower right")
     fmt_xaxis(ax2)
     fig.tight_layout()
+    save_series_data("sentiment_treasury_yields.png", "Treasury Yields and the 10Y−2Y Curve (%)", "pct",
+                     {"10-Year": y10, "2-Year": y2, "10Y−2Y spread": curve},
+                     [(4.5, "4.5% valuation headwind"), (0, "inversion")])
     save_fig(fig, "sentiment_treasury_yields.png")
     print(f"  Yields: 10Y={y10.iloc[-1]:.2f}%, 2Y={y2.iloc[-1]:.2f}%, curve={curve.iloc[-1]:+.2f}pp")
 else:
@@ -451,6 +493,8 @@ if not mts_df.empty:
                  transform=ax2.transAxes, fontsize=10, color="#888888")
     fmt_xaxis(ax2)
     fig.tight_layout()
+    save_series_data("sentiment_fiscal.png", "US Federal Deficit — trailing 12 months ($T)", "num",
+                     {"Deficit, trailing 12M ($T)": deficit_12m}, [(1.0, "$1T"), (2.0, "$2T heavy issuance")])
     save_fig(fig, "sentiment_fiscal.png")
     print(f"  Fiscal: trailing-12M deficit=${deficit_12m.iloc[-1]:.2f}T")
 else:
@@ -494,6 +538,8 @@ if not md_df.empty and not gdp_md.empty:
     )
     fmt_xaxis(ax2)
     fig.tight_layout()
+    save_series_data("sentiment_margin_debt.png", "Margin Debt as % of GDP", "pct", {"Margin debt / GDP": md_gdp},
+                     [(2.6, "2.6% 2007 peak"), (2.8, "2.8% 2000 peak"), (3.8, "3.8% 2021 peak")])
     save_fig(fig, "sentiment_margin_debt.png")
     print(f"  Margin: ${margin_b.iloc[-1]:.0f}B, {md_gdp.iloc[-1]:.2f}% of GDP")
 else:

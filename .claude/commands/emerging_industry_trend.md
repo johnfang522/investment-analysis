@@ -281,51 +281,20 @@ Follow the table with bullets:
 
 ## Document Output
 
-After producing the full analysis in chat, save it as a Word document using `python-docx`.
+After producing the full analysis in chat, save it as a Word document plus an interactive web page.
 
 - **Output path:** `Outputs/emerging_industry_trends_{theme}_{yyyymmdd}.docx`
   - `{theme}` is always the **derived theme name**, lowercased with spaces replaced by underscores — never the raw ticker symbol (e.g., `gan_sic_wbg`, `ai_gpu_compute`, `humanoid_robotics`). If the argument was a ticker, use the theme you mapped it to.
   - If a broad scan was run: use `broad_scan` as the theme (e.g., `Outputs/emerging_industry_trends_broad_scan_20260509.docx`).
   - Replace `{yyyymmdd}` with today's date in YYYYMMDD format.
 
-Write and execute a Python script using `.venv/Scripts/python` that:
+Do not write a python-docx script. Write the analysis as a JSON report spec and render it, following `references/report-spec.md` (block types, rules, final reply), section "Market / theme reports":
 
-1. Creates the document with a title heading matching the **derived theme name** (never the raw ticker). If the argument was a ticker, add a subtitle line: `"Triggered by: [TICKER] — mapped to [Theme Name]"`.
-2. **Set the house format (landscape, narrow margins, Arial 10pt)** immediately after creating the document:
-   ```python
-   setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
-   ```
-3. Renders all 5 output sections (Theme Summary, Signal Scorecard, Value Chain Map, Bottleneck Analysis, Positioning & Diligence) with appropriate headings, paragraphs, tables, and bullet points.
-4. For all tables, uses `python-docx` table objects. Always initialize tables with `rows=1` (header only), then call `table.add_row()` for each data row. Never pass a pre-sized `rows` count.
-5. **Every table must use AutoFit to Contents and have visible borders — applied AFTER all rows are added.** Use this pattern for every table without exception:
-   ```python
-   table = doc.add_table(rows=1, cols=N)
-   # ... populate header row ...
-   # ... add all data rows with table.add_row() ...
-   autofit_table(table)      # call AFTER all rows are added
-   add_table_borders(table)  # call AFTER all rows are added
-   ```
-
-   Import the shared helpers from `doc_utils.py` (in the project root):
-   ```python
-   import sys; sys.path.insert(0, '.')
-   from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-   ```
-   Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-6. **All non-header table cell text must use font size 10 (Arial).** Call `set_row_font_size(row)` (imported above) on every data row immediately after `table.add_row()`.
-
-7. Apply color fills to Value Chain Map rows using the layer's background color via the `w:shd` XML element:
-   - Layer 1 — Infrastructure: `D6E4F0` (light blue)
-   - Layer 2 — Enablers: `D5E8D4` (light green)
-   - Layer 3 — Integrators: `FFF2CC` (light yellow)
-   - Layer 4 — Applications: `FCE4D6` (light orange)
-   - Layer 5 — Adjacent Beneficiaries: `E1D5E7` (light purple)
-   - Layer 6 — Bottlenecks: `F4CCCC` (light red/pink)
-
-8. Ends with a **Sources** section listing all URLs cited during the analysis as bullet points.
-9. Calls `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-10. Saves the file to the output path above and prints the path.
+1. Spec: `Outputs/emerging_industry_trends_{theme}_{yyyymmdd}_spec.json` with `"output": "Outputs/emerging_industry_trends_{theme}_{yyyymmdd}.docx"` (no `"ticker"`).
+2. `"title"`: the **derived theme name** (never the raw ticker); if the argument was a ticker, `"subtitle"`: "Triggered by: [TICKER] — mapped to [Theme Name]".
+3. Render the 5 output sections plus Sources per the rules below (Heading 1 = `heading`, tables = `table`, bold bullets = `**...**` items).
+4. Value Chain Map table: fill every cell of each data row with its layer color — Layer 1 Infrastructure `D6E4F0`, Layer 2 Enablers `D5E8D4`, Layer 3 Integrators `FFF2CC`, Layer 4 Applications `FCE4D6`, Layer 5 Adjacent Beneficiaries `E1D5E7`, Layer 6 Bottlenecks `F4CCCC`.
+5. Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/emerging_industry_trends_{theme}_{yyyymmdd}_spec.json` — writes the `.docx`, an interactive `.html` next to it, and refreshes the `Outputs/index.html` library page.
 
 ---
 
@@ -354,15 +323,15 @@ Write and execute a Python script using `.venv/Scripts/python` that:
 
 #### Section 4 — Positioning & Diligence
 - Heading 1: "4. Positioning & Diligence"
-- **Open with the Variant View table** (3 columns: Debate | Consensus / What's Priced | Our Read), dark-blue header row.
+- **Open with a `variant_view` block** (Debate | Consensus / What's Priced | Our Read).
 - Then a bold **Bottleneck Posture** line: "Conviction X/10 — [how to express it]", followed by a bold "The edge:" bullet.
 - Then one Layer Weighting table: Layer | Weight | Rationale (Weight = Overweight / Neutral / Underweight)
 - Then a bold "Risk Flags" sub-heading followed by bullet points.
-- Then a bold "Diligence Questions" sub-heading followed by numbered bullet points (Word List Number style), each specific and falsifiable.
+- Then a bold "Diligence Questions" sub-heading followed by a `bullets` block with `"numbered": true`, each specific and falsifiable.
 
 #### Section 5 — Sources
 - Heading 1: "5. Sources"
-- Bullet list of all URLs cited during the analysis (title + URL).
+- `bullets` block of `[title](url)` links for every URL cited.
 
 ---
 

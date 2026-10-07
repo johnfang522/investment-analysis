@@ -12,7 +12,7 @@ description: >
 
 - **10 time-series chart PNGs** saved to `Outputs/` — 5-year history for each of the 7 sentiment indicators, plus Treasury yields, the US fiscal picture, and margin debt
 - **A combined dashboard PNG** — `Outputs/sentiment_dashboard_{YYYYMMDD}.png`
-- **A Word document** saved to `Outputs/market_sentiment_analysis_{YYYYMMDD}.docx` containing:
+- **A Word document and an interactive web page** saved to `Outputs/market_sentiment_analysis_{YYYYMMDD}.docx` / `.html` containing:
   1. **A risk-posture verdict** — Risk-On / Neutral / Risk-Off net-exposure call, conviction X/10, and a suggested gross/hedge tilt
   2. **A composite sentiment score** (0–100, very bearish → very bullish) synthesized from all 7 indicators
   3. **An indicator summary table** — all 7 indicators with current value, score, and signal
@@ -197,24 +197,18 @@ Before writing the Word document, generate historical time-series charts for all
 
 ---
 
-## Step 5 — Save to Word Document
+## Step 5 — Save the Report (Word + interactive HTML)
 
-Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that saves the full analysis to `Outputs/market_sentiment_analysis_{YYYYMMDD}.docx`.
+Do not write a python-docx script. Write the analysis as a JSON report spec and render it, following `references/report-spec.md` (block types, rules, final reply), section "Market / theme reports":
 
-Save the script itself to `Outputs/generate_market_sentiment_analysis_{YYYYMMDD}.py` and run it from the project root.
+1. Spec: `Outputs/market_sentiment_analysis_{YYYYMMDD}_spec.json` with `"output": "Outputs/market_sentiment_analysis_{YYYYMMDD}.docx"` (no `"ticker"`).
+2. `"skill": "market_sentiment"`, `"title"`: "Market Sentiment Analysis", `"subtitle"`: the date. Build the sections below in order; every chart PNG is a `chart` block (interactive on the web page when `plot_market_sentiment_history.py` wrote its `.chart.json`).
+3. Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/market_sentiment_analysis_{YYYYMMDD}_spec.json` — writes the `.docx`, an interactive `.html` next to it, and refreshes the `Outputs/index.html` library page.
 
 ### Document structure
 
-Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see the standard block in CLAUDE.md.
-
-**Title block**
-- Title: `Market Sentiment Analysis` (bold, centered, 18pt)
-- Subtitle: date (centered, italic)
-
 **Section 1 — Risk Posture (Verdict)** *(place first, right after the title block)*
-- Heading 1: `Risk Posture`
-- Large bold text colored by call: `Risk-On` (green `007000`) / `Neutral` (neutral dark) / `Risk-Off` (red `C00000`), followed by `· Conviction X/10`
-- A small 2-column table: `Posture | …`, `Conviction | X/10`, `Composite Score | XX/100`, `Macro overlay (3–6 mo) | Tailwind / Neutral / Headwind [+ adjustment applied, if any]`, `Suggested tilt | e.g. "trim gross, add hedges"`, `Key swing factor | [1 phrase]`
+- A `verdict` block with `"heading": "Risk Posture"` (it renders its own heading): `bias` = `RISK-ON` / `NEUTRAL` / `RISK-OFF`, `conviction`, `rows` = `Composite Score | XX/100`, `Macro overlay (3–6 mo) | Tailwind / Neutral / Headwind [+ adjustment applied, if any]`, `Suggested tilt | e.g. "trim gross, add hedges"`, `Key swing factor | [1 phrase]`
 - One sentence stating the net-exposure implication for the book
 
 **Section 2 — Composite Score**
@@ -226,23 +220,18 @@ Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup
 - Heading 1: `Indicator Dashboard`
 - Table with columns: `Indicator | Current Value | Score (0–100) | Signal | Trend`
 - Signal values: `Bearish` / `Neutral` / `Bullish`
-- Initialize with `rows=1` (header only), then `table.add_row()` per indicator row
-- Call `set_row_font_size(row)` on every data row
-- Call `autofit_table(table)` then `add_table_borders(table)` after all rows are added
 
 **Section 4 — Per-Indicator Detail**
 - Heading 1: `Indicator Detail`
 - For each of the 7 indicators, a Heading 2 with the indicator name, then:
   - A short table: `Current Value | Score | Trend | Signal` (single data row)
   - A bullet or two of interpretation
-  - **Embed the corresponding time-series chart PNG** using `doc.add_picture(chart_path, width=Inches(9.5))` immediately after the table — use the filenames from the table in Step 4.5
-- Same table rules: `rows=1`, `add_row()`, `set_row_font_size()`, `autofit_table()`, `add_table_borders()`
+  - A `chart` block with the corresponding time-series PNG immediately after the table — filenames from the table in Step 4.5
 
 **Section 5 — Macro & Policy Outlook**
 - Heading 1: `Macro & Policy Outlook (Next 3–6 Months)`
 - A table with columns: `Factor | Current Reading | Expected Path (3–6 mo) | Market Impact | Signal` — one row each for `Fed commentary`, `Rate guidance`, `Fiscal deficit`, `Treasury yields`; Signal values: `Tailwind` / `Neutral` / `Headwind`
-- Same table rules: `rows=1`, `add_row()`, `set_row_font_size()`, `autofit_table()`, `add_table_borders()`
-- **Embed `sentiment_treasury_yields.png` and `sentiment_fiscal.png`** with `doc.add_picture(path, width=Inches(9.5))`
+- `chart` blocks for `sentiment_treasury_yields.png` and `sentiment_fiscal.png`
 - One short paragraph per factor: what was said / what is priced, and how it feeds through to market sentiment over the next few months (per Step 3.5)
 - A bold line: `Net macro overlay: Tailwind / Neutral / Headwind` — plus the posture adjustment applied, or "no adjustment; composite stands"
 - A short bullet list of **dated upcoming catalysts** (next FOMC meeting, next CPI/PCE print, next quarterly refunding announcement) with what each could change
@@ -251,15 +240,13 @@ Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup
 - Heading 1: `Market Leverage — Margin Debt`
 - Bold rating line: `Margin Picture: Low / Elevated / Critical`
 - A table with columns: `Dimension | Current Reading | Historical Benchmark | Signal` — one row each for `Level ($B/$T)`, `Margin Debt / GDP`, `YoY Growth Rate` (benchmarks: the 2000/2007/2021 peaks per Step 3.7)
-- **Embed `sentiment_margin_debt.png`** with `doc.add_picture(path, width=Inches(9.5))`
+- A `chart` block for `sentiment_margin_debt.png`
 - The **critical-level crash record table** from Step 3.7 (`Episode | Margin signal at the peak | What followed`) rendered as a 3-column table
 - One short paragraph: which historical episode today's readings most resemble, why margin debt is an amplifier rather than a timing trigger, and how this rating feeds the Bubble Risk verdict
-- Same table rules: `rows=1`, `add_row()`, `set_row_font_size()`, `autofit_table()`, `add_table_borders()`
 
 **Section 7 — Variant View**
-- Heading 1: `Variant View — Consensus vs. Our Read`
-- A 3-column table: `Debate | Consensus / Positioning | Our Read` (e.g., debate over whether tight credit spreads are complacency or justified; whether narrow breadth is a warning or normal late-cycle leadership; whether the market-implied rate path or the Fed's guidance is right)
-- One bold bullet: `The edge:` — what consensus positioning is mispricing right now and why our posture differs. If the indicator readings confirm the market's current risk posture, state that explicitly — a forced contrarian view is a bias, not an edge.
+- A `variant_view` block: `Debate | Consensus / Positioning | Our Read` (e.g., debate over whether tight credit spreads are complacency or justified; whether narrow breadth is a warning or normal late-cycle leadership; whether the market-implied rate path or the Fed's guidance is right)
+- The block's `edge`: what consensus positioning is mispricing right now and why our posture differs. If the indicator readings confirm the market's current risk posture, state that explicitly — a forced contrarian view is a bias, not an edge.
 
 **Section 8 — Bubble / Crash Risk**
 - Heading 1: `Bubble Risk Assessment`
@@ -276,24 +263,13 @@ Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup
   - How the Fed path, fiscal/issuance picture, Treasury yield trend, and margin leverage are likely to move sentiment over the next few months
   - Overall verdict: cautious / neutral / confident
 
-**Footer**
-- Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer
 
-### Import the shared helpers
-
-```python
-import sys; sys.path.insert(0, '.')
-from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-Confirm the output file path when done.
 
 ---
 
 ## Step 6 — Offer next step
 
-After confirming the output file path, ask the user:
+After confirming the `.html` and `.docx` paths, ask the user:
 
 > "Would you like to kick off `/emerging_industry_trend` to identify the next market trend or investment theme worth researching?"
 

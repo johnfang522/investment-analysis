@@ -320,44 +320,14 @@ Write a 3–5 sentence thesis that answers:
 
 ---
 
-## Save to Word Document
+## Save the Report (Word + interactive HTML)
 
-After completing all 9 steps above, write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that saves the full analysis to `Outputs/{TICKER}/{ticker_lowercase}_company_deep_dive_{YYYYMMDD}.docx`.
+Do not write a python-docx script. Write the analysis as a JSON report spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-Save the script to `Outputs/{TICKER}/generate_{ticker_lowercase}_company_deep_dive.py` and run it from the project root.
-
-**Document structure:**
-- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see CLAUDE.md
-- Title: use `doc.add_heading('{TICKER} — Company Deep Dive', 0)` (Heading 0 style, NOT a custom-sized run) + `doc.add_paragraph(date_label)` as plain subtitle
-- Each Step becomes a `doc.add_heading('Step N: ...', 1)` section; sub-headings use level 2
-- All body narrative text: `doc.add_paragraph()` in Arial 10pt (the default after `setup_document(doc)`) — do not set a different size on body runs
-- **Use bullet points liberally.** Any time content is a list — advantages, observations, risks, factors, named items — use `bullet()` instead of embedding it as "(1)...(2)...(3)..." inside a prose paragraph. Never inline numbered items like "(1) ... (2) ... (3) ..." inside a single `body()` call; always split each into its own `bullet()` call. Lead with a short `body()` intro line (e.g. `body(doc, 'Key observations:')`) then follow with individual `bullet()` calls.
-- Bullet points: use `doc.add_paragraph(style='List Bullet')` + `p.add_run(text)` (Arial 10pt by default — no explicit size)
-- All tables use dark blue header rows (fill `1F3864`, white bold text), 10pt data rows
-- Chokepoint scoring table: color the Score column cell green (`007000`) for High, orange (`FF8C00`) for Medium, red (`C00000`) for Low
-- Valuation scenario table: color Bull row green, Base row neutral, Bear row red
-- **Verdict block (Step 9):** render the Bias line as a colored Heading-1-style line — green `007000` for LONG, red `C00000` for SHORT, neutral for PASS — followed by the Verdict table
-- **Variant View table (Step 9):** render with the dark-blue header row (fill `1F3864`, white bold text); this section is mandatory
-- Source citations: `doc.add_paragraph()` with `run.italic = True` (10pt)
-
-**Required table rules (from CLAUDE.md):**
-- Initialize every table with `rows=1` (header only), then call `table.add_row()` for each data row — never use `rows=1+len(data)` upfront
-- Call `set_row_font_size(row)` on every data row immediately after `table.add_row()`
-- Call `autofit_table(table)` then `add_table_borders(table)` **after all rows are added**
-- Never use fixed column widths
-
-**Import shared helpers from `doc_utils.py`:**
-```python
-import sys; sys.path.insert(0, '.')
-from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-**Set the house format (landscape, narrow margins, Arial 10pt) immediately after `doc = Document()`:**
-```python
-setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
-```
-
-Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-
-Confirm the output file path when done.
+1. Spec: `Outputs/{TICKER}/{ticker_lowercase}_company_deep_dive_{YYYYMMDD}_spec.json` with `"output": "Outputs/{TICKER}/{ticker_lowercase}_company_deep_dive_{YYYYMMDD}.docx"`.
+2. `"ticker"`, `"skill": "ai_company_deep_dive"`, `"title"`: "{TICKER} — Company Deep Dive", `"subtitle"`: the date label.
+3. Each Step is a `heading` ("Step N: ..."); sub-headings use `"level": 2`. Use `bullets` liberally — any list (advantages, observations, risks, named items) is a `bullets` block, never "(1)...(2)..." inside a paragraph; lead with a short `paragraph` intro line where useful.
+4. Chokepoint scoring table: `fills` on the Score cell — `C6EFCE` High, `FFEB9C` Medium, `FFC7CE` Low. Valuation scenario table: fill the Bull row `C6EFCE`, Bear row `FFC7CE`, Base unfilled.
+5. Step 9: a `verdict` block (rows = the Verdict table) and a `variant_view` block (mandatory).
+6. Any chart PNG you embed is a `chart` block; financial figures cite SEC EDGAR / Yahoo Finance / the web source in each table's `source`.
+7. Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/{ticker_lowercase}_company_deep_dive_{YYYYMMDD}_spec.json` — writes the `.docx`, an interactive `.html` next to it, and refreshes the `Outputs/index.html` library page.

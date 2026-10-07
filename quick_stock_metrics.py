@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 from datetime import date
 from openpyxl import Workbook
@@ -816,6 +817,69 @@ def add_summary(xlsx_path, summary_path):
     write_summary_sheet(wb, summary)
     wb.save(xlsx_path)
     print(f"Added Summary sheet: {xlsx_path}")
+    tickers = [n for n in wb.sheetnames if n not in ("Summary", "Comparison")]
+    metrics, sources = zip(*(compute_metrics(t, with_sources=True) for t in tickers))
+    write_html(xlsx_path, tickers, dict(zip(tickers, metrics)), dict(zip(tickers, sources)), summary)
+
+
+# Columns of the interactive screen page (a subset of METRICS that fits one sortable grid).
+HTML_COLUMNS = {"current_price": "Price", "market_cap": "Mkt Cap", "rev_growth": "Rev Growth", "gross_margin": "Gross M",
+                "op_margin": "Op M", "fcf_margin": "FCF M", "roe": "ROE", "de": "D/E", "r40": "Rule of 40",
+                "trailing_pe": "P/E (TTM)", "forward_pe": "P/E (Fwd)", "peg": "PEG", "price_to_sales": "P/S",
+                "rsi": "RSI", "dividend_yield": "Div Yield"}
+
+
+def write_html(xlsx_path, tickers, all_metrics, all_sources, summary=None):
+    """Interactive twin of the workbook (Outputs/quick_stock_metrics_YYYYMMDD.html): the screen read, then a
+    sortable comparison grid colored like the Excel benchmarks, rendered by report_renderer.py."""
+    from report_renderer import render, _metric_value, _label_fill
+    blocks = []
+    if summary:
+        rows, fills = [], []
+        for i, r in enumerate(summary.get("rows", [])):
+            rows.append([f"**{r.get('ticker', '')}**", r.get("tilt", ""), r.get("conviction", ""), r.get("reason", "")])
+            t = (r.get("tilt") or "").lower()
+            fill = next((f for k, f in (("short", "FFC7CE"), ("avoid", "FFC7CE"), ("long", "C6EFCE"),
+                                       ("neutral", "FFEB9C")) if k in t), None)
+            if fill:
+                fills.append([i, 1, fill])
+        blocks += [{"type": "heading", "text": summary.get("title", "Screen read")},
+                   {"type": "table", "headers": ["Ticker", "Tilt", "Conviction", "Why"], "rows": rows, "fills": fills,
+                    "sortable": True, "source": f"Analyst screen read, {summary.get('as_of', '')}"}]
+        for label, key in (("Top long candidate", "top_long"), ("Top short / avoid candidate", "top_short"),
+                           ("Next step", "next_step"), ("Data notes", "notes")):
+            items = summary.get(key)
+            items = [items] if isinstance(items, str) else (items or [])
+            if items:
+                blocks += [{"type": "heading", "text": label, "level": 2}, {"type": "bullets", "items": items}]
+    rows, fills = [], []
+    for i, t in enumerate(tickers):
+        m = all_metrics[t]
+        row = [f"**{t}**"]
+        for j, k in enumerate(HTML_COLUMNS, start=1):
+            v = m.get(k)
+            row.append(_metric_value(k, v))
+            fill = _label_fill(_short_comment(k, v, m)) if v is not None else None
+            if k == "current_price":
+                pf = color_current_price(m)
+                fill = {"FFB6C1": "FFC7CE"}.get(pf.fgColor.rgb[-6:], pf.fgColor.rgb[-6:]) if pf is not None else None
+            if fill:
+                fills.append([i, j, fill])
+        rows.append(row)
+    src = sorted({s for t in tickers for k, s in all_sources[t].items() if k in HTML_COLUMNS and s})
+    blocks += [{"type": "heading", "text": "Comparison"},
+               {"type": "table", "headers": ["Ticker"] + list(HTML_COLUMNS.values()), "rows": rows,
+                "fills": fills, "sortable": True,
+                "source": "Per-cell sources in the Excel workbook's hover notes; sources used: " + "; ".join(src)
+                          + ". Colors follow the benchmark thresholds in the workbook's ticker sheets."}]
+    day = os.path.basename(xlsx_path).rsplit("_", 1)[-1].split(".")[0]
+    spec_path = xlsx_path[:-5] + "_spec.json"
+    spec = {"skill": "quick_stock_metrics", "title": f"Quick Stock Metrics — {day[:4]}-{day[4:6]}-{day[6:]}",
+            "subtitle": f"{len(tickers)} tickers · click a column header to sort · Excel: {os.path.basename(xlsx_path)}",
+            "output": xlsx_path[:-5] + ".docx", "formats": ["html"], "blocks": blocks}
+    with open(spec_path, "w", encoding="utf-8") as f:
+        json.dump(spec, f, ensure_ascii=False, indent=1)
+    render(spec_path)
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
@@ -838,6 +902,7 @@ def main(tickers):
     out = f"Outputs/quick_stock_metrics_{date.today().strftime('%Y%m%d')}.xlsx"
     wb.save(out)
     print(f"Saved: {out}")
+    write_html(out, tickers, all_metrics, all_sources)
     return out
 
 
