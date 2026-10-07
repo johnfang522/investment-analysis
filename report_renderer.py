@@ -218,8 +218,8 @@ RENDERERS = {
     "page_break": lambda doc, b: doc.add_page_break(),
 }
 
-# Macro blocks are expanded into the primitive blocks above before rendering (both formats).
-MACROS = {"income_trend"}
+# Macro blocks (income_trend, metrics_snapshot, appendix_index) are expanded into the primitive blocks above
+# before rendering — see MACRO_BUILDERS.
 
 
 def _pct_str(x, signed=True):
@@ -260,15 +260,100 @@ def _income_trend(block, ticker):
             "source": block.get("source", "Actuals: SEC EDGAR (TTM = sum of last 4 reported quarters)")}
 
 
+_POSITIVE = ("Strong", "High quality", "Ideal", "Good", "Very conservative", "Very safe", "Very liquid", "Solid",
+             "Healthy", "Undervalued", "Cheap", "High yield", "Sustainable")
+_BORDERLINE = ("Decent", "Neutral", "Moderate", "Adequate", "Borderline", "Fair")
+_WARNING = ("Watch", "Slow", "Thin", "Below threshold", "At risk", "Liquidity risk", "Overbought", "Expensive",
+            "High risk", "Low", "Warning", "Unsustainable")
+_INFO_ROWS = {"week52_low", "week52_high", "market_cap", "revenue"}
+
+
+def _metric_value(key, v):
+    from doc_utils import fmt_value
+    if v is None:
+        return "N/A"
+    if key in ("current_price", "week52_low", "week52_high"):
+        return f"${v:,.2f}"
+    if key in ("market_cap", "revenue"):
+        return fmt_value(v)
+    if key in ("rev_growth", "gross_margin", "op_margin", "ni_margin", "roe", "fcf_margin", "dividend_yield",
+               "payout_ratio"):
+        return f"{v * 100:.1f}%"
+    if key in ("de", "interest_cov"):
+        return f"{v:.2f}x"
+    if key in ("cur_ratio", "peg", "price_to_sales"):
+        return f"{v:.2f}"
+    return f"{v:.1f}"
+
+
+def _label_fill(label):
+    for words, fill in ((_WARNING, "FFC7CE"), (_POSITIVE, "C6EFCE"), (_BORDERLINE, "FFEB9C")):
+        if any(label.startswith(w) or f" {w}" in f" {label}" for w in words):
+            return fill
+    return None
+
+
+def _metrics_snapshot(block, ticker):
+    """Financial Snapshot: Metric | Value | Description | Comments for every key in quick_stock_metrics.METRICS.
+    Values, per-metric source labels and Value-cell colors come from compute_metrics() / _short_comment();
+    the spec supplies only the analyst comment per key."""
+    from quick_stock_metrics import METRICS, compute_metrics, _short_comment, color_current_price
+    m, src = compute_metrics(ticker, with_sources=True)
+    comments = block.get("comments", {})
+    rows, fills = [], []
+    for i, spec in enumerate(METRICS):
+        k, v = spec["key"], m.get(spec["key"])
+        label = _short_comment(k, v, m)
+        desc = f"{spec['desc']}\nBenchmark: {spec['bench']}\nSource: {src.get(k, 'N/A')}"
+        rows.append([spec["label"], _metric_value(k, v), desc, comments.get(k, "")])
+        fill = None
+        if v is not None and k not in _INFO_ROWS:
+            if k == "current_price":
+                pf = color_current_price(m)   # openpyxl fill; its pink (FFB6C1) maps to the house "bad" fill
+                fill = {"FFB6C1": "FFC7CE"}.get(pf.fgColor.rgb[-6:], pf.fgColor.rgb[-6:]) if pf is not None else None
+            else:
+                fill = _label_fill(label)
+        if fill:
+            fills.append([i, 1, fill])
+    missing = [k for k in comments if k not in {s["key"] for s in METRICS}]
+    if missing:
+        raise ValueError(f"metrics_snapshot comments use unknown keys {missing}; valid keys: "
+                         f"{', '.join(s['key'] for s in METRICS)}")
+    return {"type": "table", "headers": ["Metric", "Value", "Description", "Comments"], "rows": rows, "fills": fills,
+            "source": block.get("source", "Per-metric source in the Description column (quick_stock_metrics."
+                                          "compute_metrics); comments: analyst")}
+
+
+def _appendix_index(block, ticker):
+    """HTML hub: links to this ticker's component report pages with their signal and conviction."""
+    t = ticker.lower()
+    rows = []
+    for n, slug, title in ((1, "business_overview", "Business Overview"), (2, "leadership", "Leadership"),
+                           (3, "income_statement", "Income Statement"), (4, "balance_sheet", "Balance Sheet"),
+                           (5, "cash_flow", "Cash Flow"), (6, "business_potential", "Business Potential"),
+                           (7, "valuation", "Valuation"), (8, "technical", "Technical Analysis")):
+        page = f"{n}_{t}_{slug}_analysis.html"
+        summ = f"Outputs/{ticker}/{n}_{t}_{slug}_summary.json"
+        signal, conv = "—", "—"
+        if os.path.exists(summ):
+            with open(summ, encoding="utf-8") as f:
+                s = json.load(f)
+            signal, conv = s.get("signal") or "—", f"{s.get('conviction')}/10" if s.get("conviction") is not None else "—"
+        link = f"[{title}]({page})" if os.path.exists(f"Outputs/{ticker}/{page}") else f"{title} (no HTML page yet)"
+        rows.append([f"Appendix {chr(64 + n)}", link, signal, conv])
+    return {"type": "table", "html_only": True, "headers": ["Appendix", "Report", "Signal", "Conviction"],
+            "rows": rows, "source": "Component reports in this folder; signal and conviction from each _summary.json"}
+
+
+MACRO_BUILDERS = {"income_trend": _income_trend, "metrics_snapshot": _metrics_snapshot,
+                  "appendix_index": _appendix_index}
+MACROS = set(MACRO_BUILDERS)
+
+
 def expand_blocks(spec):
     """Replace macro blocks with primitive blocks."""
-    out = []
-    for block in spec["blocks"]:
-        if block.get("type") == "income_trend":
-            out.append(_income_trend(block, block.get("ticker") or spec["ticker"]))
-        else:
-            out.append(block)
-    spec["blocks"] = out
+    spec["blocks"] = [MACRO_BUILDERS[b["type"]](b, b.get("ticker") or spec["ticker"]) if b.get("type") in MACROS
+                      else b for b in spec["blocks"]]
     return spec
 
 
@@ -281,6 +366,8 @@ def render_docx(spec):
         sub = doc.add_paragraph(); sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
         sub.add_run(spec["subtitle"]).italic = True
     for i, block in enumerate(spec["blocks"]):
+        if block.get("html_only"):
+            continue
         try:
             RENDERERS[block["type"]](doc, block)
         except KeyError as e:
@@ -293,6 +380,7 @@ def render_docx(spec):
 # ============================== HTML ==============================
 
 FILL_CLASSES = {"C6EFCE": "fill-good", "FFEB9C": "fill-warn", "FFC7CE": "fill-bad", "F2F2F2": "fill-muted"}
+_LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
 _NUMERIC = re.compile(r"^[\s(+\-−–~≈<>≥≤]*\$?\d[\d,.]*\s*[BMKx×%]?")
 
 
@@ -307,7 +395,7 @@ def md_inline(text):
         elif part.startswith("*") and part.endswith("*") and len(part) > 2:
             out.append(f"<em>{html.escape(part[1:-1])}</em>")
         else:
-            out.append(html.escape(part))
+            out.append(_LINK.sub(lambda m: f'<a href="{m.group(2)}">{m.group(1)}</a>', html.escape(part)))
     return "".join(out).replace("\n", "<br>")
 
 
