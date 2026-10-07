@@ -68,7 +68,7 @@ import json
 import os
 import re
 import sys
-from datetime import date
+from datetime import date, datetime
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -625,8 +625,50 @@ def _read_meta(path):
     return {"title": html.unescape(t.group(1)).strip() if t else os.path.basename(path)}
 
 
+_COMPONENT_RE = re.compile(r"(?:^|/)([1-8])_[^/]+_analysis\.html$")
+_NOTE_RE = re.compile(r"_stock_deep_research_notes_(\d{8})\.html$")
+
+
+def _index_item(m, children="", strip_prefix=None):
+    badge = ""
+    if m.get("signal"):
+        conv = f' {m["conviction"]}/10' if m.get("conviction") is not None else ""
+        badge = _badge(m["signal"], html.escape(conv))
+    when = date.fromtimestamp(m["mtime"]).isoformat()
+    title = m.get("title") or m["href"]
+    if strip_prefix and title.startswith(strip_prefix):
+        title = title[len(strip_prefix):]
+    row = (f'<div class="row"><a href="{html.escape(m["href"])}">{html.escape(title)}</a>'
+           f'<span class="meta">{badge} {when}</span></div>')
+    return f'<li{" class=pkg" if children else ""}>{row}{children}</li>'
+
+
+def _card(folder, items):
+    """One ticker card: the newest deep-research package on top with its 8 component reports as a sub-list,
+    then older packages and other reports (newest first). Header shows the last research run."""
+    notes = sorted((m for m in items if _NOTE_RE.search(m["href"])), key=lambda m: m["href"], reverse=True)
+    comps = sorted((m for m in items if _COMPONENT_RE.search(m["href"])),
+                   key=lambda m: _COMPONENT_RE.search(m["href"]).group(1))
+    others = sorted((m for m in items if m not in notes and m not in comps), key=lambda m: -m["mtime"])
+    lis = []
+    if notes:
+        sub = (f'<ul class="sub">{"".join(_index_item(c, strip_prefix=f"{folder} — ") for c in comps)}</ul>'
+               if comps else "")
+        lis.append(_index_item(notes[0], sub))
+        lis += [_index_item(m) for m in notes[1:]]
+    else:
+        lis += [_index_item(m) for m in comps]
+    lis += [_index_item(m) for m in others]
+    last = max(m["mtime"] for m in (notes[:1] or items))
+    label = "Last research run" if notes else "Last run"
+    stamp = datetime.fromtimestamp(last).strftime("%Y-%m-%d %H:%M")
+    return last, (f'<section class="card"><h2>{html.escape(folder)}</h2>'
+                  f'<p class="last-run">{label}: <time datetime="{datetime.fromtimestamp(last).isoformat()}">'
+                  f'{stamp}</time></p><ul>{"".join(lis)}</ul></section>')
+
+
 def build_index(root="Outputs"):
-    """Rebuild Outputs/index.html: one card per ticker folder (plus market/theme reports), newest first."""
+    """Rebuild Outputs/index.html: one card per ticker folder (plus market/theme reports), most recent run first."""
     groups = {}
     for path in glob.glob(os.path.join(root, "**", "*.html"), recursive=True):
         if os.path.basename(path) == "index.html":
@@ -636,18 +678,7 @@ def build_index(root="Outputs"):
         meta = _read_meta(path)
         meta.update(href=rel, mtime=os.path.getmtime(path))
         groups.setdefault(folder, []).append(meta)
-    cards = []
-    for folder in sorted(groups, key=lambda g: -max(m["mtime"] for m in groups[g])):
-        lis = []
-        for m in sorted(groups[folder], key=lambda m: m["href"]):
-            badge = ""
-            if m.get("signal"):
-                conv = f' {m["conviction"]}/10' if m.get("conviction") is not None else ""
-                badge = _badge(m["signal"], html.escape(conv))
-            when = date.fromtimestamp(m["mtime"]).isoformat()
-            lis.append(f'<li><a href="{html.escape(m["href"])}">{html.escape(m.get("title") or m["href"])}</a>'
-                       f'<span class="meta">{badge} {when}</span></li>')
-        cards.append(f'<section class="card"><h2>{html.escape(folder)}</h2><ul>{"".join(lis)}</ul></section>')
+    cards = [card for _, card in sorted((_card(f, items) for f, items in groups.items()), key=lambda c: -c[0])]
     n = sum(len(v) for v in groups.values())
     body = (f'<div class="library"><div class="library-head"><div><h1>Research Library</h1>'
             f'<p class="subtitle" style="color:var(--muted);margin:4px 0 0">{n} reports · rebuilt '

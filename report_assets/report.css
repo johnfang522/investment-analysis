@@ -196,11 +196,18 @@ img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #f
 .library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
 .library-head h1 { margin: 0; font-size: 30px; }
 .library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
-.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
 .card h2 { margin: 0 0 8px; font-size: 18px; }
 .card ul { list-style: none; margin: 0; padding: 0; }
-.card li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card .last-run { margin: -4px 0 10px; color: var(--muted); font-size: 12.5px; }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card li.pkg > .row a { font-weight: 650; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
+.card ul.sub li::marker { color: var(--muted); }
 .card li a { text-decoration: none; }
 .card li a:hover { text-decoration: underline; }
 .card .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
