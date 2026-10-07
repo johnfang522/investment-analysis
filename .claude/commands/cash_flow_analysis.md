@@ -4,8 +4,8 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** cash flo
 
 **DATA SOURCING:**
 1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'], price_history=False)"` — overwrites stale JSON before reading anything (`price_history=False`: this skill never reads price history, so it is not downloaded.). **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
-2. Load `Outputs/{TICKER}/{ticker_lowercase}_cash_flow_statement_quarterly.json` and `_quick_metrics.json`.
-3. Load `_income_statement_quarterly.json` / `_income_statement_ttm.json` for net income (the cash flow JSON has no net income line).
+2. Run `PYTHONIOENCODING=utf-8 .venv/Scripts/python digest.py {TICKER} cash_flow` and work from its output — **do not open the raw statement JSON**. It gives the latest quarter, the prior-year quarter, TTM, YoY changes, the 8-quarter trend (matching the chart labels), 4 fiscal years, coverage ratios, FCF yield and the REIT flag, every figure already formatted with `fmt_value()` and labeled by source. Paste its strings as-is; never re-derive a figure the digest already gives. A `WARNING` on `total_debt` means the EDGAR tag is incomplete: take total debt from the 10-Q and cite it.
+3. Net income comes from the digest too (the cash flow JSON itself has no net income line).
 4. **WebSearch for the net-income-to-cash bridge — required.** SEC EDGAR JSON carries only operating cash flow, capex, investing/financing flows, dividends and free cash flow — it has *no* depreciation, stock-based compensation or working-capital lines. Pull the latest-quarter (and prior-year quarter, for the YoY) cash flow statement from the 10-Q/10-K or earnings release, plus the CFO commentary on the call or in the MD&A explaining cash flow: depreciation & amortization, stock-based compensation (SBC), other non-cash items (impairments, deferred taxes, gains/losses), and each working-capital change (receivables, inventory, payables, deferred revenue, accrued/other). Cite the filing/release and date for every figure. Leave a line N/A rather than guessing; if the statement is YTD-cumulative, derive the discrete quarter by subtraction and say so.
 5. WebSearch also for other items genuinely missing (interest expense, dividend totals). Leave N/A if not found.
 
@@ -23,9 +23,9 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** cash flo
 
 ---
 
-FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
+DOCUMENT CONTENT — the sections below are the document outline. Write them as blocks in the spec (see "Save to Word Document"), not as a chat reply; each `##` heading is a `heading` block, each table a `table` block, each bullet list a `bullets` block.
 
-**Data as of**: [Fiscal Quarter] [Year]
+**Data as of**: [Fiscal Quarter] [Year] (goes in the spec `subtitle`)
 
 ## Charts
 
@@ -145,28 +145,32 @@ Produces in `Outputs/{TICKER}/`:
 
 ## Save to Word Document
 
-Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see CLAUDE.md
-- Title: `{TICKER} — Cash Flow` (bold, centered) + date subtitle
-- **Embed both chart images at `width=Inches(9.5)`** to fill the full landscape text width: the waterfall under the Cash Flow Snapshot table, the 8-quarter trend chart at the top of the "Net Income → Free Cash Flow" section, above its two tables. Small italic source line under each chart ("SEC EDGAR")
-- The "Net Income → Free Cash Flow" section: the conversion table and the bridge table (both following the table rules), then the two bullets, with a source line naming the filing/release and date for the bridge items
-- Section headings as Heading 1
-- Bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
-- Dark blue header rows (fill `1F3864`), white bold text
-- Source citations in small italic
-- Variant View as a 3-column table; Read-Through block in bold
-- Saves to `Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_analysis.docx`
-- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_cash_flow.py` and run it from project root
+Do **not** write a python-docx script. Write the content as a JSON spec and render it with the shared renderer, which applies the house style (landscape, Arial 10pt, dark-blue headers, autofit + borders, source lines, footnote) and writes the summary the deep-research orchestrator reads:
 
-Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
+1. Write `Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_spec.json` (block types and the full schema are in the `report_renderer.py` docstring — read it only if a block below is unclear):
+   ```json
+   {"ticker": "{TICKER}", "skill": "cash_flow", "title": "{TICKER} — Cash Flow",
+    "subtitle": "Buy-side cash flow read · [Month D, YYYY] · Data as of: [Fiscal Quarter] [Year]",
+    "output": "Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_analysis.docx",
+    "blocks": [
+     {"type": "heading", "text": "At a Glance"},
+     {"type": "table", "headers": ["Field", "Value", "Signal"], "rows": [["...", "...", "..."]], "source": "SEC EDGAR ..."},
+     {"type": "chart", "path": "Outputs/{TICKER}/{ticker_lowercase}_cash_flow_waterfall.png", "source": "SEC EDGAR"},
+     {"type": "bullets", "items": ["**What drove the change:** ..."]},
+     {"type": "variant_view", "rows": [["debate", "consensus", "our read"]], "source": "...", "edge": "...", "note": "..."},
+     {"type": "read_through", "signal": "BULLISH|NEUTRAL|BEARISH", "dimension": "Cash-Flow-Quality",
+      "conviction": 0, "so_what": "...", "what_flips": "..."}
+    ],
+    "summary": {"as_of": "...", "thesis_bias": "LONG|SHORT|PASS",
+     "key_figures": [{"label": "...", "value": "...", "source": "..."}], "red_flags": ["..."]}}
+   ```
+   - Follow the outline above in order. The waterfall chart goes under the Cash Flow Snapshot table; the 8-quarter trend chart goes at the top of the "Net Income → Free Cash Flow" section, above its two tables (conversion, then bridge with `bold_rows` on the `=` subtotal rows), with the bridge table's `source` naming the filing/release and date.
+   - `variant_view` and `read_through` render their own headings — don't add a `heading` block for them.
+   - Every `table` carries a `source`; `**bold**` / `*italic*` work in any string; `
+` is a line break inside a cell.
+   - `summary.key_figures`: the 5–8 figures the research note most needs (latest-quarter and TTM FCF, FCF margin, FCF ÷ NI and after-SBC conversion, capex trend/guide, coverage), each with its source.
+2. Run `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_spec.json`. It writes the `.docx`, an interactive `.html` twin (charts drawn from the `.chart.json` files `chart_cash_flow.py` saved next to the PNGs; rebuilds `Outputs/index.html`) and `5_{ticker_lowercase}_cash_flow_summary.json`. On a `ValueError` (missing key, ragged row), fix the spec and re-run — never fall back to a hand-written script.
 
-Import the shared helpers from `doc_utils.py`:
-```python
-import sys; sys.path.insert(0, '.')
-from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
+## Reply
 
-Confirm the output file path when done.
+Keep the final reply short — the document is the deliverable: the `.html` and `.docx` paths, then `Signal · Conviction X/10 · Thesis bias`, the so-what line, and the 3 most important key figures with sources. Do not restate the document.

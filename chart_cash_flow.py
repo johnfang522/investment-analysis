@@ -10,6 +10,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from chart_data import save_chart_data
+
 
 def load_json(path):
     try:
@@ -120,6 +122,10 @@ def chart_waterfall(ticker, cf_data, out_path):
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
+    save_chart_data(out_path, {"kind": "waterfall", "title": f"{t} Cash Flow Waterfall ({period})", "unit": "usd",
+                               "steps": [{"label": "Operating CF", "value": ocf, "total": True},
+                                         {"label": "CapEx", "value": capex_bridge, "total": False},
+                                         {"label": "Free CF", "value": fcf, "total": True}]})
     print(f"  Saved: {out_path}")
 
 
@@ -179,6 +185,13 @@ def chart_trend(ticker, cf_data, is_data, out_path):
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
+    fcf_notes = [(f"{f / n:.1f}x NI" if n and n > 0 and f is not None and f / n < 10 else "n/m")
+                 for f, n in zip(raw_fcf, raw_ni)]
+    save_chart_data(out_path, {"kind": "bar", "title": f"{t} Quarterly Cash Flow Trend", "unit": "usd",
+                               "categories": [d for d, _ in ocf_s],
+                               "series": [{"name": "Net Income", "values": raw_ni},
+                                          {"name": "Operating CF", "values": raw_ocf},
+                                          {"name": "Free CF", "values": raw_fcf, "notes": fcf_notes}]})
     print(f"  Saved: {out_path}")
 
 
