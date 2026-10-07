@@ -4,7 +4,7 @@ You are a **buy-side analyst at a hedge fund** producing a **3-page max** techni
 
 **DATA SOURCING:**
 1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything. This is the run's only price download (5 years of daily closes, written to `_price_history.json`); chart scripts and calculations only read that JSON, never re-download it. **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
-2. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json` (price, 50/200-DMA, 52-wk range, beta) and `_price_history.json` (DMA + RSI computation).
+2. Run `PYTHONIOENCODING=utf-8 .venv/Scripts/python digest.py {TICKER} technical` and work from its output — **do not open `_price_history.json`**. It gives spot, the 20/50/100/200-DMA levels, distance from spot, slope vs. 10 sessions ago, the MA stack, golden/death crosses in the last 60 sessions, 1W–12M returns vs. SPY (relative points), the 52-week closing high/low and drawdown, RSI(14) and its direction, a higher-low check and the price basis. Paste its figures as-is.
 3. WebSearch only for VIX, CNN Fear & Greed, AAII sentiment, put/call, MACD cross-check.
 4. Leave N/A if missing; note assumption used.
 
@@ -18,7 +18,9 @@ You are a **buy-side analyst at a hedge fund** producing a **3-page max** techni
 
 ---
 
-**Data as of**: [Date of latest price_history entry]
+DOCUMENT CONTENT — the sections below are the document outline. Write them as blocks in the report spec (see "Save the Report"), not as a chat reply: each `##` heading is a `heading` block, each table a `table` block, each bullet list a `bullets` block.
+
+**Data as of**: [Date of latest price_history entry] (goes in the spec `subtitle`)
 
 ## Charts
 
@@ -61,7 +63,7 @@ Produces `{ticker}_ta_price_ma.png` (price with 20/50/100/200-DMA) and `{ticker}
 
 ## Moving Averages — Distance from Spot
 
-*Compute all four Simple Moving Averages (SMAs) from `_price_history.json` closes (last N trading days); do not rely on quick_metrics for 20/100-DMA. Distance = (Spot ÷ MA − 1) × 100.*
+*All four Simple Moving Averages (SMAs), distances (Spot ÷ MA − 1) and slopes come from the technical digest; do not rely on quick_metrics for 20/100-DMA.*
 
 | Moving Average | Level | Spot vs MA | Position | Slope (vs 10 days ago) |
 |----------------|-------|-----------|----------|------------------------|
@@ -77,7 +79,7 @@ Produces `{ticker}_ta_price_ma.png` (price with 20/50/100/200-DMA) and `{ticker}
 
 ## Price Momentum — Near-Term vs Mid-Term
 
-*Price returns from `_price_history.json` (trading-day offsets: 5d, 21d ≈ 1M, 63d ≈ 3M, 126d ≈ 6M, 252d ≈ 12M). Compare to S&P 500 (`SPY` via yfinance, one download of period `5y` for this skill run) over the same windows.*
+*Returns, SPY returns and relative points come from the technical digest (trading-day offsets: 5d, 21d ≈ 1M, 63d ≈ 3M, 126d ≈ 6M, 252d ≈ 12M; 12M ex-last-month skips the latest 21 sessions).*
 
 | Horizon | Window | Stock Return | S&P 500 | Relative | Signal |
 |---------|--------|-------------|---------|----------|--------|
@@ -176,29 +178,11 @@ Produces `{ticker}_ta_price_ma.png` (price with 20/50/100/200-DMA) and `{ticker}
 
 ---
 
-## Save to Word Document
+## Save the Report (Word + interactive HTML)
 
-Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see CLAUDE.md
-- Title: `{TICKER} — Technical Analysis` (bold, centered) + date subtitle
-- **Embed both chart images at `width=Inches(9.5)`** to fill the full landscape text width
-- Section headings as Heading 1
-- Bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
-- Dark blue header rows (fill `1F3864`), white bold text
-- Source citations in small italic
-- Variant View as a 3-column table; Verdict block in bold, with the Bias line as a colored Heading-1-style line (green `007000` for LONG, red `C00000` for SHORT, neutral for AVOID)
-- Saves to `Outputs/{TICKER}/8_{ticker_lowercase}_technical_analysis.docx`
-- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_technical.py` and run it from project root
+Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-
-Import the shared helpers from `doc_utils.py`:
-```python
-import sys; sys.path.insert(0, '.')
-from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-Confirm the output file path when done.
+- Spec: `Outputs/{TICKER}/8_{ticker_lowercase}_technical_spec.json` with `"skill": "technical"`, `"title": "{TICKER} — Technical Analysis"`, `"output": "Outputs/{TICKER}/8_{ticker_lowercase}_technical_analysis.docx"`
+- Charts: `{ticker_lowercase}_ta_price_ma.png` under "Moving Averages — Distance from Spot"; `{ticker_lowercase}_ta_rsi.png` under Momentum & Sentiment; `source`: "Yahoo Finance price history (computed)".
+- Close with a `verdict` block — it replaces the Verdict section above: `rows` = Trend, Market Regime, Sentiment, Setup Score, Entry / Add Zone, Stop / Invalidation, Risk/Reward at entry, What to Do; `bullets` = Position sizing, Biggest risk to watch, Summary.
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/8_{ticker_lowercase}_technical_spec.json` — writes the `.docx`, the interactive `.html`, `8_{ticker_lowercase}_technical_summary.json` and refreshes `Outputs/index.html`

@@ -13,6 +13,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
+from chart_data import save_chart_data
+
 
 def load_json(path):
     try:
@@ -113,6 +115,15 @@ def main():
     out1 = f"{base}/{t}_ta_price_ma.png"
     plt.savefig(out1, dpi=150, bbox_inches="tight")
     plt.close()
+    cats = [d.strftime("%Y-%m-%d") for d in disp_dates]
+    r2 = lambda arr: [None if v is None or np.isnan(v) else round(float(v), 2) for v in arr]
+    save_chart_data(out1, {"kind": "line", "title": f"{ticker} Price & Moving Averages", "unit": "price",
+                           "categories": cats,
+                           "series": [{"name": "Price", "values": r2(disp_prices), "width": 2.5},
+                                      {"name": "20-DMA", "values": r2(ma20), "width": 1.5},
+                                      {"name": "50-DMA", "values": r2(ma50)},
+                                      {"name": "100-DMA", "values": r2(ma100)},
+                                      {"name": "200-DMA", "values": r2(ma200)}]})
     print(f"  Saved: {out1}")
 
     # ── Chart 2: RSI ──────────────────────────────────────────────────────
@@ -155,6 +166,9 @@ def main():
     out2 = f"{base}/{t}_ta_rsi.png"
     plt.savefig(out2, dpi=150, bbox_inches="tight")
     plt.close()
+    save_chart_data(out2, {"kind": "line", "title": f"{ticker} RSI (14)", "unit": "num", "y_min": 0, "y_max": 100,
+                           "refs": [{"value": 70, "label": "Overbought 70"}, {"value": 30, "label": "Oversold 30"}],
+                           "categories": cats, "series": [{"name": "RSI (14)", "values": r2(rsi_disp)}]})
     print(f"  Saved: {out2}")
 
 

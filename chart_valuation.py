@@ -11,6 +11,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+from chart_data import save_chart_data
+
 
 def load_json(path):
     try:
@@ -142,6 +144,13 @@ def chart_multiples(ticker, ann_data, q_data, quick, out_path):
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
+    # HTML: one axis (all three are multiples, same unit) instead of the PNG's twin axis
+    rnd = lambda vals: [round(v, 2) if v is not None else None for v in vals]
+    save_chart_data(out_path, {"kind": "line", "title": f"{t} Valuation Multiples Trend", "unit": "x",
+                               "categories": years,
+                               "series": [{"name": "Trailing P/E", "values": rnd(pe_vals)},
+                                          {"name": "EV/EBITDA", "values": rnd(ev_ebitda_vals)},
+                                          {"name": "P/S", "values": rnd(ps_vals), "dashed": True}]})
     print(f"  Saved: {out_path}")
 
 
@@ -187,6 +196,11 @@ def chart_price_targets(ticker, quick, out_path):
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
+    save_chart_data(out_path, {"kind": "bar", "title": f"{t} Price vs Analyst Targets", "unit": "price",
+                               "categories": list(labels_v),
+                               "series": [{"name": "Price", "values": list(values_v),
+                                           "notes": [None if l == "Current Price" else f"{(v / cur_price - 1) * 100:+.1f}% vs current"
+                                                     for l, v in zip(labels_v, values_v)]}]})
     print(f"  Saved: {out_path}")
 
 

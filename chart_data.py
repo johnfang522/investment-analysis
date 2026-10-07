@@ -11,6 +11,12 @@ Schemas (values are raw numbers in the `unit`, None for a missing point):
                "categories": [str, ...],
                "series": [{"name": str, "values": [...], "notes": [str|None, ...]}, ...]}
                `notes` (optional) are per-point annotations shown in the tooltip (e.g. "1.6x NI")
+               series options: "slot": 1-8 (borrow that palette slot's color), "faded": true (consensus /
+               estimates), "dashed": true, "width": px (lines)
+               chart options: "category_notes": [str|None, ...] (tooltip header + data-table column),
+               "refs": [{"value": 70, "label": "Overbought"}, ...] (dashed reference lines),
+               "y_min" / "y_max" (fixed axis bounds)
+               units: "usd" ($ auto-scaled B/M/K), "price" ($X.XX), "pct", "x" (multiples), "num"
   waterfall:  {"kind": "waterfall", "title": str, "unit": "usd",
                "steps": [{"label": str, "value": num, "total": bool}, ...]}
                a `total` step is drawn from zero; other steps float from the running total

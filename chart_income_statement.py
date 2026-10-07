@@ -18,6 +18,8 @@ import matplotlib.patches as patches
 from matplotlib.lines import Line2D
 from matplotlib.path import Path
 
+from chart_data import save_chart_data
+
 
 def load_json(path):
     try:
@@ -643,7 +645,48 @@ def chart_bars(ticker, rows, title, out_path, quarterly=False):
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
+    _save_bars_data(rows, yoy, px, title, out_path)
     print(f"  Saved: {out_path}")
+
+
+def _save_bars_data(rows, yoy, px, title, out_path):
+    """Sidecar for the HTML report: same bars, consensus revenue as a faded revenue-colored series, and the
+    period-end share price in the tooltip header instead of a second y-axis."""
+    from datetime import datetime
+    series = []
+    for j, (key, name, *_) in enumerate(LINE_ITEMS):
+        values, notes = [], []
+        for i, r in enumerate(rows):
+            v = r[key] if r["kind"] != "estimate" else None
+            values.append(v)
+            bits = []
+            g = yoy[i].get(key)
+            if g == "n/m" or (g is not None and abs(g) >= 10):
+                bits.append("n/m YoY")
+            elif g is not None:
+                bits.append(f"{g * 100:+.0f}% YoY")
+            if v is not None and key in MARGIN_TAGS and margin(r, key) is not None:
+                bits.append(f"{MARGIN_TAGS[key]} {margin(r, key) * 100:.1f}%")
+            notes.append(", ".join(bits) or None)
+        series.append({"name": name, "values": values, "notes": notes, "slot": j + 1})
+        if key == "revenue" and any(r["kind"] == "estimate" for r in rows):
+            est_notes = []
+            for i, r in enumerate(rows):
+                g = yoy[i].get("revenue") if r["kind"] == "estimate" else None
+                est_notes.append(f"{g * 100:+.0f}% YoY" if isinstance(g, float) else None)
+            series.append({"name": "Revenue (consensus)", "slot": 1, "faded": True, "notes": est_notes,
+                           "values": [r["revenue"] if r["kind"] == "estimate" else None for r in rows]})
+    cats, cnotes = [], []
+    for i, r in enumerate(rows):
+        cats.append("TTM" if r["kind"] == "ttm" else r["period"])
+        bits = []
+        if r.get("end"):
+            bits.append("period end " + datetime.strptime(r["end"], "%Y-%m-%d").strftime("%b %d, %Y"))
+        if i in px:
+            bits.append(f"close ${px[i]:,.2f}")
+        cnotes.append(" · ".join(bits) or None)
+    save_chart_data(out_path, {"kind": "bar", "title": title, "unit": "usd", "categories": cats,
+                               "category_notes": cnotes, "series": series})
 
 
 def main():

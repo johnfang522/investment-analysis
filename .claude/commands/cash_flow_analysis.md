@@ -23,7 +23,7 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** cash flo
 
 ---
 
-DOCUMENT CONTENT — the sections below are the document outline. Write them as blocks in the spec (see "Save to Word Document"), not as a chat reply; each `##` heading is a `heading` block, each table a `table` block, each bullet list a `bullets` block.
+DOCUMENT CONTENT — the sections below are the document outline. Write them as blocks in the spec (see "Save the Report"), not as a chat reply; each `##` heading is a `heading` block, each table a `table` block, each bullet list a `bullets` block.
 
 **Data as of**: [Fiscal Quarter] [Year] (goes in the spec `subtitle`)
 
@@ -143,34 +143,11 @@ Produces in `Outputs/{TICKER}/`:
 
 ---
 
-## Save to Word Document
+## Save the Report (Word + interactive HTML)
 
-Do **not** write a python-docx script. Write the content as a JSON spec and render it with the shared renderer, which applies the house style (landscape, Arial 10pt, dark-blue headers, autofit + borders, source lines, footnote) and writes the summary the deep-research orchestrator reads:
+Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-1. Write `Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_spec.json` (block types and the full schema are in the `report_renderer.py` docstring — read it only if a block below is unclear):
-   ```json
-   {"ticker": "{TICKER}", "skill": "cash_flow", "title": "{TICKER} — Cash Flow",
-    "subtitle": "Buy-side cash flow read · [Month D, YYYY] · Data as of: [Fiscal Quarter] [Year]",
-    "output": "Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_analysis.docx",
-    "blocks": [
-     {"type": "heading", "text": "At a Glance"},
-     {"type": "table", "headers": ["Field", "Value", "Signal"], "rows": [["...", "...", "..."]], "source": "SEC EDGAR ..."},
-     {"type": "chart", "path": "Outputs/{TICKER}/{ticker_lowercase}_cash_flow_waterfall.png", "source": "SEC EDGAR"},
-     {"type": "bullets", "items": ["**What drove the change:** ..."]},
-     {"type": "variant_view", "rows": [["debate", "consensus", "our read"]], "source": "...", "edge": "...", "note": "..."},
-     {"type": "read_through", "signal": "BULLISH|NEUTRAL|BEARISH", "dimension": "Cash-Flow-Quality",
-      "conviction": 0, "so_what": "...", "what_flips": "..."}
-    ],
-    "summary": {"as_of": "...", "thesis_bias": "LONG|SHORT|PASS",
-     "key_figures": [{"label": "...", "value": "...", "source": "..."}], "red_flags": ["..."]}}
-   ```
-   - Follow the outline above in order. The waterfall chart goes under the Cash Flow Snapshot table; the 8-quarter trend chart goes at the top of the "Net Income → Free Cash Flow" section, above its two tables (conversion, then bridge with `bold_rows` on the `=` subtotal rows), with the bridge table's `source` naming the filing/release and date.
-   - `variant_view` and `read_through` render their own headings — don't add a `heading` block for them.
-   - Every `table` carries a `source`; `**bold**` / `*italic*` work in any string; `
-` is a line break inside a cell.
-   - `summary.key_figures`: the 5–8 figures the research note most needs (latest-quarter and TTM FCF, FCF margin, FCF ÷ NI and after-SBC conversion, capex trend/guide, coverage), each with its source.
-2. Run `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_spec.json`. It writes the `.docx`, an interactive `.html` twin (charts drawn from the `.chart.json` files `chart_cash_flow.py` saved next to the PNGs; rebuilds `Outputs/index.html`) and `5_{ticker_lowercase}_cash_flow_summary.json`. On a `ValueError` (missing key, ragged row), fix the spec and re-run — never fall back to a hand-written script.
-
-## Reply
-
-Keep the final reply short — the document is the deliverable: the `.html` and `.docx` paths, then `Signal · Conviction X/10 · Thesis bias`, the so-what line, and the 3 most important key figures with sources. Do not restate the document.
+- Spec: `Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_spec.json` with `"skill": "cash_flow"`, `"title": "{TICKER} — Cash Flow"`, `"output": "Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_analysis.docx"`
+- Charts: `{ticker_lowercase}_cash_flow_waterfall.png` under the Cash Flow Snapshot table; `{ticker_lowercase}_cash_flow_trend.png` at the top of "Net Income → Free Cash Flow", above its two tables (conversion, then the bridge with `bold_rows` on the `=` subtotal rows; the bridge `source` names the filing/release and date).
+- Close with a `read_through` block (dimension: `Cash-Flow-Quality`) — it replaces the Read-Through section above.
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_spec.json` — writes the `.docx`, the interactive `.html`, `5_{ticker_lowercase}_cash_flow_summary.json` and refreshes `Outputs/index.html`

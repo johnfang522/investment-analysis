@@ -88,6 +88,23 @@
       "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
   }
 
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
   // ---------- tooltip ----------
   function tooltip(canvas) {
     var tip = document.createElement("div");
@@ -133,12 +150,16 @@
     } else {
       th("Period");
       data.series.forEach(function (s) { th(s.name, true); });
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
       data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
         var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
         data.series.forEach(function (s) {
           var c = r.insertCell(); c.className = "num";
-          c.textContent = f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
         });
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
       });
     }
     wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
@@ -152,7 +173,7 @@
       var b = document.createElement("button"); b.type = "button";
       b.setAttribute("aria-pressed", "true");
       var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
-      sw.style.background = "var(--series-" + (i + 1) + ")"; b.appendChild(sw);
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
       var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
       var last = null;
       for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
@@ -182,9 +203,14 @@
     var vals = [];
     shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
     var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
-    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1; lo -= pad; hi += pad; }
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
     var ticks = niceTicks(lo, hi, 5);
-    if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
     else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
     function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
     var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
@@ -194,12 +220,18 @@
       el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
       text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
     });
-    var n = data.categories.length, band = iw / n;
-    var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
-    data.categories.forEach(function (c, i) {
-      if (i % every !== 0 && i !== n - 1) return;
-      if (i === n - 1 && i % every !== 0 && (n - 1) % every < every / 2) return;
-      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, catLabel(c), { "text-anchor": "middle" });
+    var n = data.categories.length, band = iw / n, labelIdx;
+    if (n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0])) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
     });
     var marks = el("g", {}, svg);
     if (kind === "bar") {
@@ -210,7 +242,7 @@
         o.s.values.forEach(function (v, i) {
           if (v === null) return;
           var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap);
-          el("path", { d: barPath(x, bw, y(0), y(v)), fill: "var(--series-" + (o.i + 1) + ")" }, marks);
+          el("path", { d: barPath(x, bw, y(0), y(v)), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
         });
       });
     } else {
@@ -220,11 +252,12 @@
           if (v === null) { pen = false; return; }
           d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true;
         });
-        el("path", { d: d, fill: "none", stroke: "var(--series-" + (o.i + 1) + ")", "stroke-width": 2,
+        el("path", { d: d, fill: "none", stroke: colorOf(o.s, o.i), "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
           "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
         for (var i = o.s.values.length - 1; i >= 0; i--) {
           if (o.s.values[i] !== null) {
-            el("circle", { cx: m.left + band * (i + 0.5), cy: y(o.s.values[i]), r: 4, fill: "var(--series-" + (o.i + 1) + ")",
+            el("circle", { cx: m.left + band * (i + 0.5), cy: y(o.s.values[i]), r: 4, fill: colorOf(o.s, o.i),
               stroke: "var(--surface)", "stroke-width": 2 }, marks);
             break;
           }
@@ -243,11 +276,13 @@
       if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
       if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
       var rows = shown.map(function (o) {
-        return { color: "var(--series-" + (o.i + 1) + ")", value: fVal(o.s.values[i]), name: o.s.name,
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
           note: o.s.notes ? o.s.notes[i] : null };
       });
       var scale = canvas.clientWidth / W;
-      tip.show(catLabel(data.categories[i], true), rows, cx * scale, (m.top + ih / 3) * scale);
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
     }
     function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
     svg.addEventListener("pointermove", function (e) {

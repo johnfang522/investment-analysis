@@ -86,7 +86,7 @@ BALANCE_SHEET_TAGS = {
 
 CASH_FLOW_TAGS = {
     "Operating Cash Flow": ["NetCashProvidedByUsedInOperatingActivities"],
-    "Capital Expenditure": ["PaymentsToAcquirePropertyPlantAndEquipment"],
+    "Capital Expenditure": ["PaymentsToAcquirePropertyPlantAndEquipment", "PaymentsToAcquireProductiveAssets"],
     "Investing Cash Flow": ["NetCashProvidedByUsedInInvestingActivities"],
     "Financing Cash Flow": ["NetCashProvidedByUsedInFinancingActivities"],
     "Cash Dividends Paid": ["PaymentsOfDividends"],

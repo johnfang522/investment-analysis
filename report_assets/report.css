@@ -97,6 +97,7 @@ main { min-width: 0; }
 .stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
 .stat .label { color: var(--muted); font-size: 12px; }
 .stat .value { font-size: 20px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
 .meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
 .meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
 
@@ -129,6 +130,7 @@ tr.bold td { font-weight: 650; }
 td.fill-good { background: var(--fill-good); }
 td.fill-warn { background: var(--fill-warn); }
 td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
 
 /* ---------- callouts ---------- */
 .callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
@@ -139,6 +141,8 @@ td.fill-bad { background: var(--fill-bad); }
 .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
 .badge.bullish .dot { background: var(--good); }
 .badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+.callout.verdict .signal { font-size: 22px; }
 .callout .scale { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
 .edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
 
@@ -163,6 +167,8 @@ figure.viz .viz-title { font-weight: 650; font-size: 15px; }
 .viz .connector { stroke: var(--axis); stroke-width: 1; }
 .viz .band-hit { fill: transparent; }
 .viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 11px; }
 .viz .crosshair { stroke: var(--axis); stroke-width: 1; }
 .tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
 .tooltip.show { opacity: 1; }
@@ -174,7 +180,7 @@ figure.viz .viz-title { font-weight: 650; font-size: 15px; }
 .tooltip .tt-note { color: var(--muted); }
 details.viz-data { margin-top: 6px; font-size: 13px; }
 details.viz-data summary { cursor: pointer; color: var(--muted); }
-details.viz-data .table-wrap { box-shadow: none; }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
 img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
 
 /* ---------- footer ---------- */

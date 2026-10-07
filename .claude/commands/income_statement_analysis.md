@@ -4,8 +4,8 @@ You are a **buy-side analyst at a hedge fund** writing a **5-page max** income s
 
 **DATA SOURCING:**
 1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'])"` — overwrites stale JSON before reading anything. This is the run's only price download (5 years of daily closes, written to `_price_history.json`); chart scripts and calculations only read that JSON, never re-download it. **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
-2. Load `Outputs/{TICKER}/{ticker_lowercase}_income_statement_quarterly.json`, `_income_statement_annual.json`, `_cash_flow_statement_ttm.json`, and `_quick_metrics.json`.
-3. Use quarterly JSON for the latest quarter vs. prior-year quarter; annual JSON for the multi-year trend and CAGRs. Compute EPS = Net Income / Shares Outstanding (`sharesOutstanding`) if the EPS field is missing.
+2. Run `PYTHONIOENCODING=utf-8 .venv/Scripts/python digest.py {TICKER} income_statement` and work from its output — **do not open the raw statement JSON**. It gives the latest quarter vs. the prior-year quarter (revenue, the three profit lines, margins, diluted EPS, YoY, operating leverage), TTM, the 3-year revenue CAGR and the latest-quarter Rule of 40, each labeled by source; paste its figures as-is.
+3. The annual and quarterly trend tables come from the `income_trend` report block (the same rows the charts draw) — never re-type trend rows. Market data (price, shares) comes from `digest.py {TICKER} metrics` if needed.
 4. **WebSearch for consensus estimates — required, not optional.** Find analyst consensus for:
    - the **next 2–3 fiscal years** (FY+1, FY+2, and FY+3 where covered), and
    - the **next 4 fiscal quarters** (as many as are covered — many sources only publish the next 1–2).
@@ -59,7 +59,7 @@ You are a **buy-side analyst at a hedge fund** writing a **5-page max** income s
 
 ---
 
-FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
+DOCUMENT CONTENT — the sections below are the document outline. Write them as blocks in the report spec (see "Save the Report"), not as a chat reply: each `##` heading is a `heading` block, each table a `table` block, each bullet list a `bullets` block.
 
 **Data as of**: [Fiscal Quarter] [Year] (Earnings reported: [Date]) · Consensus as of [Date]
 
@@ -127,7 +127,7 @@ The price overlay reads `{ticker}_price_history.json` (Yahoo Finance daily close
 
 ## Income Statement Trend — Annual & Quarterly
 
-*Each cadence gets one bar chart (amount, YoY and margins labeled on the bars, share price on the right axis), then a table of the same numbers. Build both tables from `annual_trend_rows()` / `quarterly_trend_rows()` in `chart_income_statement.py` (the functions that drew the charts), so the tables and charts can never disagree — do not re-read the JSON separately for these tables.*
+*Each cadence gets one bar chart (amount, YoY and margins labeled on the bars, share price on the right axis), then a table of the same numbers from an `income_trend` block — it reads the same rows the chart drew, so the tables and charts can never disagree.*
 
 **Annual** — embed `{ticker}_income_statement_annual_trend.png`, then:
 
@@ -145,7 +145,7 @@ The price overlay reads `{ticker}_price_history.json` (Yahoo Finance daily close
 | Up to 4 consensus quarters (`Mon YYYYE`) | $XX.XB | +X% | $XX.XB / N/A | $XX.XB / N/A | $XX.XB / N/A |
 
 - Rev. YoY is vs. the prior fiscal year (annual), the prior-year TTM (TTM row), or the same quarter a year earlier (quarterly).
-- Shade estimate rows light grey (`F2F2F2`) and italicize them so actuals and consensus are visually distinct; `None` → "N/A".
+- The `income_trend` block shades and italicizes estimate rows and prints `None` as "N/A".
 - Source line under each table: "Actuals: SEC EDGAR (TTM = sum of last 4 reported quarters). Estimates: [publication(s)], accessed [date]; basis: [GAAP / adjusted]."
 - If no consensus was found for a cadence, show actuals only and say so in the source line.
 - **Trend read:** [1 sentence — is growth accelerating/decelerating, and are margins compounding, peaking, or recovering?]
@@ -216,32 +216,12 @@ The price overlay reads `{ticker}_price_history.json` (Yahoo Finance daily close
 
 ---
 
-## Save to Word Document
+## Save the Report (Word + interactive HTML)
 
-Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see CLAUDE.md
-- Title: `{TICKER} — Income Statement` (bold, centered) + date subtitle
-- **Embed three charts at `width=Inches(9.5)`**: flow under the Snapshot; under Income Statement Trend, annual trend → annual table, then quarterly trend → quarterly table; no chart under Consensus Outlook (the table only)
-- Build the two trend tables by looping over `annual_trend_rows(TICKER)` and `quarterly_trend_rows(TICKER)`; each row dict has `period`, `kind` (`actual` / `ttm` / `estimate`), `revenue`, `gross_profit`, `operating_income`, `net_income` (raw dollars or `None`) and `rev_yoy` (decimal or `None`)
-- The "Latest Quarter — What Drove the Numbers" section: both tables (drivers, revenue vs. consensus) plus the two bullets, with a source line (filing / release / transcript + date) under the tables
-- Section headings as Heading 1
-- Bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
-- Dark blue header rows (fill `1F3864`), white bold text
-- Source citations in small italic via `add_source_note()` — SEC EDGAR for statement figures, Yahoo Finance for quote data, publication + date for each consensus figure
-- Variant View as a 3-column table; Read-Through block in bold
-- Saves to `Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_analysis.docx`
-- Save the script file itself to `Outputs/{TICKER}/generate_{ticker_lowercase}_income_statement.py` and run it from project root
+Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-
-Import the shared helpers from `doc_utils.py`:
-```python
-import sys; sys.path.insert(0, '.')
-from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value, add_source_note
-from chart_income_statement import annual_trend_rows, quarterly_trend_rows
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-Confirm the output file path when done.
+- Spec: `Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_spec.json` with `"skill": "income_statement"`, `"title": "{TICKER} — Income Statement"`, `"output": "Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_analysis.docx"`
+- Charts: `{ticker_lowercase}_income_statement_flow.png` under the Snapshot; under Income Statement Trend: the annual trend chart, then an `income_trend` block (`"cadence": "annual"`), then the quarterly trend chart, then an `income_trend` block (`"cadence": "quarterly"`). Each `income_trend` `source`: "Actuals: SEC EDGAR (TTM = sum of last 4 reported quarters). Estimates: [publication(s)], accessed [date]; basis: [GAAP / adjusted]." No chart under Consensus Outlook.
+- "Latest Quarter — What Drove the Numbers": both tables (drivers; revenue vs. consensus), then the two bullets; the `source` names the filing / release / transcript and date.
+- Close with a `read_through` block (dimension: `P&L-Quality`) — it replaces the Read-Through section above.
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_spec.json` — writes the `.docx`, the interactive `.html`, `3_{ticker_lowercase}_income_statement_summary.json` and refreshes `Outputs/index.html`

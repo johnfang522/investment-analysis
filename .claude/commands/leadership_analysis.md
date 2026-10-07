@@ -24,7 +24,7 @@ This ensures `Outputs/{TICKER}/` JSON files are current before reading any metri
 
 ---
 
-FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
+DOCUMENT CONTENT — the sections below are the document outline. Write them as blocks in the report spec (see "Save the Report"), not as a chat reply: each `##` heading is a `heading` block, each table a `table` block, each bullet list a `bullets` block.
 
 ## At a Glance
 
@@ -88,28 +88,10 @@ FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
 
 ---
 
-## Save to Word Document
+## Save the Report (Word + interactive HTML)
 
-Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see the standard block in CLAUDE.md
-- Title: `{TICKER} — Leadership Analysis` (bold, centered) + date subtitle
-- Section headings as Heading 1
-- Bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
-- Dark blue header rows (fill `1F3864`), white bold text
-- Source citations in small italic
-- Variant View as a 3-column table; Read-Through block in bold
-- Saves to `Outputs/{TICKER}/2_{ticker_lowercase}_leadership_analysis.docx`
-- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_leadership.py` and run it from project root
+Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-
-Import the shared helpers from `doc_utils.py` (in the project root):
-```python
-import sys; sys.path.insert(0, '.')
-from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-Confirm the output file path when done.
+- Spec: `Outputs/{TICKER}/2_{ticker_lowercase}_leadership_spec.json` with `"skill": "leadership"`, `"title": "{TICKER} — Leadership"`, `"output": "Outputs/{TICKER}/2_{ticker_lowercase}_leadership_analysis.docx"`
+- Close with a `read_through` block (dimension: `Leadership`) — it replaces the Read-Through section above.
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/2_{ticker_lowercase}_leadership_spec.json` — writes the `.docx`, the interactive `.html`, `2_{ticker_lowercase}_leadership_summary.json` and refreshes `Outputs/index.html`

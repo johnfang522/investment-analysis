@@ -4,9 +4,9 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** valuatio
 
 **DATA SOURCING:**
 1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'], price_history=False)"` — overwrites stale JSON before reading anything (`price_history=False`: this skill never reads price history, so it is not downloaded.). **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
-2. Load `Outputs/{TICKER}/{ticker_lowercase}_quick_metrics.json`, `_income_statement_annual.json`, `_income_statement_quarterly.json`, `_balance_sheet_quarterly.json`, `_cash_flow_statement_annual.json`.
-3. Use quick_metrics first for market data (price, P/E, P/B, EV/EBITDA, analyst targets, ROE, ROA).
-4. Annual income statement for multi-year CAGRs; cash flow annual for FCF history (DCF).
+2. Run `PYTHONIOENCODING=utf-8 .venv/Scripts/python digest.py {TICKER} metrics` (price, multiples, margins, returns — each with its actual source label), `digest.py {TICKER} income_statement` (growth, margins, 3-year CAGR) and `digest.py {TICKER} cash_flow` (FCF by fiscal year and TTM, FCF yield) — **do not open the raw statement JSON**; paste their figures as-is.
+3. `_quick_metrics.json` only for fields no digest prints (analyst target high/low/mean/median, enterprise value, EV/EBITDA).
+4. DCF inputs: FCF history from the cash_flow digest; growth from the income_statement digest and consensus.
 5. WebSearch only for items genuinely missing (peer multiples, industry averages, WACC). Leave N/A if not found.
 
 **STYLE:** Bullets only — 1 short sentence each. Tables for all numbers. Status icons: ✅ ⚠️ 🔴 / ↑↓→. Spell out every abbreviation on first use, then use the short form after (e.g., "Price-to-Earnings (P/E)" first, then "P/E"; "Discounted Cash Flow (DCF)" first, then "DCF"; "Weighted Average Cost of Capital (WACC)" first, then "WACC"; "Enterprise Value / Earnings Before Interest, Taxes, Depreciation & Amortization (EV/EBITDA)" first, then "EV/EBITDA").
@@ -19,7 +19,7 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** valuatio
 
 ---
 
-FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
+DOCUMENT CONTENT — the sections below are the document outline. Write them as blocks in the report spec (see "Save the Report"), not as a chat reply: each `##` heading is a `heading` block, each table a `table` block, each bullet list a `bullets` block.
 
 **Data as of**: [Fiscal Quarter or Date]
 
@@ -147,29 +147,12 @@ WebSearch peer multiples if missing locally. Choose 2–3 direct competitors.
 
 ---
 
-## Save to Word Document
+## Save the Report (Word + interactive HTML)
 
-Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see CLAUDE.md
-- Title: `{TICKER} — Valuation` (bold, centered) + date subtitle
-- **Embed both chart images at `width=Inches(9.5)`** to fill the full landscape text width
-- Section headings as Heading 1
-- Bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
-- Dark blue header rows (fill `1F3864`), white bold text
-- Source citations in small italic
-- Variant View as a 3-column table; Verdict block in bold, with the Bias line as a colored Heading-1-style line (green `007000` for LONG, red `C00000` for SHORT, neutral for PASS)
-- Saves to `Outputs/{TICKER}/7_{ticker_lowercase}_valuation_analysis.docx`
-- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_valuation.py` and run it from project root
+Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-
-Import the shared helpers from `doc_utils.py`:
-```python
-import sys; sys.path.insert(0, '.')
-from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-Confirm the output file path when done.
+- Spec: `Outputs/{TICKER}/7_{ticker_lowercase}_valuation_spec.json` with `"skill": "valuation"`, `"title": "{TICKER} — Valuation"`, `"output": "Outputs/{TICKER}/7_{ticker_lowercase}_valuation_analysis.docx"`
+- Charts: `{ticker_lowercase}_valuation_multiples_trend.png` under "Multiples — Now vs History vs Peers"; `{ticker_lowercase}_valuation_price_targets.png` under Analyst Consensus. The multiples chart divides *today's* market cap / EV by historical earnings, so say so in its `source` (it is not a true historical multiple).
+- Peer Comparison table: `"sortable": true`.
+- Close with a `verdict` block — it replaces the Verdict section above: `rows` = Current Price, Price Target (12-mo), Stop / Invalidation, Risk/Reward, Sizing; `bullets` = the Justification line.
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/7_{ticker_lowercase}_valuation_spec.json` — writes the `.docx`, the interactive `.html`, `7_{ticker_lowercase}_valuation_summary.json` and refreshes `Outputs/index.html`

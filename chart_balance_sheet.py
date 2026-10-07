@@ -11,6 +11,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+from chart_data import save_chart_data
+
 
 def load_json(path):
     try:
@@ -211,6 +213,12 @@ def chart_trend(ticker, data, out_path):
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
+    save_chart_data(out_path, {"kind": "bar", "title": f"{t} Balance Sheet Trend", "unit": "usd",
+                               "categories": [d for d, _ in total_assets_s],
+                               "series": [{"name": name, "values": [v if v else None for v in raw]}
+                                          for name, raw in (("Total Assets", raw_ta), ("Total Equity", raw_eq),
+                                                            ("Total Liabilities", raw_tl), ("Total Debt", raw_td),
+                                                            ("Cash", raw_ca))]})
     print(f"  Saved: {out_path}")
 
 

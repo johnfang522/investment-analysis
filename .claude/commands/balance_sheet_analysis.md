@@ -4,7 +4,7 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** balance 
 
 **DATA SOURCING:**
 1. **Always re-download first:** `.venv/Scripts/python -c "from get_financial_data import fetch_all; fetch_all(['{TICKER}'], price_history=False)"` — overwrites stale JSON before reading anything (`price_history=False`: this skill never reads price history, so it is not downloaded.). **If invoked by `/single_stock_deep_research`, skip this download — the parent already downloaded all data once at its start.**
-2. Load `Outputs/{TICKER}/{ticker_lowercase}_balance_sheet_quarterly.json` and `_quick_metrics.json`.
+2. Run `PYTHONIOENCODING=utf-8 .venv/Scripts/python digest.py {TICKER} balance_sheet` and work from its output — **do not open the raw statement JSON**. It gives the latest quarter vs. the prior-year quarter (assets, liabilities, equity, cash, debt, current ratio, D/E, net debt, working capital, shares, book value per share), YoY changes and `data_flags`. A flag on debt or negative equity means the ratio is not meaningful as computed: fall back to the 10-Q and cite it.
 3. WebSearch only for items genuinely missing (interest coverage; all off-balance-sheet items — see the OBS Analysis section, which requires 10-K/10-Q footnote research). Leave N/A if not found.
 
 **Always YoY (latest qtr vs same qtr last year). Never sequential quarters.**
@@ -20,7 +20,7 @@ You are a **buy-side analyst at a hedge fund** writing a **3-page max** balance 
 
 ---
 
-FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
+DOCUMENT CONTENT — the sections below are the document outline. Write them as blocks in the report spec (see "Save the Report"), not as a chat reply: each `##` heading is a `heading` block, each table a `table` block, each bullet list a `bullets` block.
 
 **Data as of**: [Fiscal Quarter] [Year]
 
@@ -137,30 +137,12 @@ Produces in `Outputs/{TICKER}/`:
 
 ---
 
-## Save to Word Document
+## Save the Report (Word + interactive HTML)
 
-Write and execute a Python script using `python-docx` (`.venv/Scripts/python`) that:
-- Landscape, narrow margins (0.5" all sides), Arial 10pt body text — call `setup_document(doc)` right after `Document()` — see CLAUDE.md
-- Title: `{TICKER} — Balance Sheet` (bold, centered) + date subtitle
-- **Embed both chart images at `width=Inches(9.5)`** to fill the full landscape text width: composition under the Balance Sheet Snapshot table, the 8-quarter trend chart under Liquidity & Leverage (next to the Trend bullet). Add a small italic source line under each ("SEC EDGAR")
-- Section headings as Heading 1
-- Bullets as Word list items
-- **Tables: initialize with `rows=1` (header only), then `table.add_row()` per data row.** Call `set_row_font_size(row)` on every data row.
-- **Every table**: call `autofit_table(table)` then `add_table_borders(table)` AFTER all rows added
-- Dark blue header rows (fill `1F3864`), white bold text
-- Source citations in small italic (OBS figures: cite the 10-K/10-Q filing and date)
-- OBS section: scored checklist table + adjusted-vs-reported leverage table, both following the table rules
-- Variant View as a 3-column table; Read-Through block in bold
-- Saves to `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis.docx`
-- Save the script file to `Outputs/{TICKER}/generate_{ticker_lowercase}_balance_sheet.py` and run it from project root
+Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-Call `add_footnote(doc)` immediately before `doc.save(...)` to append the standard AI disclaimer.
-
-Import the shared helpers from `doc_utils.py`:
-```python
-import sys; sys.path.insert(0, '.')
-from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-```
-Use `fmt_value(v)` for all dollar amounts in table cells (auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`). Never hardcode `/ 1e9` or manually append `"B"`.
-
-Confirm the output file path when done.
+- Spec: `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_spec.json` with `"skill": "balance_sheet"`, `"title": "{TICKER} — Balance Sheet"`, `"output": "Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis.docx"`
+- Charts: `{ticker_lowercase}_balance_sheet_composition.png` under the Balance Sheet Snapshot table; `{ticker_lowercase}_balance_sheet_trend.png` under Liquidity & Leverage; `source`: "SEC EDGAR".
+- OBS section: the scored checklist table (`bold_rows` on the Total row) and the adjusted-vs-reported leverage table, each citing the 10-K/10-Q filing and date.
+- Close with a `read_through` block (dimension: `Balance-Sheet`) — it replaces the Read-Through section above.
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_spec.json` — writes the `.docx`, the interactive `.html`, `4_{ticker_lowercase}_balance_sheet_summary.json` and refreshes `Outputs/index.html`
