@@ -668,7 +668,7 @@ def _card(folder, items):
 
 
 def build_index(root="Outputs"):
-    """Rebuild Outputs/index.html: one card per ticker folder (plus market/theme reports), most recent run first."""
+    """Rebuild Outputs/index.html: one card per ticker folder in ascending ticker order, then market/theme reports."""
     groups = {}
     for path in glob.glob(os.path.join(root, "**", "*.html"), recursive=True):
         if os.path.basename(path) == "index.html":
@@ -678,7 +678,9 @@ def build_index(root="Outputs"):
         meta = _read_meta(path)
         meta.update(href=rel, mtime=os.path.getmtime(path))
         groups.setdefault(folder, []).append(meta)
-    cards = [card for _, card in sorted((_card(f, items) for f, items in groups.items()), key=lambda c: -c[0])]
+    # ticker cards A→Z, then the market/theme card
+    order = sorted(groups, key=lambda f: (f == "Market & Themes", f.upper()))
+    cards = [_card(f, groups[f])[1] for f in order]
     n = sum(len(v) for v in groups.values())
     body = (f'<div class="library"><div class="library-head"><div><h1>Research Library</h1>'
             f'<p class="subtitle" style="color:var(--muted);margin:4px 0 0">{n} reports · rebuilt '
