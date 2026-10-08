@@ -666,6 +666,19 @@ def _read_meta(path):
     return {"title": html.unescape(t.group(1)).strip() if t else os.path.basename(path)}
 
 
+NEW_DAYS = 7   # reports younger than this get a "New" tag on the library page
+
+
+def _company_name(folder, root="Outputs"):
+    """Full company name for a ticker folder (Yahoo longName), formatted "Tesla, Inc. (TSLA)"; the ticker alone if unknown."""
+    try:
+        with open(os.path.join(root, folder, f"{folder.lower()}_quick_metrics.json"), encoding="utf-8") as f:
+            name = json.load(f).get("longName")
+    except (OSError, ValueError):
+        name = None
+    return f"{name} ({folder})" if name else folder
+
+
 _COMPONENT_RE = re.compile(r"(?:^|/)([1-8])_[^/]+_analysis\.html$")
 _NOTE_RE = re.compile(r"_stock_deep_research_notes_(\d{8})\.html$")
 
@@ -679,7 +692,9 @@ def _index_item(m, children="", strip_prefix=None):
     title = m.get("title") or m["href"]
     if strip_prefix and title.startswith(strip_prefix):
         title = title[len(strip_prefix):]
-    row = (f'<div class="row"><a href="{html.escape(m["href"])}">{html.escape(title)}</a>'
+    fresh = (datetime.now().timestamp() - m["mtime"]) < NEW_DAYS * 86400
+    tag = '<span class="new-tag">New</span>' if fresh else ""
+    row = (f'<div class="row"><span class="ttl"><a href="{html.escape(m["href"])}">{html.escape(title)}</a>{tag}</span>'
            f'<span class="meta">{badge} {when}</span></div>')
     return f'<li{" class=pkg" if children else ""}>{row}{children}</li>'
 
@@ -691,15 +706,17 @@ def _card(folder, items):
     comps = sorted((m for m in items if _COMPONENT_RE.search(m["href"])),
                    key=lambda m: _COMPONENT_RE.search(m["href"]).group(1))
     others = sorted((m for m in items if m not in notes and m not in comps), key=lambda m: -m["mtime"])
-    lis = []
+    # top-level entries (packages, standalone reports) newest first; a package carries its 8 components (1-8)
+    entries = []
     if notes:
         sub = (f'<ul class="sub">{"".join(_index_item(c, strip_prefix=f"{folder} — ") for c in comps)}</ul>'
                if comps else "")
-        lis.append(_index_item(notes[0], sub))
-        lis += [_index_item(m) for m in notes[1:]]
+        entries.append((notes[0]["mtime"], _index_item(notes[0], sub)))
+        entries += [(m["mtime"], _index_item(m)) for m in notes[1:]]
     else:
-        lis += [_index_item(m) for m in comps]
-    lis += [_index_item(m) for m in others]
+        entries += [(m["mtime"], _index_item(m)) for m in comps]
+    entries += [(m["mtime"], _index_item(m)) for m in others]
+    lis = [li for _, li in sorted(entries, key=lambda e: -e[0])]
     last = max(m["mtime"] for m in (notes[:1] or items))
     label = "Last research run" if notes else "Last run"
     stamp = datetime.fromtimestamp(last).strftime("%Y-%m-%d %H:%M")
@@ -708,9 +725,7 @@ def _card(folder, items):
     if top and top.get("signal"):
         conv = f' {top["conviction"]}/10' if top.get("conviction") is not None else ""
         badge = _badge(top["signal"], html.escape(conv))
-    count = len(items)
-    return last, (f'<section class="card"><details><summary><span class="card-head"><h2>{html.escape(folder)}</h2>'
-                  f'<span class="count">{count} report{"s" if count != 1 else ""}</span></span>'
+    return last, (f'<section class="card"><details><summary><span class="card-head"><h2>{html.escape(_company_name(folder))}</h2></span>'
                   f'<span class="card-meta">{badge}<span class="last-run">{label}: <time datetime="'
                   f'{datetime.fromtimestamp(last).isoformat()}">{stamp}</time></span></span></summary>'
                   f'<ul>{"".join(lis)}</ul></details></section>')
@@ -782,7 +797,7 @@ def build_index(root="Outputs"):
             order = sorted(groups, key=lambda f: (f == "Other", f.upper()))
             cards = "".join(_card(f, groups[f])[1].replace("<section class=\"card\">",
                             f'<section class="card" id="t-{_slug(f, set())}">', 1) for f in order)
-            sub = "".join(f'<li><a href="#t-{_slug(f, set())}">{html.escape(f)}</a></li>' for f in order)
+            sub = "".join(f'<li><a href="#t-{_slug(f, set())}">{html.escape(_company_name(f))}</a></li>' for f in order)
         else:
             groups = {}
             for m in items:
@@ -792,13 +807,12 @@ def build_index(root="Outputs"):
         sections.append(f'<section class="stage" id="stage-{num}"><h2 class="stage-title"><span class="stage-no">'
                         f'Stage {num}</span> — {html.escape(name)}</h2><p class="stage-desc">{html.escape(desc)}</p>'
                         f'{body}</section>')
-        nav.append(f'<li><a href="#stage-{num}"><b>Stage {num}</b> — {html.escape(name)}'
-                   f'<span class="count">{len(items)}</span></a>{f"<ol class=sub>{sub}</ol>" if sub else ""}</li>')
+        nav.append(f'<li><a href="#stage-{num}"><b>Stage {num}</b> — {html.escape(name)}</a>{f"<ol class=sub>{sub}</ol>" if sub else ""}</li>')
 
     body = (f'<div class="shell library"><nav class="toc" aria-label="Stages"><a class="toc-home" href="#">'
             f'Investment Research Library</a><ol>{"".join(nav)}</ol></nav><main>'
             f'<div class="library-head"><div><h1>Investment Research Library</h1>'
-            f'<p class="subtitle" style="color:var(--muted);margin:4px 0 0">{len(metas)} reports · rebuilt '
+            f'<p class="subtitle" style="color:var(--muted);margin:4px 0 0">Rebuilt '
             f'{date.today().isoformat()}</p></div><div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">'
             f'<input id="library-search" type="search" placeholder="Filter by ticker or title" '
             f'aria-label="Filter reports"><button type="button" class="theme-toggle">Dark mode</button></div></div>'

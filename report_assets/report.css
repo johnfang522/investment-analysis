@@ -243,7 +243,8 @@ img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #f
 .card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
 .card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.card li.pkg > .row a { font-weight: 650; }
+.card .new-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--good); color: #fff; font-size: 11px; font-weight: 650; vertical-align: 1px; }
+.toc ol.sub li a::before { content: "• "; }
 .card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
 .card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
 .card ul.sub li::marker { color: var(--muted); }
