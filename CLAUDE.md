@@ -277,6 +277,8 @@ Everything below is for working on the code and the skills.
     - Single-stock reports default to Stage 4, grouped per ticker (cards collapsed by default)
     - To place a new skill in Stage 1–3, add its skill-name key to `STAGES`
   - Left navigation of stages and tickers
+  - One instance per report: rebuilding the index deletes older dated copies (`<name>_YYYYMMDD.html` plus its `.docx`, `_spec.json`, `_summary.json`) when a later date exists (`prune_superseded()`), so a re-run replaces the earlier report
+  - Every line shows its date and time; reports under 7 days old carry a "New" tag
   - Every report page has a floating, draggable "← Back" button (`.back-fab`)
     - Component reports go back to their research package page
     - Other pages go back to the library

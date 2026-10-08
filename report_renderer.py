@@ -688,7 +688,7 @@ def _index_item(m, children="", strip_prefix=None):
     if m.get("signal"):
         conv = f' {m["conviction"]}/10' if m.get("conviction") is not None else ""
         badge = _badge(m["signal"], html.escape(conv))
-    when = date.fromtimestamp(m["mtime"]).isoformat()
+    when = datetime.fromtimestamp(m["mtime"]).strftime("%Y-%m-%d %H:%M")
     title = m.get("title") or m["href"]
     if strip_prefix and title.startswith(strip_prefix):
         title = title[len(strip_prefix):]
@@ -771,9 +771,35 @@ def _skill_label(meta):
     return (meta.get("skill") or os.path.basename(meta["href"]).rsplit(".", 1)[0]).replace("_", " ").title()
 
 
+_DATED_RE = re.compile(r"^(.*)_(\d{8})\.html$")
+
+
+def prune_superseded(root="Outputs"):
+    """A skill re-run for the same subject on a later day replaces the earlier report: for every dated report
+    (`<name>_YYYYMMDD.html`) keep only the newest date and delete the older ones with their `.docx`, `_spec.json`
+    and `_summary.json` (and `.xlsx` for the metrics workbook). Charts and data JSON are left alone."""
+    groups = {}
+    for path in glob.glob(os.path.join(root, "**", "*.html"), recursive=True):
+        m = _DATED_RE.match(path.replace(os.sep, "/"))
+        if m:
+            groups.setdefault(m.group(1), []).append((m.group(2), path))
+    removed = []
+    for prefix, found in groups.items():
+        found.sort()
+        for day, path in found[:-1]:
+            stem = path[:-len(".html")]
+            for ext in (".html", ".docx", ".xlsx", "_spec.json", "_summary.json"):
+                if os.path.exists(stem + ext):
+                    os.remove(stem + ext)
+                    removed.append(stem + ext)
+    for r in removed:
+        print(f"Removed superseded: {r}")
+
+
 def build_index(root="Outputs"):
     """Rebuild Outputs/index.html: a left navigation and the reports organised by the 4 workflow stages
     (market conditions, theme discovery, quick filter, then one card per ticker in A→Z order)."""
+    prune_superseded(root)
     metas = []
     for path in glob.glob(os.path.join(root, "**", "*.html"), recursive=True):
         if os.path.basename(path) == "index.html":
