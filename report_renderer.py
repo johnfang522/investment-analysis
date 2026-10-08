@@ -1,9 +1,10 @@
 """
 report_renderer.py SPEC_JSON
+report_renderer.py SPEC_JSON --format html|docx|both     (default: html)
 report_renderer.py --index
 
-Builds a house-style Word document AND a self-contained interactive HTML page
-(same base name, `.html`) from one JSON content spec, so skills write content
+Builds a self-contained interactive HTML page and, on request, a house-style Word
+document (same base name) from one JSON content spec, so skills write content
 (a few KB of JSON) instead of a fresh python-docx script every run. Also writes
 the skill's machine-readable summary (the subagent return contract read by
 /single_stock_deep_research) when the spec carries a `summary` object.
@@ -24,7 +25,7 @@ Spec shape (all keys optional except title / output / blocks):
   "title": "TSLA — Cash Flow",
   "subtitle": "Buy-side cash flow read · October 5, 2026 · Data as of: Q2 FY2026",
   "output": "Outputs/TSLA/5_tsla_cash_flow_analysis.docx",   # the .html goes next to it
-  "formats": ["docx", "html"],                                # default: both
+  "formats": ["html"],                                        # default: html; --format / REPORT_FORMAT override
   "blocks": [ ... see BLOCK TYPES ... ],
   "summary": { ... see SUMMARY ... }
 }
@@ -236,10 +237,11 @@ def _pct_str(x, signed=True):
 def _income_trend(block, ticker):
     """Annual or quarterly income-statement trend table from the same rows chart_income_statement.py drew,
     so the table and the chart can never disagree. Consensus rows are shaded and italic."""
-    from chart_income_statement import annual_trend_rows, quarterly_trend_rows, margin
+    from chart_income_statement import annual_trend_rows, quarterly_trend_rows, margin, _price_points
     from doc_utils import fmt_value
     quarterly = block.get("cadence") == "quarterly"
     rows = quarterly_trend_rows(ticker) if quarterly else annual_trend_rows(ticker)
+    px = _price_points(ticker, rows)
     out, fills = [], []
     for i, r in enumerate(rows):
         est = r["kind"] == "estimate"
@@ -251,16 +253,19 @@ def _income_trend(block, ticker):
             m = margin(r, key) if tag else None
             return fmt_value(v) + (f" ({m * 100:.1f}%)" if m is not None else "")
 
-        cells = [r["period"], money("revenue"), _pct_str(r.get("rev_yoy")), money("gross_profit", "GM"),
-                 money("operating_income", "OM"), money("net_income", "NM")]
+        from datetime import datetime
+        end = datetime.strptime(r["end"], "%Y-%m-%d").strftime("%m/%d/%Y") if r.get("end") else "—"
+        cells = [r["period"], end, money("revenue"), _pct_str(r.get("rev_yoy")), money("gross_profit", "GM"),
+                 money("operating_income", "OM"), money("net_income", "NM"),
+                 f"${px[i]:,.2f}" if i in px else ("—" if est else "N/A")]
         if est:
             cells = [f"*{c}*" for c in cells]
             fills += [[i, c, "F2F2F2"] for c in range(len(cells))]
         out.append(cells)
     first = "Quarter Ended" if quarterly else "Period"
     return {"type": "table", "rows": out, "fills": fills,
-            "headers": [first, "Revenue", "Rev. YoY", "Gross Profit (GM)", "Operating Income (OM)", "Net Income (NM)"],
-            "source": block.get("source", "Actuals: SEC EDGAR (TTM = sum of last 4 reported quarters)")}
+            "headers": [first, "Period End", "Revenue", "Rev. YoY", "Gross Profit (GM)", "Operating Income (OM)", "Net Income (NM)", "Share Price (Period End)"],
+            "source": block.get("source", "Actuals: SEC EDGAR (TTM = sum of last 4 reported quarters); share price: Yahoo Finance close on or before period end")}
 
 
 _POSITIVE = ("Strong", "High quality", "Ideal", "Good", "Very conservative", "Very safe", "Very liquid", "Solid",
@@ -330,7 +335,7 @@ def _metrics_snapshot(block, ticker):
 def _appendix_index(block, ticker):
     """HTML hub: links to this ticker's component report pages with their signal and conviction."""
     t = ticker.lower()
-    rows = []
+    rows, toc_links = [], []
     for n, slug, title in ((1, "business_overview", "Business Overview"), (2, "leadership", "Leadership"),
                            (3, "income_statement", "Income Statement"), (4, "balance_sheet", "Balance Sheet"),
                            (5, "cash_flow", "Cash Flow"), (6, "business_potential", "Business Potential"),
@@ -344,7 +349,9 @@ def _appendix_index(block, ticker):
             signal, conv = s.get("signal") or "—", f"{s.get('conviction')}/10" if s.get("conviction") is not None else "—"
         link = f"[{title}]({page})" if os.path.exists(f"Outputs/{ticker}/{page}") else f"{title} (no HTML page yet)"
         rows.append([f"Appendix {chr(64 + n)}", link, signal, conv])
-    return {"type": "table", "html_only": True, "headers": ["Appendix", "Report", "Signal", "Conviction"],
+        if os.path.exists(f"Outputs/{ticker}/{page}"):
+            toc_links.append([f"{chr(64 + n)}. {title}", page])
+    return {"type": "table", "html_only": True, "toc_links": toc_links, "headers": ["Appendix", "Report", "Signal", "Conviction"],
             "rows": rows, "source": "Component reports in this folder; signal and conviction from each _summary.json"}
 
 
@@ -506,7 +513,7 @@ def _page(title, body, meta=None):
 
 
 def render_html(spec, out_path, summary):
-    used, toc, parts = set(), [], []
+    used, toc, parts, toc_sub = set(), [], [], {}
 
     def heading(text, level=1):
         tag = "h2" if level <= 1 else "h3"
@@ -531,6 +538,8 @@ def render_html(spec, out_path, summary):
                 parts.append(html_bullets(block["items"], block.get("numbered", False)))
             elif kind == "table":
                 parts.append(html_table(block))
+                if block.get("toc_links") and toc:   # appendix hub: list each appendix under its heading in the sidebar
+                    toc_sub[toc[-1][0]] = block["toc_links"]
             elif kind == "chart":
                 parts.append(html_chart(block))
             elif kind == "source":
@@ -594,11 +603,18 @@ def render_html(spec, out_path, summary):
     eyebrow = " · ".join(x for x in (spec.get("ticker"), (spec.get("skill") or "").replace("_", " ").title()) if x)
     index_rel = os.path.relpath(os.path.join("Outputs", "index.html"),
                                 os.path.dirname(out_path) or ".").replace(os.sep, "/")
-    toc_html = "".join(f'<li><a href="#{slug}">{html.escape(t)}</a></li>' for slug, t in toc)
+    def toc_item(slug, t):
+        sub = "".join(f'<li><a href="{html.escape(h)}">{html.escape(lbl)}</a></li>' for lbl, h in toc_sub.get(slug, []))
+        return f'<li><a href="#{slug}">{html.escape(t)}</a>{f"<ol class=sub>{sub}</ol>" if sub else ""}</li>'
+    toc_html = "".join(toc_item(slug, t) for slug, t in toc)
     subtitle = f'<p class="subtitle">{md_inline(spec["subtitle"])}</p>' if spec.get("subtitle") else ""
     call_strip = f'<div class="call-strip">{"".join(strip)}</div>' if strip else ""
-    body = (f'<div class="shell">\n<nav class="toc" aria-label="Contents"><a class="toc-home" href="{index_rel}">'
-            f'← Research library</a><ol>{toc_html}</ol></nav>\n<main>\n<header class="report-head">'
+    shell_cls = "shell wide" if spec.get("layout") == "wide" else "shell"
+    back_rel = _package_note_for(out_path) or index_rel   # a component report goes back to its research package
+    back = (f'<a class="back-fab" href="{back_rel}" title="Back to the previous page (drag to move)">'
+            f'<span aria-hidden="true">←</span> Back</a>\n')
+    body = (back + f'<div class="{shell_cls}">\n<nav class="toc" aria-label="Contents"><a class="toc-home" href="{index_rel}">'
+            f'← Investment Research Library</a><ol>{toc_html}</ol></nav>\n<main>\n<header class="report-head">'
             f'<div class="eyebrow"><span>{html.escape(eyebrow)}</span>'
             f'<button type="button" class="theme-toggle">Dark mode</button></div>'
             f'<h1>{md_inline(spec["title"])}</h1>{subtitle}{call_strip}</header>\n'
@@ -610,6 +626,31 @@ def render_html(spec, out_path, summary):
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(_page(spec["title"], body, meta))
     print(f"Saved: {out_path}")
+    if _NOTE_RE.search(out_path):
+        _retarget_back_links(out_path)
+
+
+def _package_note_for(out_path):
+    """Newest deep-research note page in the same folder when out_path is one of its component reports, else None."""
+    if not _COMPONENT_RE.search(out_path.replace(os.sep, "/")):
+        return None
+    notes = sorted(f for f in os.listdir(os.path.dirname(out_path) or ".") if _NOTE_RE.search(f))
+    return notes[-1] if notes else None
+
+
+def _retarget_back_links(note_path):
+    """After a research note renders, point its component pages' Back button at it (components render first)."""
+    folder, note = os.path.split(note_path)
+    for f in os.listdir(folder or "."):
+        if not _COMPONENT_RE.search(f):
+            continue
+        path = os.path.join(folder, f)
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+        new = re.sub(r'(<a class="back-fab" href=")[^"]*(")', lambda m: m.group(1) + note + m.group(2), text, count=1)
+        if new != text:
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write(new)
 
 
 def _read_meta(path):
@@ -662,35 +703,109 @@ def _card(folder, items):
     last = max(m["mtime"] for m in (notes[:1] or items))
     label = "Last research run" if notes else "Last run"
     stamp = datetime.fromtimestamp(last).strftime("%Y-%m-%d %H:%M")
-    return last, (f'<section class="card"><h2>{html.escape(folder)}</h2>'
-                  f'<p class="last-run">{label}: <time datetime="{datetime.fromtimestamp(last).isoformat()}">'
-                  f'{stamp}</time></p><ul>{"".join(lis)}</ul></section>')
+    top = (notes[:1] or [None])[0]
+    badge = ""
+    if top and top.get("signal"):
+        conv = f' {top["conviction"]}/10' if top.get("conviction") is not None else ""
+        badge = _badge(top["signal"], html.escape(conv))
+    count = len(items)
+    return last, (f'<section class="card"><details><summary><span class="card-head"><h2>{html.escape(folder)}</h2>'
+                  f'<span class="count">{count} report{"s" if count != 1 else ""}</span></span>'
+                  f'<span class="card-meta">{badge}<span class="last-run">{label}: <time datetime="'
+                  f'{datetime.fromtimestamp(last).isoformat()}">{stamp}</time></span></span></summary>'
+                  f'<ul>{"".join(lis)}</ul></details></section>')
+
+
+STAGES = [
+    (1, "Market Conditions", "Assess broad market sentiment and risk before deploying capital.",
+     ("market_sentiment",)),
+    (2, "Theme Discovery", "Identify the value chain for a macro trend and surface candidate stocks at each layer.",
+     ("theme_discovery", "emerging_industry", "industry_trend", "industry_deep_dive", "ai_company_deep_dive",
+      "company_deep_dive", "multibagger")),
+    (3, "Quick Filter", "Screen candidates on financial quality before committing to deep research.",
+     ("quick_stock_metrics",)),
+    (4, "Individual Stock Analysis", "Deep-dive on specific names across all dimensions, culminating in a research note.",
+     ()),
+]
+
+
+def _stage_of(meta):
+    """Stage number for a report, from its skill name (stage 4 is the default for any single-stock report)."""
+    key = (meta.get("skill") or "") + " " + os.path.basename(meta["href"])
+    for num, _, _, keys in STAGES:
+        if any(k in key for k in keys):
+            return num
+    return 4
+
+
+def _skill_card(label, items):
+    """Stage 1-3 card: one skill's reports, newest first, with the ticker in front when there is one."""
+    items = sorted(items, key=lambda m: -m["mtime"])
+    lis = []
+    for m in items:
+        title = m.get("title") or m["href"]
+        if m.get("ticker") and not title.upper().startswith(m["ticker"].upper()):
+            title = f'{m["ticker"]} — {title}'
+        lis.append(_index_item(dict(m, title=title)))
+    last = datetime.fromtimestamp(items[0]["mtime"]).strftime("%Y-%m-%d %H:%M")
+    return (f'<section class="card"><h2>{html.escape(label)}</h2><p class="last-run">Last run: '
+            f'<time>{last}</time></p><ul>{"".join(lis)}</ul></section>')
+
+
+def _skill_label(meta):
+    return (meta.get("skill") or os.path.basename(meta["href"]).rsplit(".", 1)[0]).replace("_", " ").title()
 
 
 def build_index(root="Outputs"):
-    """Rebuild Outputs/index.html: one card per ticker folder in ascending ticker order, then market/theme reports."""
-    groups = {}
+    """Rebuild Outputs/index.html: a left navigation and the reports organised by the 4 workflow stages
+    (market conditions, theme discovery, quick filter, then one card per ticker in A→Z order)."""
+    metas = []
     for path in glob.glob(os.path.join(root, "**", "*.html"), recursive=True):
         if os.path.basename(path) == "index.html":
             continue
         rel = os.path.relpath(path, root).replace(os.sep, "/")
-        folder = rel.split("/")[0] if "/" in rel else "Market & Themes"
         meta = _read_meta(path)
-        meta.update(href=rel, mtime=os.path.getmtime(path))
-        groups.setdefault(folder, []).append(meta)
-    # ticker cards A→Z, then the market/theme card
-    order = sorted(groups, key=lambda f: (f == "Market & Themes", f.upper()))
-    cards = [_card(f, groups[f])[1] for f in order]
-    n = sum(len(v) for v in groups.values())
-    body = (f'<div class="library"><div class="library-head"><div><h1>Research Library</h1>'
-            f'<p class="subtitle" style="color:var(--muted);margin:4px 0 0">{n} reports · rebuilt '
+        meta.update(href=rel, mtime=os.path.getmtime(path), folder=rel.split("/")[0] if "/" in rel else "")
+        metas.append(meta)
+    by_stage = {n: [] for n, *_ in STAGES}
+    for m in metas:
+        by_stage[_stage_of(m)].append(m)
+
+    sections, nav = [], []
+    for num, name, desc, _ in STAGES:
+        items = by_stage[num]
+        sub = ""
+        if num == 4:
+            groups = {}
+            for m in items:
+                groups.setdefault(m["folder"] or "Other", []).append(m)
+            order = sorted(groups, key=lambda f: (f == "Other", f.upper()))
+            cards = "".join(_card(f, groups[f])[1].replace("<section class=\"card\">",
+                            f'<section class="card" id="t-{_slug(f, set())}">', 1) for f in order)
+            sub = "".join(f'<li><a href="#t-{_slug(f, set())}">{html.escape(f)}</a></li>' for f in order)
+        else:
+            groups = {}
+            for m in items:
+                groups.setdefault(_skill_label(m), []).append(m)
+            cards = "".join(_skill_card(k, v) for k, v in sorted(groups.items()))
+        body = f'<div class="cards">{cards}</div>' if cards else '<p class="empty">No reports yet.</p>'
+        sections.append(f'<section class="stage" id="stage-{num}"><h2 class="stage-title"><span class="stage-no">'
+                        f'Stage {num}</span> — {html.escape(name)}</h2><p class="stage-desc">{html.escape(desc)}</p>'
+                        f'{body}</section>')
+        nav.append(f'<li><a href="#stage-{num}"><b>Stage {num}</b> — {html.escape(name)}'
+                   f'<span class="count">{len(items)}</span></a>{f"<ol class=sub>{sub}</ol>" if sub else ""}</li>')
+
+    body = (f'<div class="shell library"><nav class="toc" aria-label="Stages"><a class="toc-home" href="#">'
+            f'Investment Research Library</a><ol>{"".join(nav)}</ol></nav><main>'
+            f'<div class="library-head"><div><h1>Investment Research Library</h1>'
+            f'<p class="subtitle" style="color:var(--muted);margin:4px 0 0">{len(metas)} reports · rebuilt '
             f'{date.today().isoformat()}</p></div><div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">'
             f'<input id="library-search" type="search" placeholder="Filter by ticker or title" '
             f'aria-label="Filter reports"><button type="button" class="theme-toggle">Dark mode</button></div></div>'
-            f'<div class="cards">{"".join(cards) or "<p>No HTML reports yet.</p>"}</div></div>')
+            f'{"".join(sections)}</main></div>')
     out = os.path.join(root, "index.html")
     with open(out, "w", encoding="utf-8") as f:
-        f.write(_page("Research Library", body))
+        f.write(_page("Investment Research Library", body))
     print(f"Saved: {out}")
 
 
@@ -725,12 +840,23 @@ def validate(spec):
                     raise ValueError(f"block {i} ({kind}) row {ri} has {len(row)} cells, expected {width}: {row}")
 
 
-def render(spec_path):
+FORMAT_CHOICES = {"html": ["html"], "docx": ["docx"], "both": ["docx", "html"]}
+
+
+def render(spec_path, fmt=None):
+    """fmt: 'html' (default), 'docx' or 'both'. Precedence: --format flag, then the
+    REPORT_FORMAT env var, then the spec's own "formats", then html only."""
     with open(spec_path, encoding="utf-8") as f:
         spec = json.load(f)
     validate(spec)
     expand_blocks(spec)
-    formats = spec.get("formats", ["docx", "html"])
+    fmt = fmt or os.environ.get("REPORT_FORMAT")
+    if fmt:
+        if fmt not in FORMAT_CHOICES:
+            sys.exit(f"Unknown format {fmt!r}; choose html, docx or both")
+        formats = FORMAT_CHOICES[fmt]
+    else:
+        formats = spec.get("formats", ["html"])
     summary = build_summary(spec)
     if "docx" in formats:
         render_docx(spec)
@@ -752,5 +878,7 @@ if __name__ == "__main__":
         build_index("Outputs")
     elif len(sys.argv) == 2:
         render(sys.argv[1])
+    elif len(sys.argv) == 4 and sys.argv[2] == "--format":
+        render(sys.argv[1], sys.argv[3])
     else:
         sys.exit(__doc__)

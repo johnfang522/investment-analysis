@@ -876,7 +876,7 @@ def write_html(xlsx_path, tickers, all_metrics, all_sources, summary=None):
     spec_path = xlsx_path[:-5] + "_spec.json"
     spec = {"skill": "quick_stock_metrics", "title": f"Quick Stock Metrics — {day[:4]}-{day[4:6]}-{day[6:]}",
             "subtitle": f"{len(tickers)} tickers · click a column header to sort · Excel: {os.path.basename(xlsx_path)}",
-            "output": xlsx_path[:-5] + ".docx", "formats": ["html"], "blocks": blocks}
+            "output": xlsx_path[:-5] + ".docx", "formats": ["html"], "layout": "wide", "blocks": blocks}
     with open(spec_path, "w", encoding="utf-8") as f:
         json.dump(spec, f, ensure_ascii=False, indent=1)
     render(spec_path)

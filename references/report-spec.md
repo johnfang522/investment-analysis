@@ -6,6 +6,8 @@ Skills do **not** write python-docx or HTML code. They write the document's cont
 PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/{n}_{ticker}_{skill}_spec.json
 ```
 
+**Output format is the user's choice; the default is HTML only.** If the user's request includes `--docx` / "word", append ` --format docx`; for `--both`, append ` --format both`; otherwise run the command exactly as above (HTML only, no `.docx`). Never edit the spec's `formats` for this. Wherever a skill says it "writes the `.docx`", read that as "only if a Word format was requested", and in the final reply list only the files actually written. Subagents spawned by another skill inherit the parent's choice (the parent passes it in the prompt).
+
 On a `ValueError` (unknown block, missing key, ragged row) fix the spec and re-run — never fall back to a hand-written script. The full schema is the `report_renderer.py` docstring; read it only if something below is unclear.
 
 ## Spec skeleton

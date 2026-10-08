@@ -191,6 +191,8 @@ Do not write a python-docx script. Write the note from Step 2 as a JSON spec and
 
 ## Step 4 — Assemble the Word Package
 
+**Output format:** HTML is the default. Pass `--format docx` / `--format both` to every `report_renderer.py` call (including each subagent's, via its prompt) only if the user asked for Word (`--docx` / `--both`). **Skip this step entirely unless Word was requested** — the component `.docx` files it merges don't exist in HTML-only runs.
+
 ```
 PYTHONIOENCODING=utf-8 .venv/Scripts/python assemble_package.py {TICKER} {YYYYMMDD}
 ```

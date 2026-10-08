@@ -3,7 +3,7 @@ chart_income_statement.py TICKER
 
 Generates charts saved to Outputs/{TICKER}/:
   1. {ticker}_income_statement_flow.png             — Sankey-style flow (most recent quarter)
-  2. {ticker}_income_statement_annual_trend.png     — Annual $ bars (amount, YoY, margins) + share price: last 5 FYs + TTM + consensus FYs
+  2. {ticker}_income_statement_annual_trend.png     — Annual $ bars (amount, YoY, margins): last 5 FYs + TTM + consensus FYs
   3. {ticker}_income_statement_quarterly_trend.png  — Quarterly $ bars, same format: last 8 quarters + up to 4 consensus quarters
 Consensus comes from {ticker}_consensus_estimates.json (written by /income_statement_analysis from
 WebSearch); without it, charts 2-3 show actuals only.
@@ -479,7 +479,7 @@ def margin(row, key):
 
 
 def _price_points(ticker, rows):
-    """{row index: close} for the share-price overlay: close on/before each period end (fiscal year-end, quarter-end, TTM end).
+    """{row index: close} for the table's share-price column: close on/before each period end (fiscal year-end, quarter-end, TTM end).
     Fiscal years that predate the cached price history (5 years) are skipped."""
     hist = load_json(f"Outputs/{ticker.upper()}/{ticker.lower()}_price_history.json")
     if not hist:
@@ -494,26 +494,24 @@ def _price_points(ticker, rows):
     return pts
 
 
-def _daily_price(ticker, rows, cx):
+def _daily_price(ticker, rows, cx, end_margin=0.45):
     """(x positions, closes, latest date as mm/dd/yyyy) for every trading day from the first period end to the
-    latest cached close. The axis is categorical, so dates map to x by linear interpolation between each period's
-    end date and its x center; consensus periods with no end date (annual) are placed one year apart."""
-    from datetime import datetime, timedelta
+    latest cached close. The axis is categorical, so dates map to x by linear interpolation between each actual
+    period's end date and its x center. The days after the last reported period are squeezed between that period
+    and the first consensus bar, ending end_margin (x units) before the consensus bar's center so the price line
+    never overlaps a consensus bar."""
+    from datetime import datetime
     hist = load_json(f"Outputs/{ticker.upper()}/{ticker.lower()}_price_history.json")
     parse = lambda d: datetime.strptime(d, "%Y-%m-%d")
-    anchors, last_end, last_year = [], None, None
-    for r, x in zip(rows, cx):
-        end = r.get("end")
-        if end:
-            end = parse(end)
-            if r["kind"] != "estimate":
-                last_end, last_year = end, end.year
-        elif r["kind"] == "estimate" and last_end:
-            m = re.search(r"\d{4}", r["period"])
-            end = last_end + timedelta(days=365 * (int(m.group()) - last_year)) if m else None
-        if end:
-            anchors.append((end.toordinal(), x))
-    if not hist or len(anchors) < 2:
+    anchors = [(parse(r["end"]).toordinal(), x) for r, x in zip(rows, cx) if r["kind"] != "estimate" and r.get("end")]
+    if not hist or not anchors:
+        return None
+    est_x = [x for r, x in zip(rows, cx) if r["kind"] == "estimate"]
+    last = max(hist)
+    x_end = (est_x[0] - end_margin) if est_x else anchors[-1][1] + 0.6
+    if parse(last).toordinal() > anchors[-1][0] and x_end > anchors[-1][1]:
+        anchors.append((parse(last).toordinal(), x_end))
+    if len(anchors) < 2:
         return None
     days = [d for d in sorted(hist) if parse(d).toordinal() >= anchors[0][0]]
     if not days:
@@ -526,9 +524,34 @@ PRICE_COLOR = "#6A1B9A"
 MARGIN_TAGS = {"gross_profit": "GM", "operating_income": "OM", "net_income": "NM"}
 
 
+def _place_latest_label(fig, ax2, daily):
+    """"Latest $X (date)" tag for the end of the price line, placed where it covers neither the line nor the
+    period-end markers: tries above, higher above, below, then left of the end point."""
+    import numpy as np
+    dx, dy, last_day = daily
+    fig.canvas.draw()
+    k = fig.dpi / 72.0  # points -> pixels
+    line = ax2.transData.transform(np.column_stack([dx, dy]))
+    end = line[-1]
+    half_w, half_h = 62 * k, 20 * k
+    best = None
+    for ox, oy in [(0, 30), (0, 60), (0, -50), (-90, 30), (-90, -50), (-150, 60)]:
+        cx_, cy_ = end[0] + ox * k, end[1] + oy * k
+        hit = np.sum((abs(line[:, 0] - cx_) < half_w + 6 * k) & (abs(line[:, 1] - cy_) < half_h + 6 * k))
+        if best is None or hit < best[0]:
+            best = (hit, ox, oy)
+        if hit == 0:
+            break
+    _, ox, oy = best
+    ax2.annotate(f"Latest ${dy[-1]:,.2f}\n({last_day})", xy=(dx[-1], dy[-1]), xytext=(ox, oy),
+                 textcoords="offset points", ha="center", va="center", fontsize=11, fontweight="bold",
+                 color="white", zorder=9,
+                 bbox=dict(facecolor=PRICE_COLOR, edgecolor=PRICE_COLOR, boxstyle="round,pad=0.25"),
+                 arrowprops=dict(arrowstyle="-", color=PRICE_COLOR, linewidth=1))
+
+
 def chart_bars(ticker, rows, title, out_path, quarterly=False):
-    """Grouped bar chart of trend rows: revenue, gross profit, operating income, net income, with the share
-    price on a right axis. Every bar is labeled with amount, YoY growth and margin (annual TTM: no YoY).
+    """Grouped bar chart of trend rows: revenue, gross profit, operating income, net income, Every bar is labeled with amount, YoY growth and margin (annual TTM: no YoY).
     Consensus is drawn for revenue only (light, hatched). quarterly=True uses each row's precomputed "yoy"
     (vs. the same quarter a year earlier) and tighter spacing."""
     rows = [r for r in rows if any(r[k] is not None for k, *_ in LINE_ITEMS)]
@@ -612,24 +635,12 @@ def chart_bars(ticker, rows, title, out_path, quarterly=False):
         ax2 = ax.twinx()
         if daily:  # daily closes: first period end -> latest close; dates are interpolated between period-end x positions
             dx, dy, last_day = daily
-            ax2.plot(dx, dy, color=PRICE_COLOR, linewidth=1.3, alpha=0.8, zorder=7)
+            ax2.plot(dx, dy, color=PRICE_COLOR, linewidth=1.3, alpha=0.7, zorder=3)
             ax2.plot(dx[-1], dy[-1], color=PRICE_COLOR, marker="o", markersize=8, zorder=8)
-            ax2.annotate(f"Latest ${dy[-1]:,.2f}\n({last_day})", xy=(dx[-1], dy[-1]), xytext=(0, 10),
-                         textcoords="offset points", ha="center", fontsize=11, fontweight="bold",
-                         color="white", zorder=9,
-                         bbox=dict(facecolor=PRICE_COLOR, edgecolor=PRICE_COLOR, boxstyle="round,pad=0.25"))
         xs, ys = [cx[i] for i in sorted(px)], [px[i] for i in sorted(px)]
         ax2.plot(xs, ys, color=PRICE_COLOR, linewidth=0, marker="D", markersize=8, zorder=8)
-        for xi, yi in zip(xs, ys):
-            ax2.annotate(f"${yi:,.2f}", xy=(xi, yi), xytext=(0, -24), textcoords="offset points", ha="center",
-                         fontsize=11, fontweight="bold", color=PRICE_COLOR, zorder=9,
-                         bbox=dict(facecolor="white", edgecolor=PRICE_COLOR, alpha=0.9, boxstyle="round,pad=0.25"))
-        # negative floor lifts the price line into the empty band above the bars; hide the negative ticks
         allp = ys + (daily[1] if daily else [])
-        top, bottom = max(allp) * 1.22, min(allp)
-        floor = 0.66 if quarterly else 0.62  # share of axis height the lowest price sits at, above the bar labels
-        ax2.set_ylim((bottom - floor * top) / (1 - floor), top)
-        ax2.set_yticks([t for t in ax2.get_yticks() if 0 <= t <= top])
+        ax2.set_ylim(min(allp) * 0.85, max(allp) * 1.15)
         ax2.set_ylabel("Share price (USD)", fontsize=17, color=PRICE_COLOR)
         ax2.tick_params(axis="y", labelsize=14, colors=PRICE_COLOR)
     handles = [patches.Patch(color=LINE_COLORS[k], label=name) for k, name, *_ in LINE_ITEMS]
@@ -638,20 +649,22 @@ def chart_bars(ticker, rows, title, out_path, quarterly=False):
                                         label="Revenue (consensus)"))
     if px:
         handles.append(Line2D([0], [0], color=PRICE_COLOR, marker="D", linewidth=1.5,
-                              label="Share price (daily close; diamonds = period-end close)"))
+                              label="Share price (right axis; diamonds = period-end close)"))
     ax.legend(handles=handles, fontsize=13, loc="upper center", bbox_to_anchor=(0.5, -0.1),
               ncol=len(handles), frameon=False)
     ax.grid(axis="y", alpha=0.3, zorder=0)
     plt.tight_layout()
+    if px and daily:
+        _place_latest_label(fig, ax2, daily)
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
-    _save_bars_data(rows, yoy, px, _daily_price(ticker, rows, list(range(len(rows)))), title, out_path)
+    _save_bars_data(rows, yoy, px, _daily_price(ticker, rows, list(range(len(rows))), end_margin=0.55), title, out_path)
     print(f"  Saved: {out_path}")
 
 
 def _save_bars_data(rows, yoy, px, daily, title, out_path):
     """Sidecar for the HTML report: same bars, consensus revenue as a faded revenue-colored series, and the
-    share price as a right-axis overlay (period-end closes plus the daily closes, x in category-index units)."""
+    period-end share price in the category tooltip note."""
     from datetime import datetime
     series = []
     for j, (key, name, *_) in enumerate(LINE_ITEMS):
@@ -676,17 +689,18 @@ def _save_bars_data(rows, yoy, px, daily, title, out_path):
                 est_notes.append(f"{g * 100:+.0f}% YoY" if isinstance(g, float) else None)
             series.append({"name": "Revenue (consensus)", "slot": 1, "faded": True, "notes": est_notes,
                            "values": [r["revenue"] if r["kind"] == "estimate" else None for r in rows]})
-    cats, cnotes = [], []
+    cats, cnotes, cdates = [], [], []
     for i, r in enumerate(rows):
         cats.append("TTM" if r["kind"] == "ttm" else r["period"])
         bits = []
+        cdates.append(datetime.strptime(r["end"], "%Y-%m-%d").strftime("%m/%d/%Y") if r.get("end") else None)
         if r.get("end"):
             bits.append("period end " + datetime.strptime(r["end"], "%Y-%m-%d").strftime("%b %d, %Y"))
         if i in px:
             bits.append(f"close ${px[i]:,.2f}")
         cnotes.append(" · ".join(bits) or None)
     data = {"kind": "bar", "title": title, "unit": "usd", "categories": cats,
-            "category_notes": cnotes, "series": series}
+            "category_notes": cnotes, "series": series, "category_dates": cdates, "legend_latest": False}
     if px:
         overlay = {"name": "Share price", "unit": "price", "slot": 7,
                    "points": [round(px[i], 2) if i in px else None for i in range(len(rows))]}

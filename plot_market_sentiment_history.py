@@ -34,7 +34,7 @@ END_STR   = END.strftime("%Y-%m-%d")
 # from a web search each run (see /market_sentiment_analysis Step 1) and
 # passed here; without a fresh value the Buffett chart/current-reading will
 # silently drift from the true current level over time.
-BUFFETT_ANCHOR_VALUE = 238.0   # % Market Cap/GDP, as of 2026-09-09 (web search)
+BUFFETT_ANCHOR_VALUE = 234.0   # % Market Cap/GDP, as of 2026-10-08 (web search: 234%, vs. 237% record in May 2026)
 
 STYLE = {
     "figure.facecolor": "white",
@@ -261,6 +261,9 @@ buffett = pd.Series(dtype=float)
 # Wilshire 5000 was removed from FRED in June 2024; use ^FTW5000 from Yahoo Finance
 # GDP (quarterly) from FRED — normalise ratio to BUFFETT_ANCHOR_VALUE (top of file)
 ftw_raw = yf.download("^FTW5000", start=START_STR, end=END_STR, progress=False)
+if ftw_raw.empty:
+    # ^FTW5000 has gone missing from Yahoo at times; ^W5000 is the same Wilshire 5000 total-market series
+    ftw_raw = yf.download("^W5000", start=START_STR, end=END_STR, progress=False)
 if not ftw_raw.empty:
     ftw_col = ftw_raw["Close"]
     ftw = (ftw_col.iloc[:, 0] if hasattr(ftw_col, "columns") else ftw_col).dropna()

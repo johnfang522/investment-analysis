@@ -182,8 +182,8 @@
       var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
       var last = null;
       for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
-      var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv);
-      b.title = "Latest value; click to hide or show " + s.name;
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
       b.addEventListener("click", function () {
         var visibleCount = state.visible.filter(Boolean).length;
         if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
@@ -228,6 +228,7 @@
     var lineMode = null;
     var m = { top: 16, right: 16, bottom: 34, left: 62 };
     if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
     if (kind === "line") {
       lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
       if (lineMode === "end") {
@@ -236,7 +237,7 @@
         m.right = Math.max(m.right, longest * CHAR_W + 14);
       }
     }
-    var iw = W - m.left - m.right, ih = H - m.top - m.bottom, band = iw / n;
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
     var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
       "aria-label": data.title + " — use left and right arrow keys to read values" });
     var vals = [];
@@ -267,7 +268,7 @@
       var room = rotate ? maxChars * CHAR_W + 8 : 16;
       padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
     } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
-    var ovBand = ov ? Math.round(ih * 0.34) : 0;   // the overlay line lives in the band above the bars
+    var ovBand = 0;
     var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
     function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
     var g = el("g", {}, svg);
@@ -283,7 +284,8 @@
       labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
     }
     labelIdx.forEach(function (i) {
-      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
     });
     (data.refs || []).forEach(function (r) {
       el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
@@ -350,7 +352,7 @@
       var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
       if (pv.length) {
         var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
-        var top2 = m.top + 18, bot2 = m.top + ovBand + padTop * 0.6;
+        var top2 = yTop, bot2 = yBot;
         y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
         var fT2 = formatter(ov.unit || "price", true);
         t2.forEach(function (t) {
@@ -366,14 +368,25 @@
           var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
           el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
           var lt = ov.daily.last_label || fOv(lyv);
-          pointLabel(labels, Math.min(W - m.right - lt.length * CHAR_W / 2, lx), y2(lyv) - 9, lt, { style: "fill:" + color2 });
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
         }
         ov.points.forEach(function (v, i) {
           if (v === null) return;
           var cx = ox(i), cy = y2(v), s = 5;
           el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
             fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
-          pointLabel(labels, cx, cy + 17, fOv(v), { style: "fill:" + color2 });
         });
       }
     }
@@ -564,8 +577,56 @@
     search.addEventListener("input", function () {
       var q = search.value.trim().toLowerCase();
       document.querySelectorAll(".card").forEach(function (c) {
-        c.style.display = !q || c.textContent.toLowerCase().indexOf(q) !== -1 ? "" : "none";
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
       });
     });
   }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
 })();
