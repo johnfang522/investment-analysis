@@ -141,8 +141,9 @@ Produces in `Outputs/{TICKER}/`:
 
 Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-- Spec: `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_spec.json` with `"skill": "balance_sheet"`, `"title": "{TICKER} — Balance Sheet"`, `"output": "Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis.docx"`
+- Spec: `Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_{YYYYMMDD}_spec.json` with `"skill": "balance_sheet"`, `"title": "{TICKER} — Balance Sheet"`, `"output": "Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_analysis_{YYYYMMDD}.docx"`
+- `{YYYYMMDD}` is the run date (use the date the parent `/single_stock_deep_research` run passed in, else today's): a same-day re-run overwrites these files, earlier dates stay as history, and the HTML hub links the pages of the same date.
 - Charts: `{ticker_lowercase}_balance_sheet_composition.png` under the Balance Sheet Snapshot table; `{ticker_lowercase}_balance_sheet_trend.png` under Liquidity & Leverage; `source`: "SEC EDGAR".
 - OBS section: the scored checklist table (`bold_rows` on the Total row) and the adjusted-vs-reported leverage table, each citing the 10-K/10-Q filing and date.
 - Close with a `read_through` block (dimension: `Balance-Sheet`) — it replaces the Read-Through section above.
-- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_spec.json` — writes the `.docx`, the interactive `.html`, `4_{ticker_lowercase}_balance_sheet_summary.json` and refreshes `Outputs/index.html`
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/4_{ticker_lowercase}_balance_sheet_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `4_{ticker_lowercase}_balance_sheet_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`

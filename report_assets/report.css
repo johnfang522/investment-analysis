@@ -262,3 +262,6 @@ img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #f
   figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
   hr.page-break { break-after: page; border: 0; }
 }
+
+.file-chip { margin-left: 6px; padding: 1px 7px; border: 1px solid var(--grid); border-radius: 999px; font-size: 11px; font-weight: 600; text-decoration: none; color: var(--muted); vertical-align: 1px; }
+.file-chip:hover { color: var(--ink); border-color: var(--muted); }

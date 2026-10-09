@@ -3,7 +3,7 @@
 Skills do **not** write python-docx or HTML code. They write the document's content as a JSON spec and run the shared renderer, which produces the house-style `.docx`, an offline interactive `.html` twin (charts drawn from the `.chart.json` files the `chart_*.py` scripts save next to their PNGs), a `_summary.json` for `/single_stock_deep_research`, and a refreshed `Outputs/index.html` library page.
 
 ```
-PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/{n}_{ticker}_{skill}_spec.json
+PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/{n}_{ticker}_{skill}_{YYYYMMDD}_spec.json
 ```
 
 **Output format is the user's choice; the default is HTML only.** If the user's request includes `--docx` / "word", append ` --format docx`; for `--both`, append ` --format both`; otherwise run the command exactly as above (HTML only, no `.docx`). Never edit the spec's `formats` for this. Wherever a skill says it "writes the `.docx`", read that as "only if a Word format was requested", and in the final reply list only the files actually written. Subagents spawned by another skill inherit the parent's choice (the parent passes it in the prompt).
@@ -15,7 +15,7 @@ On a `ValueError` (unknown block, missing key, ragged row) fix the spec and re-r
 ```json
 {"ticker": "NVDA", "skill": "balance_sheet", "title": "NVDA — Balance Sheet",
  "subtitle": "Buy-side balance sheet read · October 7, 2026 · Data as of: Q2 FY2027 (quarter ended July 26, 2026)",
- "output": "Outputs/NVDA/4_nvda_balance_sheet_analysis.docx",
+ "output": "Outputs/NVDA/4_nvda_balance_sheet_analysis_20261008.docx",
  "blocks": [ ... ],
  "summary": {"as_of": "...", "thesis_bias": "LONG|SHORT|PASS",
              "key_figures": [{"label": "...", "value": "...", "source": "..."}], "red_flags": ["..."]}}

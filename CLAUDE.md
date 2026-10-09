@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guidance for Claude Code (claude.ai/code) when working in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What This Project Does
 
@@ -73,14 +73,14 @@ An investment research toolkit that turns a few commands into hedge-fund-style r
 | 2 | `/ai_company_deep_dive` | TICKER | `Outputs/{TICKER}/{ticker}_company_deep_dive_{YYYYMMDD}.html` |
 | 2 | `/multibagger_screener` | THEME or _(none)_ | `Outputs/multibagger_screener_{theme_or_date}_{YYYYMMDD}.html` |
 | 3 | `/quick_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel `Outputs/quick_stock_metrics_YYYYMMDD.xlsx` (Summary sheet = screen read) + `.html` |
-| 4 | `/business_overview_analysis` | TICKER | `Outputs/{TICKER}/1_{ticker}_business_overview_analysis.html` |
-| 4 | `/leadership_analysis` | TICKER | `Outputs/{TICKER}/2_{ticker}_leadership_analysis.html` |
-| 4 | `/income_statement_analysis` | TICKER | `Outputs/{TICKER}/3_{ticker}_income_statement_analysis.html` |
-| 4 | `/balance_sheet_analysis` | TICKER | `Outputs/{TICKER}/4_{ticker}_balance_sheet_analysis.html` |
-| 4 | `/cash_flow_analysis` | TICKER | `Outputs/{TICKER}/5_{ticker}_cash_flow_analysis.html` |
-| 4 | `/business_potential_analysis` | TICKER | `Outputs/{TICKER}/6_{ticker}_business_potential_analysis.html` |
-| 4 | `/valuation_analysis` | TICKER | `Outputs/{TICKER}/7_{ticker}_valuation_analysis.html` |
-| 4 | `/technical_analysis` | TICKER | `Outputs/{TICKER}/8_{ticker}_technical_analysis.html` |
+| 4 | `/business_overview_analysis` | TICKER | `Outputs/{TICKER}/1_{ticker}_business_overview_analysis_{YYYYMMDD}.html` |
+| 4 | `/leadership_analysis` | TICKER | `Outputs/{TICKER}/2_{ticker}_leadership_analysis_{YYYYMMDD}.html` |
+| 4 | `/income_statement_analysis` | TICKER | `Outputs/{TICKER}/3_{ticker}_income_statement_analysis_{YYYYMMDD}.html` |
+| 4 | `/balance_sheet_analysis` | TICKER | `Outputs/{TICKER}/4_{ticker}_balance_sheet_analysis_{YYYYMMDD}.html` |
+| 4 | `/cash_flow_analysis` | TICKER | `Outputs/{TICKER}/5_{ticker}_cash_flow_analysis_{YYYYMMDD}.html` |
+| 4 | `/business_potential_analysis` | TICKER | `Outputs/{TICKER}/6_{ticker}_business_potential_analysis_{YYYYMMDD}.html` |
+| 4 | `/valuation_analysis` | TICKER | `Outputs/{TICKER}/7_{ticker}_valuation_analysis_{YYYYMMDD}.html` |
+| 4 | `/technical_analysis` | TICKER | `Outputs/{TICKER}/8_{ticker}_technical_analysis_{YYYYMMDD}.html` |
 | 4 | `/single_stock_deep_research` | TICKER | Note `Outputs/{TICKER}/{ticker}_stock_deep_research_notes_YYYYMMDD.html` (the hub); with Word, also the merged `{ticker}_stock_deep_research_YYYYMMDD.docx` package |
 | 4 | `/single_stock_quick_research` | TICKER | `Outputs/{TICKER}/{ticker}_stock_quick_research_YYYYMMDD.html` |
 | 4 | `/earnings_report_analyzer` | TICKER | `Outputs/{TICKER}/{ticker}_earnings_analysis_YYYYMMDD.html` |
@@ -112,12 +112,9 @@ Everything below is for working on the code and the skills.
   - Gitignored: `Outputs/`, `.venv/`, `__pycache__/` (generated JSON, PNG, HTML, Word and Excel are never committed)
   - Tracked: Python libraries at the project root, `.claude/commands/`, `references/`, `tickers.txt`, this file
 
-## Project Overview
+## Data Flow
 
-- **What it is:** an investment analysis toolkit
-  - Fetches financial data from SEC EDGAR and Yahoo Finance
-  - Runs structured equity research via Claude Code slash commands (skills)
-- **Data flow**
+- Overview, skills and outputs are at the top of this file; this is the plumbing underneath
   1. `get_financial_data.py` fetches raw data and saves JSON to `Outputs/`
      - Statements (income, balance sheet, cash flow): SEC EDGAR
      - Quote data and price history: Yahoo Finance
@@ -277,8 +274,9 @@ Everything below is for working on the code and the skills.
     - Single-stock reports default to Stage 4, grouped per ticker (cards collapsed by default)
     - To place a new skill in Stage 1–3, add its skill-name key to `STAGES`
   - Left navigation of stages and tickers
-  - One instance per report: rebuilding the index deletes older dated copies (`<name>_YYYYMMDD.html` plus its `.docx`, `_spec.json`, `_summary.json`) when a later date exists (`prune_superseded()`), so a re-run replaces the earlier report
+  - History is kept: every report filename ends in `_YYYYMMDD`, so a run on a new day adds files and an earlier day's stay; a same-day re-run overwrites. The library lists each dated run, and a research package lists the components of its own date (link labels carry no date; the link targets the dated file)
   - Every line shows its date and time; reports under 7 days old carry a "New" tag
+  - Excel, Word and PDF deliverables are linked too (`_attach_files()`): a file named like its report becomes an Excel/Word/PDF chip beside that report, any other file gets its own row; JSON, chart PNGs and per-component Word files are never linked
   - Every report page has a floating, draggable "← Back" button (`.back-fab`)
     - Component reports go back to their research package page
     - Other pages go back to the library
@@ -291,7 +289,7 @@ Everything below is for working on the code and the skills.
   - Add new block types here, not in skills
 - HTML is self-contained, no CDN; publish it to GitHub Pages with `publish_reports.py` (see below)
   - `report_assets/report.css` + `report.js` are inlined
-  - `.venv/Scripts/python publish_reports.py` copies only the `Outputs/**/*.html` files to the `gh-pages` branch (disclaimer banner and `noindex` added to the copies, force-pushed, never touches `master`); site: https://johnfang522.github.io/investment-analysis/ — public if the repo is public; `--dry-run` stages without pushing
+  - `.venv/Scripts/python publish_reports.py` publishes the deliverables in `Outputs/` (`.html`, `.xlsx`, `.pdf`, finished `.docx`, the sentiment dashboard PNG) to the `gh-pages` branch; never JSON/specs/chart PNGs/scripts/CSV or the per-component `.docx` files that get merged into the package (`is_deliverable()`). HTML copies get a disclaimer banner and `noindex`; force-pushed, never touches `master`; site: https://johnfang522.github.io/investment-analysis/ — public if the repo is public; `--dry-run` stages without pushing
   - Features: light/dark theme, contents sidebar, SVG charts with hover / legend toggles / data tables, opt-in sortable tables, print styles
 - Charts
   - Every `chart_*.py` and `plot_market_sentiment_history.py` call `chart_data.save_chart_data(png_path, data)`
@@ -332,7 +330,7 @@ Everything below is for working on the code and the skills.
 ## Tickers
 
 - Edit `tickers.txt` to add/remove tickers (one per line, `#` for comments)
-- Currently tracking: AMD, AVGO, COHR, INTC, LITE, MU, MRVL, NVDA, QCOM
+- The current list is whatever `tickers.txt` contains; read the file rather than relying on a copy here
 
 ## Skill Details
 
@@ -454,7 +452,6 @@ Everything below is for working on the code and the skills.
   - Runs its `chart_*.py` (PNGs + `.chart.json` sidecars)
   - Writes a JSON report spec and runs `report_renderer.py`
   - Produces the interactive `.html` (and a `.docx` if requested)
-- Open `Outputs/index.html` to browse everything
 - All skills except `/quick_stock_metrics` require a TICKER or THEME argument
 
 ## Hedge-Fund House Style

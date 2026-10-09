@@ -340,10 +340,15 @@ def _appendix_index(block, ticker):
                            (3, "income_statement", "Income Statement"), (4, "balance_sheet", "Balance Sheet"),
                            (5, "cash_flow", "Cash Flow"), (6, "business_potential", "Business Potential"),
                            (7, "valuation", "Valuation"), (8, "technical", "Technical Analysis")):
-        page = f"{n}_{t}_{slug}_analysis.html"
-        summ = f"Outputs/{ticker}/{n}_{t}_{slug}_summary.json"
+        day = block.get("_date")
+        page = f"{n}_{t}_{slug}_analysis_{day}.html" if day else None
+        if not page or not os.path.exists(f"Outputs/{ticker}/{page}"):   # no same-date page: newest dated one
+            found = sorted(glob.glob(f"Outputs/{ticker}/{n}_{t}_{slug}_analysis_????????.html"))
+            page = os.path.basename(found[-1]) if found else page or f"{n}_{t}_{slug}_analysis.html"
+        d = re.search(r"_(\d{8})\.html$", page)
+        summ = f"Outputs/{ticker}/{n}_{t}_{slug}_{d.group(1)}_summary.json" if d else ""
         signal, conv = "—", "—"
-        if os.path.exists(summ):
+        if summ and os.path.exists(summ):
             with open(summ, encoding="utf-8") as f:
                 s = json.load(f)
             signal, conv = s.get("signal") or "—", f"{s.get('conviction')}/10" if s.get("conviction") is not None else "—"
@@ -362,6 +367,10 @@ MACROS = set(MACRO_BUILDERS)
 
 def expand_blocks(spec):
     """Replace macro blocks with primitive blocks."""
+    m = re.search(r"_(\d{8})\.\w+$", spec.get("output", ""))
+    for b in spec["blocks"]:
+        if b.get("type") in MACROS:
+            b.setdefault("_date", m.group(1) if m else None)   # the run date: the appendix hub links same-date components
     spec["blocks"] = [MACRO_BUILDERS[b["type"]](b, b.get("ticker") or spec["ticker"]) if b.get("type") in MACROS
                       else b for b in spec["blocks"]]
     return spec
@@ -631,18 +640,22 @@ def render_html(spec, out_path, summary):
 
 
 def _package_note_for(out_path):
-    """Newest deep-research note page in the same folder when out_path is one of its component reports, else None."""
-    if not _COMPONENT_RE.search(out_path.replace(os.sep, "/")):
+    """The deep-research note of the same run date as this component report (else the newest note), else None."""
+    c = _COMPONENT_RE.search(out_path.replace(os.sep, "/"))
+    if not c:
         return None
     notes = sorted(f for f in os.listdir(os.path.dirname(out_path) or ".") if _NOTE_RE.search(f))
-    return notes[-1] if notes else None
+    same = [f for f in notes if c.group(2) and _NOTE_RE.search(f).group(1) == c.group(2)]
+    return (same or notes or [None])[-1]
 
 
 def _retarget_back_links(note_path):
     """After a research note renders, point its component pages' Back button at it (components render first)."""
     folder, note = os.path.split(note_path)
+    day = _NOTE_RE.search(note).group(1)
     for f in os.listdir(folder or "."):
-        if not _COMPONENT_RE.search(f):
+        c = _COMPONENT_RE.search(f)
+        if not c or (c.group(2) and c.group(2) != day):   # only this run's components
             continue
         path = os.path.join(folder, f)
         with open(path, encoding="utf-8") as fh:
@@ -679,7 +692,7 @@ def _company_name(folder, root="Outputs"):
     return f"{name} ({folder})" if name else folder
 
 
-_COMPONENT_RE = re.compile(r"(?:^|/)([1-8])_[^/]+_analysis\.html$")
+_COMPONENT_RE = re.compile(r"(?:^|/)([1-8])_[^/]+_analysis(?:_(\d{8}))?\.html$")
 _NOTE_RE = re.compile(r"_stock_deep_research_notes_(\d{8})\.html$")
 
 
@@ -694,7 +707,9 @@ def _index_item(m, children="", strip_prefix=None):
         title = title[len(strip_prefix):]
     fresh = (datetime.now().timestamp() - m["mtime"]) < NEW_DAYS * 86400
     tag = '<span class="new-tag">New</span>' if fresh else ""
-    row = (f'<div class="row"><span class="ttl"><a href="{html.escape(m["href"])}">{html.escape(title)}</a>{tag}</span>'
+    chips = "".join(f'<a class="file-chip" href="{html.escape(h)}" title="Download {html.escape(lbl)} file">{lbl}</a>'
+                    for lbl, h in m.get("files", []))
+    row = (f'<div class="row"><span class="ttl"><a href="{html.escape(m["href"])}">{html.escape(title)}</a>{tag}{chips}</span>'
            f'<span class="meta">{badge} {when}</span></div>')
     return f'<li{" class=pkg" if children else ""}>{row}{children}</li>'
 
@@ -705,16 +720,18 @@ def _card(folder, items):
     notes = sorted((m for m in items if _NOTE_RE.search(m["href"])), key=lambda m: m["href"], reverse=True)
     comps = sorted((m for m in items if _COMPONENT_RE.search(m["href"])),
                    key=lambda m: _COMPONENT_RE.search(m["href"]).group(1))
-    others = sorted((m for m in items if m not in notes and m not in comps), key=lambda m: -m["mtime"])
-    # top-level entries (packages, standalone reports) newest first; a package carries its 8 components (1-8)
-    entries = []
-    if notes:
-        sub = (f'<ul class="sub">{"".join(_index_item(c, strip_prefix=f"{folder} — ") for c in comps)}</ul>'
-               if comps else "")
-        entries.append((notes[0]["mtime"], _index_item(notes[0], sub)))
-        entries += [(m["mtime"], _index_item(m)) for m in notes[1:]]
-    else:
-        entries += [(m["mtime"], _index_item(m)) for m in comps]
+    others = [m for m in items if m not in notes and m not in comps]
+    # top-level entries (packages, standalone reports) newest first; each package carries the 8 components of its
+    # own run date (1-8), so every dated run stays browsable
+    entries, used = [], set()
+    for note in notes:
+        day = _NOTE_RE.search(note["href"]).group(1)
+        mine = [c for c in comps if _COMPONENT_RE.search(c["href"]).group(2) in (day, None) and id(c) not in used]
+        used.update(id(c) for c in mine)
+        sub = (f'<ul class="sub">{"".join(_index_item(c, strip_prefix=f"{folder} — ") for c in mine)}</ul>'
+               if mine else "")
+        entries.append((note["mtime"], _index_item(note, sub)))
+    entries += [(m["mtime"], _index_item(m)) for m in comps if id(m) not in used]
     entries += [(m["mtime"], _index_item(m)) for m in others]
     lis = [li for _, li in sorted(entries, key=lambda e: -e[0])]
     last = max(m["mtime"] for m in (notes[:1] or items))
@@ -771,35 +788,39 @@ def _skill_label(meta):
     return (meta.get("skill") or os.path.basename(meta["href"]).rsplit(".", 1)[0]).replace("_", " ").title()
 
 
-_DATED_RE = re.compile(r"^(.*)_(\d{8})\.html$")
+_FILE_LABELS = {".xlsx": "Excel", ".docx": "Word", ".pdf": "PDF"}
 
 
-def prune_superseded(root="Outputs"):
-    """A skill re-run for the same subject on a later day replaces the earlier report: for every dated report
-    (`<name>_YYYYMMDD.html`) keep only the newest date and delete the older ones with their `.docx`, `_spec.json`
-    and `_summary.json` (and `.xlsx` for the metrics workbook). Charts and data JSON are left alone."""
-    groups = {}
-    for path in glob.glob(os.path.join(root, "**", "*.html"), recursive=True):
-        m = _DATED_RE.match(path.replace(os.sep, "/"))
-        if m:
-            groups.setdefault(m.group(1), []).append((m.group(2), path))
-    removed = []
-    for prefix, found in groups.items():
-        found.sort()
-        for day, path in found[:-1]:
-            stem = path[:-len(".html")]
-            for ext in (".html", ".docx", ".xlsx", "_spec.json", "_summary.json"):
-                if os.path.exists(stem + ext):
-                    os.remove(stem + ext)
-                    removed.append(stem + ext)
-    for r in removed:
-        print(f"Removed superseded: {r}")
+def _attach_files(metas, root):
+    """Link the non-HTML deliverables (Excel, Word, PDF) from the library: a file that shares its report's name
+    becomes a chip beside that report; any other file is listed as its own row. Intermediates are skipped."""
+    from publish_reports import is_deliverable
+    by_stem = {}
+    for m in metas:
+        stem = m["href"][:-len(".html")]
+        by_stem[stem] = m
+        by_stem[stem.replace("_stock_deep_research_notes_", "_stock_deep_research_")] = m   # Word package <-> note
+    orphans = []
+    for path in sorted(glob.glob(os.path.join(root, "**", "*.*"), recursive=True)):
+        ext = os.path.splitext(path)[1].lower()
+        rel = os.path.relpath(path, root).replace(os.sep, "/")
+        if ext not in _FILE_LABELS or not is_deliverable(rel):
+            continue
+        twin = by_stem.get(rel[:-len(ext)])
+        if twin:
+            twin.setdefault("files", []).append((_FILE_LABELS[ext], rel))
+            continue
+        base = os.path.basename(rel)[:-len(ext)]
+        key = next((k for _, _, _, keys in STAGES for k in keys if k in base), None)
+        orphans.append({"href": rel, "mtime": os.path.getmtime(path), "skill": key, "ticker": None,
+                        "folder": rel.split("/")[0] if "/" in rel else "",
+                        "title": f'{re.sub(r"_?\d{8}$", "", base).replace("_", " ").strip().title()} ({_FILE_LABELS[ext]})'})
+    return orphans
 
 
 def build_index(root="Outputs"):
     """Rebuild Outputs/index.html: a left navigation and the reports organised by the 4 workflow stages
     (market conditions, theme discovery, quick filter, then one card per ticker in A→Z order)."""
-    prune_superseded(root)
     metas = []
     for path in glob.glob(os.path.join(root, "**", "*.html"), recursive=True):
         if os.path.basename(path) == "index.html":
@@ -808,6 +829,7 @@ def build_index(root="Outputs"):
         meta = _read_meta(path)
         meta.update(href=rel, mtime=os.path.getmtime(path), folder=rel.split("/")[0] if "/" in rel else "")
         metas.append(meta)
+    metas += _attach_files(metas, root)
     by_stage = {n: [] for n, *_ in STAGES}
     for m in metas:
         by_stage[_stage_of(m)].append(m)

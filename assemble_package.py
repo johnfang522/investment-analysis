@@ -9,7 +9,7 @@ linked appendix index, and every page gets a "Page X of Y" footer.
     .venv/Scripts/python assemble_package.py NVDA 20261007
 
 Reads  Outputs/{TICKER}/{ticker}_stock_deep_research_notes_{date}.docx and
-       Outputs/{TICKER}/{1..8}_{ticker}_{skill}_analysis.docx
+       Outputs/{TICKER}/{1..8}_{ticker}_{skill}_analysis_{YYYYMMDD}.docx
 Writes Outputs/{TICKER}/{ticker}_stock_deep_research_{date}.docx
 
 (The HTML version needs no merge: the research note page links to the
@@ -31,14 +31,14 @@ from docx.shared import RGBColor
 from doc_utils import apply_house_style
 
 APPENDICES = [
-    ("Appendix A", "Business Overview Analysis", "1_{t}_business_overview_analysis.docx"),
-    ("Appendix B", "Leadership Analysis", "2_{t}_leadership_analysis.docx"),
-    ("Appendix C", "Income Statement Analysis", "3_{t}_income_statement_analysis.docx"),
-    ("Appendix D", "Balance Sheet Analysis", "4_{t}_balance_sheet_analysis.docx"),
-    ("Appendix E", "Cash Flow Analysis", "5_{t}_cash_flow_analysis.docx"),
-    ("Appendix F", "Business Potential Analysis", "6_{t}_business_potential_analysis.docx"),
-    ("Appendix G", "Valuation Analysis", "7_{t}_valuation_analysis.docx"),
-    ("Appendix H", "Technical Analysis", "8_{t}_technical_analysis.docx"),
+    ("Appendix A", "Business Overview Analysis", "1_{t}_business_overview_analysis_{d}.docx"),
+    ("Appendix B", "Leadership Analysis", "2_{t}_leadership_analysis_{d}.docx"),
+    ("Appendix C", "Income Statement Analysis", "3_{t}_income_statement_analysis_{d}.docx"),
+    ("Appendix D", "Balance Sheet Analysis", "4_{t}_balance_sheet_analysis_{d}.docx"),
+    ("Appendix E", "Cash Flow Analysis", "5_{t}_cash_flow_analysis_{d}.docx"),
+    ("Appendix F", "Business Potential Analysis", "6_{t}_business_potential_analysis_{d}.docx"),
+    ("Appendix G", "Valuation Analysis", "7_{t}_valuation_analysis_{d}.docx"),
+    ("Appendix H", "Technical Analysis", "8_{t}_technical_analysis_{d}.docx"),
 ]
 IMAGE_REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
 
@@ -146,7 +146,7 @@ def assemble(ticker, day):
     note = f"{base}/{t}_stock_deep_research_notes_{day}.docx"
     if not os.path.exists(note):
         sys.exit(f"Missing research note: {note}")
-    appendices = [(label, title, f"{base}/{name.format(t=t)}") for label, title, name in APPENDICES]
+    appendices = [(label, title, f"{base}/{name.format(t=t, d=day)}") for label, title, name in APPENDICES]
     missing = [p for _, _, p in appendices if not os.path.exists(p)]
     if missing:
         print("WARNING: skipping missing appendices: " + ", ".join(missing))

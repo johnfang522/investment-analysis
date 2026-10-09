@@ -126,7 +126,8 @@ DOCUMENT CONTENT — the sections below are the document outline. Write them as 
 
 Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-- Spec: `Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_spec.json` with `"skill": "business_potential"`, `"title": "{TICKER} — Business Potential"`, `"output": "Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_analysis.docx"`
+- Spec: `Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_{YYYYMMDD}_spec.json` with `"skill": "business_potential"`, `"title": "{TICKER} — Business Potential"`, `"output": "Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_analysis_{YYYYMMDD}.docx"`
+- `{YYYYMMDD}` is the run date (use the date the parent `/single_stock_deep_research` run passed in, else today's): a same-day re-run overwrites these files, earlier dates stay as history, and the HTML hub links the pages of the same date.
 - NBT Readiness Scorecard: `bold_rows` on the Total row and a `fills` entry on its score cell — `C6EFCE` for 17–20, `FFEB9C` for 9–16, `FFC7CE` for ≤8.
 - Close with a `read_through` block (dimension: `NBT-Readiness`) — it replaces the Read-Through section above.
-- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_spec.json` — writes the `.docx`, the interactive `.html`, `6_{ticker_lowercase}_business_potential_summary.json` and refreshes `Outputs/index.html`
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `6_{ticker_lowercase}_business_potential_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`

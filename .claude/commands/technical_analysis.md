@@ -182,7 +182,8 @@ Produces `{ticker}_ta_price_ma.png` (price with 20/50/100/200-DMA) and `{ticker}
 
 Do not write a python-docx script. Write the content as a JSON spec and render it, following `references/report-spec.md` (block types, rules, final reply):
 
-- Spec: `Outputs/{TICKER}/8_{ticker_lowercase}_technical_spec.json` with `"skill": "technical"`, `"title": "{TICKER} — Technical Analysis"`, `"output": "Outputs/{TICKER}/8_{ticker_lowercase}_technical_analysis.docx"`
+- Spec: `Outputs/{TICKER}/8_{ticker_lowercase}_technical_{YYYYMMDD}_spec.json` with `"skill": "technical"`, `"title": "{TICKER} — Technical Analysis"`, `"output": "Outputs/{TICKER}/8_{ticker_lowercase}_technical_analysis_{YYYYMMDD}.docx"`
+- `{YYYYMMDD}` is the run date (use the date the parent `/single_stock_deep_research` run passed in, else today's): a same-day re-run overwrites these files, earlier dates stay as history, and the HTML hub links the pages of the same date.
 - Charts: `{ticker_lowercase}_ta_price_ma.png` under "Moving Averages — Distance from Spot"; `{ticker_lowercase}_ta_rsi.png` under Momentum & Sentiment; `source`: "Yahoo Finance price history (computed)".
 - Close with a `verdict` block — it replaces the Verdict section above: `rows` = Trend, Market Regime, Sentiment, Setup Score, Entry / Add Zone, Stop / Invalidation, Risk/Reward at entry, What to Do; `bullets` = Position sizing, Biggest risk to watch, Summary.
-- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/8_{ticker_lowercase}_technical_spec.json` — writes the `.docx`, the interactive `.html`, `8_{ticker_lowercase}_technical_summary.json` and refreshes `Outputs/index.html`
+- Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/8_{ticker_lowercase}_technical_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `8_{ticker_lowercase}_technical_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`

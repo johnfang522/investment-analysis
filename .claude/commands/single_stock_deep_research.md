@@ -27,7 +27,7 @@ Spawn each analysis as a **separate subagent** using the Agent tool, one at a ti
 
 For each skill, use this prompt template:
 
-> Read the file `.claude/commands/{skill_filename}` and execute all instructions in it for ticker {TICKER}. The working directory is the investment-analysis project root. Use `.venv/Scripts/python` to run any Python scripts. All data (including the 5-year price history) was already downloaded by the parent in Step 0, so skip the skill's own "re-download first" / `fetch_all` step and read the existing JSON in `Outputs/{TICKER}/`. **Your final reply goes to the orchestrator, not the user — keep it under 200 words and in exactly this shape:** `.docx` path · `Signal: BULLISH/NEUTRAL/BEARISH · Conviction X/10` · one-line so-what · one-line what-flips-it · up to 6 key figures as `label: value [source]` · the Variant View edge in one line. Do not restate the document.
+> Read the file `.claude/commands/{skill_filename}` and execute all instructions in it for ticker {TICKER}. The working directory is the investment-analysis project root. Use `.venv/Scripts/python` to run any Python scripts. Use run date {YYYYMMDD} (today, YYYYMMDD) in every dated filename the skill names. All data (including the 5-year price history) was already downloaded by the parent in Step 0, so skip the skill's own "re-download first" / `fetch_all` step and read the existing JSON in `Outputs/{TICKER}/`. **Your final reply goes to the orchestrator, not the user — keep it under 200 words and in exactly this shape:** `.docx` path · `Signal: BULLISH/NEUTRAL/BEARISH · Conviction X/10` · one-line so-what · one-line what-flips-it · up to 6 key figures as `label: value [source]` · the Variant View edge in one line. Do not restate the document.
 
 Execute in this exact order:
 
@@ -42,13 +42,13 @@ Execute in this exact order:
 
 Growth and profitability (multi-year trend, CAGRs, Rule of 40, and 2–3 years of consensus estimates) is covered inside the income statement analysis — there is no separate growth subagent. Output filenames are numbered 1–8 consecutively.
 
-Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`, returning only the short reply above. Every component skill renders through `report_renderer.py`, so each also writes `Outputs/{TICKER}/{n}_{ticker_lowercase}_{skill}_summary.json` — the same contract in machine-readable form. Proceed to Step 2 once all 8 subagents have completed.
+Each subagent runs in a fresh context and exits after saving its `.docx` to `Outputs/{TICKER}/`, returning only the short reply above. Every component skill renders through `report_renderer.py`, so each also writes `Outputs/{TICKER}/{n}_{ticker_lowercase}_{skill}_{YYYYMMDD}_summary.json` — the same contract in machine-readable form. Proceed to Step 2 once all 8 subagents have completed.
 
 ---
 
 ## Step 2 — Write the Executive Summary
 
-**Inputs:** synthesize from the 8 subagent replies plus any `Outputs/{TICKER}/*_summary.json` files (prefer the JSON where both exist) — **do not open the 8 appendix `.docx` files**. If a figure the note needs is missing from them, run `digest.py` or a targeted read of that one figure, not a full document read.
+**Inputs:** synthesize from the 8 subagent replies plus the `Outputs/{TICKER}/*_{YYYYMMDD}_summary.json` files of this run's date (prefer the JSON where both exist) — **do not open the 8 appendix `.docx` files**. If a figure the note needs is missing from them, run `digest.py` or a targeted read of that one figure, not a full document read.
 
 Synthesize the findings from all 8 analyses into a **2–3 page hedge-fund research note**. Each of the 8 appendices now carries its own directional **Read-Through** (BULLISH / NEUTRAL / BEARISH) and a dimension conviction score — roll these up into a single house view, weighting the dimensions that actually drive this name. Write it as a seasoned buy-side analyst pitching the PM — direct, opinionated, anchored to specific data points, and explicit about the variant view and the risk/reward asymmetry.
 

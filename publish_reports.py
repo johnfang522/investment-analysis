@@ -2,9 +2,12 @@
 
 Usage: .venv/Scripts/python publish_reports.py [--dry-run]
 
-- Only `*.html` files under Outputs/ are published (no JSON, PNG, Excel or Word); the pages are self-contained
-  and link to each other by relative path, so the folder layout is kept as is.
-- Each copy gets a "not investment advice" banner and a `noindex` meta tag; the files in Outputs/ are unchanged.
+- Published: the deliverables under Outputs/ — `*.html` reports, `*.xlsx` workbooks, `*.pdf`, finished `*.docx`
+  documents and the market dashboard PNG. The folder layout is kept, so the pages' relative links keep working.
+- Never published (intermediate or cache files): JSON of any kind (fetched data, `_spec.json`, `_summary.json`,
+  `.chart.json`), chart PNGs, generator scripts, CSV/TXT, and the per-component `.docx` files that
+  `assemble_package.py` merges into the research package (see `is_deliverable`).
+- Each HTML copy gets a "not investment advice" banner and a `noindex` meta tag; files in Outputs/ are unchanged.
 - The branch is rebuilt from scratch and force-pushed each run, so the site always mirrors Outputs/ (anything
   deleted locally disappears from the site). It never touches `master`.
 - Anyone with the link can read the site if the repo is public.
@@ -35,6 +38,27 @@ def sh(args, cwd=None, check=True):
     return r.stdout.strip()
 
 
+DELIVERABLE_EXT = (".html", ".xlsx", ".pdf", ".docx")
+_COMPONENT_DOCX = re.compile(r"(^|/)[1-8]_[^/]+_analysis_\d{8}\.docx$")
+_NOTE_DOCX = re.compile(r"^(.*)_stock_deep_research_notes_(\d{8})\.docx$")
+
+
+def is_deliverable(rel):
+    """True for a finished output worth publishing; False for caches and intermediates."""
+    rel = rel.replace(os.sep, "/")
+    name = os.path.basename(rel).lower()
+    if name.startswith("sentiment_dashboard_") and name.endswith(".png"):
+        return True
+    if not name.endswith(DELIVERABLE_EXT):
+        return False
+    if _COMPONENT_DOCX.search(rel):          # merged into the package by assemble_package.py
+        return False
+    m = _NOTE_DOCX.match(rel)
+    if m and os.path.exists(os.path.join(OUT, f"{m.group(1)}_stock_deep_research_{m.group(2)}.docx")):
+        return False                         # the merged package supersedes the bare note
+    return True
+
+
 def decorate(text):
     text = re.sub(r"(<head[^>]*>)", r"\1" + NOINDEX, text, count=1, flags=re.I)
     return re.sub(r"(<body[^>]*>)", r"\1" + BANNER, text, count=1, flags=re.I)
@@ -44,7 +68,7 @@ def main():
     dry = "--dry-run" in sys.argv
     files = []
     for dirpath, _, names in os.walk(OUT):
-        files += [os.path.join(dirpath, n) for n in names if n.lower().endswith(".html")]
+        files += [os.path.join(dirpath, n) for n in names if is_deliverable(os.path.relpath(os.path.join(dirpath, n), OUT))]
     if not any(os.path.basename(f) == "index.html" for f in files):
         raise SystemExit("Outputs/index.html is missing; run report_renderer.py --index first")
 
@@ -52,12 +76,16 @@ def main():
     for f in files:
         dest = os.path.join(site, os.path.relpath(f, OUT))
         os.makedirs(os.path.dirname(dest), exist_ok=True)
-        with open(f, encoding="utf-8") as src, open(dest, "w", encoding="utf-8") as out:
-            out.write(decorate(src.read()))
+        if f.lower().endswith(".html"):
+            with open(f, encoding="utf-8") as src, open(dest, "w", encoding="utf-8") as out:
+                out.write(decorate(src.read()))
+        else:
+            shutil.copyfile(f, dest)
     open(os.path.join(site, ".nojekyll"), "w").close()
     with open(os.path.join(site, "robots.txt"), "w") as f:
         f.write("User-agent: *\nDisallow: /\n")
-    print(f"Staged {len(files)} HTML files in {site}")
+    print(f"Staged {len(files)} files in {site}: " + ", ".join(f"{n} {e}" for e, n in sorted(
+        {e: sum(f.lower().endswith(e) for f in files) for e in (".html", ".xlsx", ".pdf", ".docx", ".png")}.items(), key=lambda x: x[0]) if n))
     if dry:
         return
 
