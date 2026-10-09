@@ -276,6 +276,7 @@ Everything below is for working on the code and the skills.
   - Left navigation of stages and tickers
   - History is kept: every report filename ends in `_YYYYMMDD`, so a run on a new day adds files and an earlier day's stay; a same-day re-run overwrites. The library lists each dated run, and a research package lists the components of its own date (link labels carry no date; the link targets the dated file)
   - Every line shows its date and time; reports under 7 days old carry a "New" tag
+  - Ticker cards read "Full Company Name (TICKER)": the Yahoo `longName` is written into each report's own metadata at render time (`_longname()`), and the library reads it from the newest report, so no side file has to be kept or committed
   - Excel, Word and PDF deliverables are linked too (`_attach_files()`): a file named like its report becomes an Excel/Word/PDF chip beside that report, any other file gets its own row; JSON, chart PNGs and per-component Word files are never linked
   - Every report page has a floating, draggable "← Back" button (`.back-fab`)
     - Component reports go back to their research package page

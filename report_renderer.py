@@ -631,7 +631,8 @@ def render_html(spec, out_path, summary):
             + f'\n<footer class="disclaimer">{html.escape(DISCLAIMER)}</footer>\n</main>\n</div>')
     meta = {"ticker": spec.get("ticker"), "skill": spec.get("skill"), "title": spec["title"],
             "signal": summary.get("signal"), "conviction": summary.get("conviction"),
-            "as_of": summary.get("as_of"), "rendered": date.today().isoformat()}
+            "as_of": summary.get("as_of"), "rendered": date.today().isoformat(),
+            "company": _longname(spec["ticker"]) if spec.get("ticker") else None}
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(_page(spec["title"], body, meta))
     print(f"Saved: {out_path}")
@@ -682,14 +683,22 @@ def _read_meta(path):
 NEW_DAYS = 7   # reports younger than this get a "New" tag on the library page
 
 
-def _company_name(folder, root="Outputs"):
-    """Full company name for a ticker folder (Yahoo longName), formatted "Tesla, Inc. (TSLA)"; the ticker alone if unknown."""
+def _longname(ticker):
+    """Yahoo longName from the ticker's fetched _quick_metrics.json, or None."""
     try:
-        with open(os.path.join(root, folder, f"{folder.lower()}_quick_metrics.json"), encoding="utf-8") as f:
-            name = json.load(f).get("longName")
+        with open(f"Outputs/{ticker}/{ticker.lower()}_quick_metrics.json", encoding="utf-8") as f:
+            return json.load(f).get("longName")
     except (OSError, ValueError):
-        name = None
-    return f"{name} ({folder})" if name else folder
+        return None
+
+
+def _company_label(folder, items):
+    """Library label "Tesla, Inc. (TSLA)": the company name stored in the newest report's own metadata
+    (written at render time), else the ticker alone. Nothing outside the reports has to be maintained."""
+    for m in sorted(items, key=lambda m: -m["mtime"]):
+        if m.get("company"):
+            return f'{m["company"]} ({folder})'
+    return folder
 
 
 _COMPONENT_RE = re.compile(r"(?:^|/)([1-8])_[^/]+_analysis(?:_(\d{8}))?\.html$")
@@ -742,7 +751,7 @@ def _card(folder, items):
     if top and top.get("signal"):
         conv = f' {top["conviction"]}/10' if top.get("conviction") is not None else ""
         badge = _badge(top["signal"], html.escape(conv))
-    return last, (f'<section class="card"><details><summary><span class="card-head"><h2>{html.escape(_company_name(folder))}</h2></span>'
+    return last, (f'<section class="card"><details><summary><span class="card-head"><h2>{html.escape(_company_label(folder, items))}</h2></span>'
                   f'<span class="card-meta">{badge}<span class="last-run">{label}: <time datetime="'
                   f'{datetime.fromtimestamp(last).isoformat()}">{stamp}</time></span></span></summary>'
                   f'<ul>{"".join(lis)}</ul></details></section>')
@@ -845,7 +854,7 @@ def build_index(root="Outputs"):
             order = sorted(groups, key=lambda f: (f == "Other", f.upper()))
             cards = "".join(_card(f, groups[f])[1].replace("<section class=\"card\">",
                             f'<section class="card" id="t-{_slug(f, set())}">', 1) for f in order)
-            sub = "".join(f'<li><a href="#t-{_slug(f, set())}">{html.escape(_company_name(f))}</a></li>' for f in order)
+            sub = "".join(f'<li><a href="#t-{_slug(f, set())}">{html.escape(_company_label(f, groups[f]))}</a></li>' for f in order)
         else:
             groups = {}
             for m in items:
