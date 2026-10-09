@@ -289,8 +289,9 @@ Everything below is for working on the code and the skills.
     - `metrics_snapshot` — deep-research Financial Snapshot (values, sources, colors from `compute_metrics()`; the spec supplies only comments)
     - `appendix_index` — HTML-only hub linking the 8 component pages
   - Add new block types here, not in skills
-- HTML is for personal use only
-  - No hosting, no CDN: `report_assets/report.css` + `report.js` are inlined
+- HTML is self-contained, no CDN; publish it to GitHub Pages with `publish_reports.py` (see below)
+  - `report_assets/report.css` + `report.js` are inlined
+  - `.venv/Scripts/python publish_reports.py` copies only the `Outputs/**/*.html` files to the `gh-pages` branch (disclaimer banner and `noindex` added to the copies, force-pushed, never touches `master`); site: https://johnfang522.github.io/investment-analysis/ — public if the repo is public; `--dry-run` stages without pushing
   - Features: light/dark theme, contents sidebar, SVG charts with hover / legend toggles / data tables, opt-in sortable tables, print styles
 - Charts
   - Every `chart_*.py` and `plot_market_sentiment_history.py` call `chart_data.save_chart_data(png_path, data)`
