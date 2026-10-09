@@ -96,3 +96,9 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 - `{YYYYMMDD}` is the run date (use the date the parent `/single_stock_deep_research` run passed in, else today's): a same-day re-run overwrites these files, earlier dates stay as history, and the HTML hub links the pages of the same date.
 - Close with a `read_through` block (dimension: `Leadership`) — it replaces the Read-Through section above.
 - Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/2_{ticker_lowercase}_leadership_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `2_{ticker_lowercase}_leadership_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/2_{ticker_lowercase}_leadership {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: executive/board changes; insider ownership % and recent insider buying/selling; compensation and governance changes; capital-allocation record; key-person risk.

@@ -187,3 +187,9 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 - Charts: `{ticker_lowercase}_ta_price_ma.png` under "Moving Averages — Distance from Spot"; `{ticker_lowercase}_ta_rsi.png` under Momentum & Sentiment; `source`: "Yahoo Finance price history (computed)".
 - Close with a `verdict` block — it replaces the Verdict section above: `rows` = Trend, Market Regime, Sentiment, Setup Score, Entry / Add Zone, Stop / Invalidation, Risk/Reward at entry, What to Do; `bullets` = Position sizing, Biggest risk to watch, Summary.
 - Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/8_{ticker_lowercase}_technical_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `8_{ticker_lowercase}_technical_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/8_{ticker_lowercase}_technical {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: price and % distance from the 20/50/100/200-day MAs; MA stack and slopes; crosses (golden/death) since; RSI; 1W-12M returns vs the S&P 500 and whether aligned/diverging; trend, setup score and timing bias; entry zone, stop and support/resistance levels broken or held; price vs the prior entry zone.

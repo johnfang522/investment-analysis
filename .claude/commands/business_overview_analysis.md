@@ -111,3 +111,9 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 - Revenue Mix and Competitive Landscape tables carry the WebSearch source (publication + date) in their `source`.
 - Close with a `read_through` block (dimension: `Business-Quality`) — it replaces the Read-Through section above.
 - Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/1_{ticker_lowercase}_business_overview_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `1_{ticker_lowercase}_business_overview_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/1_{ticker_lowercase}_business_overview {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: segment/geography mix and growth; moat rating and its evidence; customer concentration; new products, M&A, partnerships, competitive entrants; strategy shifts.

@@ -283,3 +283,9 @@ If the user says yes (or provides a theme), invoke the `/emerging_industry_trend
 - `references/bubble-framework.md` — bubble risk framework and historical analogues
 
 Read both before scoring the indicators.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/market_sentiment_analysis {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: composite score and zone; each of the 7 indicator readings and scores (VIX, Fear & Greed, put/call/SKEW, breadth, HY OAS, CAPE, Buffett); macro and policy overlay ratings (Fed, rates, deficit, Treasury yields); margin-debt leverage rating; bubble-conditions firing count and verdict; the Risk-On/Neutral/Risk-Off posture and conviction.

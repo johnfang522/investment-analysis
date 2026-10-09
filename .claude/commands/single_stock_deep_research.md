@@ -27,7 +27,7 @@ Spawn each analysis as a **separate subagent** using the Agent tool, one at a ti
 
 For each skill, use this prompt template:
 
-> Read the file `.claude/commands/{skill_filename}` and execute all instructions in it for ticker {TICKER}. The working directory is the investment-analysis project root. Use `.venv/Scripts/python` to run any Python scripts. Use run date {YYYYMMDD} (today, YYYYMMDD) in every dated filename the skill names. All data (including the 5-year price history) was already downloaded by the parent in Step 0, so skip the skill's own "re-download first" / `fetch_all` step and read the existing JSON in `Outputs/{TICKER}/`. **Your final reply goes to the orchestrator, not the user — keep it under 200 words and in exactly this shape:** `.docx` path · `Signal: BULLISH/NEUTRAL/BEARISH · Conviction X/10` · one-line so-what · one-line what-flips-it · up to 6 key figures as `label: value [source]` · the Variant View edge in one line. Do not restate the document.
+> Read the file `.claude/commands/{skill_filename}` and execute all instructions in it for ticker {TICKER}. The working directory is the investment-analysis project root. Use `.venv/Scripts/python` to run any Python scripts. Use run date {YYYYMMDD} (today, YYYYMMDD) in every dated filename the skill names. All data (including the 5-year price history) was already downloaded by the parent in Step 0, so skip the skill's own "re-download first" / `fetch_all` step and read the existing JSON in `Outputs/{TICKER}/`. **Your final reply goes to the orchestrator, not the user — keep it under 200 words and in exactly this shape:** `.docx` path · `Signal: BULLISH/NEUTRAL/BEARISH · Conviction X/10` · one-line so-what · one-line what-flips-it · up to 6 key figures as `label: value [source]` · the Variant View edge in one line · if the skill's "Changes Since Last Run" block found an earlier run, one line with the net read and the biggest change vs that run. Do not restate the document.
 
 Execute in this exact order:
 
@@ -69,7 +69,7 @@ Synthesize the findings from all 8 analyses into a **2–3 page hedge-fund resea
 **[Company Full Name] | [Sector] | [Exchange]: {TICKER}**
 *[Coverage label] — [Date]*
 
-Before writing the coverage label, check whether any prior research notes or research package files exist for this ticker in `Outputs/{TICKER}/` (e.g., `*_research_notes_*.docx` or `*_research_package_*.docx`). If prior files exist, use **"Coverage Date: [Date]"**. If this is the first time coverage is being produced, use **"Initiating Coverage — [Date]"**.
+Before writing the coverage label, check whether any prior research notes or research package files exist for this ticker in `Outputs/{TICKER}/` (e.g., `*_research_notes_*.html`, `*_research_notes_*.docx` or `*_research_package_*.docx`). If prior files exist, use **"Coverage Date: [Date]"**. If this is the first time coverage is being produced, use **"Initiating Coverage — [Date]"**.
 
 Also fetch the current broad market condition at the time of this run. Use `WebSearch` to look up today's S&P 500 level, direction (up/down % on the day), VIX, and one-sentence market context (e.g., risk-on/risk-off, catalyst). Include this as a single italic line immediately below the coverage date line:
 *Market on [Date]: S&P 500 [level] ([+/−X.X%]), VIX [X.X] — [one-sentence context]*
@@ -202,3 +202,9 @@ It merges the research note with the 8 component documents as Appendices A–H (
 ## Final Reply
 
 Reply with: the research note `.html` (the hub — open it in a browser) and the package `.docx` paths, the verdict line (bias · conviction · price target · stop · risk/reward), the edge in one line, and the one row of each appendix's signal/conviction that disagrees most with the house view.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/{ticker_lowercase}_stock_deep_research_notes {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: verdict, conviction, price/target/stop/risk-reward and sizing; the signal and conviction of each of the 8 components vs prior (roll up each component's own `changes_since`); variant view rows; catalysts that hit or missed; thesis-breakers triggered.

@@ -226,3 +226,9 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 - "Latest Quarter — What Drove the Numbers": both tables (drivers; revenue vs. consensus), then the two bullets; the `source` names the filing / release / transcript and date.
 - Close with a `read_through` block (dimension: `P&L-Quality`) — it replaces the Read-Through section above.
 - Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/3_{ticker_lowercase}_income_statement_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `3_{ticker_lowercase}_income_statement_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/3_{ticker_lowercase}_income_statement {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: latest-quarter revenue, gross/operating/net margin and YoY (a new quarter vs the same quarter); beat/miss vs consensus; guidance changes; consensus FY revenue/EPS estimate revisions and analyst count; drivers named last time vs now; Rule of 40.

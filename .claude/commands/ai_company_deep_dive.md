@@ -331,3 +331,9 @@ Do not write a python-docx script. Write the analysis as a JSON report spec and 
 5. Step 9: a `verdict` block (rows = the Verdict table) and a `variant_view` block (mandatory).
 6. Any chart PNG you embed is a `chart` block; financial figures cite SEC EDGAR / Yahoo Finance / the web source in each table's `source`.
 7. Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/{ticker_lowercase}_company_deep_dive_{YYYYMMDD}_spec.json` — writes the `.docx`, an interactive `.html` next to it, and refreshes the `Outputs/index.html` library page.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/{ticker_lowercase}_company_deep_dive {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: AI-stack position, chokepoint score, revenue quality (AI vs total revenue), moat read, 3-scenario values and probabilities, whether the AI narrative is better or less supported by the data, verdict/conviction/target.

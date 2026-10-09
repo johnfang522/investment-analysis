@@ -214,3 +214,9 @@ If the user says yes, ask which theme they want to go deeper on (if more than on
 - **Volume over concentration in Channel 1.** Fifty funds making one bet each is noise; one top-quartile fund making ten bets in a niche is signal.
 - **Manufacturing a candidate to fill the watchlist.** If nothing passes all three filters this scan, report a shorter list. A forced candidate wastes diligence.
 - **Skipping the anti-consensus check.** Always name the current consensus trade for context, then confirm watchlist candidates are genuinely earlier than it.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/theme_discovery_scan {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: watchlist rank changes; new themes, dropped themes and promotion calls handed to /emerging_industry_trend; convergence-signal counts per theme; which prior candidates strengthened or faded.

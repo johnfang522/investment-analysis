@@ -131,3 +131,9 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 - NBT Readiness Scorecard: `bold_rows` on the Total row and a `fills` entry on its score cell — `C6EFCE` for 17–20, `FFEB9C` for 9–16, `FFC7CE` for ≤8.
 - Close with a `read_through` block (dimension: `NBT-Readiness`) — it replaces the Read-Through section above.
 - Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `6_{ticker_lowercase}_business_potential_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/6_{ticker_lowercase}_business_potential {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: NBT readiness score (/20) and each dimension score; NBT spend ratio; new signed deals, capacity, launches; the primary emerging opportunity if it changed.

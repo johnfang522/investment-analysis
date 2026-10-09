@@ -175,3 +175,9 @@ Structure the note in this order:
 8. **Sources & disclaimer** — cite data sources with as-of dates; note this is research, not personalized investment advice.
 
 Write in a professional, decisive buy-side voice. Use tables for comps, multiples, and scenarios so they're scannable. Bold the recommendation. Never pad — every paragraph should move the decision forward.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/{ticker_lowercase}_stock_quick_research {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: verdict, conviction, price target, stop, risk/reward and sizing; each scorecard pillar read; bull/base/bear values and probabilities; variant view; catalysts hit or missed; thesis-breakers and entry/exit triggers fired.

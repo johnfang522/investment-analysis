@@ -157,3 +157,9 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 - Peer Comparison table: `"sortable": true`.
 - Close with a `verdict` block — it replaces the Verdict section above: `rows` = Current Price, Price Target (12-mo), Stop / Invalidation, Risk/Reward, Sizing; `bullets` = the Justification line.
 - Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/7_{ticker_lowercase}_valuation_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `7_{ticker_lowercase}_valuation_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/7_{ticker_lowercase}_valuation {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: price, 12-mo target and upside, stop, risk/reward; bull/base/bear values and probabilities; each multiple vs its prior value and peers; DCF inputs; analyst consensus target and count. Attribute the change in upside to price move vs estimate change vs multiple change.

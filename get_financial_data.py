@@ -70,16 +70,26 @@ def fetch_all(tickers: list[str], price_history: bool = True) -> dict:
     results = {}
     for ticker in tickers:
         print(f"Fetching {ticker}...")
+        # Yahoo quote data and price history are independent of SEC EDGAR, so fetch them first:
+        # a recent IPO (TTM needs >= 4 quarters) still gets _quick_metrics.json (company name,
+        # market cap) and _price_history.json even though the statements fail.
         try:
-            results[ticker] = {
-                "sec_statements": fetch_edgar_statements(ticker),
-                "quick_metrics": get_quick_metrics(ticker),
-                "price_history": get_price_history(ticker) if price_history else None,
-            }
-            print(f"  {ticker} done.")
+            quick = get_quick_metrics(ticker)
+            history = get_price_history(ticker) if price_history else None
         except Exception as e:
             print(f"  {ticker} failed: {e}")
             results[ticker] = {"error": str(e)}
+            continue
+        try:
+            results[ticker] = {
+                "sec_statements": fetch_edgar_statements(ticker),
+                "quick_metrics": quick,
+                "price_history": history,
+            }
+            print(f"  {ticker} done.")
+        except Exception as e:
+            print(f"  {ticker} statements failed: {e} (kept Yahoo quote data and price history)")
+            results[ticker] = {"error": str(e), "quick_metrics": quick, "price_history": history}
     return results
 
 

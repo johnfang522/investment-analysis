@@ -477,3 +477,9 @@ Do not write a python-docx script. Write the analysis as a JSON report spec and 
 - Macro/policy ❌ — no subsidy dependency; labor-shortage driver is demographic, not policy
 
 **Peak verdict:** 1 firing + 2 early warnings — **Intact, with the funding-stress signal as the live risk.** The tripwire that matters most is not a price level but a conversion rate: if pilot-to-production conversion stalls below ~20% through two consecutive fiscal years while venture funding decelerates, the theme is a decade early rather than three years early. Closest analogue: 3D printing circa 2014 — same signature of real technology, genuine enterprise pilots, and demand that never crossed from innovation budgets into operating budgets.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/industry_trend_analysis_{theme} {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: the same theme only: convergence signals, cycle stage, value-chain layer weightings and stock shortlist changes, the 6 exhaustion signals firing (peak & reversal watch), tripwires hit, posture and conviction.

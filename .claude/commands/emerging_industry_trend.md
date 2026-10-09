@@ -373,3 +373,9 @@ If the user says yes, ask which theme they want to go deeper on (if more than on
 - **Ignoring Layer 5.** Adjacent beneficiaries are chronically underowned because they don't carry the theme label. Often the best risk/reward.
 - **Crowding check.** At 4–5 signals, always ask: is the trade already consensus? High signal convergence + crowded positioning = risk of disappointment even if the thesis is right.
 - **Geopolitical supply chain blindspot.** Always ask whether the bottleneck is in a geopolitically exposed supply chain (e.g., rare earths, robotics components). A US-sourced alternative to a China-dependent bottleneck is itself an investable theme.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/emerging_industry_trends_{theme} {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: the same theme only: signal scorecard (each signal), convergence count, cycle stage, bottleneck ranking, value-chain additions or removals, positioning/conviction.

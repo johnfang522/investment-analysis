@@ -128,7 +128,9 @@ Everything below is for working on the code and the skills.
 - `fetch_all(tickers, price_history=True)` — fetches all data types for a list of tickers
   - Combines `sec_edgar_data.fetch_edgar_statements()` with `yahoo_finance_data.get_quick_metrics()` and `get_price_history()`
   - Per-ticker failures are caught and printed, not fatal
-  - Recent IPOs: TTM needs ≥4 quarters, so they raise `ValueError` and land in the results as `{"error": ...}`
+  - Recent IPOs: TTM needs ≥4 quarters, so the SEC step raises `ValueError` and the result is `{"error": ...}`
+    - Yahoo is fetched first, so `_quick_metrics.json` and `_price_history.json` are still written (the result also carries `quick_metrics` / `price_history`); the library keeps the full company name
+    - Statements are missing: source figures by hand from the S-1 / 10-Qs and cite them
   - **Price history is downloaded once, at the start of a skill run** (5 years of daily closes)
     - Skills that read `_price_history.json` use the default
       - `/technical_analysis`, `/income_statement_analysis`, `/earnings_report_analyzer`, `/quick_stock_metrics`, `/ai_company_deep_dive`, `/single_stock_quick_research`
@@ -304,6 +306,9 @@ Everything below is for working on the code and the skills.
   - The only second y-axis is a bar chart's `overlay` (the income trend's share price, matching the .docx)
   - The multiples chart puts all three multiples on one axis
 
+### `prior_run.py` — previous-run lookup
+- Usage: `prior_run.py PREFIX [YYYYMMDD]`; PREFIX = the skill's spec path without `_{YYYYMMDD}_spec.json`; returns the newest strictly earlier run's date, spec path and summary, or `null`
+
 ### `digest.py` — compact, pre-computed, source-labeled JSON digest
 - Usage: `digest.py TICKER SECTION` (so skills don't read raw JSON or do arithmetic by hand)
 - Sections
@@ -448,6 +453,11 @@ Everything below is for working on the code and the skills.
   - Use when the ask is about one specific print, not a full initiation note
 
 ### Common behaviors
+- **Re-runs report what changed**
+  - Reports keep history, so a skill re-run on the same ticker/theme with an earlier dated run is an update, not initial coverage
+  - `prior_run.py PREFIX YYYYMMDD` finds the latest earlier `_summary.json` (prints `{"prior": null}` for initial coverage)
+  - The skill then adds a "What Changed Since {date}" section after its verdict/read-through (table + net read + driver + prior triggers) and writes `summary.changes_since`; rules in `references/changes-since-last-run.md`
+  - Every skill except `/quick_stock_metrics` carries a short "Changes Since Last Run" block listing what to compare for that skill (e.g. technical: MA distances, RSI, relative returns, entry zone)
 - Skills read local JSON from `Outputs/` first, run `get_financial_data.py` if missing, then supplement with `WebSearch` (analyst estimates, guidance, N/A values)
 - Each analysis skill
   - Runs its `chart_*.py` (PNGs + `.chart.json` sidecars)

@@ -189,3 +189,9 @@ Do not write a python-docx script. Write the analysis as a JSON report spec and 
 - Valuation Reality Check: **0** — stock's move roughly tracks the earnings change, no clear over/under-reaction
 
 **Net score: +4 → Constructive.** Durable margin and backlog strength, but customer concentration and the inventory build are the two things to watch next quarter. **Read-through: BULLISH, Conviction 7/10.**
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/{ticker_lowercase}_earnings_analysis {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: here the prior run is the previous quarter's analysis: net score and classification, each of the 7 dimension scores, guidance given then vs delivered now, margin trajectory, red flags that resolved or worsened.

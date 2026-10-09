@@ -152,3 +152,9 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 - Charts: `{ticker_lowercase}_cash_flow_waterfall.png` under the Cash Flow Snapshot table; `{ticker_lowercase}_cash_flow_trend.png` at the top of "Net Income → Free Cash Flow", above its two tables (conversion, then the bridge with `bold_rows` on the `=` subtotal rows; the bridge `source` names the filing/release and date).
 - Close with a `read_through` block (dimension: `Cash-Flow-Quality`) — it replaces the Read-Through section above.
 - Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `5_{ticker_lowercase}_cash_flow_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/5_{ticker_lowercase}_cash_flow {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: operating cash flow, capex, free cash flow, FCF margin and FCF/net income conversion; working-capital swings; buybacks, dividends, M&A and other capital-allocation moves.

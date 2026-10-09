@@ -224,3 +224,9 @@ Do not write a python-docx script. Write the analysis as a JSON report spec and 
 #### Section 7 — Sources
 - Heading 1: "7. Sources"
 - `bullets` block of `[title](url)` links for every URL cited.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/industry_deep_dive_{theme} {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: the same theme only: Porter's Five Forces ratings, margin structure, new entrants or exits, M&A and consolidation, barriers to entry, posture and conviction.

@@ -175,3 +175,9 @@ This skill is fully standalone. If the following happen to be installed, use the
 ## Disclaimer
 
 Every output must include a brief note that the analysis is for informational and educational purposes, is not personalized investment advice, and that outsized-return investing carries a materially elevated risk of permanent capital loss — placed at the end, unobtrusive, once.
+
+---
+
+## Changes Since Last Run (when an earlier run exists)
+
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/multibagger_screener_{theme_or_date} {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: use the same theme slug (a date-based slug has no comparable earlier run: check `ls Outputs/multibagger_screener_*` and compare against the most recent run of the same hunting ground by hand); shortlist entries and exits, DNA scores, names that failed the gate or broke an anti-pattern, handoff changes.
