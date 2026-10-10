@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: null, &quot;skill&quot;: &quot;industry_trend_analysis&quot;, &quot;title&quot;: &quot;Analog &amp; Mixed-Signal Semiconductors&quot;, &quot;signal&quot;: null, &quot;conviction&quot;: null, &quot;as_of&quot;: null, &quot;rendered&quot;: &quot;2026-10-08&quot;}">
+<title>Analog &amp; Mixed-Signal Semiconductors</title>
+<style>/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 13px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 12px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(11px, 0.9vw, 14px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value { font-size: 20px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 12.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 14px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 11px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 18px; }
+.callout.verdict .signal { font-size: 22px; }
+.callout .scale { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+.call-line { font-size: 17px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 15px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 12.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 11.5px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 12px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 10.5px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 11px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 13px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 12px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 12.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 22px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 30px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 18px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 12.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 13px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 12px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card li.pkg > .row a { font-weight: 650; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+</style>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="index.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="index.html">← Investment Research Library</a><ol><li><a href="#1-introduction">1. Introduction</a></li><li><a href="#2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</a></li><li><a href="#3-value-chain-map">3. Value Chain Map</a></li><li><a href="#4-tam-expansion-analysis">4. TAM Expansion Analysis</a></li><li><a href="#5-positioning-recommendation">5. Positioning Recommendation</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</a></li><li><a href="#7-key-diligence-questions">7. Key Diligence Questions</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>Industry Trend Analysis</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>Analog &amp; Mixed-Signal Semiconductors</h1><p class="subtitle">Triggered by: ADI — mapped to Analog &amp; Mixed-Signal Semiconductors (the industrial and AI-era signal chain) · Buy-side thematic read · October 8, 2026 · Theme Conviction 6/10 · Peak verdict: Intact</p></header>
+<h2 id="1-introduction">1. Introduction</h2>
+<ul class="bullets"><li><strong>What it is:</strong> analog and mixed-signal semiconductors sense, convert and power the real world — precision data converters, amplifiers, power-management and gate-driver chips, and the signal chain inside factory machines, cars, test equipment, communications gear and, increasingly, AI data-center racks.</li><li><strong>Why now:</strong> the sector is leaving a historic inventory correction. Four analog leaders (Texas Instruments, STMicroelectronics, NXP, onsemi) posted Q2 2026 revenue growth of 9–26% together — the first synchronized upcycle since 2022 — with distributor inventory back inside historical norms and bookings at three-year highs (Edgen, Jul 2026).</li><li><strong>A second leg is new:</strong> AI racks draw 120–140kW today and more than 200kW next-generation, and Nvidia plans 800V DC distribution from 2027 for 1MW-class racks, pulling analog and power content deeper into the data center (Thunder Said Energy, LongPort, 2026). TI&#x27;s data-center revenue doubled YoY in Q2; ADI&#x27;s communications revenue rose 84% in its fiscal Q3 (company results, Jul–Aug 2026).</li><li><strong>End state:</strong> a cleaner, higher-margin analog industry in which precision signal-chain and power leaders earn a structurally larger share of AI infrastructure and industrial automation spend, with 10–20 year product lives and high switching costs.</li><li><strong>Investment opportunity and the catch:</strong> total analog is a ~$107B market growing ~6% a year (Precedence Research) — WSTS forecasts +10% in 2026 versus +90% for all semiconductors — so this is a quality-and-recovery theme, not a hyper-growth one. ADI&#x27;s record $4.02B quarter (+40% YoY) with adjusted gross margin of 72.5% shows how much of the 2026 move is cyclical recovery plus pricing.</li><li><strong>Watch the cycle, not just the AI story:</strong> analog is a cyclical business with a well-documented shape — ADI&#x27;s fiscal 2024 revenue fell 23% to ~$9.4B and TI&#x27;s 2023 sales fell ~13%, its steepest annual drop in over a decade — and we are only about three to four quarters into the recovery.</li></ul>
+<h2 id="2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Signal</th><th scope="col">Status</th><th scope="col">One-Line Verdict</th></tr></thead><tbody><tr><td>Technology Inflection</td><td class="fill-good">✅ Firing</td><td>AI racks move to 800V DC and 200kW+, multiplying power and signal-chain content per rack.</td></tr><tr><td>Regulatory Shift</td><td class="fill-warn">⚠️ Partial</td><td>Reshoring incentives help US capacity, but China&#x27;s anti-dumping probe and tariffs cut the other way.</td></tr><tr><td>Behavioral Change</td><td class="fill-warn">⚠️ Partial</td><td>Customers moved from destocking to restocking, but much of 2026 growth is cyclical, not a new habit.</td></tr><tr><td>Capital Flow</td><td class="fill-good">✅ Firing</td><td>ADI paid $1.5B for Empower; TI is finishing a six-year 300mm build; rotation into analog stocks is under way.</td></tr><tr><td>Narrative Momentum</td><td class="fill-good">✅ Firing</td><td>&#x27;AI is reviving an overlooked chip category&#x27; and &#x27;new semiconductor supercycle&#x27; are now mainstream headlines.</td></tr></tbody></table></div><p class="source">Source: Compiled from the sources cited in the sub-sections below</p>
+<p><strong>Convergence Verdict: 3/5 signals firing (two partial) — Credible trend. Estimated cycle stage: Mid.</strong> The cyclical recovery is three to four quarters old with revenue at records, while the AI-power leg is still early; Section 6 resolves how that fits the exit view.</p>
+<h3 id="technology-inflection-firing">Technology Inflection — ✅ Firing</h3>
+<ul class="bullets"><li><strong>Rack power architecture:</strong> AI training racks draw 120–140kW and next-generation systems are projected above 200kW; in-rack buses move from 54V to 800V, which Nvidia plans to promote starting in 2027 for racks of 1MW and above (Thunder Said Energy, LongPort, 2026).</li><li><strong>Content growth:</strong> semiconductor power delivery for AI data centers is estimated at $6.2B in 2026 and $18.1B by 2032, a 19.5% CAGR; silicon carbide gains content in high-voltage conversion and gallium nitride in intermediate stages (Knowledge Sourcing Intelligence, 2026).</li><li><strong>Company evidence:</strong> TI&#x27;s data-center revenue doubled YoY in Q2 2026; ADI&#x27;s communications revenue rose 84% and industrial 53% in its June quarter, with adjusted gross margin up 330 basis points to 72.5% (company results, Jul–Aug 2026).</li><li><strong>Caveat:</strong> these AI-power figures use broader definitions than &#x27;analog&#x27;, and the ~$6.2B pool is only ~6% of the ~$107B analog market (derived), so it is a meaningful growth leg, not the whole story.</li></ul>
+<h3 id="regulatory-shift-partial">Regulatory Shift — ⚠️ Partial</h3>
+<ul class="bullets"><li><strong>Reshoring support:</strong> TI expects up to $1.6B of CHIPS Act grants (it reports $1.6B in incentives in its trailing free cash flow) plus advanced-manufacturing tax credits; the credit is scheduled to sunset in 2026 and a higher rate than the 25% in the sources was not confirmed (Plant Services, LBMC, 2026).</li><li><strong>Door closing in China:</strong> China&#x27;s Ministry of Commerce opened an anti-dumping probe on US interface and gate-driver chips (40nm and above) on Sept 13, 2025; its evidence cites a 37% rise in US import volume and a 52% fall in price from 2022–24; the final determination was due Sept 13, 2026, extendable six months, and no result was found (trade.gov, digitalpolicyalert, 2026).</li><li><strong>US tariffs:</strong> a 25% Section 232 tariff on certain advanced chips took effect Jan 15, 2026 (downstream products not covered) and additional Section 301 tariffs on Chinese semiconductors are set for June 2027 (Mondaq/Sheppard Mullin, 2026).</li><li><strong>Net read:</strong> policy favors US-based capacity but threatens China revenue, so it scores Partial rather than a clean tailwind.</li></ul>
+<h3 id="behavioral-change-partial">Behavioral Change — ⚠️ Partial</h3>
+<ul class="bullets"><li><strong>Destocking is over:</strong> ST cut inventory days to 126 from 166 a year earlier, distributor inventory is back inside historical norms and bookings sit at three-year highs (Edgen, Jul 2026).</li><li><strong>But it is a restock:</strong> Microchip&#x27;s CEO called it &#x27;structural demand recovery, not a pull-forward&#x27; while noting &#x27;the channel is still filling a supply chain deficit&#x27; — i.e., orders currently exceed end demand until inventory is rebuilt (247wallst, Jul 2026).</li><li><strong>Industrial rebound:</strong> TI&#x27;s industrial revenue rose ~30% YoY in Q2, and 2026 is described as the first year of renewed growth in industrial automation, with a realistic 6–7% annual growth corridor through 2030 (Roland Berger, 2026).</li><li><strong>The test not yet passed:</strong> whether orders stay above end demand once channel inventory is rebuilt — the 2022 pattern that ended in a −23% revenue year at ADI.</li></ul>
+<h3 id="capital-flow-firing">Capital Flow — ✅ Firing</h3>
+<ul class="bullets"><li><strong>Strategic M&amp;A:</strong> ADI acquired Empower Semiconductor, a maker of voltage regulators used in AI processors and data centers, for $1.5B in cash (announced May 2026, completed Jul 7, 2026) (Bloomberg, ADI, 2026).</li><li><strong>Capacity cycle ending:</strong> TI is nearing completion of a six-year elevated capex cycle for 300mm wafers, with capex now at the low end of a $2–3B range and trailing free cash flow of $6.5B (TI, Jul 2026).</li><li><strong>Returns of capital:</strong> ADI returned $1.7B to shareholders in the June quarter and generated $4.9B of trailing free cash flow, 36% of revenue (ADI Q3 FY26 release).</li><li><strong>Public-market rotation:</strong> analog stocks are described as seeing a significant rotation in 2026, with ADI and Microchip posting strong year-to-date gains and onsemi up ~80% at one point (247wallst, Nasdaq, 2026).</li></ul>
+<h3 id="narrative-momentum-firing">Narrative Momentum — ✅ Firing</h3>
+<ul class="bullets"><li><strong>Headlines:</strong> &#x27;AI is reviving an overlooked chip category&#x27; (MarketBeat), &#x27;3 industrial chip stocks riding a new semiconductor supercycle in 2026&#x27; (Nasdaq/MarketBeat) and &#x27;5 analog chip stocks set to rebound as the cycle changes&#x27; (247wallst, Jul 12, 2026).</li><li><strong>Analyst framing:</strong> Wolfe named three chip stocks to buy into Q2 results including ADI (Jul 16, 2026).</li><li><strong>Not a crowded product trade:</strong> no dedicated analog ETF launches were found in the search.</li><li><strong>Read:</strong> narrative is strong and broadening, but has not yet reached the thematic-ETF-launch phase.</li></ul>
+<h2 id="3-value-chain-map">3. Value Chain Map</h2>
+<p><em>Companies appear once per layer by primary role; types are listed where a public comp was not screened. Quote data: Yahoo Finance, Oct 8, 2026.</em></p>
+<h3 id="layer-1-infrastructure-picks-shovels">Layer 1 — Infrastructure (&#x27;Picks &amp; Shovels&#x27;)</h3>
+<p><em>The broad-line analog, mixed-signal and power-IC suppliers whose chips go into nearly every industrial, automotive and data-center board.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D6E4F0;color:#0b0b0b">Texas Instruments</td><td style="background:#D6E4F0;color:#0b0b0b">TXN</td><td style="background:#D6E4F0;color:#0b0b0b">Largest analog supplier (analog ~80% of revenue); Q2 2026 revenue $5.5B (+23%), industrial +30%, data center 2x, gross margin 61%; 26.8x forward P/E, 14% below its high</td><td style="background:#D6E4F0;color:#0b0b0b">High</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Six-year capex cycle ending: higher depreciation and lower wafer loadings pressure Q4</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Infineon</td><td style="background:#D6E4F0;color:#0b0b0b">IFNNY</td><td style="background:#D6E4F0;color:#0b0b0b">Power semiconductors and microcontrollers; fiscal Q3 2026 record revenue on AI power; 19.0x forward P/E, 37% below its high</td><td style="background:#D6E4F0;color:#0b0b0b">High</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Auto and industrial cyclicality; gross margin 41.1%</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">onsemi</td><td style="background:#D6E4F0;color:#0b0b0b">ON</td><td style="background:#D6E4F0;color:#0b0b0b">Power and sensing chips; AI data-center revenue set to double in 2026; 17.5x forward P/E, 41% below its high; 10.4% of float short</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Revenue growth only +9.2%; a 19.5% operating margin, well below ADI (39.5%) and TI (42.6%)</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Microchip</td><td style="background:#D6E4F0;color:#0b0b0b">MCHP</td><td style="background:#D6E4F0;color:#0b0b0b">Microcontrollers and analog; May-quarter revenue $1.311B (+35.1%); 16.4x forward P/E, 29% below its high</td><td style="background:#D6E4F0;color:#0b0b0b">Medium–High</td><td style="background:#D6E4F0;color:#0b0b0b">Early</td><td style="background:#D6E4F0;color:#0b0b0b">Deepest inventory correction in the group; still refilling the channel</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">NXP / STMicroelectronics / Renesas</td><td style="background:#D6E4F0;color:#0b0b0b">NXPI / STM / RNECY</td><td style="background:#D6E4F0;color:#0b0b0b">Auto and industrial processors and analog; NXP +19.5% at 12.7x forward, STM +26.1% at 20.7x with 34.5% gross margin, Renesas +28.5%</td><td style="background:#D6E4F0;color:#0b0b0b">Medium–High</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Auto exposure; ST margins lowest of the group</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US prices in local currency; ADRs in USD); TI Q2 2026 release (RTTNews, Kalkine, Jul 22, 2026); Edgen, 247wallst (Jul 2026); Infineon Q3 FY26 (Aug 2026)</p>
+<h3 id="layer-2-enablers-platforms-tools">Layer 2 — Enablers (Platforms &amp; Tools)</h3>
+<p><em>The power-conversion, wide-bandgap and module platforms that make high-density AI power architectures work.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D5E8D4;color:#0b0b0b">Monolithic Power Systems</td><td style="background:#D5E8D4;color:#0b0b0b">MPWR</td><td style="background:#D5E8D4;color:#0b0b0b">High-density power-management ICs for AI servers; revenue +47.6%, 55.2% gross margin; 39.0x forward P/E</td><td style="background:#D5E8D4;color:#0b0b0b">Medium–High</td><td style="background:#D5E8D4;color:#0b0b0b">Early–Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Priced for AI power growth; 20% below its high</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Vicor</td><td style="background:#D5E8D4;color:#0b0b0b">VICR</td><td style="background:#D5E8D4;color:#0b0b0b">Power modules for high-current AI processors; revenue +49.3%; 42.6x forward P/E; 9.8% of float short</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early–Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Customer concentration and a premium multiple</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Empower Semiconductor (now ADI)</td><td style="background:#D5E8D4;color:#0b0b0b">ADI</td><td style="background:#D5E8D4;color:#0b0b0b">Voltage-regulator chips used in AI processors, acquired for $1.5B in July 2026</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early</td><td style="background:#D5E8D4;color:#0b0b0b">Integration and customer qualification risk</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Navitas / Wolfspeed (GaN / SiC)</td><td style="background:#D5E8D4;color:#0b0b0b">NVTS / WOLF</td><td style="background:#D5E8D4;color:#0b0b0b">Wide-bandgap power chips for 800V architectures; Navitas operating margin −255% and 68% below its high; Wolfspeed gross margin −28.2%</td><td style="background:#D5E8D4;color:#0b0b0b">Low</td><td style="background:#D5E8D4;color:#0b0b0b">Early</td><td style="background:#D5E8D4;color:#0b0b0b">Cash burn and unproven profitability</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US prices in local currency; ADRs in USD); Bloomberg / ADI press release (Empower, 2026); Knowledge Sourcing Intelligence (2026)</p>
+<h3 id="layer-3-integrators-system-builders">Layer 3 — Integrators (System Builders)</h3>
+<p><em>Companies that combine power and signal-chain chips into the rack-level and plant-level systems customers actually buy.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FFF2CC;color:#0b0b0b">Vertiv</td><td style="background:#FFF2CC;color:#0b0b0b">VRT</td><td style="background:#FFF2CC;color:#0b0b0b">Data-center power and cooling systems; revenue +24.1%; 26.7x forward P/E, 35% below its high</td><td style="background:#FFF2CC;color:#0b0b0b">Medium–High</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Hyperscaler capex timing</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Eaton</td><td style="background:#FFF2CC;color:#0b0b0b">ETN</td><td style="background:#FFF2CC;color:#0b0b0b">Electrical and power distribution for data centers and industry; revenue +21.4%; 26.1x forward P/E</td><td style="background:#FFF2CC;color:#0b0b0b">Medium–High</td><td style="background:#FFF2CC;color:#0b0b0b">Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Valuation near sector average; diversified, so only partial AI exposure</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Delta Electronics / Lite-On (type)</td><td style="background:#FFF2CC;color:#0b0b0b">type</td><td style="background:#FFF2CC;color:#0b0b0b">AI server power supply makers; not screened this run</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Margin pressure from customer concentration</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Test and measurement integrators (type)</td><td style="background:#FFF2CC;color:#0b0b0b">e.g. Keysight / Teradyne</td><td style="background:#FFF2CC;color:#0b0b0b">Systems that use ADI&#x27;s precision converters in automatic test equipment — a driver of ADI&#x27;s industrial +53%; not screened this run</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Semiconductor test spending is itself cyclical</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US prices in local currency; ADRs in USD); ADI Q3 FY26 results coverage (Futurum, Aug 2026)</p>
+<h3 id="layer-4-applications-end-use-products">Layer 4 — Applications (End-Use Products)</h3>
+<p><em>The end markets whose spending drives analog demand: AI data centers, industrial automation, automotive, aerospace and defense.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FCE4D6;color:#0b0b0b">Hyperscalers and AI clouds (type)</td><td style="background:#FCE4D6;color:#0b0b0b">MSFT / AMZN / GOOGL / META</td><td style="background:#FCE4D6;color:#0b0b0b">Big-4 capex of ~$725B in 2026 drives data-center power and signal-chain demand</td><td style="background:#FCE4D6;color:#0b0b0b">High</td><td style="background:#FCE4D6;color:#0b0b0b">Early–Mid</td><td style="background:#FCE4D6;color:#0b0b0b">Capex funded by operating cash flow but ROI unproven</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Industrial automation OEMs</td><td style="background:#FCE4D6;color:#0b0b0b">ROK / Siemens / ABB (type)</td><td style="background:#FCE4D6;color:#0b0b0b">Plant modernization and robotics; 6–9% annual growth through 2030 (Roland Berger)</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early–Mid</td><td style="background:#FCE4D6;color:#0b0b0b">Orders recover mainly from upgrades, not new plants</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Automotive OEMs and Tier 1s (type)</td><td style="background:#FCE4D6;color:#0b0b0b">various</td><td style="background:#FCE4D6;color:#0b0b0b">Electrification and ADAS content; TI automotive up mid-teens in Q2</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early–Mid</td><td style="background:#FCE4D6;color:#0b0b0b">Inventory correction was led by auto in 2022–23</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Aerospace and defense primes (type)</td><td style="background:#FCE4D6;color:#0b0b0b">various</td><td style="background:#FCE4D6;color:#0b0b0b">High-reliability, long-lifecycle analog demand; a growth driver cited at ADI</td><td style="background:#FCE4D6;color:#0b0b0b">High</td><td style="background:#FCE4D6;color:#0b0b0b">Mid</td><td style="background:#FCE4D6;color:#0b0b0b">Budget timing</td></tr></tbody></table></div><p class="source">Source: Roland Berger (2026); DatacenterDynamics (capex, Aug 2026); TI Q2 2026 release</p>
+<h3 id="layer-5-adjacent-beneficiaries">Layer 5 — Adjacent Beneficiaries</h3>
+<p><em>Companies whose volumes rise with an analog restock but whose economics lag it: RF analog, distributors, back-end and EMS.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#E1D5E7;color:#0b0b0b">Skyworks / Qorvo (RF analog)</td><td style="background:#E1D5E7;color:#0b0b0b">SWKS / QRVO</td><td style="background:#E1D5E7;color:#0b0b0b">RF front-end chips; revenue −3.1% and −4.2% so far; 14.1x and 14.4x forward; SWKS 34.4% of float short</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Handset-driven RF has not joined the analog recovery</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Electronic component distributors (type)</td><td style="background:#E1D5E7;color:#0b0b0b">e.g. Arrow / Avnet</td><td style="background:#E1D5E7;color:#0b0b0b">Restock demand lifts distribution volumes; not screened this run</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">First to feel an order air pocket if end demand lags the restock</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Outsourced assembly and test</td><td style="background:#E1D5E7;color:#0b0b0b">AMKR</td><td style="background:#E1D5E7;color:#0b0b0b">Back-end packaging for analog and power chips; revenue +25.6%; 18.1x forward P/E, 16.1% of float short, 15.5% gross margin</td><td style="background:#E1D5E7;color:#0b0b0b">Low–Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Low margin; follows the cycle with a lag</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Diodes / Alpha &amp; Omega (discretes)</td><td style="background:#E1D5E7;color:#0b0b0b">DIOD / AOSL</td><td style="background:#E1D5E7;color:#0b0b0b">Commodity power discretes; gross margins of 31.7% and 22.3%; AOSL operating margin −6.3%</td><td style="background:#E1D5E7;color:#0b0b0b">Low</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Price competition from Chinese suppliers</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US prices in local currency; ADRs in USD)</p>
+<h3 id="layer-6-bottleneck-highest-structural-moat">Layer 6 — Bottleneck (Highest Structural Moat)</h3>
+<p><em>The assets every competitor struggles to copy: precision signal-chain IP qualified into long-life products, and in-house 300mm analog capacity.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#F4CCCC;color:#0b0b0b">Analog Devices</td><td style="background:#F4CCCC;color:#0b0b0b">ADI</td><td style="background:#F4CCCC;color:#0b0b0b">High-performance converters, amplifiers and RF; record fiscal Q3 2026 revenue $4.02B (+40%), adjusted gross margin 72.5% (+330bp) guided to ~74%, trailing FCF $4.9B (36% of revenue); 24.7x forward P/E, 9% below its high</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Industrial and test growth is the cyclical part; revenue is already at a record</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Texas Instruments (300mm capacity)</td><td style="background:#F4CCCC;color:#0b0b0b">TXN</td><td style="background:#F4CCCC;color:#0b0b0b">In-house 300mm analog fabs finishing a six-year build; trailing FCF $6.5B; can flex capacity to demand; announced price increases for Q3/Q4</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Capacity additions can cap pricing once demand normalizes</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Precision / high-reliability signal-chain IP (type)</td><td style="background:#F4CCCC;color:#0b0b0b">ADI / TXN / Renesas</td><td style="background:#F4CCCC;color:#0b0b0b">Designs qualified into 10–20-year products in aerospace, medical and industrial equipment</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Durable</td><td style="background:#F4CCCC;color:#0b0b0b">China localization at the low end</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Silicon carbide substrates (type)</td><td style="background:#F4CCCC;color:#0b0b0b">WOLF / others</td><td style="background:#F4CCCC;color:#0b0b0b">Scarce input for 800V power conversion; Wolfspeed gross margin −28.2% shows scale and yield risk</td><td style="background:#F4CCCC;color:#0b0b0b">Medium</td><td style="background:#F4CCCC;color:#0b0b0b">Early</td><td style="background:#F4CCCC;color:#0b0b0b">Not yet profitable at scale</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US prices in local currency; ADRs in USD); ADI Q3 FY26 release (SEC 8-K, Aug 19, 2026); TI Q2 2026 call coverage (Sahm Capital, Jul 2026)</p>
+<h2 id="4-tam-expansion-analysis">4. TAM Expansion Analysis</h2>
+<h3 id="4a-market-size-growth-drivers">4a. Market Size &amp; Growth Drivers</h3>
+<p>The theme expands analog content per system rather than inventing a new market: an AI rack needs far more power conversion, regulation and monitoring than a general-purpose server rack, and a modern factory or test system needs more precision sensing and conversion per machine. The honest TAM is an incremental pool riding on a mature ~$107B analog market.</p>
+<ul class="bullets"><li>Total analog semiconductor market: $107.2B (2025) → $180.2B (2034), 5.94% CAGR (Precedence Research, 2026).</li><li>WSTS Spring 2026: analog +10% in 2026, against +90% for all semiconductors to ~$1.51T (memory +250%) — analog is a laggard in growth terms (WSTS via BIS Infotech, 2026).</li><li>Semiconductor power delivery for AI data centers: $6.2B (2026) → $18.1B (2032), 19.5% CAGR (Knowledge Sourcing Intelligence, 2026; broader than analog alone).</li><li>Bank of America Securities puts the addressable market for analog semiconductors at $27B by 2030, with Infineon the biggest share gainer and TI holding the top spot (via LongPort, 2026; secondary source).</li><li>Industrial automation: 6–9% annual growth through 2030, realistic 6–7% (Roland Berger, 2026).</li></ul>
+<p><strong>Structural vs cyclical.</strong> Structural: rack power density (120–140kW today, &gt;200kW next generation, 800V DC from 2027), content growth in automation and test, aerospace and defense long-lifecycle demand, and the 10–20-year product lives that make analog designs sticky. Cyclical: the 2026 rebound itself — ADI +40% and TI +23% far exceed WSTS&#x27;s +10% market forecast because they combine restocking after destocking, a low comparison base and price increases (TI is raising prices in Q3/Q4). Treat the AI-power leg as the durable part and the rest as a recovery that has a historical shape.</p>
+<h3 id="4b-primary-beneficiaries-high-tam-capture">4b. Primary Beneficiaries — High TAM Capture</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why High TAM Capture</th><th scope="col">TAM Exposure</th><th scope="col">Upside Scenario</th></tr></thead><tbody><tr><td>Analog Devices</td><td>ADI</td><td>Precision converters and RF lead in test, communications, aerospace and AI infrastructure; Empower adds AI power</td><td>Communications +84% and industrial +53% YoY in the June quarter; data-center share of revenue not disclosed in the sources found</td><td>FQ4 guide of $4.3B ± $0.1B and adjusted EPS $3.86 ± $0.15 with gross margin ~74% — a ~$17B revenue run-rate</td></tr><tr><td>Texas Instruments</td><td>TXN</td><td>Largest analog base and in-house 300mm capacity; pricing power now being exercised</td><td>Analog ~80% of revenue; data center 2x, industrial +30%, auto mid-teens in Q2</td><td>Q3 guide $5.65–6.15B and trailing FCF of $6.5B rising as capex falls toward the low end of $2–3B</td></tr><tr><td>Infineon</td><td>IFNNY</td><td>Power semiconductors for AI power conversion; named by Bank of America as the biggest analog share gainer through 2030 (secondary source)</td><td>AI business drove record fiscal Q3 2026 revenue; share not disclosed in sources</td><td>Further clear rise in revenue and margin guided for fiscal Q4 2026</td></tr><tr><td>Monolithic Power Systems</td><td>MPWR</td><td>High-density power ICs for AI servers</td><td>Revenue +47.6% (TTM growth rate)</td><td>800V and 1MW racks raise power-IC content per rack</td></tr><tr><td>onsemi</td><td>ON</td><td>Power and sensing for data centers and auto; AI data-center revenue set to double in 2026</td><td>Revenue growth only +9.2% overall, so AI is a growing slice of a flat base</td><td>A doubling data-center line becomes a larger share of revenue as the base recovers</td></tr></tbody></table></div><p class="source">Source: Company disclosures and 2026 coverage cited in Sections 2–3; Yahoo Finance quote data, Oct 8, 2026 (non-US prices in local currency; ADRs in USD)</p>
+<h3 id="4c-limited-beneficiaries-low-tam-capture-or-tam-risk">4c. Limited Beneficiaries — Low TAM Capture or TAM Risk</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why Limited Capture</th><th scope="col">Common Investor Mistake</th><th scope="col">Signal to Watch</th></tr></thead><tbody><tr><td>Navitas / Wolfspeed</td><td>NVTS / WOLF</td><td>GaN and SiC are the right technologies but Navitas has an operating margin of −255% and Wolfspeed a gross margin of −28.2%; 68% and 62% below their highs</td><td>Buying the 800V narrative with no earnings</td><td>Gross-margin breakeven and design-win conversion</td></tr><tr><td>Skyworks / Qorvo</td><td>SWKS / QRVO</td><td>RF analog is tied to handsets, not the industrial and AI recovery; revenue −3.1% and −4.2%; SWKS 34.4% of float short</td><td>Treating all &#x27;analog&#x27; as one recovering category</td><td>Growth turning positive for two quarters</td></tr><tr><td>Alpha &amp; Omega / Diodes</td><td>AOSL / DIOD</td><td>Commodity discretes with 22.3% and 31.7% gross margins; AOSL operating margin −6.3% and 90x forward P/E</td><td>Assuming recovery lifts low-end suppliers equally</td><td>Gross margin back above 35% as pricing holds</td></tr><tr><td>Silicon Labs</td><td>SLAB</td><td>Priced for growth at 50.9x forward earnings with a −4.7% operating margin, 1% below its high — the opposite of the de-rated analog laggards</td><td>Counting wireless IoT as analog-cycle exposure</td><td>Operating margin turning positive</td></tr><tr><td>China domestic analog (SGMICRO-type)</td><td>e.g. 3661.HK</td><td>SGMICRO&#x27;s gross margin fell from 48.5% (2022) to 28.0% (2024) in the price war — the low end has little pricing power</td><td>Assuming local competitors threaten high-performance analog equally</td><td>Anti-dumping outcome and domestic price recovery</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026; Expolume / SCMP (SGMICRO, 2026)</p>
+<h2 id="5-positioning-recommendation">5. Positioning Recommendation</h2>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Is analog now an AI-power growth story?</td><td>AI has revived an overlooked category: ADI +40%, TI +23% and Microchip +35% are read as a durable supercycle with AI content as the engine</td><td>Most 2026 growth is cyclical recovery: industrial (TI +30%, ADI +53%), restocking (&#x27;the channel is still filling a supply chain deficit&#x27;) and price increases; the AI power pool (~$6.2B) is only ~6% of a ~$107B market and WSTS has analog at +10%</td></tr><tr><td>Where in the cycle are we?</td><td>Early — bookings at three-year highs and distributor inventory below target imply a long runway</td><td>Mid: revenue is already at records (ADI $4.02B), price increases are being pushed (TI, ADI price adjustments) and TI is guiding to lower wafer loadings and higher depreciation in Q4 — features of a maturing, not nascent, upcycle</td></tr><tr><td>Is China risk priced?</td><td>China&#x27;s anti-dumping probe is a headline, not a driver</td><td>MOFCOM cites a 37% rise in US import volume and a 52% price decline; the final determination was due Sept 13, 2026 (extendable six months) and its outcome is unknown to us — a live binary risk to US interface and gate-driver revenue</td></tr></tbody></table></div><p class="source">Source: Edgen, 247wallst (Jul 2026); ADI Q3 FY26 and TI Q2 2026 results; trade.gov / digitalpolicyalert (anti-dumping); Precedence Research; WSTS via BIS Infotech</p>
+<div class="edge"><strong>The edge:</strong> The market is paying 25–27x forward earnings (ADI 24.7x, TXN 26.8x) for AI-power growth, while most of the 2026 recovery is a restock-and-pricing upcycle with a known shape; the bottleneck layer and quality margins justify owning it, but the AI halo should not be capitalized at peak-cycle earnings.</div>
+<p><strong>Theme Posture: Theme Conviction 6/10 — long Layer 1 and Layer 6 quality (ADI, TXN) plus recovery laggards still at single-to-mid-teens multiples (NXP, Microchip); underweight the AI-power Layer 2 names priced at 39–43x or burning cash (MPWR, VICR, NVTS, WOLF). No Layer 4 exposure beyond what Layers 1 and 6 already carry.</strong></p>
+<ul class="bullets"><li><strong>The edge:</strong> own the margin-rich bottleneck leaders and de-rated cyclical laggards for the recovery, and avoid paying AI-power multiples for the layer where the growth is smallest and least profitable.</li></ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">Layer</th><th scope="col">Weight</th><th scope="col">Rationale</th></tr></thead><tbody><tr><td>1 — Infrastructure</td><td class="fill-good">Overweight</td><td>Quality leaders at ~25–27x and laggards at 12.7–17.5x with the recovery intact</td></tr><tr><td>2 — Enablers</td><td class="fill-bad">Underweight</td><td>39–43x or cash-burning; AI power is a small share of analog</td></tr><tr><td>3 — Integrators</td><td class="fill-warn">Neutral</td><td>Vertiv and Eaton have AI rack exposure but are not cheap</td></tr><tr><td>4 — Applications</td><td class="fill-warn">Neutral</td><td>End markets drive demand; not an expression of the theme</td></tr><tr><td>5 — Adjacent</td><td class="fill-bad">Underweight</td><td>RF, discretes and distributors lag or roll over first</td></tr><tr><td>6 — Bottlenecks</td><td class="fill-good">Overweight</td><td>Precision IP and 300mm capacity capture pricing and survive a downturn</td></tr></tbody></table></div><p class="source">Source: Our synthesis of Sections 3, 4 and 6; consistent with the Intact peak verdict (continue building on weakness)</p>
+<p><strong>Overweight</strong></p>
+<ul class="bullets"><li><strong>ADI / Analog Devices</strong> — 72.5% adjusted gross margin heading to ~74%, trailing FCF of $4.9B (36% of revenue), and a precision signal-chain moat; at 24.7x forward and 9% below its high it is the best quality-per-multiple in the group.</li><li><strong>TXN / Texas Instruments</strong> — price increases and a six-year capex cycle ending support FCF ($6.5B trailing); 26.8x forward and 14% below its high, but expect Q4 depreciation and wafer-loading headwinds after the Oct 21 print.</li><li><strong>NXPI / NXP</strong> — 12.7x forward, 19.5% growth and 32% below its high: the cheapest auto/industrial analog exposure.</li><li><strong>MCHP / Microchip</strong> — 16.4x forward, revenue +35% and a CEO calling the recovery structural; 29% below its high and 8% of float short.</li></ul>
+<p><strong>Neutral</strong></p>
+<ul class="bullets"><li><strong>IFNNY / Infineon, ON / onsemi, STM / STMicroelectronics</strong> — good AI-power or auto exposure at 17.5–20.7x forward, but lower margins (Infineon 41.1%, ST 34.5%, onsemi 42.8% gross) and weaker growth at onsemi.</li><li><strong>VRT / Vertiv, ETN / Eaton</strong> — AI rack exposure at 26–27x; own for data-center power, not for the analog cycle.</li></ul>
+<p><strong>Underweight</strong></p>
+<ul class="bullets"><li><strong>MPWR / Monolithic Power and VICR / Vicor</strong> — 39.0x and 42.6x forward earnings for the AI power leg.</li><li><strong>NVTS / Navitas and WOLF / Wolfspeed</strong> — operating margin −255% and gross margin −28.2%.</li><li><strong>SWKS / Skyworks, QRVO / Qorvo, AOSL / Alpha &amp; Omega</strong> — not part of the recovery; commodity or handset-driven.</li></ul>
+<p>The weights follow the Section 6 verdict: Intact, with one signal firing (macro) and four early warnings, so the right stance is to keep building quality and bottleneck exposure on weakness while avoiding the high-multiple AI-power names where positioning risk is greatest. The entry-timing nuance is TI&#x27;s Q3 print on Oct 21 and ADI&#x27;s fiscal Q4 report in late November: both will say whether pricing and margins are still rising.</p>
+<p>A Layer 4 note: end-market exposure comes through the Layer 1 and Layer 6 names themselves; owning automation or hyperscaler stocks adds the end-demand cycle without analog&#x27;s margin structure, so we hold Layer 4 neutral.</p>
+<h2 id="6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</h2>
+<p class="call-line good"><strong><strong>Peak Verdict: 1/6 exhaustion signals firing (macro) with four early warnings — Intact, with capacity catch-up, the restock-versus-end-demand gap and China as the live risks. Estimated time to peak: ~4–8 quarters, with the earlier end of the range most likely for the cyclical Layer 1 laggards (restock completes, TI&#x27;s capacity cycle ends) and a longer runway for AI-power content.</strong> This is consistent with Section 2&#x27;s &#x27;Mid&#x27; stage: the recovery is three to four quarters old with revenue at records, so first cracks would typically appear in 2027.</strong></p>
+<h3 id="6a-exhaustion-scorecard">6a. Exhaustion Scorecard</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Exhaustion Signal</th><th scope="col">Status</th><th scope="col">Evidence / What Would Trip It</th></tr></thead><tbody><tr><td>1. Convergence Signal Inversion</td><td class="fill-good">❌ Not yet</td><td>Bookings at three-year highs and TI guides Q3 revenue of $5.65–6.15B, up from $5.5B; AI and industrial legs both growing. Trips if: book-to-bill falls below 1.0 for two consecutive quarters at TI, ADI or Microchip.</td></tr><tr><td>2. Supply Catch-Up &amp; Capacity Overshoot</td><td class="fill-warn">⚠️ Early warning</td><td>TI is finishing a six-year 300mm build and guiding Q4 to lower wafer loadings and higher depreciation; price increases are being executed; China&#x27;s domestic makers added capacity through the 2022–24 price war. Trips if: distributor inventory days climb back above pre-cycle norms (ST is at 126, down from 166) or lead times shorten.</td></tr><tr><td>3. Valuation &amp; Crowding Extremes</td><td class="fill-warn">⚠️ Early warning</td><td>ADI 24.7x and TXN 26.8x forward are not extreme, but MPWR 39.0x, Vicor 42.6x and Silicon Labs 50.9x are; onsemi was up ~80% at one point; short interest is 2–10% for the leaders; no analog ETF yet. Trips if: ADI forward P/E exceeds 30x or TXN 32x, or a dedicated analog ETF passes $500M.</td></tr><tr><td>4. Unit Economics &amp; Margin Erosion</td><td class="fill-good">❌ Not yet</td><td>Margins are expanding: ADI adjusted gross margin 72.5% (+330bp) guided to ~74%; TI gross margin 61% (+340bp sequentially). The weak spot is the low end: SGMICRO&#x27;s margin fell from 48.5% to 28.0% in the 2022–24 price war. Trips if: ADI or TI gross margin falls ≥150bp sequentially or price increases are reversed.</td></tr><tr><td>5. Demand-Side Funding Stress</td><td class="fill-warn">⚠️ Early warning</td><td>Industrial and auto demand is funded by customers&#x27; operating cash flow, but the AI-linked leg (TI data center 2x, ADI communications +84%) depends on hyperscaler capex (~$725B) and on AI-lab financing that includes circular vendor guarantees (see our Oct 8 optical interconnect and physical AI notes). Trips if: Big-4 capex guidance is cut or Nvidia delays its 2027 800V rack plans.</td></tr><tr><td>6. Macro &amp; Policy Regime Shift</td><td class="fill-bad">✅ Firing</td><td>10-year Treasury 5.27% (24-year high) and a Fed hike to 3.75–4.00% (see the Oct 8 market sentiment note) pressure industrial capex and long-duration multiples; China&#x27;s anti-dumping outcome and the US–China truce expiring in November 2026 add policy risk; Section 301 chip tariffs follow in June 2027.</td></tr></tbody></table></div><p class="source">Source: Sources as cited in Sections 2–5; Oct 8, 2026 market sentiment note (this project); Yahoo Finance</p>
+<p><em>Color logic is inverted versus the Section 2 table: here a firing signal is bad news (pink), &#x27;Not yet&#x27; is good news (green).</em></p>
+<h3 id="6b-tripwires-pre-committed-exit-triggers">6b. Tripwires — Pre-Committed Exit Triggers</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Tripwire</th><th scope="col" class=num>Signal</th><th scope="col">Where Observed</th><th scope="col">Action if Triggered</th></tr></thead><tbody><tr><td>1</td><td>Book-to-bill falls below 1.0 for two consecutive quarters at TI, ADI or Microchip, or TI&#x27;s Q3 revenue lands below the $5.65B low end of its guide</td><td class="num">1</td><td>TI Q3 results (Oct 21); ADI, Microchip and NXP quarterly calls</td><td><strong>Halve Layer 1 cyclical exposure (MCHP, NXPI, ON); keep ADI/TXN core</strong></td></tr><tr><td>2</td><td>ADI or TI gross margin falls ≥150bp sequentially (ADI adjusted ~74% guided for fiscal Q4; TI 61%), or either company reverses announced price increases</td><td class="num">4</td><td>Quarterly results and calls</td><td><strong>Trim Layer 1 and Layer 6 by a third</strong></td></tr><tr><td>3</td><td>China imposes anti-dumping duties above ~25% on US interface and gate-driver chips, or the probe is extended and expanded to more product lines</td><td class="num">6</td><td>MOFCOM notices; US Commerce/trade.gov</td><td><strong>Cut China-exposed Layer 1 names by a third</strong></td></tr><tr><td>4</td><td>Distributor inventory days climb back above pre-cycle norms (ST at 126 vs 166 a year ago), or channel checks show double-ordering</td><td class="num">2</td><td>Distributor reports; ST/Microchip commentary</td><td><strong>Exit Layer 5 distribution-linked names; trim Layer 1 by a third</strong></td></tr><tr><td>5</td><td>ADI forward P/E exceeds 30x or TXN exceeds 32x (now 24.7x and 26.8x), or a dedicated analog ETF launches above $500M</td><td class="num">3</td><td>Yahoo Finance; ETF issuer filings</td><td><strong>Trim Layers 1 and 6 by a third; do not add</strong></td></tr><tr><td>6</td><td>Big-4 hyperscaler capex guidance is cut below the ~$725B 2026 level, or Nvidia defers 800V DC racks beyond 2027</td><td class="num">5</td><td>MSFT, AMZN, GOOGL, META late-October prints; Nvidia GTC (March 2027)</td><td><strong>Cut AI-power Layers 2–3 (MPWR, VICR, VRT) by half</strong></td></tr><tr><td>7</td><td>TI industrial revenue growth falls below +10% YoY (now ~+30%) for a quarter, or ADI&#x27;s industrial growth (now +53%) halves</td><td class="num">1</td><td>TI and ADI segment disclosures</td><td><strong>Trim industrial-heavy names (ADI, MCHP) by a third</strong></td></tr><tr><td>8</td><td>10-year Treasury closes above 5.5% for five sessions, or HY OAS above 350 bps with VIX above 20</td><td class="num">6</td><td>FRED DGS10, BAMLH0A0HYM2; Yahoo ^VIX</td><td><strong>Cut theme gross by a third regardless of fundamentals</strong></td></tr></tbody></table></div><p class="source">Source: Our synthesis; thresholds anchored to figures cited in Sections 2–5</p>
+<h3 id="6c-watch-calendar-dated-catalysts">6c. Watch Calendar — Dated Catalysts</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Date / Window</th><th scope="col">Event</th><th scope="col">Bullish if...</th><th scope="col">Bearish if...</th></tr></thead><tbody><tr><td>Oct 21, 2026 (3:30pm CT)</td><td>Texas Instruments Q3 results (guide $5.65–6.15B, EPS $2.23–2.57)</td><td>Revenue at or above the high end; price increases sticking; Q4 outlook intact</td><td>Revenue below $5.65B; Q4 pressure larger than flagged</td></tr><tr><td>Oct 28, 2026</td><td>FOMC decision</td><td>Hold with softer language; 10Y retreats from ~5.3%</td><td>Hike or hawkish hold; 10Y above 5.5%</td></tr><tr><td>Oct 29, 2026</td><td>STMicroelectronics Q3 results (before European open)</td><td>Inventory days stay near 126; auto/industrial growth ≥20%</td><td>Inventory days rise; growth decelerates</td></tr><tr><td>Early Nov 2026 (dates to be confirmed)</td><td>NXP, onsemi, Microchip fiscal results</td><td>Bookings still rising; Microchip &#x27;structural recovery&#x27; language holds</td><td>Channel inventory rebuilt; book-to-bill slipping</td></tr><tr><td>Nov 2026</td><td>US–China trade truce expiry; China anti-dumping determination (due Sept 13, 2026, extendable six months)</td><td>Truce extended; no duties or modest duties</td><td>New duties or electronics tariffs</td></tr><tr><td>Late Nov 2026 (date to be confirmed)</td><td>ADI fiscal Q4 and fiscal 2027 outlook (guide $4.3B ± $0.1B; EPS $3.86 ± $0.15; gross margin ~74%)</td><td>Guide above ~$4.4B with gross margin ≥74%</td><td>Guide below $4.3B or margin below 72.5%</td></tr><tr><td>Early Dec 2026 (date to be confirmed)</td><td>WSTS autumn forecast</td><td>2026 analog growth revised above +10%; 2027 forecast positive</td><td>2027 analog growth forecast below +5%</td></tr><tr><td>Late Jan 2027 (date to be confirmed)</td><td>TI Q4 results</td><td>Depreciation and loadings headwind smaller than feared</td><td>Margin falls ≥150bp sequentially</td></tr><tr><td>Mar 15–18, 2027</td><td>Nvidia GTC 2027 (800V DC rack architecture)</td><td>800V DC and 1MW racks confirmed for 2027 volume</td><td>800V timing pushed out</td></tr><tr><td>June 2027</td><td>Additional Section 301 tariffs on Chinese semiconductors</td><td>Little supply-chain disruption</td><td>Retaliation hits US analog sales in China</td></tr></tbody></table></div><p class="source">Source: TI IR (Oct 21 webcast); STMicroelectronics (Oct 29 release); trade.gov; Federal Reserve calendar; Nvidia GTC; ADI Q3 FY26 release</p>
+<h3 id="6d-false-alarm-test">6d. False-Alarm Test</h3>
+<ul class="bullets"><li><strong>Are fundamentals confirming?</strong> Check book-to-bill, TI and ADI price realization, distributor inventory days (ST 126) and revenue run-rates (ADI $4.02B, TI $5.5B). A price drop with bookings, margins and guidance intact is a positioning flush; falling bookings with rising inventory is a peak.</li><li><strong>Theme-specific or market-wide?</strong> Compare the basket (ADI, TXN, MCHP, NXPI, ON, STM) with the SOX and the S&amp;P: today most analog names are 9–41% below highs while the S&amp;P is near a record and memory leads semiconductors, so the lag is theme-specific, with a rate component (10Y at 5.3%).</li><li><strong>Which signals are firing — structural or cyclical?</strong> Macro (Signal 6) is cyclical; the structural ones to watch are supply catch-up (Signal 2: TI&#x27;s capex cycle ending, China capacity) and margin erosion (Signal 4: price increases reversing). Check TI&#x27;s Q4 wafer loadings and gross margin.</li><li><strong>Has the end state changed?</strong> End state: precision and power leaders earning a larger share of AI and industrial spend at 70%+ adjusted gross margins (ADI). If the restock ends with ADI/TI revenue falling more than 15% from peak, the cycle — not the AI content story — has reasserted itself.</li></ul>
+<p><strong>Structural signals for this theme (act on):</strong> supply catch-up across US, EU and Chinese capacity (Signal 2), margin erosion from reversed price increases (Signal 4) · <strong>Cyclical signals (likely buy the dip):</strong> crowding in AI-power names (Signal 3) and macro/yield spikes (Signal 6) while bookings and margins hold.</p>
+<h3 id="6e-closest-historical-analogue">6e. Closest Historical Analogue</h3>
+<p>The closest analogue is the previous analog cycle itself: the 2021–2022 shortage peak followed by the 2023–2024 inventory correction. Record lead times in mid-2022 and customers building inventory (led by auto) set up a downturn in which ADI&#x27;s fiscal 2024 revenue fell 23% to ~$9.4B with diluted EPS down 50%, and TI&#x27;s 2023 sales fell ~13%, its steepest annual drop in over a decade; TI&#x27;s stock was ~30% below its late-2022 peak. Today&#x27;s recovery resembles it in that bookings are at three-year highs, price increases are being pushed and the channel is still restocking, while it differs in having a genuine AI power leg and distributor inventory still below target. The comparison is unflattering because inventory below target can be overfilled again, as in 2022.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Analogue</td><td>The 2021–2022 analog shortage peak and 2023–2024 inventory correction (ADI, TI)</td></tr><tr><td>Peak date</td><td>Record lead times in mid-2022 (The Register); TI stock peak in late 2022; ADI fiscal 2023 was the revenue peak</td></tr><tr><td>Peak-to-trough drawdown</td><td>ADI fiscal 2024 revenue −23% to ~$9.4B, EPS −50%; TI 2023 sales −13%; TI stock ~−30% from its late-2022 peak (SEC filings, Motley Fool)</td></tr><tr><td>Recovery time</td><td>ADI reached a record $4.02B quarterly revenue in fiscal Q3 2026 — roughly four years from the mid-2022 lead-time peak (revenue trough ~$2.35B guide in fiscal Q1 2025)</td></tr><tr><td>Key difference vs. this theme</td><td>Today has an AI power-content leg and distributor inventory still below target, but the restock is also running ahead of end demand, the 2022 pattern</td></tr></tbody></table></div><p class="source">Source: ADI FY24 results (SEC 8-K); TI coverage (Motley Fool, Barchart, 2023–2025); The Register (2022)</p>
+<h2 id="7-key-diligence-questions">7. Key Diligence Questions</h2>
+<ol class="bullets"><li><strong>Exit/downside case:</strong> how much of ADI&#x27;s, TI&#x27;s and Microchip&#x27;s current growth is restocking versus end demand? If book-to-bill falls below 1.0 for two consecutive quarters while distributor inventory days move back above pre-cycle norms (ST at 126 vs 166 a year ago), revenue could fall 15%+ from the peak as in 2022–24.</li><li>Do ADI&#x27;s fiscal Q4 results (guide $4.3B ± $0.1B) hold adjusted gross margin at ~74%, and how much of the +330bp gain is mix and fixed-cost absorption versus price increases that could reverse?</li><li>What is the outcome of China&#x27;s anti-dumping probe on US interface and gate-driver chips (due Sept 13, 2026, extendable six months), and what share of ADI&#x27;s and TI&#x27;s revenue is China-linked?</li><li>What share of 2026 revenue at ADI and TI is genuinely AI-data-center (TI data center doubled; ADI communications +84%), and does Nvidia&#x27;s 800V DC rack timing (2027) hold?</li><li>After TI&#x27;s six-year 300mm build, does industry capacity (TI, Infineon, ST, Chinese makers) outrun demand growth of ~10% (WSTS), pressuring 2027 pricing?</li></ol>
+<p class="source">Source: Key sources: <a href="https://www.sec.gov/Archives/edgar/data/0000006281/000000628126000072/adi3q26exhibit991earnings.htm">ADI Q3 FY26 release (SEC 8-K)</a> · <a href="https://futurumgroup.com/insights/analog-devices-q3-fy-2026-earnings-hit-first-4-billion-quarter-on-ai-demand/">Futurum — ADI first $4B quarter</a> · <a href="https://www.edgen.tech/news/post/four-analog-chipmakers-post-9-to-26-growth-as-upcycle-begins">Edgen — four analog makers post 9–26% growth</a> · <a href="https://www.kalkine.com/news/earnings/texas-instruments-nasdaq-txn-reports-546b-q2-revenue-beats-estimates">TI Q2 2026 (Kalkine)</a> · <a href="https://www.bloomberg.com/news/articles/2026-05-19/analog-devices-is-said-to-near-1-5-billion-deal-for-empower">Bloomberg — ADI/Empower</a> · <a href="https://www.trade.gov/china-initiates-antidumping-duty-investigation-analog-chips-chips-united-states">trade.gov — China anti-dumping on US analog chips</a> · <a href="https://www.rolandberger.com/en/Insights/Publications/Industrial-automation-update-2026.html">Roland Berger — industrial automation 2026</a> · <a href="https://www.sec.gov/Archives/edgar/data/6281/000000628124000202/adiq424exhibit991.htm">ADI FY24 results (SEC 8-K)</a>. Quote data: Yahoo Finance, Oct 8, 2026. Several figures (AI power-delivery market, Bank of America&#x27;s $27B, analog market size) come from lower-quality or secondary sources and are flagged where used; the China anti-dumping outcome and the ADI data-center revenue share were not found.</p>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>

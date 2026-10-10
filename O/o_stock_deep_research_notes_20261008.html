@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: &quot;O&quot;, &quot;skill&quot;: &quot;deep_research&quot;, &quot;title&quot;: &quot;O — Comprehensive Investment Research Package&quot;, &quot;signal&quot;: &quot;PASS&quot;, &quot;conviction&quot;: 4, &quot;as_of&quot;: &quot;2026-10-08&quot;, &quot;rendered&quot;: &quot;2026-10-08&quot;, &quot;company&quot;: &quot;Realty Income Corporation&quot;}">
+<title>O — Comprehensive Investment Research Package</title>
+<style>/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 13px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 12px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(11px, 0.9vw, 14px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value { font-size: 20px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 12.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 14px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 11px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 18px; }
+.callout.verdict .signal { font-size: 22px; }
+.callout .scale { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+.call-line { font-size: 17px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 15px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 12.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 11.5px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 12px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 10.5px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 11px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 13px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 12px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 12.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 22px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 30px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 18px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 12.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 13px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 12px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card .new-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--good); color: #fff; font-size: 11px; font-weight: 650; vertical-align: 1px; }
+.toc ol.sub li a::before { content: "• "; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+
+.file-chip { margin-left: 6px; padding: 1px 7px; border: 1px solid var(--grid); border-radius: 999px; font-size: 11px; font-weight: 600; text-decoration: none; color: var(--muted); vertical-align: 1px; }
+.file-chip:hover { color: var(--ink); border-color: var(--muted); }
+</style>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="../index.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="../index.html">← Investment Research Library</a><ol><li><a href="#verdict">Verdict</a></li><li><a href="#investment-thesis">Investment Thesis</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#business-competitive-position">Business &amp; Competitive Position</a></li><li><a href="#financial-snapshot">Financial Snapshot</a></li><li><a href="#growth-outlook">Growth Outlook</a></li><li><a href="#valuation">Valuation</a></li><li><a href="#technical-setup-entry">Technical Setup &amp; Entry</a></li><li><a href="#balance-sheet-cash-flow-health">Balance Sheet &amp; Cash Flow Health</a></li><li><a href="#business-potential-nbt-readiness">Business Potential — NBT Readiness</a></li><li><a href="#key-risks">Key Risks</a></li><li><a href="#verdict-conviction-rationale">Verdict &amp; Conviction Rationale</a></li><li><a href="#appendices">Appendices</a><ol class=sub><li><a href="1_o_business_overview_analysis_20261008.html">A. Business Overview</a></li><li><a href="2_o_leadership_analysis_20261008.html">B. Leadership</a></li><li><a href="3_o_income_statement_analysis_20261008.html">C. Income Statement</a></li><li><a href="4_o_balance_sheet_analysis_20261008.html">D. Balance Sheet</a></li><li><a href="5_o_cash_flow_analysis_20261008.html">E. Cash Flow</a></li><li><a href="6_o_business_potential_analysis_20261008.html">F. Business Potential</a></li><li><a href="7_o_valuation_analysis_20261008.html">G. Valuation</a></li><li><a href="8_o_technical_analysis_20261008.html">H. Technical Analysis</a></li></ol></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>O · Deep Research</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>O — Comprehensive Investment Research Package</h1><p class="subtitle">Realty Income Corporation | Real Estate (REIT – Retail, net lease) | NYSE: O · Initiating Coverage — October 8, 2026 · <em>Market on October 8, 2026: S&amp;P 500 7,765 (−0.5%), VIX 15.4 — equities slipped as the 10-year Treasury stayed near 5.2%, the pressure point for rate-sensitive REITs [Yahoo Finance]</em></p><div class="call-strip"><div class="stat"><div class="label">Signal</div><div class="value"><span class="badge neutral"><span class="dot"></span>PASS</span></div></div><div class="stat"><div class="label">Conviction</div><div class="value">4 / 10</div><div class="meter"><span style="width:40%"></span></div></div><div class="stat"><div class="label">Thesis bias</div><div class="value">PASS</div></div><div class="stat" title="Source: Analyst judgment; Yahoo Finance"><div class="label">Price target (12-mo)</div><div class="value">$56.00</div><div class="sub">(+3.4%)</div></div><div class="stat" title="Source: Technical component; analyst judgment"><div class="label">Stop</div><div class="value">$49.00</div><div class="sub">(−9.5%)</div></div><div class="stat" title="Source: Computed"><div class="label">Risk/reward</div><div class="value">0.4 : 1</div></div></div></header>
+<h2 id="verdict">Verdict</h2>
+<div class="callout verdict neutral"><div class="signal"><span class="badge neutral"><span class="dot"></span>PASS</span> Conviction 4 / 10</div><div class="call-strip"><div class="stat"><div class="label">Current Price</div><div class="value">$54.17 (Oct 8, 2026 close) [Yahoo Finance]</div></div><div class="stat"><div class="label">Price Target (12-mo)</div><div class="value">$56.00 (+3.4% on price; about +9.4% including the $3.26 dividend)</div></div><div class="stat"><div class="label">Stop / Invalidation</div><div class="value">$49.00 (−9.5%): a two-week close below $49, or the 10-year above ~5.5%</div></div><div class="stat"><div class="label">Risk/Reward</div><div class="value">0.4 : 1 on price ($1.83 up vs $5.17 down); the 6.0% dividend is the only reason to own it</div></div><div class="stat"><div class="label">Sizing</div><div class="value">Avoid as a long today; watchlist for an income starter on a 20-day average reclaim ($55.82, RSI above 50), a 10-year peak, or price at or below $50 (6.5% yield)</div></div></div><p class="source">Source: Yahoo Finance price; targets are analyst judgment (see Verdict &amp; Conviction Rationale)</p><div class="scale">Conviction scale: 9–10 = highest-conviction book position · 7–8 = high · 5–6 = moderate/starter · 3–4 = low/watchlist · 1–2 = avoid or short candidate</div></div>
+<h2 id="investment-thesis">Investment Thesis</h2>
+<p>Realty Income is the best-in-class net-lease Real Estate Investment Trust (REIT): 98.8% occupancy, A-category credit (Moody&#x27;s A3 / S&amp;P A− / Fitch A), net debt of 5.4x annualized adjusted Earnings Before Interest, Taxes, Depreciation, Amortization and Rent (EBITDAre), and a covered 6.0% dividend ($3.26, about 73% of Adjusted Funds From Operations, AFFO). The problem is the return engine: revenue grows +9.7% year-over-year (YoY) but AFFO per share only +3.8% ($1.09 in Q2) because shares rose 3.5% and new debt costs more than the 3.9% legacy book, so FY26 guidance of $4.44–$4.45 is only ~+4%. At 12.2x FY26 AFFO the stock is fairly priced for that, and its price is set by the 10-year Treasury (5.23% today, up from 4.79% on Sept 2), which has compressed the dividend spread to +77 basis points (bp) from +123 bp. Price is at its 52-week closing low in a confirmed downtrend. A great income asset, no margin of safety on rates: PASS.</p>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Is a 6% yield with a $66 mean target &#x27;value&#x27;?</td><td>21 analysts, consensus Hold, mean target $66.39 (+22.6%) assumes the stock re-rates as rates ease [Yahoo Finance]</td><td>The 10-year, not fundamentals, sets the multiple. At 5.23% the dividend spread is only +77 bp; our dividend-discount base case falls to ~$52 and the target is $56 (holding a ~5.8% yield)</td></tr><tr><td>Does +9.7% revenue growth compound for holders?</td><td>Treated as a growth REIT: acquisitions of $4.86B in H1 2026 (2x YoY) and a $10B 2026 investment guide</td><td>AFFO per share grows ~4% (FY26 guide $4.44–$4.45; FY27 consensus $4.57, +2.9%). Shares +3.5% and a ~40 bp investment spread (7.3% initial yield vs ~6.9% implied cap rate) absorb the growth</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance; company Q2 2026 release; component analyses 3 and 7</p>
+<div class="edge"><strong>The edge:</strong> The market is paying a bond-proxy multiple for a business that compounds AFFO per share at ~3–4% in a 5.2% 10-year; the gap closes only if the 10-year peaks (we would turn constructive) or the stock falls toward $50 (6.5% yield), not by owning it at $54.</div>
+<h2 id="business-competitive-position">Business &amp; Competitive Position</h2>
+<ul class="bullets"><li><strong>What the company does:</strong> owns a large portfolio of single-tenant, triple-net-leased properties (retail-weighted, expanding to Europe, industrial and data centers) and pays a monthly dividend; Q2 2026 revenue $1.55B (+9.7% YoY), TTM $6.05B [SEC EDGAR; company release].</li><li><strong>Moat:</strong> scale and cost of capital. A-category ratings and a 3.9% weighted debt rate (91% fixed, 5.1-year average maturity) let it buy at a 7.3% initial cash yield that smaller net-lease peers cannot match [10-Q 6/30/26; company Q2 2026 supplemental].</li><li><strong>Key risk to the moat:</strong> the spread, not the assets. If equity trades below net asset value (NAV; not sourced) or the 10-year keeps rising, the acquisition spread (~40 bp) disappears and growth stalls.</li></ul>
+<h2 id="financial-snapshot">Financial Snapshot</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col" class=num>Value</th><th scope="col">Description</th><th scope="col">Comments</th></tr></thead><tbody><tr><td>1. Current Price</td><td class="num fill-good">$54.17</td><td>Most recent market price of the stock.<br>Benchmark: Green = bottom third of 52-wk range | Yellow = middle third | Pink = top third<br>Source: Yahoo Finance</td><td>At $54.17, 7% of the 52-week range and just above the $53.35 closing low, the stock is priced for higher-for-longer rates.</td></tr><tr><td>2. 52-Week Low</td><td class="num">$53.15</td><td>Lowest traded price over the trailing 52 weeks.<br>Benchmark: Informational — no threshold coloring<br>Source: Yahoo Finance</td><td>$53.15 intraday low is 1.9% below spot; a break would be a fresh 52-week low in a confirmed downtrend.</td></tr><tr><td>3. 52-Week High</td><td class="num">$67.94</td><td>Highest traded price over the trailing 52 weeks.<br>Benchmark: Informational — no threshold coloring<br>Source: Yahoo Finance</td><td>$67.94 is 25% above spot; the drawdown from the closing high ($67.56) is about 20%, nearly all rate-driven.</td></tr><tr><td>4. RSI (14-Day)</td><td class="num fill-warn">31.9</td><td>Wilder&#x27;s 14-day Relative Strength Index. Measures momentum and overbought/oversold conditions.<br>Benchmark: ≤30 → Oversold / potential buy | 30–70 → Neutral | ≥70 → Overbought / potential sell<br>Source: Computed (Yahoo Finance price history)</td><td>RSI 31.9 after dipping to 12.0 five sessions ago: oversold but not yet turning; the reclaim of 50 is the signal we want.</td></tr><tr><td>5. Market Cap</td><td class="num">$51.26B</td><td>Total market value of all outstanding shares (Price × Shares Outstanding).<br>Benchmark: Informational — no threshold coloring<br>Source: Yahoo Finance</td><td>$51.3B equity value; with ~$30.8B net debt the enterprise value is ~$82B, one of the largest net-lease platforms.</td></tr><tr><td>6. Revenue (TTM)</td><td class="num">$6.05B</td><td>Total revenue over the trailing twelve months.<br>Benchmark: Informational — no threshold coloring<br>Source: SEC EDGAR</td><td>TTM revenue $6.05B (+9.1% YoY by this calculation) reflects acquisitions and a lease base that is 98.8% occupied.</td></tr><tr><td>7. Revenue Growth Rate (YoY)</td><td class="num fill-bad">9.1%</td><td>YoY revenue growth from quick metrics or computed from two most recent annual periods.<br>Benchmark: &gt;20% → Strong | 10–20% → Solid | &lt;10% → Slow<br>Source: SEC EDGAR</td><td>+9.1% YoY is acquisition-fed; AFFO per share grew only ~4% because shares rose 3.5%, so revenue growth overstates per-share growth.</td></tr><tr><td>8. Gross Margin</td><td class="num fill-good">92.7%</td><td>(Total Revenue − Cost of Revenue) / Total Revenue (TTM).<br>Benchmark: &gt;60% → High quality | 40–60% → Decent | &lt;40% → Watch for pricing pressure<br>Source: Yahoo Finance</td><td>92.7% gross margin is typical for triple-net leases where tenants pay property costs; it is a structural feature, not a differentiator.</td></tr><tr><td>9. Operating Margin</td><td class="num fill-warn">20.1%</td><td>Operating Income (TTM) / Total Revenue (TTM).<br>Benchmark: &gt;30% → Strong pricing power | 15–30% → Decent | &lt;15% → Watch for cost pressure<br>Source: SEC EDGAR</td><td>20.1% operating margin is depressed by depreciation and impairments ($54.2M in Q2); cash margins are far higher, so judge on AFFO, not GAAP.</td></tr><tr><td>10. Net Income Margin</td><td class="num fill-good">21.6%</td><td>Net Income (TTM) / Total Revenue (TTM). Bottom-line profitability after all expenses.<br>Benchmark: &gt;20% → Strong | 10–20% → Decent | &lt;10% → Thin<br>Source: SEC EDGAR</td><td>21.6% net margin includes property-sale gains ($38.3M in Q2) and is not a clean earnings measure for a REIT.</td></tr><tr><td>11. Return on Equity (ROE)</td><td class="num fill-bad">3.3%</td><td>Net Income (TTM) / Stockholders Equity (MRQ).<br>Benchmark: ≥20% → Ideal | ≥15% → Good | &lt;15% → Below threshold<br>Source: SEC EDGAR</td><td>Not meaningful for a REIT: 3.3% GAAP return on equity is held down by depreciation and a large equity base; use AFFO yield instead.</td></tr><tr><td>12. Debt-to-Equity (D/E)</td><td class="num fill-good">0.75x</td><td>Total Debt (MRQ) / Stockholders Equity (MRQ). Measures financial leverage.<br>Benchmark: &lt;0.5 → Very conservative | 0.5–1.0 → Healthy | 1.0–2.0 → Moderate | &gt;2.0 → High risk<br>Source: Yahoo Finance</td><td>D/E of 0.75 looks healthy but net debt/EBITDAre of 5.4x (company supplemental) is the REIT measure and sits comfortably inside the A-category range.</td></tr><tr><td>13. Interest Coverage</td><td class="num fill-bad">1.03x</td><td>EBIT (TTM) / Interest Expense (TTM). Ability to service debt from operating earnings.<br>Benchmark: &gt;10× → Very safe | 5–10× → Adequate | 3–5× → Watch | &lt;3× → At risk<br>Source: SEC EDGAR</td><td>Not meaningful for a REIT: GAAP coverage of 1.03x understates safety; the company-adjusted EBITDAre cover is 4.4x on $312.1M of interest expense (+9.9% YoY).</td></tr><tr><td>14. Current Ratio</td><td class="num fill-good">1.53</td><td>Current Assets (MRQ) / Current Liabilities (MRQ). Short-term liquidity.<br>Benchmark: &gt;2.0 → Very liquid | 1.5–2.0 → Healthy | 1.0–1.5 → Adequate | &lt;1.0 → Liquidity risk<br>Source: Yahoo Finance</td><td>Not meaningful for a REIT; liquidity of $3.47B (company supplemental) is the relevant measure and covers near-term maturities.</td></tr><tr><td>15. FCF Margin</td><td class="num fill-good">26.1%</td><td>Free Cash Flow (TTM) / Total Revenue (TTM). Cash generated per dollar of revenue after capex.<br>Benchmark: &gt;20% → High quality | 10–20% → Solid | &lt;10% → Low<br>Source: Yahoo Finance</td><td>Not meaningful for a REIT: 26% margin on Yahoo FCF ignores acquisition capital; operating cash flow of $1.15B (+8.0% YoY) covers the dividend 1.33x.</td></tr><tr><td>16. Rule of 40</td><td class="num fill-bad">29.2</td><td>Revenue Growth Rate (YoY%) + Operating Margin (TTM%). Balances growth and profitability.<br>Benchmark: &gt;40 → Healthy/investible | 30–40 → Borderline | &lt;30 → Warning zone<br>Source: SEC EDGAR</td><td>Not meaningful for a REIT: the 29.2 &#x27;Rule of 40&#x27; blends revenue growth with a margin that is not comparable across property owners.</td></tr><tr><td>17a. Trailing P/E</td><td class="num">39.3</td><td>Price / Trailing Twelve Months EPS. How much investors pay per dollar of past earnings.<br>Benchmark: &lt;15 → Cheap | 15–25 → Fair | &gt;25 → Expensive<br>Source: Hybrid (SEC EDGAR + Yahoo Finance)</td><td>Not meaningful for a REIT: 39.3x GAAP P/E is inflated by depreciation; the REIT multiple is 12.2x FY26 AFFO.</td></tr><tr><td>17b. Forward P/E</td><td class="num">34.9</td><td>Price / Next Twelve Months EPS Estimate. Investors&#x27; view of future earnings power.<br>Benchmark: &lt;15 → Cheap | 15–25 → Fair | &gt;25 → Expensive<br>Source: Yahoo Finance</td><td>Not meaningful for a REIT: 34.9x forward GAAP P/E; on AFFO the stock trades at 12.2x guide, vs ~13x for NNN and ~16–17x for ADC (aggregator estimates, approximate).</td></tr><tr><td>17c. PEG Ratio</td><td class="num fill-bad">2.69</td><td>Trailing P/E / Earnings Growth Rate. Adjusts valuation for expected growth.<br>Benchmark: &lt;1 → Potentially undervalued | 1–2 → Fair | &gt;2 → Expensive relative to growth<br>Source: Yahoo Finance</td><td>Not meaningful for a REIT: a 2.7 PEG on GAAP growth; on ~3–4% AFFO growth the 12.2x multiple gives a PEG of about 3, i.e. no growth discount.</td></tr><tr><td>17d. Price / Sales (TTM)</td><td class="num">8.47</td><td>Market Cap / Total Revenue (TTM). Useful for low-earnings companies; lower is cheaper.<br>Benchmark: &lt;3 → Cheap | 3–6 → Fair | &gt;6 → Expensive<br>Source: Hybrid (SEC EDGAR + Yahoo Finance)</td><td>8.5x sales is a REIT-typical figure; it matters less than the 6.0% yield versus a 5.23% risk-free rate.</td></tr><tr><td>18. Dividend Yield</td><td class="num">6.1%</td><td>Annual dividend per share / current price. Shown when available; N/A otherwise.<br>Benchmark: &gt;4% → High yield | 2–4% → Moderate | &lt;2% → Low yield<br>Source: Yahoo Finance</td><td>6.1% yield (Yahoo; $3.26 on $54.17) is a 77 bp spread to the 10-year, down from 123 bp a month ago, a thinner cushion for the same dividend.</td></tr><tr><td>19. Dividend Payout Ratio</td><td class="num">234.7%</td><td>Dividends paid / Net Income (TTM). Measures what fraction of earnings is returned to shareholders as dividends. Note: for REITs, net income understates true cash earnings — AFFO payout ratio (dividends / AFFO) is the appropriate metric; values shown here for REITs will appear artificially high and should be interpreted with caution.<br>Benchmark: &lt;50% → Sustainable | 50–75% → Moderate | &gt;75% → High / potential cut risk | &gt;100% → Unsustainable (REITs: use AFFO payout ratio instead)<br>Source: Yahoo Finance</td><td>Not meaningful for a REIT: the 235% GAAP payout is an artifact of depreciation; the AFFO payout is ~73%, which is the safe-dividend test.</td></tr></tbody></table></div><p class="source">Source: Per-metric source in the Description column (quick_stock_metrics.compute_metrics); comments: analyst</p>
+<h2 id="growth-outlook">Growth Outlook</h2>
+<ul class="bullets"><li><strong>Revenue 3-year CAGR:</strong> +19.8% (2022 $3.34B to 2025 $5.75B) [SEC EDGAR], driven by acquisitions; organic growth is far lower.</li><li><strong>EPS 3-year CAGR:</strong> GAAP diluted EPS −6.2% ($1.42 in 2022 to $1.17 in 2025) [SEC EDGAR]: not meaningful for a REIT. <strong>AFFO per share (non-GAAP):</strong> 2024 $4.19 → 2025 $4.28 (+2.1%) → FY26 guide $4.445 midpoint (+3.9%), a ~3.0% two-year CAGR [company releases].</li><li><strong>Consensus:</strong> FY27 AFFO per share $4.57 (+2.9% vs the guide midpoint); no sourced revenue or margin consensus and no FY28 estimate (N/A) [247WallSt].</li><li><strong>Verdict on growth:</strong> stable-to-decelerating at ~3–4% per share; revenue growth is nearly 3x that because dilution and higher debt costs eat the rest.</li></ul>
+<h2 id="valuation">Valuation</h2>
+<ul class="bullets"><li><strong>P/AFFO (FY26 guide $4.445):</strong> 12.2x | <strong>Trailing / forward GAAP P/E, PEG:</strong> not meaningful for a REIT | <strong>EV/EBITDAre:</strong> not computed (SEC debt untagged; Yahoo net debt ~$30.8B).</li><li><strong>Dividend yield spread to the 10-year:</strong> 6.0% vs 5.23% = +77 bp (the valuation appendix used 4.79% from Sept 2, a +123 bp spread; we have reconciled to today&#x27;s Yahoo ^TNX print).</li><li><strong>Dividend discount model:</strong> the valuation appendix&#x27;s base case is $56.00 (bull $67.48 / bear $44.33) at a 4.79% 10-year. Holding its inputs (dividend $3.26, 3.0% growth, ~4.2-point premium to the 10-year) and moving to 5.23% lowers the base to about $52 [our recompute]. Implied cap rate ~6.9% vs 7.3% acquisition yield; NAV not sourced (N/A).</li><li><strong>Analyst consensus target:</strong> $66.39 (21 analysts, +22.6%, rating Hold) [Yahoo Finance].</li><li><strong>One sentence:</strong> fairly valued at 12.2x AFFO for ~3–4% growth and expensive against a 5.23% risk-free rate; the 12-month target of $56 holds the yield at ~5.8%.</li></ul>
+<h2 id="technical-setup-entry">Technical Setup &amp; Entry</h2>
+<ul class="bullets"><li><strong>Trend:</strong> Down | <strong>Price vs 200-DMA:</strong> −12.3% (200-day $61.76, falling; death cross Sept 24, 2026) [Yahoo, unadjusted closes].</li><li><strong>RSI (14-day):</strong> 30.9 (12.0 five sessions ago) | <strong>Setup score:</strong> 3/5 | <strong>Timing bias:</strong> scale in slowly (WAIT for confirmation).</li><li><strong>Entry / add zone:</strong> $52.00–$54.00 | <strong>Stop / invalidation:</strong> $49.00 on a two-week close below.</li><li><strong>Relative strength:</strong> 6-month return −14.3% vs +13.8% for the S&amp;P 500 and −3.7% for the Vanguard Real Estate ETF (VNQ): a rate trade, not a stock-specific break.</li><li><strong>One sentence:</strong> we do not initiate at current levels; wait for a close above the 20-day average ($55.82) with RSI above 50, or a 10-year peak, and respect $49.</li></ul>
+<h2 id="balance-sheet-cash-flow-health">Balance Sheet &amp; Cash Flow Health</h2>
+<ul class="bullets"><li><strong>Financial health:</strong> net debt ~$30.8B (Yahoo; SEC Total Debt untagged, ~$31.0B per the 10-Q), 5.4x EBITDAre, $3.47B liquidity, 91% fixed-rate debt at a 3.9% weighted rate and 5.1-year average maturity; current ratio and D/E are not meaningful for a REIT.</li><li><strong>Cash flow quality:</strong> operating cash flow $1.15B in Q2 (+8.0% YoY) is 3.09x net income because of depreciation, and covers the dividend 1.33x in H1 (vs 1.28x). Interest expense is rising faster (+9.9%) than operating cash flow (+8.0%).</li><li><strong>Capital allocation:</strong> reinvestment funded by debt and equity. H1 2026 net investment was $4.86B (2x YoY) against $2.02B of operating cash flow, funded by $824M of equity (−34% YoY) and mostly debt, shifting leverage rather than diluting more.</li></ul>
+<h2 id="business-potential-nbt-readiness">Business Potential — NBT Readiness</h2>
+<ul class="bullets"><li><strong>Overall NBT Readiness: 14/20 — Strong</strong> · <strong>Read-through to the call: NEUTRAL</strong></li><li><strong>Primary emerging opportunity:</strong> data-center and European net lease plus private-capital fee income (a $6B joint venture with Cloud Capital; Realty Income&#x27;s share up to $1.4B) [GuruFocus/MarketBeat, Aug 2026].</li></ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">Dimension</th><th scope="col" class=num>Score</th><th scope="col">Key Evidence (source)</th></tr></thead><tbody><tr><td>Value Alignment</td><td class="num fill-warn">3/5</td><td>Data centers and Europe extend the net-lease model but reinvent the tenant base (company Q2 2026 call coverage)</td></tr><tr><td>Operational Agility</td><td class="num fill-good">4/5</td><td>H1 net investment $4.86B (2x YoY); 2026 investment guide raised to $10B from $9.5B (10-Q; company release)</td></tr><tr><td>Financial Runway</td><td class="num fill-good">4/5</td><td>A-category ratings, $3.47B liquidity, 3.9% weighted debt rate (company Q2 2026 supplemental)</td></tr><tr><td>Ecosystem Control</td><td class="num fill-warn">3/5</td><td>Scale and sourcing network, but no platform lock-in; 7.3% initial yield, ~7% in Europe (company Q2 2026 release)</td></tr></tbody></table></div><p class="source">Source: Component 6 (business potential) analysis; company filings as cited</p>
+<ul class="bullets"><li><strong>Biggest structural advantage:</strong> cost of capital (A-category ratings), which is the one input net-lease competitors cannot copy.</li><li><strong>NBT Spend Ratio:</strong> 0.34x trend-specific ($1.4B data-center joint venture ÷ TTM operating cash flow $4.17B); 2.4x on total investment (H1 net investment $4.86B ÷ H1 operating cash flow $2.02B), so the strategy relies on external capital.</li><li><strong>Biggest execution risk:</strong> investing at a ~40 bp spread while equity trades near 12x AFFO; any widening of the 10-year makes new deals dilutive.</li></ul>
+<h2 id="key-risks">Key Risks</h2>
+<ul class="bullets"><li><strong>Rates:</strong> 10-year at 5.23%, +44 bp in five weeks; the valuation appendix shows a 50 bp rise in required return changes value by about 8–9% per share, so a 5.7% 10-year takes the dividend-discount base case to roughly $49, at our stop.</li><li><strong>Dilution and spread:</strong> shares +3.5% YoY vs AFFO per share +3.8%; the investment spread is ~40 bp (7.3% vs ~6.9%) and interest expense (+9.9%) is outgrowing operating cash flow (+8.0%).</li><li><strong>Retail tenant credit and refinancing:</strong> 91% fixed-rate debt at 3.9% rolls to higher rates over a 5.1-year average maturity; a cut to the $4.44–$4.45 AFFO guide, or occupancy sliding from 98.8%, would break the income thesis.</li></ul>
+<h2 id="verdict-conviction-rationale">Verdict &amp; Conviction Rationale</h2>
+<p><strong>PASS, Conviction 4/10, with a $56.00 price target (+3.4%; about +9.4% including dividends).</strong> The target comes from holding the dividend yield at ~5.8% ($3.26 ÷ 5.8% = $56.2), cross-checked against a dividend-discount base case of ~$56 at a 4.79% 10-year (our recompute at today&#x27;s 5.23% is ~$52) and 12.2x FY26 AFFO. Risk/reward is 0.4 : 1 on price ($1.83 up vs $5.17 to the $49 stop). The catalyst that would close the gap is a peak in the 10-year or a 20-day average reclaim with RSI above 50; the risk that hits the stop is the 10-year breaking toward 5.5%. We would not size it today; we revisit as an income starter at or below $50 (a 6.5% yield and +127 bp spread) or on a confirmed rate peak. Note that balance sheet and cash flow components are BULLISH (7/10 each), but they describe safety of the dividend, not upside to the price.</p>
+<h2 id="appendices">Appendices</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Appendix</th><th scope="col">Report</th><th scope="col">Signal</th><th scope="col" class=num>Conviction</th></tr></thead><tbody><tr><td>Appendix A</td><td><a href="1_o_business_overview_analysis_20261008.html">Business Overview</a></td><td>NEUTRAL</td><td class="num">7/10</td></tr><tr><td>Appendix B</td><td><a href="2_o_leadership_analysis_20261008.html">Leadership</a></td><td>NEUTRAL</td><td class="num">6/10</td></tr><tr><td>Appendix C</td><td><a href="3_o_income_statement_analysis_20261008.html">Income Statement</a></td><td>NEUTRAL</td><td class="num">5/10</td></tr><tr><td>Appendix D</td><td><a href="4_o_balance_sheet_analysis_20261008.html">Balance Sheet</a></td><td>BULLISH</td><td class="num">7/10</td></tr><tr><td>Appendix E</td><td><a href="5_o_cash_flow_analysis_20261008.html">Cash Flow</a></td><td>BULLISH</td><td class="num">7/10</td></tr><tr><td>Appendix F</td><td><a href="6_o_business_potential_analysis_20261008.html">Business Potential</a></td><td>NEUTRAL</td><td class="num">6/10</td></tr><tr><td>Appendix G</td><td><a href="7_o_valuation_analysis_20261008.html">Valuation</a></td><td>PASS</td><td class="num">5/10</td></tr><tr><td>Appendix H</td><td><a href="8_o_technical_analysis_20261008.html">Technical Analysis</a></td><td>LONG</td><td class="num">4/10</td></tr></tbody></table></div><p class="source">Source: Component reports in this folder; signal and conviction from each _summary.json</p>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>

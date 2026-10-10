@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: null, &quot;skill&quot;: &quot;industry_trend_analysis&quot;, &quot;title&quot;: &quot;Physical AI&quot;, &quot;signal&quot;: null, &quot;conviction&quot;: null, &quot;as_of&quot;: null, &quot;rendered&quot;: &quot;2026-10-08&quot;}">
+<title>Physical AI</title>
+<style>/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 13px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 12px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(11px, 0.9vw, 14px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value { font-size: 20px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 12.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 14px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 11px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 18px; }
+.callout.verdict .signal { font-size: 22px; }
+.callout .scale { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+.call-line { font-size: 17px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 15px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 12.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 11.5px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 12px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 10.5px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 11px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 13px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 12px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 12.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 22px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 30px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 18px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 12.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 13px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 12px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card li.pkg > .row a { font-weight: 650; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+</style>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="index.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="index.html">← Investment Research Library</a><ol><li><a href="#1-introduction">1. Introduction</a></li><li><a href="#2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</a></li><li><a href="#3-value-chain-map">3. Value Chain Map</a></li><li><a href="#4-tam-expansion-analysis">4. TAM Expansion Analysis</a></li><li><a href="#5-positioning-recommendation">5. Positioning Recommendation</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</a></li><li><a href="#7-key-diligence-questions">7. Key Diligence Questions</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>Industry Trend Analysis</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>Physical AI</h1><p class="subtitle">Buy-side thematic read · October 8, 2026 · Theme Conviction 5/10 · Peak verdict: Peaking</p></header>
+<h2 id="1-introduction">1. Introduction</h2>
+<ul class="bullets"><li><strong>What it is:</strong> physical AI is AI that perceives and acts in the physical world — humanoid and mobile robots, warehouse and factory automation — driven by robot foundation models trained in simulation and on real-world data, running on edge compute, and moved by actuators.</li><li><strong>Why now:</strong> robot foundation models and edge compute have stepped up together: Nvidia&#x27;s Isaac GR00T N2 &#x27;World Action Model&#x27; is reported at more than 2x leading models on generalization benchmarks, Jetson Thor delivers 7.5x the compute of Orin, and the Jetson T4000 module is priced at $1,999 in volume (Nvidia GTC 2026, CES 2026 coverage).</li><li><strong>Real volumes, mostly Chinese:</strong> roughly 20,000 humanoids shipped in 2025 with China ~85–90% of them (Bank of America); in H1 2026 AgiBot shipped ~9,700 units (43% share) and Unitree ~5,900 (31%), with shipments up ~300% YoY (Counterpoint Research).</li><li><strong>End state:</strong> general-purpose robots doing repetitive factory, warehouse and eventually service work at a price below annual labor cost. Goldman Sachs models 75,000 humanoid units in 2026, 890,000 in 2030 and 6.5M in 2035 ($138B market); Morgan Stanley sees 13M in service by 2035 (Goldman, Morgan Stanley via humanoid.guide, 2026).</li><li><strong>Investment opportunity and the catch:</strong> robotics start-ups raised $18.8B in the first half of 2026 — more than all of 2025 and the 2021 peak year (Futurism/Crunchbase-based reporting), but combined Western humanoid deployments are still in the hundreds. This is a real technology cycle with a financing cycle running ahead of it.</li><li><strong>Definitional note:</strong> &#x27;physical AI&#x27; is broader than humanoids — industrial arms, warehouse automation and delivery robots are included; this note focuses on the humanoid and robot-foundation-model core and treats classic automation as an adjacent layer.</li></ul>
+<h2 id="2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Signal</th><th scope="col">Status</th><th scope="col">One-Line Verdict</th></tr></thead><tbody><tr><td>Technology Inflection</td><td class="fill-good">✅ Firing</td><td>Robot foundation models and edge compute leaped together; humanoid prices are falling ~40% a year.</td></tr><tr><td>Regulatory Shift</td><td class="fill-warn">⚠️ Partial</td><td>Safety standards are still being written (ISO 25785-1), while China&#x27;s rare-earth controls constrain supply.</td></tr><tr><td>Behavioral Change</td><td class="fill-warn">⚠️ Partial</td><td>Hundreds of deployed units and large intent (Hyundai 25,000 Atlas) but pilots have not yet converted to operating budgets.</td></tr><tr><td>Capital Flow</td><td class="fill-good">✅ Firing</td><td>$18.8B into robotics start-ups in H1 2026; Figure valued at $39B, Skild above $14B.</td></tr><tr><td>Narrative Momentum</td><td class="fill-good">✅ Firing</td><td>Unitree&#x27;s STAR IPO rose 629% on day one; three humanoid ETFs launched June–August.</td></tr></tbody></table></div><p class="source">Source: Compiled from the sources cited in the sub-sections below</p>
+<p><strong>Convergence Verdict: 3/5 signals firing (two partial) — Credible trend. Estimated cycle stage: Early on deployment fundamentals, but the financing cycle is already late.</strong> Deployments are in the hundreds to low tens of thousands, which is early; the capital markets signals (record venture funding, an IPO window, new ETFs) are what a late-stage theme looks like. Section 6 resolves this tension explicitly.</p>
+<h3 id="technology-inflection-firing">Technology Inflection — ✅ Firing</h3>
+<ul class="bullets"><li><strong>Foundation models:</strong> Nvidia previewed Isaac GR00T N2 at GTC 2026, a &#x27;World Action Model&#x27; architecture reported to outperform leading vision-language-action models by more than 2x on generalization benchmarks; Physical Intelligence&#x27;s π0/π0.5 models extended open-world generalization (Nvidia, Physical Intelligence, 2026).</li><li><strong>Edge compute:</strong> Jetson Thor offers 7.5x the compute and 3.5x the efficiency of Jetson Orin; the Jetson T4000 delivers 1,200 FP4 TFLOPS at 70W and is priced at $1,999 per 1,000-unit volume (CES 2026 coverage).</li><li><strong>Cost curve:</strong> Unitree&#x27;s R1 is ~$6,000 and the G1 ~$16,000; humanoid prices are falling roughly 40% a year in secondary estimates (buyer&#x27;s guides, 2026) — a non-linear break versus the $30,000–$150,000 estimated production cost of Western industrial units.</li><li><strong>Caveat:</strong> actuators can be up to 60% of a humanoid&#x27;s bill of materials, so compute and models are not the binding constraint (see Layer 6).</li></ul>
+<h3 id="regulatory-shift-partial">Regulatory Shift — ⚠️ Partial</h3>
+<ul class="bullets"><li><strong>Standards in progress:</strong> humanoid safety is covered today by ISO 10218:2025 and ANSI/A3 R15.06-2025; ISO 25785-1, for balancing humanoids in dynamic environments, is still in development, and OSHA applies existing rules to walking robots (2026 compliance guides).</li><li><strong>Door closing on supply:</strong> China placed seven medium and heavy rare earths and the magnets that contain them under export licensing in April 2025; a further escalation (October 2025) is suspended only until Nov 10, 2026 (rare-earth-mining.com, Oregon Group, 2026).</li><li><strong>No demand-side mandate:</strong> unlike EVs or solar, there is no subsidy or mandate creating humanoid demand in the sources found, so this scores Partial.</li><li><strong>Standards as an eventual gate:</strong> a mature humanoid standard would allow humans-and-robots-together deployments at scale; its absence is why factory pilots are fenced.</li></ul>
+<h3 id="behavioral-change-partial">Behavioral Change — ⚠️ Partial</h3>
+<ul class="bullets"><li><strong>Deployments exist, at small scale:</strong> Figure&#x27;s robot spent 11 months on BMW&#x27;s Spartanburg line contributing to more than 30,000 vehicles; Agility&#x27;s Digit moves totes at GXO and Amazon and signed Toyota (Feb 2026) and Mercado Libre; Apptronik runs pilots at Mercedes-Benz, GXO and Jabil (2026 deployment roundups).</li><li><strong>Large intent:</strong> Hyundai plans more than 25,000 Atlas units across Hyundai and Kia plants by 2028 and 30,000 a year from 2028, but all 2026 units are assigned internally and one report puts current output near four a month (Hyundai CES 2026; drweb.de).</li><li><strong>Tesla scale:</strong> about 300 Optimus units were deployed for learning at the Q1 2026 call; V3 production was targeted for late July–August 2026 at Fremont after the Model S/X line ended in May (Tesla Q1 2026 call coverage).</li><li><strong>The missing test:</strong> combined active deployments are measured in the hundreds of units — the pilot-to-operating-budget conversion that makes behavior irreversible has not been demonstrated.</li></ul>
+<h3 id="capital-flow-firing">Capital Flow — ✅ Firing</h3>
+<ul class="bullets"><li><strong>Venture:</strong> robotics start-ups pulled in $18.8B in H1 2026, more than all of 2025 and the 2021 peak year (Futurism/aiinsightsnews, mid-2026).</li><li><strong>Concentration:</strong> Skild AI raised $1.4B in January 2026 (valuation above $14B); Apptronik closed $935M of Series A at a $5.5B valuation; Physical Intelligence is reported in talks for ~$1B at above $11B; Figure AI is valued at $39B with Nvidia, Brookfield, Qualcomm and Intel among investors; Neura Robotics closed up to $1.4B.</li><li><strong>Public markets:</strong> Unitree priced its STAR Market IPO at 150.80 yuan on Aug 6, 2026, raising 6.8B yuan; shares rose 629% on day one (liga.net, CGTN, Aug 2026).</li><li><strong>Corporate capital:</strong> Hyundai&#x27;s plan to build 30,000 Atlas a year from 2028 and Tesla&#x27;s Fremont conversion are balance-sheet commitments, not venture money.</li></ul>
+<h3 id="narrative-momentum-firing">Narrative Momentum — ✅ Firing</h3>
+<ul class="bullets"><li><strong>Product launches:</strong> KraneShares KOID (June; +28% through Sept 30), Roundhill HUMN (end of June; +20% by Sept 30) and Themes BOTT (August) all listed in a three-month window (Barchart/Nasdaq, fundssociety, 2026).</li><li><strong>Events:</strong> World Robot Conference (Beijing, Aug 19–23, 2026), Humanoids Summit Silicon Valley (Dec 1–2, 2026) and Samsung&#x27;s planned humanoid unveil at CES 2027.</li><li><strong>Bubble warnings are already mainstream:</strong> a venture capitalist warned of &#x27;the next financial bubble&#x27; and several start-ups have quietly pivoted from general-purpose humanoids to niche use cases (Futurism, 2026).</li><li><strong>Read:</strong> when the skeptics and the ETF issuers arrive in the same quarter, narrative has moved from a leading to a late indicator.</li></ul>
+<h2 id="3-value-chain-map">3. Value Chain Map</h2>
+<p><em>Companies appear once per layer by primary role; private companies are listed where no public comp exists. Quote data: Yahoo Finance, Oct 8, 2026.</em></p>
+<h3 id="layer-1-infrastructure-picks-shovels">Layer 1 — Infrastructure (&#x27;Picks &amp; Shovels&#x27;)</h3>
+<p><em>The physical components and edge compute inside a robot: processors, precision reducers, motors and motion control.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D6E4F0;color:#0b0b0b">Nvidia (Jetson Thor / T4000)</td><td style="background:#D6E4F0;color:#0b0b0b">NVDA</td><td style="background:#D6E4F0;color:#0b0b0b">Edge robot computer; Thor is 7.5x Orin; T4000 priced at $1,999 per 1,000 units; 110+ robotics partners</td><td style="background:#D6E4F0;color:#0b0b0b">High</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Robotics revenue is not separately disclosed; the stock trades on data-center AI</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Nabtesco</td><td style="background:#D6E4F0;color:#0b0b0b">6268.T</td><td style="background:#D6E4F0;color:#0b0b0b">Precision reduction gears for industrial robots; forward P/E 44.4x, 22% below its 52-week high</td><td style="background:#D6E4F0;color:#0b0b0b">Medium–High</td><td style="background:#D6E4F0;color:#0b0b0b">Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Revenue growth only 0.5% — little humanoid volume yet</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Novanta</td><td style="background:#D6E4F0;color:#0b0b0b">NOVT</td><td style="background:#D6E4F0;color:#0b0b0b">Precision motion and photonics components for medical and industrial robotics; 31.0x forward P/E; 15% of float short</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Humanoid content unproven; 23% below its high</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">China tier-1 actuator suppliers (type)</td><td style="background:#D6E4F0;color:#0b0b0b">various</td><td style="background:#D6E4F0;color:#0b0b0b">Joint modules and motors for AgiBot, Unitree and others; actuators can be up to 60% of humanoid BOM</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Price competition as Chinese output passes 100,000 units; unverified fundamentals</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps are in local currency and not compared); Nvidia GTC/CES 2026 coverage; patsnap/evidence-engineering BOM analysis (2026)</p>
+<h3 id="layer-2-enablers-platforms-tools">Layer 2 — Enablers (Platforms &amp; Tools)</h3>
+<p><em>The models, simulation and data platforms that make a robot&#x27;s hardware useful.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D5E8D4;color:#0b0b0b">Nvidia (Isaac GR00T, Cosmos, Omniverse)</td><td style="background:#D5E8D4;color:#0b0b0b">NVDA</td><td style="background:#D5E8D4;color:#0b0b0b">Five-layer physical-AI platform (Omniverse world, Cosmos world models, Isaac Sim/Lab, GR00T models, Jetson); used by FANUC, ABB, KUKA and Yaskawa</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Early–Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Open models invite commoditization; valuation rests on the AI data-center cycle</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Physical Intelligence</td><td style="background:#D5E8D4;color:#0b0b0b">private</td><td style="background:#D5E8D4;color:#0b0b0b">π0/π0.5 robot foundation models; reported ~$1B round at above $11B valuation</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early</td><td style="background:#D5E8D4;color:#0b0b0b">Private marks; no revenue disclosed</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Skild AI</td><td style="background:#D5E8D4;color:#0b0b0b">private</td><td style="background:#D5E8D4;color:#0b0b0b">General robot &#x27;brain&#x27; company; $1.4B raised Jan 2026, valuation above $14B</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early</td><td style="background:#D5E8D4;color:#0b0b0b">Capital-intensive; no disclosed commercial revenue</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Big-tech robot models (type)</td><td style="background:#D5E8D4;color:#0b0b0b">GOOGL / MSFT etc.</td><td style="background:#D5E8D4;color:#0b0b0b">Hyperscaler robotics-model efforts; not verified in this run</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early</td><td style="background:#D5E8D4;color:#0b0b0b">Not screened; competitive overlap with Nvidia&#x27;s open models</td></tr></tbody></table></div><p class="source">Source: Nvidia (2026); Futurism / techfundingnews (2026 funding)</p>
+<h3 id="layer-3-integrators-system-builders">Layer 3 — Integrators (System Builders)</h3>
+<p><em>The companies that build and ship the robot itself.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FFF2CC;color:#0b0b0b">Tesla (Optimus)</td><td style="background:#FFF2CC;color:#0b0b0b">TSLA</td><td style="background:#FFF2CC;color:#0b0b0b">~300 Optimus units deployed for learning (Q1 2026 call); V3 production targeted for Fremont from late July–August 2026</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">173x forward P/E and 18.9% gross margin; Optimus is not yet in reported revenue</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Hyundai Motor / Boston Dynamics (Atlas)</td><td style="background:#FFF2CC;color:#0b0b0b">005380.KS</td><td style="background:#FFF2CC;color:#0b0b0b">Commercial Atlas in production; plans 25,000+ Atlas across its plants by 2028 and 30,000 a year from 2028</td><td style="background:#FFF2CC;color:#0b0b0b">Medium–High</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Internal demand only so far; 59% below its 52-week high</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Unitree</td><td style="background:#FFF2CC;color:#0b0b0b">STAR (newly listed)</td><td style="background:#FFF2CC;color:#0b0b0b">Global #2 in H1 2026 (~5,900 units, 31%); 2026 target 10,000–20,000; IPO raised 6.8B yuan</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Priced for perfection after a 629% day-one pop; price competition at $6,000–$16,000</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">AgiBot</td><td style="background:#FFF2CC;color:#0b0b0b">private</td><td style="background:#FFF2CC;color:#0b0b0b">#1 in H1 2026 shipments, ~9,700 units (43% share)</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">China-concentrated; private marks</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">UBTech</td><td style="background:#FFF2CC;color:#0b0b0b">9880.HK</td><td style="background:#FFF2CC;color:#0b0b0b">Walker S 2026 shipment guidance raised from 2,000–3,000 to 5,000 units; revenue +104%</td><td style="background:#FFF2CC;color:#0b0b0b">Low–Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">48.8x forward P/E and 56% below its high; low gross margin vs component suppliers</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Figure / Agility / Apptronik / 1X (type)</td><td style="background:#FFF2CC;color:#0b0b0b">private</td><td style="background:#FFF2CC;color:#0b0b0b">Western humanoid start-ups: Figure ($39B), Apptronik ($5.5B), Agility (Toyota, GXO, Amazon, Mercado Libre)</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">Private marks; pilots in the hundreds of units</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps are in local currency and not compared); Counterpoint Research (H1 2026); Tesla Q1 2026 call coverage; Hyundai CES 2026; Dealstreetasia/CGTN (Unitree)</p>
+<h3 id="layer-4-applications-end-use-products">Layer 4 — Applications (End-Use Products)</h3>
+<p><em>Robot-as-a-service and automation products sold to end customers: warehouses, delivery, hospitality.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FCE4D6;color:#0b0b0b">Symbotic</td><td style="background:#FCE4D6;color:#0b0b0b">SYM</td><td style="background:#FCE4D6;color:#0b0b0b">AI-driven warehouse automation; revenue +21.7%, 21.3% gross margin; 31.7% of float short and 52% below its high</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Mid</td><td style="background:#FCE4D6;color:#0b0b0b">54x forward P/E on a low-margin integrator; heavily shorted</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Serve Robotics</td><td style="background:#FCE4D6;color:#0b0b0b">SERV</td><td style="background:#FCE4D6;color:#0b0b0b">Sidewalk delivery robots; revenue growth +404% but 0.0% gross margin; 38.6% of float short</td><td style="background:#FCE4D6;color:#0b0b0b">Low</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">P/S 49x with no gross profit; 76% below its high</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Richtech Robotics</td><td style="background:#FCE4D6;color:#0b0b0b">RR</td><td style="background:#FCE4D6;color:#0b0b0b">Service and hospitality robots; 58.9% gross margin on tiny revenue; P/S 67x</td><td style="background:#FCE4D6;color:#0b0b0b">Low</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">24% of float short; 78% below its high</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Factory and warehouse end users (type)</td><td style="background:#FCE4D6;color:#0b0b0b">BMW / Toyota / GXO / Amazon</td><td style="background:#FCE4D6;color:#0b0b0b">Customers piloting Figure, Digit and Apollo humanoids</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">Pilot budgets, not operating budgets</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps are in local currency and not compared); deployment roundups (2026)</p>
+<h3 id="layer-5-adjacent-beneficiaries">Layer 5 — Adjacent Beneficiaries</h3>
+<p><em>Incumbent automation and industrial companies whose addressable market expands as robot intelligence improves.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#E1D5E7;color:#0b0b0b">Fanuc</td><td style="background:#E1D5E7;color:#0b0b0b">6954.T</td><td style="background:#E1D5E7;color:#0b0b0b">Largest industrial robot maker; an Nvidia robotics partner; revenue +17.7%; forward P/E 34.8x, 32% below its high</td><td style="background:#E1D5E7;color:#0b0b0b">High</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Humanoid hype may not translate into arm demand; valuation not cheap</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Yaskawa Electric</td><td style="background:#E1D5E7;color:#0b0b0b">6506.T</td><td style="background:#E1D5E7;color:#0b0b0b">Industrial robots and motion control; Nvidia partner; revenue +10.6%; forward P/E 23.4x, 39% below its high</td><td style="background:#E1D5E7;color:#0b0b0b">Medium–High</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Cyclical capex exposure</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Rockwell Automation</td><td style="background:#E1D5E7;color:#0b0b0b">ROK</td><td style="background:#E1D5E7;color:#0b0b0b">Industrial automation platforms; revenue +7.9%; forward P/E 28.9x</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Slow growth; limited direct robot exposure</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Teradyne (Universal Robots)</td><td style="background:#E1D5E7;color:#0b0b0b">TER</td><td style="background:#E1D5E7;color:#0b0b0b">Over half of the collaborative-robot market via UR; robotics revenue $91M in Q1 2026 (+32% YoY)</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">~70% of revenue is AI semiconductor test; robotics is a small part of the re-rating</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps are in local currency and not compared); Teradyne Q1 2026 (Zacks/Chartmill, 2026); Nvidia partner list (2026)</p>
+<h3 id="layer-6-bottleneck-highest-structural-moat">Layer 6 — Bottleneck (Highest Structural Moat)</h3>
+<p><em>The inputs every robot maker must buy from one or two suppliers or one country: strain-wave gears, rare-earth magnets and the simulation/compute stack.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#F4CCCC;color:#0b0b0b">Harmonic Drive Systems</td><td style="background:#F4CCCC;color:#0b0b0b">6324.T</td><td style="background:#F4CCCC;color:#0b0b0b">Specialist in strain-wave (harmonic) gears used in robot joints; revenue +23.6%; 81.4x forward P/E, 33% below its high</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Valuation; Chinese gear makers closing the gap</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">MP Materials</td><td style="background:#F4CCCC;color:#0b0b0b">MP</td><td style="background:#F4CCCC;color:#0b0b0b">Non-China rare-earth magnet supply chain; each humanoid needs ~1.3kg of NdPr magnets; 55.9x forward P/E; 20.5% of float short, 54% below its high</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">China controls ~90% of magnet processing and can reprice or release supply</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">China rare-earth magnet processing (policy)</td><td style="background:#F4CCCC;color:#0b0b0b">policy</td><td style="background:#F4CCCC;color:#0b0b0b">Dysprosium and terbium prices are 4–5x since April 2025; building a humanoid without Chinese components could roughly triple cost (Optimus BOM ~$46k → ~$131k in one estimate)</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Policy-driven: a loosening or tightening moves the whole chain</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Nvidia simulation / Jetson ecosystem</td><td style="background:#F4CCCC;color:#0b0b0b">NVDA</td><td style="background:#F4CCCC;color:#0b0b0b">Isaac Sim, Omniverse and Cosmos are the default sim-to-real tooling for 110+ partners</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Open alternatives; Chinese ecosystems building their own</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps are in local currency and not compared); Oregon Group / SMM (rare earths, 2026); FourWeekMBA / HTX analysis (2026; lower-quality sources)</p>
+<h2 id="4-tam-expansion-analysis">4. TAM Expansion Analysis</h2>
+<h3 id="4a-market-size-growth-drivers">4a. Market Size &amp; Growth Drivers</h3>
+<p>Physical AI unlocks labor that software could not touch: repetitive factory, warehouse and logistics tasks currently done by people, valued at the wage bill rather than at software prices. A $160,000 loaded labor cost replaced by a robot with a 5-year total cost of $32,000–$40,000 is the unit-economics claim behind the models below; none of that is yet demonstrated at fleet scale.</p>
+<ul class="bullets"><li>Goldman Sachs: 75,000 humanoid units shipped in 2026, 890,000 in 2030, 6.5M in 2035; 2035 market $138B — after raising its 2035 estimate roughly sixfold in value from $6B to $38B in an earlier revision (humanoid.guide, 2026).</li><li>Morgan Stanley: China shipments of 50,000 humanoids in 2026 (doubled), 446,000 a year by 2030 ($15B); ~13M in service by 2035 and a $5T market by 2050 (humanoid.guide, cryptobriefing, 2026).</li><li>Markets and Markets: humanoid robot market $5.41B in 2026 → $50.27B by 2035, 28.1% CAGR; AI-in-robotics $20.4B (2025) → $182.7B (2033), 32% CAGR (2026).</li><li>Actual volumes: ~20,000 humanoids shipped in 2025 (Bank of America); H1 2026 global shipments ≈ 22,500 units (derived from AgiBot&#x27;s 9,700 = 43%; Counterpoint); China output expected above 100,000 in 2026 (TrendForce).</li><li>Gap check: Goldman&#x27;s 75,000 for 2026 requires H2 shipments of ~52,500, or 2.3x H1 — a demanding second half.</li></ul>
+<p><strong>Structural vs cyclical.</strong> Structural: labor shortages in manufacturing and logistics, aging workforces, and the physics that a humanoid form factor fits human-built spaces; falling component and model costs are also structural. Cyclical: today&#x27;s volumes are heavily Chinese and pilot-driven, venture and IPO capital is at a cyclical high, and orders from OEMs such as Hyundai are captive plans rather than market-priced demand. The honest TAM is large but the near-term revenue pool is small — Markets and Markets sizes 2026 at $5.4B, a rounding error against venture valuations of $39B for one company.</p>
+<h3 id="4b-primary-beneficiaries-high-tam-capture">4b. Primary Beneficiaries — High TAM Capture</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why High TAM Capture</th><th scope="col">TAM Exposure</th><th scope="col">Upside Scenario</th></tr></thead><tbody><tr><td>Nvidia</td><td>NVDA</td><td>Sells the compute, models and sim tooling to every humanoid maker (110+ partners incl. FANUC, ABB, KUKA, Yaskawa); invests in Figure</td><td>Robotics revenue not disclosed in the sources found; stock priced on data-center AI (14.5x forward P/E)</td><td>Each 100,000 humanoids at $1,999 of compute per robot is ~$0.2B of module revenue — small beside data-center sales, so the upside is the platform lock-in</td></tr><tr><td>Harmonic Drive Systems</td><td>6324.T</td><td>Strain-wave gears sit in robot joints; actuators are up to 60% of humanoid BOM</td><td>Share of revenue tied to humanoids not disclosed; revenue +23.6% YoY</td><td>Humanoid volume of 890,000 units (Goldman 2030) at multiple joints per robot multiplies precision-gear demand</td></tr><tr><td>MP Materials</td><td>MP</td><td>Non-Chinese NdPr magnet supply at the one input China controls (~90% of processing)</td><td>~1.3kg of NdPr per humanoid; humanoids are a small part of total magnet demand</td><td>Western humanoid builders forced to ex-China sourcing pay a premium (cost would roughly triple without Chinese components)</td></tr><tr><td>Hyundai Motor / Boston Dynamics</td><td>005380.KS</td><td>Captive demand: 25,000+ Atlas across its own plants by 2028; 6.8x forward P/E</td><td>Atlas is a small share of Hyundai revenue today</td><td>30,000 Atlas a year from 2028 lowers Hyundai&#x27;s own labor cost and creates an external robot business</td></tr><tr><td>Unitree</td><td>STAR</td><td>Volume and cost leader in China (R1 ~$6,000; G1 ~$16,000); listed Aug 2026</td><td>Humanoids and quadrupeds are essentially the whole business; revenue quadrupled</td><td>10,000–20,000 units in 2026 and China output above 100,000 give it scale — but price competition limits margin</td></tr></tbody></table></div><p class="source">Source: Company disclosures and 2026 press coverage cited in Sections 2–3; Yahoo Finance quote data, Oct 8, 2026 (non-US market caps are in local currency and not compared)</p>
+<h3 id="4c-limited-beneficiaries-low-tam-capture-or-tam-risk">4c. Limited Beneficiaries — Low TAM Capture or TAM Risk</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why Limited Capture</th><th scope="col">Common Investor Mistake</th><th scope="col">Signal to Watch</th></tr></thead><tbody><tr><td>Tesla</td><td>TSLA</td><td>173x forward P/E and 18.9% gross margin; Optimus is not yet in reported revenue (~300 units deployed for learning)</td><td>Pricing Optimus as a near-term revenue segment</td><td>Optimus V3 production units and external orders by the Q3/Q4 calls</td></tr><tr><td>Teradyne</td><td>TER</td><td>Robotics was $91M in Q1 2026 while ~70% of revenue is AI semiconductor test; the re-rating is chip test, not robots</td><td>Buying it as a robotics proxy</td><td>Robotics revenue as a share of total, now ~8% on our estimate</td></tr><tr><td>Symbotic</td><td>SYM</td><td>Warehouse automation, not humanoids; 21.3% gross margin; 31.7% of float short</td><td>Lumping fixed automation in with general-purpose robots</td><td>Gross margin trend and short-interest changes</td></tr><tr><td>Serve Robotics / Richtech Robotics</td><td>SERV / RR</td><td>0.0% and 58.9% gross margin on tiny revenue; P/S 49x and 67x</td><td>Buying the &#x27;AI robotics&#x27; label on a sub-$1B market cap</td><td>First quarter of positive gross profit at scale</td></tr><tr><td>UBTech</td><td>9880.HK</td><td>Unit guidance raised to 5,000 but Chinese price competition (R1 ~$6,000) caps margin; 56% below its high</td><td>Counting orders as profitable shipments</td><td>Gross margin and cash conversion on Walker S deliveries</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026; Teradyne Q1 2026 (Zacks, 2026)</p>
+<h2 id="5-positioning-recommendation">5. Positioning Recommendation</h2>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Which layer captures the economics?</td><td>The humanoid &#x27;brain&#x27; and brand: Figure at $39B, Skild above $14B, Tesla&#x27;s Optimus carrying a 173x forward P/E</td><td>Content and scarcity sit in components and inputs: actuators are up to 60% of BOM, China controls ~90% of magnet processing, and an ex-China build could roughly triple cost. Gear and magnet suppliers and captive-demand incumbents (Hyundai at 6.8x forward) are cheaper or already de-rated 33–59%</td></tr><tr><td>Is the timing earlier or later than consensus thinks?</td><td>Goldman: 75,000 units in 2026 and 890,000 in 2030; Musk targets a 1M-a-year run-rate by late 2026</td><td>H1 2026 global shipments were ~22,500 (mostly Chinese); Goldman&#x27;s 2026 number needs H2 at 2.3x H1; Western deployments are in the hundreds. The technology is early, but the capital markets have priced the late phase — so timing is later than the valuations imply</td></tr><tr><td>Is the sell-off in public robotics names a buying opportunity?</td><td>Dip-buy: the AI theme resumes and the baskets rebound</td><td>Most public robotics names are already 13–78% off their 52-week highs (SYM −52%, UBTech −56%, Horizon −60%, MP −54%) while venture marks keep rising — the public market is distributing before private marks have been tested</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps are in local currency and not compared); Counterpoint (H1 2026); Goldman Sachs (humanoid.guide); Futurism; Tesla Q1 2026 call coverage</p>
+<div class="edge"><strong>The edge:</strong> The market is paying 173x forward earnings and $39B private marks for the humanoid integrators while the scarce, defensible inputs and captive-demand incumbents trade at de-rated or single-digit multiples.</div>
+<p><strong>Theme Posture: Theme Conviction 5/10 — long a Layer 6 + Layer 5 basket (Harmonic Drive, MP Materials, Hyundai Motor, Fanuc, Yaskawa), funded by an underweight of Layer 3–4 narrative names (Tesla, Symbotic, Serve, Richtech, UBTech); do not size into Layers 3–4 until pilot-to-production conversion is evidenced.</strong></p>
+<ul class="bullets"><li><strong>The edge:</strong> sell the narrative, own the bottlenecks and the incumbents with captive demand — the opposite of where venture and ETF flows are concentrated.</li></ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">Layer</th><th scope="col">Weight</th><th scope="col">Rationale</th></tr></thead><tbody><tr><td>1 — Infrastructure</td><td class="fill-warn">Neutral</td><td>Compute and gears priced for a volume that has not arrived</td></tr><tr><td>2 — Enablers</td><td class="fill-warn">Neutral</td><td>Nvidia&#x27;s platform lock-in is real but robotics revenue is undisclosed</td></tr><tr><td>3 — Integrators</td><td class="fill-bad">Underweight</td><td>Narrative-priced, price-competitive, mostly private marks</td></tr><tr><td>4 — Applications</td><td class="fill-bad">Underweight</td><td>Zero-to-low gross margin and heavy shorting</td></tr><tr><td>5 — Adjacent</td><td class="fill-good">Overweight</td><td>Incumbents with distribution and Nvidia partnerships, de-rated 32–39%</td></tr><tr><td>6 — Bottlenecks</td><td class="fill-good">Overweight</td><td>Gears, magnets outside China and sim tooling survive a down-cycle</td></tr></tbody></table></div><p class="source">Source: Our synthesis of Sections 3, 4 and 6; consistent with the Peaking verdict (trim Layers 3–4 first, rotate to Layers 5–6)</p>
+<p><strong>Overweight</strong></p>
+<ul class="bullets"><li><strong>6324.T / Harmonic Drive Systems</strong> — the cleanest gear bottleneck; at 81.4x forward earnings it is not cheap, so build on weakness (it is 33% below its high) and size small.</li><li><strong>MP / MP Materials</strong> — the only scaled non-China magnet chain in the screen; 54% below its high but 20.5% of float is short, so scale in.</li><li><strong>005380.KS / Hyundai Motor</strong> — 6.8x forward P/E with 25,000+ Atlas planned for its own plants: captive demand priced as a carmaker.</li><li><strong>6954.T / Fanuc and 6506.T / Yaskawa</strong> — Nvidia-partnered incumbents that sell the robots; 32% and 39% below their highs at 34.8x and 23.4x forward.</li></ul>
+<p><strong>Neutral</strong></p>
+<ul class="bullets"><li><strong>NVDA / Nvidia</strong> — the platform winner, but physical AI is a rounding error in its numbers; own it for data-center AI, treat robotics as free optionality at 14.5x forward.</li><li><strong>6268.T / Nabtesco, NOVT / Novanta, ROK / Rockwell, TER / Teradyne</strong> — useful exposure, but valuations or growth do not yet reward the humanoid angle.</li></ul>
+<p><strong>Underweight</strong></p>
+<ul class="bullets"><li><strong>TSLA / Tesla</strong> — 173x forward earnings and 18.9% gross margin with Optimus not yet in revenue.</li><li><strong>SYM / Symbotic, SERV / Serve, RR / Richtech</strong> — low or zero gross margin, 24–39% of float short.</li><li><strong>9880.HK / UBTech, 9660.HK / Horizon Robotics</strong> — 56% and 60% off their highs; China price competition and unproven margins.</li></ul>
+<p>The weights follow the Section 6 verdict: with three exhaustion signals firing the theme is Peaking in financing terms, so Layers 3–4 — the highest-multiple and most narrative-driven — are cut first and capital rotates to Layers 5–6. Crowding is concentrated in private marks, the three new humanoid ETFs and the newly listed Unitree; the entry-timing nuance is Nov 10, 2026, when China&#x27;s suspension of its October 2025 rare-earth escalation ends.</p>
+<p>A note on Layer 2: Nvidia scores Neutral rather than Overweight only because its robotics revenue is undisclosed; if GTC 2027 (March 15–18) shows robotics as a disclosed, growing segment, that would justify raising the weight.</p>
+<h2 id="6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</h2>
+<p class="call-line serious"><strong><strong>Peak Verdict: 3/6 exhaustion signals firing (valuation and crowding, demand-side funding, macro) — Peaking. Estimated time to peak: the financing/valuation cycle is at or near peak now, so the next 2–4 quarters decide whether it rolls over; the underlying technology and deployment cycle is early and would not peak before 2028 or later.</strong> This reconciles with Section 2&#x27;s &#x27;Early&#x27; fundamental stage: deployments are in the hundreds to tens of thousands, but venture marks, an open IPO window, ETF launches and a 5.3% 10-year are late-cycle conditions. The risk is not that the theme fails but that capital is repriced years ahead of revenue, as in 3D printing.</strong></p>
+<h3 id="6a-exhaustion-scorecard">6a. Exhaustion Scorecard</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Exhaustion Signal</th><th scope="col">Status</th><th scope="col">Evidence / What Would Trip It</th></tr></thead><tbody><tr><td>1. Convergence Signal Inversion</td><td class="fill-warn">⚠️ Early warning</td><td>Narrative has saturated (three ETFs in three months, VC bubble warnings) and Tesla&#x27;s V3 timeline has been reported as delayed, but the technology, capital and shipment signals are intact. Trips if: two of the five entry signals invert (e.g., a top-tier round flat or down).</td></tr><tr><td>2. Supply Catch-Up &amp; Capacity Overshoot</td><td class="fill-good">❌ Not yet</td><td>Scarcity is in inputs (magnets, gears), not an oversupply of robots; Chinese output above 100,000 units is still absorbed. Trips if: Unitree/AgiBot inventory builds or Chinese makers cut flagship prices by &gt;30% to clear stock.</td></tr><tr><td>3. Valuation &amp; Crowding Extremes</td><td class="fill-bad">✅ Firing</td><td>Unitree +629% on day one (Aug 6); KOID +28% and HUMN +20% within months of launch; Figure $39B, Skild &gt;$14B, PI &gt;$11B; Tesla 173x forward, Serve 49x sales; Symbotic 32% of float short is the opposite crowding.</td></tr><tr><td>4. Unit Economics &amp; Margin Erosion</td><td class="fill-warn">⚠️ Early warning</td><td>Humanoid prices are falling ~40% a year (R1 ~$6,000) while estimated production cost is $30,000–$150,000; Serve has 0.0% gross margin; no Western maker shows positive gross margin at volume. Trips if: Chinese makers cut prices again with no margin disclosure by end-2027.</td></tr><tr><td>5. Demand-Side Funding Stress</td><td class="fill-bad">✅ Firing</td><td>Demand is venture- and OEM-funded: $18.8B of start-up funding in H1 2026 against deployments in the hundreds; Hyundai&#x27;s 25,000 Atlas is captive; Nvidia is both supplier and investor in Figure (circular). Trips off only if non-captive customers buy at 1,000+ units.</td></tr><tr><td>6. Macro &amp; Policy Regime Shift</td><td class="fill-bad">✅ Firing</td><td>10-year Treasury 5.27% (24-year high) and a Fed hike to 3.75–4.00% (see the Oct 8 market sentiment note); China&#x27;s October 2025 rare-earth escalation is suspended only until Nov 10, 2026 and US–China trade truce talks conclude in November.</td></tr></tbody></table></div><p class="source">Source: Sources as cited in Sections 2–4; Oct 8, 2026 market sentiment note (this project); Yahoo Finance</p>
+<p><em>Color logic is inverted versus the Section 2 table: here a firing signal is bad news (pink), &#x27;Not yet&#x27; is good news (green).</em></p>
+<h3 id="6b-tripwires-pre-committed-exit-triggers">6b. Tripwires — Pre-Committed Exit Triggers</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Tripwire</th><th scope="col" class=num>Signal</th><th scope="col">Where Observed</th><th scope="col">Action if Triggered</th></tr></thead><tbody><tr><td>1</td><td>Counterpoint&#x27;s H2 2026 global humanoid shipments come in below ~34,000 units (1.5x H1&#x27;s ~22,500), versus the ~52,500 needed for Goldman&#x27;s 75,000 full-year figure</td><td class="num">1 / 2</td><td>Counterpoint Research half-year humanoid report (early 2027)</td><td><strong>Cut the Layer 3–4 underweights to zero exposure; trim Layer 1 by a third</strong></td></tr><tr><td>2</td><td>A top-tier humanoid or robot-foundation-model round (Figure &gt;$39B, Skild &gt;$14B, Physical Intelligence ~$1B at &gt;$11B) is priced flat or down, or fails to close</td><td class="num">5</td><td>Crunchbase / PitchBook; company announcements</td><td><strong>Exit remaining Layer 3 exposure; halve Layer 2 private-adjacent names</strong></td></tr><tr><td>3</td><td>Unitree&#x27;s STAR-market share price falls below its 150.80-yuan issue price, or a second humanoid IPO (e.g., AgiBot) is pulled or priced below talk</td><td class="num">3</td><td>STAR Market quotes; exchange filings</td><td><strong>Trim the most crowded third of the basket and stop adding to any humanoid ETF exposure</strong></td></tr><tr><td>4</td><td>10-year Treasury closes above 5.5% for five sessions, or HY OAS above 350 bps with VIX above 20</td><td class="num">6</td><td>FRED DGS10, BAMLH0A0HYM2; Yahoo ^VIX</td><td><strong>Cut theme gross by a third regardless of fundamentals; buy back only if shipments confirm</strong></td></tr><tr><td>5</td><td>China lets its suspension lapse on Nov 10, 2026 and reinstates the October 2025 rare-earth escalation, or Dy/Tb export licences tighten further</td><td class="num">6</td><td>MOFCOM notices; Federal Register/USTR</td><td><strong>Add to Layer 6 non-China magnets (MP); cut US-built humanoid integrators 50% on cost</strong></td></tr><tr><td>6</td><td>Tesla: Optimus V3 production start slips beyond Q1 2027 or reported output stays under ~5,000 units through 2026</td><td class="num">1</td><td>Tesla Q3/Q4 2026 earnings calls</td><td><strong>Cut Tesla and any Optimus-proxy exposure entirely</strong></td></tr><tr><td>7</td><td>Hyundai or Boston Dynamics cuts the 25,000-by-2028 Atlas deployment target by more than 30%, or the Savannah 30,000-a-year plan slips</td><td class="num">1 / 5</td><td>Hyundai investor releases; Boston Dynamics announcements</td><td><strong>Trim Hyundai and Layer 5 incumbents by a third</strong></td></tr><tr><td>8</td><td>Humanoid prices fall another &gt;40% YoY with no Western maker disclosing positive gross margin by end-2027</td><td class="num">4</td><td>Company price lists; Unitree and UBTech filings</td><td><strong>Exit Layer 3 pure-plays; keep only components and inputs</strong></td></tr></tbody></table></div><p class="source">Source: Our synthesis; thresholds anchored to figures cited in Sections 2–5</p>
+<h3 id="6c-watch-calendar-dated-catalysts">6c. Watch Calendar — Dated Catalysts</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Date / Window</th><th scope="col">Event</th><th scope="col">Bullish if...</th><th scope="col">Bearish if...</th></tr></thead><tbody><tr><td>Oct 28, 2026</td><td>FOMC decision</td><td>Hold with softer language; 10Y retreats from ~5.3%</td><td>Hike or hawkish hold; 10Y above 5.5%</td></tr><tr><td>Late Oct 2026 (dates to be confirmed)</td><td>Tesla Q3 earnings</td><td>Optimus V3 in production with a stated unit count</td><td>No unit count; further V3 slip</td></tr><tr><td>Nov 10, 2026</td><td>China&#x27;s suspension of its Oct 2025 rare-earth escalation ends; US–China truce talks</td><td>Extension or loosening of controls</td><td>Lapse and reinstatement; Dy/Tb prices up again</td></tr><tr><td>Dec 1–2, 2026</td><td>Humanoids Summit Silicon Valley (San Mateo)</td><td>Named non-captive customers announcing 1,000+ unit orders</td><td>More pivots to niche robots</td></tr><tr><td>Jan 2027 (dates to be confirmed)</td><td>CES 2027; Samsung unveils its first in-house humanoid prototype</td><td>New large-cap entrants with funded programs</td><td>Demos with no shipment dates</td></tr><tr><td>Early 2027 (date to be confirmed)</td><td>Counterpoint H2 2026 humanoid shipment report</td><td>H2 shipments ≥ ~34,000</td><td>H2 below ~34,000</td></tr><tr><td>Mar 15–18, 2027</td><td>Nvidia GTC 2027 (GR00T, Jetson, Isaac roadmap)</td><td>Robotics disclosed as a growing revenue segment</td><td>No robotics revenue disclosure</td></tr><tr><td>Aug 2027 (date to be confirmed)</td><td>World Robot Conference, Beijing (2026 edition ran Aug 19–23)</td><td>Price cuts accompanied by margin disclosure</td><td>Price cuts with no margin disclosure</td></tr><tr><td>2028</td><td>Hyundai Atlas deployment target (25,000+) and Savannah 30,000-a-year production start</td><td>Production starts on schedule</td><td>Target cut or delayed</td></tr></tbody></table></div><p class="source">Source: Nvidia GTC pages; humanoidssummit.com; WRC organizers; TrendForce/Counterpoint; Hyundai CES 2026; Federal Reserve calendar; rare-earth-mining.com</p>
+<h3 id="6d-false-alarm-test">6d. False-Alarm Test</h3>
+<ul class="bullets"><li><strong>Are fundamentals confirming?</strong> Check Counterpoint shipment data (H1 2026: ~22,500 units, +~300% YoY), Western fleet sizes (Figure, Agility, Apptronik, Optimus ~300) and Hyundai&#x27;s Atlas deliveries. Prices falling while shipments quintuple is a flush; shipments flat while funding rises is the real thing.</li><li><strong>Theme-specific or market-wide?</strong> Compare the robotics basket (SYM, SERV, TER, UBTech, Harmonic Drive) with the Nasdaq and other long-duration baskets; today the S&amp;P is near a record while robotics names are −13% to −78% from highs, so the drawdown is largely theme-specific, with a discount-rate contribution (10Y at 5.3%).</li><li><strong>Which signals are firing?</strong> Crowding (Signal 3) and macro (Signal 6) are cyclical; funding stress (Signal 5) is structural if non-captive customers don&#x27;t appear. Check how many Western units are bought by customers outside the maker&#x27;s own group.</li><li><strong>Has the end state changed?</strong> End state: general-purpose robots below annual labor cost at scale. If Goldman&#x27;s 2030 figure (890,000 units, ~86% annual growth needed from 75,000 in 2026) slips to 2035, the timeline — not just the price — has changed.</li></ul>
+<p><strong>Structural signals for this theme (act on):</strong> demand-side funding stress (no non-captive 1,000-unit orders), margin erosion without disclosure (Signal 4), shipments below the Goldman path · <strong>Cyclical signals (likely buy the dip):</strong> crowding unwinds in ETFs and the Unitree IPO price, and macro/yield spikes while shipment growth holds.</p>
+<h3 id="6e-closest-historical-analogue">6e. Closest Historical Analogue</h3>
+<p>The closest analogue is 3D printing in 2013–2014: genuine technology and enterprise pilots, sky-high valuations (3D Systems flirted with $100 a share), and a crash when sales fell short of expectations. Stratasys fell almost 90% from September 2014 to February 2016, and both it and 3D Systems were still more than 80% below their all-time highs years later. Physical AI differs in that the technology step (foundation models) is real, volumes are already tens of thousands of units a year and Chinese makers are shipping, but it resembles 3D printing in that demand has not yet moved from innovation budgets into operating budgets. The comparison is unflattering because venture marks of $39B for one company sit above anything 3D printing&#x27;s leaders ever saw.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Analogue</td><td>3D printing, 2013–2014 (3D Systems, Stratasys)</td></tr><tr><td>Peak date</td><td>Late 2013 / early 2014 for 3D Systems (near $100); September 2014 for Stratasys (Motley Fool, engineering.com)</td></tr><tr><td>Peak-to-trough drawdown</td><td>Stratasys ~−90% (Sep 2014 → Feb 2016); 3D Systems from ~$100 to a single-digit price; both &gt;80% below all-time highs (engineering.com, Motley Fool)</td></tr><tr><td>Recovery time</td><td>Not confirmed by search; both were still &gt;80% below all-time highs at the time of the cited coverage (2016–2017)</td></tr><tr><td>Key difference vs. this theme</td><td>A real model-driven capability jump and tens of thousands of units shipped, but equally unfunded by customer operating budgets; marks and valuations are higher</td></tr></tbody></table></div><p class="source">Source: engineering.com, The Motley Fool (2015, 2016), Calcalist — 3D printing analogue figures</p>
+<h2 id="7-key-diligence-questions">7. Key Diligence Questions</h2>
+<ol class="bullets"><li><strong>Exit/downside case:</strong> do Western humanoid fleets convert pilots to non-captive purchase orders of 1,000+ units from a single customer by end-2027 (Figure at BMW, Agility at Toyota/GXO/Amazon, Apptronik at Mercedes/GXO/Jabil)? If conversion stays below ~20% of pilots while venture funding decelerates from $18.8B in H1 2026, the theme is years early and the financing cycle has peaked.</li><li>Can the humanoid bill of materials reach Tesla&#x27;s $20,000–$30,000 target with actuators at up to 60% of cost, and what does the ex-China build do to it — one estimate has Optimus BOM rising from ~$46,000 to ~$131,000?</li><li>Do H2 2026 global shipments exceed ~34,000 units (1.5x H1&#x27;s ~22,500), and is Goldman&#x27;s path to 890,000 in 2030 (~86% annual growth from 75,000 in 2026) credible given that the majority of today&#x27;s volume is Chinese?</li><li>What does China do on Nov 10, 2026 — extend, lapse or reinstate the October 2025 rare-earth escalation — and what share of dysprosium/terbium and NdPr magnet supply can non-China producers such as MP Materials provide by 2027?</li><li>What share of 2026 humanoid unit shipments goes to customers paying from operating budgets rather than research, subsidized or captive buyers, and which top-tier robot start-up is first to price a flat or down round?</li></ol>
+<p class="source">Source: Key sources: <a href="https://humanoid.guide/?p=18115">Goldman/humanoid.guide forecasts</a> · <a href="https://counterpointresearch.com/en/insights/global-humanoid-robot-shipments-soar-nearly-300-percent-yoy-in-h1-2026">Counterpoint — H1 2026 humanoid shipments</a> · <a href="https://cryptobriefing.com/morgan-stanley-china-humanoid-robot-forecast/">Morgan Stanley China forecast</a> · <a href="https://insideevs.com/news/783475/hyundai-ces-2026-robotics/">Hyundai CES 2026 robotics plan</a> · <a href="https://biz.liga.net/en/other-industries/news/unitree-a-chinese-manufacturer-of-humanoid-robots-soared-629-during-its-ipo">Unitree IPO (liga.net)</a> · <a href="https://futurism.com/future-society/humanoid-robot-financial-bubble">Futurism — humanoid bubble</a> · <a href="https://rare-earth-mining.com/china-rare-earth-export-controls/">Rare-earth controls overview</a> · <a href="https://www.fool.com/investing/general/2015/01/11/why-3d-printing-stocks-had-a-horrible-2014.aspx">Fool — 3D printing 2014</a>. Quote data: Yahoo Finance, Oct 8, 2026. Several secondary sources (voxbooster, aiwiki, buyer&#x27;s guides, optimusk.blog, FourWeekMBA/HTX) are lower quality and are flagged where used; figures such as Optimus unit counts and Musk&#x27;s 1M-a-year target are company statements, not verified output.</p>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>

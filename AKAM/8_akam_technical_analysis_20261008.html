@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: &quot;AKAM&quot;, &quot;skill&quot;: &quot;technical&quot;, &quot;title&quot;: &quot;AKAM — Technical Analysis&quot;, &quot;signal&quot;: &quot;AVOID&quot;, &quot;conviction&quot;: 3, &quot;as_of&quot;: &quot;2026-10-08&quot;, &quot;rendered&quot;: &quot;2026-10-08&quot;, &quot;company&quot;: &quot;Akamai Technologies, Inc.&quot;}">
+<title>AKAM — Technical Analysis</title>
+<style>/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 13px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 12px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(11px, 0.9vw, 14px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value { font-size: 20px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 12.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 14px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 11px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 18px; }
+.callout.verdict .signal { font-size: 22px; }
+.callout .scale { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+.call-line { font-size: 17px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 15px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 12.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 11.5px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 12px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 10.5px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 11px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 13px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 12px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 12.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 22px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 30px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 18px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 12.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 13px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 12px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card li.pkg > .row a { font-weight: 650; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+</style>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="akam_stock_deep_research_notes_20261008.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="../index.html">← Investment Research Library</a><ol><li><a href="#at-a-glance">At a Glance</a></li><li><a href="#buy-signal-scorecard">Buy Signal Scorecard</a></li><li><a href="#moving-averages-distance-from-spot">Moving Averages — Distance from Spot</a></li><li><a href="#price-momentum-near-term-vs-mid-term">Price Momentum — Near-Term vs Mid-Term</a></li><li><a href="#trend-pullback">Trend &amp; Pullback</a></li><li><a href="#momentum-sentiment">Momentum &amp; Sentiment</a></li><li><a href="#staged-accumulation-framework">Staged Accumulation Framework</a></li><li><a href="#what-could-go-wrong">What Could Go Wrong</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#verdict">Verdict</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>AKAM · Technical</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>AKAM — Technical Analysis</h1><p class="subtitle">Buy-side technical / timing read · October 8, 2026 · Data as of: 2026-10-08 close</p><div class="call-strip"><div class="stat"><div class="label">Signal</div><div class="value"><span class="badge neutral"><span class="dot"></span>AVOID</span></div></div><div class="stat"><div class="label">Conviction</div><div class="value">3 / 10</div><div class="meter"><span style="width:30%"></span></div></div><div class="stat"><div class="label">Thesis bias</div><div class="value">AVOID</div></div><div class="stat" title="Source: Yahoo Finance (computed)"><div class="label">Spot vs 200-DMA</div><div class="value">-9.5%</div><div class="sub">($112.03)</div></div><div class="stat" title="Source: Yahoo Finance (computed)"><div class="label">Drawdown from 52-wk closing high</div><div class="value">-37.1%</div></div><div class="stat" title="Source: Yahoo Finance (computed)"><div class="label">RSI (14)</div><div class="value">38.9</div><div class="sub">(falling)</div></div></div></header>
+<h2 id="at-a-glance">At a Glance</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>Current Price</td><td>$101.43</td><td>—</td></tr><tr><td>Trend (vs 200-DMA)</td><td>Down (spot 9.5% below a still-rising 200-DMA)</td><td>🔴</td></tr><tr><td>Spot vs 20 / 50 / 100 / 200-DMA</td><td>-6.7% / -8.9% / -15.9% / -9.5%</td><td>MA stack Mixed (death cross 2026-10-05)</td></tr><tr><td>Momentum (Near-term / Mid-term)</td><td>Neg · Neg</td><td>Aligned bearish</td></tr><tr><td>Drawdown from 52-wk High</td><td>-37.1% (closing high $161.14)</td><td>🔴 &gt;20</td></tr><tr><td>RSI (14-day)</td><td>38.9 (5 sessions ago 45.4, falling)</td><td>✅ in 35–55 band but ↓</td></tr><tr><td>Market Regime (VIX, S&amp;P)</td><td>Cautious (VIX / S&amp;P 200-DMA not sourced this run)</td><td>—</td></tr><tr><td>Investor Sentiment</td><td>N/A for October 2026 (latest sourced: July — F&amp;G 37, AAII bulls 44.9%, VIX ~15)</td><td>⚠️ Stale</td></tr><tr class=bold><td>Setup Score</td><td>1 / 5</td><td>—</td></tr><tr class=bold><td>Thesis Bias</td><td>AVOID (fundamental call is PASS; no long timing edge)</td><td>—</td></tr><tr class=bold><td>Conviction (Timing)</td><td>3 / 10</td><td>—</td></tr><tr class=bold><td>What to Do</td><td>Wait</td><td>—</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance price history (computed) via digest.py; sentiment: Schaeffer&#x27;s Research / walnutinvest.com (July 2026)</p>
+<h2 id="buy-signal-scorecard">Buy Signal Scorecard</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Factor</th><th scope="col">Status</th><th scope="col" class=num>Pts</th></tr></thead><tbody><tr><td>1</td><td>Stock above rising 200-DMA</td><td class="fill-bad">❌ Spot $101.43 vs 200-DMA $112.03 (200-DMA rising, spot below)</td><td class="num">0</td></tr><tr><td>2</td><td>Meaningful pullback to support (10–20%, near key MA)</td><td class="fill-bad">❌ Drawdown -37.1%, far beyond the band; 8.9–15.9% below every key MA, not at support</td><td class="num">0</td></tr><tr><td>3</td><td>Sentiment shows fear (F&amp;G &lt;40, AAII bulls &lt;35%)</td><td class="fill-bad">❌ Not verifiable for October (N/A); July AAII bulls 44.9% was not fear</td><td class="num">0</td></tr><tr><td>4</td><td>Momentum stabilizing (RSI 35–55 and rising)</td><td class="fill-bad">❌ RSI 38.9 in band but falling; no higher low in last 20 sessions</td><td class="num">0</td></tr><tr><td>5</td><td>Market not in freefall (VIX &lt;30, S&amp;P above 200-DMA)</td><td class="fill-good">✅ Assumed: SPY +14.5% over 6M and +1.8% over 1M; VIX not sourced for October</td><td class="num">1</td></tr><tr class=bold><td></td><td>Total</td><td>—</td><td class="num">1 / 5</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance price history (computed); VIX/sentiment assumption noted</p>
+<ul class="bullets"><li><strong>Interpretation:</strong> 0–1 = Wait. The one point is an assumption, not a measurement.</li></ul>
+<h2 id="moving-averages-distance-from-spot">Moving Averages — Distance from Spot</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Moving Average</th><th scope="col" class=num>Level</th><th scope="col" class=num>Spot vs MA</th><th scope="col">Position</th><th scope="col">Slope (vs 10 days ago)</th></tr></thead><tbody><tr><td>20-DMA</td><td class="num">$108.73</td><td class="num">-6.7%</td><td>🔴 Below</td><td>→</td></tr><tr><td>50-DMA</td><td class="num">$111.37</td><td class="num">-8.9%</td><td>🔴 Below</td><td>↓</td></tr><tr><td>100-DMA</td><td class="num">$120.62</td><td class="num">-15.9%</td><td>🔴 Below</td><td>↓</td></tr><tr><td>200-DMA</td><td class="num">$112.03</td><td class="num">-9.5%</td><td>🔴 Below</td><td>↑</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance price history (computed), adjusted closes (AKAM pays no material dividend)</p>
+<figure class="viz" data-chart><figcaption><span class="viz-title">AKAM Price &amp; Moving Averages</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "AKAM Price & Moving Averages", "unit": "price", "categories": ["2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11", "2025-04-14", "2025-04-15", "2025-04-16", "2025-04-17", "2025-04-21", "2025-04-22", "2025-04-23", "2025-04-24", "2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30", "2025-05-01", "2025-05-02", "2025-05-05", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09", "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-06-02", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-20", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-25", "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-05", "2026-10-06", "2026-10-07", "2026-10-08"], "series": [{"name": "Price", "values": [68.21, 76.35, 72.56, 74.05, 74.15, 74.51, 73.81, 73.46, 71.92, 73.67, 75.87, 79.2, 79.79, 80.18, 80.98, 80.58, 81.11, 82.54, 83.1, 82.87, 82.86, 85.44, 76.25, 78.79, 78.94, 77.51, 76.51, 78.03, 77.87, 77.49, 76.42, 77.08, 75.84, 77.89, 76.42, 76.09, 75.93, 76.17, 77.09, 76.6, 76.14, 77.03, 78.08, 78.27, 78.19, 78.51, 77.03, 79.99, 78.68, 78.7, 78.38, 79.28, 80.06, 79.53, 79.6, 79.6, 79.76, 79.61, 79.46, 79.48, 79.06, 80.64, 80.63, 79.44, 77.38, 77.41, 76.8, 77.04, 77.93, 78.69, 78.71, 80.4, 80.68, 80.71, 80.75, 79.71, 79.49, 78.06, 76.31, 74.38, 75.5, 73.65, 74.48, 74.76, 70.53, 70.61, 71.97, 75.44, 74.27, 74.42, 75.28, 76.49, 76.06, 76.32, 77.64, 76.52, 76.94, 78.27, 78.39, 79.13, 76.98, 77.56, 77.19, 78.56, 78.88, 78.16, 76.75, 79.2, 76.84, 76.46, 76.38, 75.84, 77.09, 76.28, 76.68, 75.27, 76.23, 75.38, 76.05, 76.23, 75.76, 75.84, 78.01, 77.56, 78.44, 76.6, 76.72, 75.5, 73.24, 73.8, 74.09, 73.67, 72.96, 72.86, 74.25, 76.13, 74.71, 74.61, 75.05, 75.49, 75.75, 73.01, 73.93, 75.1, 74.53, 71.97, 72.98, 73.0, 83.74, 87.12, 90.61, 90.1, 88.67, 87.17, 87.62, 87.74, 86.52, 87.38, 89.01, 88.34, 90.71, 89.45, 89.52, 87.71, 86.83, 87.97, 86.6, 83.49, 85.32, 85.66, 86.45, 85.45, 85.88, 86.53, 87.74, 87.55, 88.49, 89.22, 90.11, 89.23, 88.82, 88.42, 88.24, 87.97, 87.25, 85.1, 85.91, 88.74, 88.18, 85.71, 88.12, 91.27, 88.86, 90.65, 91.53, 93.49, 89.6, 93.72, 97.03, 95.08, 98.66, 103.26, 102.1, 99.35, 97.15, 96.63, 91.79, 91.92, 91.49, 95.08, 94.72, 94.4, 94.8, 104.61, 111.76, 108.42, 109.31, 109.59, 94.17, 98.76, 100.13, 100.04, 99.9, 98.39, 97.64, 102.08, 102.98, 101.0, 99.89, 102.11, 104.5, 106.47, 105.47, 107.67, 105.44, 105.84, 108.86, 110.0, 110.48, 114.43, 114.5, 119.15, 117.25, 114.5, 110.22, 114.85, 115.75, 118.0, 114.6, 113.89, 116.0, 109.61, 91.35, 94.94, 88.84, 90.38, 96.81, 95.89, 97.62, 98.08, 97.11, 96.18, 95.25, 95.93, 95.43, 99.8, 102.98, 103.87, 105.78, 117.94, 121.99, 116.69, 147.71, 153.01, 149.56, 161.14, 155.67, 150.88, 150.77, 141.34, 143.55, 146.24, 147.23, 148.21, 144.43, 143.13, 149.54, 154.01, 160.32, 160.36, 158.98, 149.32, 141.87, 137.81, 129.97, 132.46, 133.5, 134.2, 132.31, 127.86, 124.91, 120.74, 119.87, 119.48, 112.89, 113.29, 113.8, 118.21, 112.81, 113.17, 112.73, 114.37, 126.57, 129.52, 126.19, 125.13, 126.11, 120.01, 118.81, 120.19, 123.13, 124.91, 124.3, 117.37, 115.37, 112.85, 111.79, 107.41, 113.75, 115.18, 117.88, 123.35, 122.27, 118.55, 110.54, 117.65, 116.67, 122.78, 125.29, 124.99, 122.97, 115.2, 112.84, 110.09, 110.42, 105.66, 105.74, 108.06, 111.24, 107.47, 108.62, 106.46, 105.09, 106.5, 105.22, 105.61, 110.75, 107.13, 106.79, 105.57, 105.4, 104.48, 107.08, 104.52, 117.41, 118.34, 118.44, 110.41, 113.94, 108.99, 108.45, 106.35, 106.93, 108.92, 107.99, 108.62, 104.61, 101.43], "width": 2.5}, {"name": "20-DMA", "values": [79.55, 79.38, 79.08, 78.74, 78.31, 77.93, 77.5, 77.1, 76.64, 76.19, 75.89, 75.78, 75.69, 75.69, 75.72, 75.72, 75.69, 75.88, 76.35, 76.95, 77.68, 78.13, 78.32, 78.55, 78.79, 78.94, 79.08, 79.31, 79.6, 79.8, 79.82, 79.72, 79.52, 79.41, 79.18, 78.95, 78.69, 78.38, 78.07, 77.76, 77.42, 77.0, 77.1, 77.07, 77.03, 77.08, 77.11, 77.21, 77.25, 77.31, 77.41, 77.52, 77.73, 77.81, 77.97, 78.14, 78.33, 78.51, 78.62, 78.77, 78.91, 79.1, 79.22, 79.28, 79.24, 79.19, 79.17, 79.03, 78.99, 78.99, 79.01, 79.06, 79.09, 79.15, 79.21, 79.21, 79.2, 79.12, 78.97, 78.71, 78.53, 78.18, 77.88, 77.64, 77.3, 76.96, 76.72, 76.64, 76.45, 76.24, 76.07, 75.87, 75.64, 75.42, 75.27, 75.11, 74.98, 74.99, 75.1, 75.33, 75.41, 75.6, 75.74, 75.93, 76.35, 76.72, 76.96, 77.15, 77.28, 77.38, 77.44, 77.4, 77.45, 77.45, 77.41, 77.34, 77.31, 77.16, 77.05, 76.9, 76.84, 76.75, 76.79, 76.74, 76.72, 76.64, 76.64, 76.46, 76.28, 76.14, 76.03, 75.92, 75.72, 75.54, 75.42, 75.47, 75.39, 75.35, 75.3, 75.26, 75.26, 75.12, 74.92, 74.8, 74.6, 74.37, 74.18, 74.06, 74.58, 75.25, 76.07, 76.89, 77.68, 78.4, 79.06, 79.64, 80.24, 80.87, 81.57, 82.21, 82.96, 83.78, 84.56, 85.19, 85.81, 86.61, 87.29, 87.81, 87.89, 87.82, 87.61, 87.38, 87.24, 87.21, 87.22, 87.21, 87.3, 87.4, 87.45, 87.5, 87.4, 87.35, 87.29, 87.3, 87.32, 87.18, 87.14, 87.4, 87.55, 87.55, 87.63, 87.92, 88.07, 88.28, 88.47, 88.77, 88.82, 89.05, 89.39, 89.68, 90.18, 90.92, 91.61, 92.18, 92.68, 93.25, 93.55, 93.71, 93.87, 94.34, 94.67, 94.83, 95.12, 95.82, 96.83, 97.58, 98.56, 99.36, 99.21, 99.4, 99.47, 99.31, 99.2, 99.15, 99.18, 99.45, 100.01, 100.46, 100.88, 101.24, 101.72, 102.33, 102.86, 103.01, 102.7, 102.57, 102.55, 102.57, 103.38, 104.17, 104.88, 105.84, 106.71, 107.51, 108.14, 108.78, 109.42, 110.27, 111.0, 111.59, 112.17, 112.33, 111.62, 110.98, 110.15, 109.38, 108.78, 108.07, 107.43, 106.61, 105.74, 104.59, 103.49, 102.56, 101.83, 101.07, 100.43, 99.73, 99.29, 99.49, 99.79, 100.14, 102.96, 105.86, 108.9, 112.44, 115.38, 118.13, 120.79, 122.95, 125.27, 127.78, 130.38, 132.99, 135.44, 137.61, 139.93, 142.44, 145.17, 147.29, 149.14, 150.77, 150.48, 149.72, 148.74, 147.3, 146.2, 145.36, 144.44, 143.77, 142.83, 141.56, 140.19, 138.75, 137.18, 135.68, 133.9, 132.11, 129.73, 127.37, 125.06, 123.31, 122.55, 122.13, 121.94, 121.58, 121.21, 120.5, 119.82, 119.44, 119.35, 119.56, 119.78, 119.68, 119.8, 119.78, 119.68, 119.14, 119.18, 119.28, 119.54, 119.99, 119.78, 119.23, 118.45, 118.07, 117.6, 117.74, 118.06, 118.3, 118.29, 117.81, 117.23, 116.87, 116.62, 116.26, 115.96, 115.99, 115.87, 115.48, 115.02, 114.18, 113.32, 112.71, 112.45, 111.85, 111.55, 110.77, 109.84, 108.87, 107.99, 107.46, 107.17, 106.89, 107.24, 107.87, 108.51, 108.63, 108.76, 108.84, 108.83, 108.82, 108.92, 109.04, 109.17, 109.33, 109.02, 108.73], "width": 1.5}, {"name": "50-DMA", "values": [86.9, 86.41, 85.86, 85.31, 84.79, 84.32, 83.8, 83.25, 82.7, 82.18, 81.65, 81.21, 80.78, 80.4, 80.01, 79.64, 79.26, 78.95, 79.07, 79.18, 79.28, 79.39, 79.36, 79.32, 79.28, 79.19, 79.06, 78.97, 78.77, 78.64, 78.56, 78.5, 78.45, 78.39, 78.26, 78.14, 78.01, 77.91, 77.83, 77.7, 77.59, 77.5, 77.43, 77.4, 77.35, 77.31, 77.22, 77.24, 77.34, 77.49, 77.7, 77.76, 77.91, 78.02, 78.13, 78.23, 78.35, 78.47, 78.62, 78.74, 78.8, 78.83, 78.85, 78.83, 78.76, 78.7, 78.61, 78.5, 78.4, 78.31, 78.23, 78.13, 78.22, 78.26, 78.29, 78.34, 78.4, 78.4, 78.36, 78.3, 78.28, 78.22, 78.19, 78.13, 78.01, 77.9, 77.82, 77.8, 77.75, 77.7, 77.69, 77.68, 77.64, 77.6, 77.59, 77.55, 77.54, 77.51, 77.5, 77.51, 77.49, 77.45, 77.39, 77.37, 77.36, 77.33, 77.27, 77.26, 77.21, 77.15, 77.1, 77.0, 76.93, 76.87, 76.85, 76.81, 76.8, 76.76, 76.73, 76.68, 76.62, 76.53, 76.47, 76.41, 76.36, 76.3, 76.25, 76.2, 76.13, 76.12, 76.09, 76.1, 76.06, 76.03, 76.1, 76.21, 76.27, 76.25, 76.27, 76.29, 76.3, 76.23, 76.18, 76.16, 76.1, 76.01, 75.93, 75.82, 75.93, 76.09, 76.36, 76.61, 76.84, 77.01, 77.19, 77.38, 77.58, 77.74, 77.98, 78.22, 78.51, 78.78, 79.03, 79.26, 79.46, 79.71, 79.92, 80.08, 80.27, 80.46, 80.67, 80.86, 81.02, 81.2, 81.39, 81.6, 81.84, 82.11, 82.45, 82.76, 83.06, 83.35, 83.66, 83.96, 84.22, 84.4, 84.62, 84.9, 85.17, 85.37, 85.62, 85.98, 86.28, 86.59, 86.93, 87.36, 87.7, 88.11, 88.38, 88.54, 88.7, 88.96, 89.23, 89.47, 89.66, 89.84, 89.95, 90.04, 90.09, 90.22, 90.3, 90.4, 90.51, 90.84, 91.34, 91.75, 92.21, 92.73, 92.9, 93.17, 93.44, 93.73, 94.01, 94.25, 94.45, 94.74, 95.03, 95.26, 95.46, 95.72, 96.03, 96.39, 96.74, 97.13, 97.49, 97.91, 98.37, 98.79, 99.24, 99.81, 100.34, 100.9, 101.47, 101.94, 102.32, 102.74, 103.27, 103.75, 104.1, 104.48, 104.83, 104.95, 104.74, 104.65, 104.48, 104.36, 104.46, 104.54, 104.66, 104.72, 104.77, 104.81, 104.81, 104.64, 104.31, 104.14, 104.02, 103.9, 104.13, 104.52, 104.95, 105.29, 106.24, 107.34, 108.37, 109.55, 110.61, 111.61, 112.62, 113.41, 114.19, 114.98, 115.82, 116.63, 117.41, 118.16, 118.97, 119.85, 120.85, 121.77, 122.66, 123.26, 123.75, 124.22, 124.61, 124.96, 125.32, 125.64, 126.0, 126.28, 126.46, 126.68, 127.25, 127.74, 128.22, 128.68, 129.02, 129.46, 129.77, 130.07, 130.38, 130.75, 131.37, 132.04, 132.66, 133.17, 133.63, 133.95, 134.21, 134.26, 134.28, 134.44, 133.98, 133.26, 132.58, 131.61, 130.74, 129.87, 129.13, 128.6, 128.09, 127.63, 127.13, 126.54, 125.86, 125.35, 124.69, 124.07, 123.37, 122.66, 121.94, 121.26, 120.68, 120.12, 119.73, 119.2, 118.64, 118.12, 117.7, 117.29, 116.96, 116.68, 116.38, 116.12, 115.97, 115.82, 115.76, 115.53, 115.41, 115.26, 115.12, 114.92, 114.53, 114.03, 113.85, 113.72, 113.56, 113.37, 113.27, 113.05, 112.76, 112.38, 112.04, 111.87, 111.72, 111.64, 111.49, 111.37]}, {"name": "100-DMA", "values": [90.58, 90.44, 90.28, 90.14, 90.01, 89.89, 89.76, 89.61, 89.42, 89.23, 89.04, 88.9, 88.76, 88.62, 88.45, 88.28, 88.11, 87.96, 87.81, 87.65, 87.49, 87.34, 87.11, 86.9, 86.72, 86.52, 86.34, 86.18, 86.0, 85.81, 85.6, 85.39, 85.18, 85.01, 84.81, 84.62, 84.44, 84.27, 84.12, 83.95, 83.82, 83.7, 83.57, 83.45, 83.33, 83.2, 83.02, 82.87, 82.7, 82.51, 82.3, 82.08, 81.88, 81.66, 81.46, 81.27, 81.07, 80.86, 80.66, 80.46, 80.23, 80.02, 79.82, 79.61, 79.39, 79.17, 78.93, 78.72, 78.74, 78.75, 78.75, 78.76, 78.79, 78.79, 78.79, 78.76, 78.73, 78.68, 78.57, 78.47, 78.42, 78.36, 78.32, 78.26, 78.14, 78.02, 77.92, 77.86, 77.79, 77.7, 77.64, 77.59, 77.53, 77.5, 77.47, 77.43, 77.38, 77.38, 77.42, 77.5, 77.59, 77.6, 77.65, 77.7, 77.74, 77.78, 77.81, 77.87, 77.91, 77.94, 77.95, 77.91, 77.89, 77.85, 77.81, 77.75, 77.7, 77.63, 77.56, 77.5, 77.42, 77.33, 77.35, 77.33, 77.33, 77.32, 77.32, 77.3, 77.25, 77.21, 77.19, 77.16, 77.13, 77.08, 77.05, 77.06, 77.04, 77.03, 77.01, 77.0, 76.99, 76.95, 76.91, 76.88, 76.84, 76.78, 76.74, 76.67, 76.72, 76.8, 76.92, 77.03, 77.12, 77.19, 77.27, 77.36, 77.42, 77.5, 77.6, 77.68, 77.8, 77.89, 77.98, 78.06, 78.16, 78.26, 78.36, 78.42, 78.5, 78.57, 78.64, 78.7, 78.75, 78.81, 78.88, 78.95, 79.04, 79.16, 79.29, 79.44, 79.57, 79.72, 79.86, 79.99, 80.16, 80.3, 80.44, 80.58, 80.72, 80.83, 80.96, 81.11, 81.23, 81.38, 81.52, 81.68, 81.81, 81.97, 82.15, 82.31, 82.53, 82.79, 83.03, 83.24, 83.43, 83.61, 83.76, 83.89, 84.03, 84.22, 84.4, 84.59, 84.77, 85.05, 85.4, 85.73, 86.06, 86.41, 86.59, 86.81, 87.06, 87.3, 87.52, 87.72, 87.92, 88.17, 88.43, 88.69, 88.96, 89.24, 89.54, 89.87, 90.2, 90.54, 90.86, 91.15, 91.49, 91.85, 92.2, 92.59, 92.98, 93.44, 93.87, 94.27, 94.62, 95.05, 95.48, 95.93, 96.24, 96.51, 96.76, 96.96, 96.98, 97.06, 97.07, 97.1, 97.2, 97.29, 97.37, 97.47, 97.54, 97.6, 97.66, 97.74, 97.83, 97.95, 98.11, 98.31, 98.52, 98.84, 99.2, 99.51, 100.13, 100.79, 101.41, 102.15, 102.82, 103.43, 104.04, 104.56, 105.11, 105.69, 106.28, 106.88, 107.45, 108.03, 108.67, 109.32, 110.04, 110.79, 111.5, 112.08, 112.61, 113.08, 113.46, 113.85, 114.29, 114.7, 115.05, 115.38, 115.64, 115.82, 115.99, 116.19, 116.35, 116.52, 116.74, 117.0, 117.21, 117.4, 117.58, 117.78, 118.09, 118.34, 118.49, 118.65, 118.82, 118.93, 119.17, 119.39, 119.62, 119.87, 120.11, 120.3, 120.48, 120.58, 120.67, 120.74, 120.88, 121.01, 121.14, 121.31, 121.48, 121.59, 121.64, 121.75, 121.83, 121.96, 122.11, 122.21, 122.3, 122.26, 122.22, 122.17, 122.17, 122.08, 121.98, 121.88, 121.85, 121.78, 121.71, 121.68, 121.82, 121.93, 122.1, 122.25, 122.39, 122.5, 122.59, 122.67, 122.75, 122.83, 122.95, 123.04, 123.26, 123.44, 123.6, 123.66, 123.74, 123.65, 123.52, 123.41, 123.01, 122.57, 122.15, 121.62, 121.11, 120.62]}, {"name": "200-DMA", "values": [94.43, 94.37, 94.29, 94.22, 94.15, 94.07, 93.99, 93.91, 93.82, 93.73, 93.66, 93.59, 93.53, 93.46, 93.39, 93.32, 93.24, 93.17, 93.1, 93.03, 92.97, 92.92, 92.82, 92.74, 92.65, 92.55, 92.45, 92.35, 92.25, 92.16, 92.07, 92.0, 91.91, 91.84, 91.76, 91.64, 91.52, 91.4, 91.28, 91.16, 91.04, 90.92, 90.8, 90.68, 90.56, 90.44, 90.33, 90.22, 90.11, 90.0, 89.88, 89.78, 89.68, 89.58, 89.49, 89.42, 89.34, 89.26, 89.17, 89.07, 88.97, 88.88, 88.8, 88.7, 88.59, 88.47, 88.35, 88.23, 88.12, 88.01, 87.9, 87.8, 87.7, 87.6, 87.5, 87.39, 87.28, 87.16, 87.02, 86.87, 86.73, 86.58, 86.44, 86.29, 86.11, 85.93, 85.76, 85.63, 85.48, 85.35, 85.21, 85.08, 84.95, 84.82, 84.71, 84.59, 84.47, 84.34, 84.21, 84.16, 84.09, 84.02, 83.97, 83.92, 83.87, 83.84, 83.78, 83.74, 83.67, 83.58, 83.49, 83.41, 83.32, 83.23, 83.13, 83.02, 82.91, 82.8, 82.69, 82.57, 82.46, 82.34, 82.23, 82.12, 82.02, 81.92, 81.83, 81.74, 81.62, 81.51, 81.4, 81.27, 81.15, 81.04, 80.93, 80.84, 80.74, 80.65, 80.56, 80.47, 80.41, 80.32, 80.24, 80.16, 80.08, 79.99, 79.88, 79.77, 79.71, 79.66, 79.61, 79.56, 79.5, 79.43, 79.37, 79.31, 79.25, 79.18, 79.13, 79.07, 79.01, 78.95, 78.9, 78.84, 78.77, 78.71, 78.65, 78.57, 78.62, 78.66, 78.7, 78.73, 78.77, 78.8, 78.83, 78.86, 78.89, 78.92, 78.93, 78.96, 79.0, 79.04, 79.09, 79.13, 79.15, 79.16, 79.18, 79.22, 79.25, 79.27, 79.3, 79.35, 79.38, 79.44, 79.49, 79.56, 79.6, 79.67, 79.79, 79.91, 80.06, 80.19, 80.34, 80.47, 80.58, 80.69, 80.78, 80.88, 80.97, 81.08, 81.18, 81.25, 81.33, 81.45, 81.6, 81.74, 81.88, 82.02, 82.07, 82.15, 82.24, 82.31, 82.43, 82.53, 82.62, 82.75, 82.88, 82.99, 83.1, 83.23, 83.37, 83.51, 83.66, 83.81, 83.96, 84.1, 84.27, 84.44, 84.6, 84.79, 84.99, 85.2, 85.39, 85.57, 85.73, 85.92, 86.11, 86.3, 86.48, 86.65, 86.84, 86.99, 87.05, 87.13, 87.17, 87.23, 87.31, 87.39, 87.48, 87.58, 87.67, 87.75, 87.82, 87.9, 87.99, 88.1, 88.23, 88.37, 88.51, 88.7, 88.92, 89.1, 89.44, 89.8, 90.14, 90.55, 90.93, 91.29, 91.67, 92.0, 92.34, 92.71, 93.07, 93.44, 93.81, 94.17, 94.56, 94.95, 95.38, 95.81, 96.23, 96.59, 96.92, 97.23, 97.49, 97.77, 98.05, 98.33, 98.6, 98.85, 99.08, 99.3, 99.51, 99.72, 99.89, 100.06, 100.25, 100.44, 100.62, 100.81, 100.99, 101.18, 101.43, 101.7, 101.94, 102.19, 102.44, 102.67, 102.88, 103.1, 103.34, 103.58, 103.81, 104.01, 104.2, 104.38, 104.55, 104.71, 104.92, 105.12, 105.34, 105.59, 105.84, 106.06, 106.25, 106.45, 106.66, 106.9, 107.16, 107.4, 107.64, 107.85, 108.04, 108.22, 108.4, 108.57, 108.73, 108.91, 109.04, 109.15, 109.24, 109.32, 109.4, 109.5, 109.58, 109.67, 109.79, 109.89, 109.98, 110.07, 110.14, 110.22, 110.3, 110.39, 110.54, 110.69, 110.85, 110.99, 111.13, 111.25, 111.36, 111.46, 111.57, 111.68, 111.78, 111.89, 111.97, 112.03]}]}</script><p class="source">Source: Yahoo Finance price history (computed)</p></figure>
+<ul class="bullets"><li><strong>MA stack:</strong> Mixed — 100-DMA ($120.62) sits above the 200-DMA ($112.03) and 50-DMA ($111.37); the 20/50/200 cluster at $109–112 is the overhead supply zone.</li><li><strong>Nearest support / resistance:</strong> No MA below spot. Chart support is the $104.5–105 base held from late Aug to 2026-10-06 (now broken on the 10/07–10/08 closes), then the April closing low of $95.25 (-6.1%). Resistance is the 20-DMA at $108.73 (+7.2%), then $111–112 (+9.8–10.4%).</li><li><strong>Stretch flag:</strong> 🔴 Spot is 9.5% below the 200-DMA (threshold 10%) but the 200-DMA is still rising, so not yet a confirmed downtrend by the skill&#x27;s rule; the death cross keeps it a warning.</li><li><strong>Recent crosses:</strong> Death cross (50 under 200) on 2026-10-05; no golden cross in the last 60 sessions.</li></ul>
+<h2 id="price-momentum-near-term-vs-mid-term">Price Momentum — Near-Term vs Mid-Term</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Horizon</th><th scope="col">Window</th><th scope="col" class=num>Stock Return</th><th scope="col" class=num>S&amp;P 500</th><th scope="col" class=num>Relative</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>Near-term</td><td>1 week</td><td class="num">-5.1%</td><td class="num">+1.3%</td><td class="num">-6.4 pts</td><td>🔴</td></tr><tr><td>Near-term</td><td>1 month</td><td class="num">-8.4%</td><td class="num">+1.8%</td><td class="num">-10.2 pts</td><td>🔴</td></tr><tr><td>Mid-term</td><td>3 months</td><td class="num">-19.6%</td><td class="num">+2.8%</td><td class="num">-22.4 pts</td><td>🔴</td></tr><tr><td>Mid-term</td><td>6 months</td><td class="num">-7.5%</td><td class="num">+14.5%</td><td class="num">-22.0 pts</td><td>🔴</td></tr><tr><td>Mid-term</td><td>12 months (ex-last month)</td><td class="num">+44.6%</td><td class="num">+14.9%</td><td class="num">+29.7 pts</td><td>✅</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance price history and SPY (computed)</p>
+<ul class="bullets"><li><strong>Near-term momentum (≤1M):</strong> Negative — spot is 6.7% under the 20-DMA, 1M return -8.4%, RSI falling.</li><li><strong>Mid-term momentum (3–12M):</strong> Negative — below the 50/100/200-DMA and 22 points behind SPY over both 3M and 6M; only the 12M ex-last-month figure (+44.6%) is positive, which is the pre-May run being unwound.</li><li><strong>Momentum alignment:</strong> Aligned bearish — no counter-trend bounce to fade and no pullback-in-uptrend to buy; the 2026-09-21 spike to $117.4 fully reversed within days, which marks $117–118 as a supply level.</li></ul>
+<h2 id="trend-pullback">Trend &amp; Pullback</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Signal</th><th scope="col">Value</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td>Price vs 50-DMA</td><td>$101.43 vs $111.37</td><td>Below</td></tr><tr><td>Price vs 200-DMA</td><td>$101.43 vs $112.03</td><td>Below</td></tr><tr><td>200-DMA slope</td><td>Rising</td><td>Trend lagging; will flatten if price stays low</td></tr><tr><td>52-wk High → Now</td><td>-37.1% (closing high $161.14; intraday $165.45)</td><td>Deep</td></tr><tr><td>52-wk Low → Now</td><td>+40.9% (closing low $71.97; intraday $70.82)</td><td>—</td></tr><tr><td>52-wk Return</td><td>+32.4%</td><td>vs S&amp;P 500 +17.0%</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance price history and quote data (computed)</p>
+<h2 id="momentum-sentiment">Momentum &amp; Sentiment</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Indicator</th><th scope="col">Value</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>RSI (14-day)</td><td>38.9</td><td>✅ 35–55 band, but near the 30 oversold line</td></tr><tr><td>RSI direction</td><td>↓ (45.4 five sessions ago)</td><td>Deteriorating</td></tr><tr><td>Higher lows in price?</td><td>No</td><td>Still falling</td></tr><tr><td>Price back above 50-DMA?</td><td>No</td><td>Not yet</td></tr><tr><td>MACD (daily)</td><td>N/A (not sourced)</td><td>—</td></tr><tr><td>VIX</td><td>N/A for October (about 15 in mid-July)</td><td>—</td></tr><tr><td>S&amp;P 500 vs 200-DMA</td><td>Likely above (SPY +14.5% 6M); not directly verified</td><td>Bull</td></tr><tr><td>CNN Fear &amp; Greed</td><td>N/A for October (37 in mid-July)</td><td>—</td></tr><tr><td>AAII Bulls / Bears</td><td>N/A for October (bulls 44.9% in mid-July)</td><td>—</td></tr><tr><td>Put/Call Ratio</td><td>N/A</td><td>—</td></tr></tbody></table></div><p class="source">Source: RSI: Yahoo Finance price history (computed). Sentiment: <a href="https://www.schaeffersresearch.com/content/bgs/2026/05/19/unsure-of-market-direction-try-these-sentiment-indicators">Schaeffer&#x27;s Research</a> and <a href="https://walnutinvest.com/stats/investor-sentiment-statistics">Walnut Invest</a>, mid-July 2026 readings; no October 2026 values found</p>
+<figure class="viz" data-chart><figcaption><span class="viz-title">AKAM RSI (14)</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "AKAM RSI (14)", "unit": "num", "y_min": 0, "y_max": 100, "refs": [{"value": 70, "label": "Overbought 70"}, {"value": 30, "label": "Oversold 30"}], "categories": ["2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11", "2025-04-14", "2025-04-15", "2025-04-16", "2025-04-17", "2025-04-21", "2025-04-22", "2025-04-23", "2025-04-24", "2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30", "2025-05-01", "2025-05-02", "2025-05-05", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09", "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-06-02", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-20", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-25", "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-05", "2026-10-06", "2026-10-07", "2026-10-08"], "series": [{"name": "RSI (14)", "values": [23.53, 43.32, 38.35, 41.21, 41.4, 42.15, 41.05, 40.48, 37.99, 42.34, 47.33, 53.85, 54.92, 55.64, 57.17, 56.13, 57.24, 60.17, 61.29, 60.54, 60.51, 65.94, 43.15, 48.46, 48.76, 45.98, 44.08, 47.62, 47.28, 46.43, 44.05, 45.89, 43.02, 48.73, 45.23, 44.46, 44.07, 44.85, 47.88, 46.42, 45.03, 48.26, 51.85, 52.5, 52.18, 53.39, 47.42, 57.62, 52.75, 52.81, 51.58, 54.78, 57.41, 55.07, 55.33, 55.33, 56.0, 55.16, 54.28, 54.39, 51.72, 59.71, 59.65, 52.12, 42.2, 42.37, 39.77, 41.3, 46.68, 50.83, 50.93, 59.12, 60.3, 60.43, 60.62, 53.5, 52.11, 44.08, 36.63, 30.51, 37.08, 31.74, 36.18, 37.66, 27.38, 27.78, 34.42, 47.64, 44.39, 44.91, 47.91, 51.88, 50.41, 51.31, 55.7, 51.46, 52.91, 57.26, 57.64, 60.0, 51.09, 53.11, 51.64, 56.44, 57.5, 54.3, 48.59, 57.04, 48.73, 47.53, 47.26, 45.43, 50.24, 47.33, 48.91, 43.92, 47.82, 44.84, 47.61, 48.36, 46.49, 46.87, 55.93, 53.88, 57.19, 49.23, 49.72, 44.96, 37.75, 40.31, 41.64, 40.24, 37.91, 37.58, 44.77, 52.71, 47.19, 46.82, 48.73, 50.64, 51.79, 41.0, 45.13, 49.94, 47.74, 39.38, 43.58, 43.66, 69.6, 73.7, 77.13, 75.58, 71.25, 66.92, 67.56, 67.74, 63.89, 65.38, 68.07, 65.81, 69.66, 65.44, 65.56, 59.58, 56.86, 59.44, 55.17, 46.92, 51.51, 52.34, 54.29, 51.42, 52.58, 54.35, 57.53, 56.86, 59.38, 61.28, 63.51, 59.83, 58.15, 56.47, 55.7, 54.49, 51.29, 43.14, 46.58, 56.5, 54.35, 46.03, 53.51, 61.09, 53.85, 57.85, 59.7, 63.53, 52.79, 60.42, 65.28, 60.56, 65.49, 70.58, 67.86, 61.79, 57.37, 56.34, 47.77, 48.0, 47.27, 53.66, 52.97, 52.32, 53.09, 67.15, 73.4, 66.99, 67.79, 68.06, 45.75, 50.91, 52.36, 52.25, 52.07, 50.04, 49.02, 54.9, 56.0, 52.92, 51.22, 54.38, 57.56, 60.04, 58.18, 61.04, 56.81, 57.38, 61.51, 62.97, 63.6, 68.34, 68.42, 73.18, 68.63, 62.56, 54.49, 60.44, 61.49, 64.07, 57.78, 56.53, 59.34, 49.01, 31.91, 36.59, 32.5, 34.49, 42.16, 41.42, 43.45, 44.0, 43.04, 42.09, 41.12, 42.17, 41.58, 48.38, 52.7, 53.86, 56.34, 68.1, 70.91, 63.08, 78.23, 79.76, 76.02, 79.49, 74.03, 69.53, 69.43, 60.97, 62.13, 63.56, 64.09, 64.65, 60.76, 59.43, 63.64, 66.27, 69.61, 69.63, 67.93, 57.34, 50.77, 47.57, 42.06, 44.27, 45.21, 45.87, 44.31, 40.8, 38.62, 35.71, 35.12, 34.84, 30.43, 31.0, 31.77, 38.18, 33.97, 34.49, 34.14, 36.74, 51.94, 54.77, 51.11, 49.96, 51.06, 44.55, 43.37, 45.16, 48.86, 51.02, 50.24, 42.31, 40.33, 37.92, 36.92, 33.05, 42.46, 44.36, 47.85, 54.14, 52.79, 48.31, 40.36, 48.47, 47.51, 53.66, 55.94, 55.59, 53.16, 45.01, 42.86, 40.44, 40.87, 36.73, 36.85, 40.26, 44.67, 40.82, 42.45, 40.21, 38.81, 41.09, 39.65, 40.33, 48.62, 43.99, 43.57, 42.02, 41.79, 40.54, 45.52, 41.8, 59.64, 60.58, 60.69, 49.25, 53.41, 47.53, 46.92, 44.54, 45.36, 48.21, 46.98, 47.95, 42.6, 38.9]}]}</script><p class="source">Source: Yahoo Finance price history (computed)</p></figure>
+<h2 id="staged-accumulation-framework">Staged Accumulation Framework</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">When</th><th scope="col">Trigger</th><th scope="col">Suggested Sizing</th></tr></thead><tbody><tr><td>Tranche 1</td><td>Not triggered (score 1/5). Earliest: two closes above the 20-DMA ($108.73) with RSI turning up from the 30s, or a washout to the $95 area with a higher low</td><td>25% of intended position</td></tr><tr><td>Tranche 2</td><td>Reclaims the 50/200-DMA cluster ($111–112) on a close; RSI back above 50</td><td>Another 33%</td></tr><tr><td>Tranche 3</td><td>Close above $118 (the failed 9/21–9/23 spike) and the 100-DMA ($120.62)</td><td>Remaining</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance price history (computed)</p>
+<ul class="bullets"><li>If the stock rebounds 15%+ (above ~$117) before Tranche 2 is met, stand down; that is the zone where the last rally failed.</li></ul>
+<h2 id="what-could-go-wrong">What Could Go Wrong</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Risk</th><th scope="col">Watch For</th><th scope="col">Action</th></tr></thead><tbody><tr><td>Trend break</td><td>Close below $95.25 (April closing low); the $104.5 base is already lost</td><td>Stay out; next floor is the $71.97 closing low</td></tr><tr><td>Business deterioration</td><td>Revenue/EPS miss, guidance cut, further erosion from the ~$141 buyback price (stock -28%)</td><td>Re-check fundamental thesis</td></tr><tr><td>Macro shock</td><td>VIX &gt;40, S&amp;P -20%</td><td>Size down; wait for stability</td></tr><tr><td>Squeeze risk (for avoiders)</td><td>Gap up through $112 on news (9/21 was +12% in one session)</td><td>Do not short into event risk; reassess on reclaim</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance price history (computed)</p>
+<ul class="bullets"><li><strong>Soft stop:</strong> for any long attempt, a close below $95.25 for 2+ sessions invalidates it (-6.1% from spot). This chart stop disagrees with the valuation note&#x27;s $85 stop, which is a fundamental level: the chart gives up at $95, the valuation case only at $85. The valuation $106 target is also just +4.5% above spot and below the $108.73 20-DMA, so neither framework offers a payoff.</li></ul>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Is the drop from ~$141 a dip to buy?</td><td>Dip-buyers treat the -37% drawdown as oversold value, anchored on the 12M +32% gain</td><td>Tape says distribution, not washout: RSI 38.9 and falling (not under 30), no higher low, death cross 10/05, every MA overhead. Buy only on reclaim of $112.</td></tr><tr><td>Did the 9/21 jump signal a bottom?</td><td>Reaction to news read as a turn</td><td>It failed within days ($117.4 to $110.4 to $101.4); $117–118 is supply, and the $104.5 base is lost.</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance price history (computed)</p>
+<div class="edge"><strong>The edge:</strong> The crowd treats the drawdown as capitulation, but RSI has not reached oversold and price just broke its two-month base, so the better entry is a confirmed reclaim of $112 or a true flush toward $95, not $101.</div>
+<p><strong>Note:</strong> Our technical read aligns with the valuation PASS: no timing edge either way.</p>
+<h2 id="verdict">Verdict</h2>
+<div class="callout verdict neutral"><div class="signal"><span class="badge neutral"><span class="dot"></span>AVOID</span> Conviction 3 / 10</div><div class="call-strip"><div class="stat"><div class="label">Trend</div><div class="value">Down (below all four MAs; 200-DMA still rising)</div></div><div class="stat"><div class="label">Market Regime</div><div class="value">Cautious (VIX / sentiment not sourced for October)</div></div><div class="stat"><div class="label">Sentiment</div><div class="value">N/A (July: neutral to mild fear)</div></div><div class="stat"><div class="label">Setup Score</div><div class="value">1 / 5</div></div><div class="stat"><div class="label">Entry / Add Zone</div><div class="value">None now. Conditional: $108–112 only after a close above the 20-DMA with RSI rising; alternative probe $95–98 on a higher-low flush</div></div><div class="stat"><div class="label">Stop / Invalidation</div><div class="value">$95.25 (close below for 2+ sessions) for a long attempt, -6.1% from spot; bearish view invalidated by a close above $112.03 (+10.4%). Valuation&#x27;s $85 stop is fundamental and does not match the chart</div></div><div class="stat"><div class="label">Risk/Reward at entry</div><div class="value">About 0.7 : 1 from $110 (stop $95.25 vs 100-DMA $120.62); about 1 : 1 to the $125 August high</div></div><div class="stat"><div class="label">What to Do</div><div class="value">Wait</div></div></div><ul class="bullets"><li><strong>Position sizing:</strong> 0% now. If the reclaim triggers, Tranche 1 at 25% of intended size, tactical only: beta is 0.62 but event gaps exceed 10%.</li><li><strong>Biggest risk to watch:</strong> A break below $95.25 opens the way toward the $71.97 closing low, with fast gaps on any earnings or guidance news.</li><li><strong>Summary:</strong> Technicals confirm the valuation PASS: price is under every moving average with a fresh death cross and a lost $104.5 base. Nothing improves until a close above $112, and a close below $95.25 would make it worse.</li></ul><p class="source">Source: Yahoo Finance price history (computed)</p><div class="scale">Conviction scale: 9–10 = highest-conviction book position · 7–8 = high · 5–6 = moderate/starter · 3–4 = low/watchlist · 1–2 = avoid or short candidate</div></div>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>

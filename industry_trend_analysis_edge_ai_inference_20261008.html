@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: null, &quot;skill&quot;: &quot;industry_trend_analysis&quot;, &quot;title&quot;: &quot;Edge AI Inference&quot;, &quot;signal&quot;: null, &quot;conviction&quot;: null, &quot;as_of&quot;: null, &quot;rendered&quot;: &quot;2026-10-08&quot;}">
+<title>Edge AI Inference</title>
+<style>/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 13px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 12px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(11px, 0.9vw, 14px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value { font-size: 20px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 12.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 14px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 11px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 18px; }
+.callout.verdict .signal { font-size: 22px; }
+.callout .scale { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+.call-line { font-size: 17px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 15px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 12.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 11.5px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 12px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 10.5px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 11px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 13px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 12px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 12.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 22px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 30px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 18px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 12.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 13px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 12px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card li.pkg > .row a { font-weight: 650; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+</style>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="index.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="index.html">← Investment Research Library</a><ol><li><a href="#1-introduction">1. Introduction</a></li><li><a href="#2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</a></li><li><a href="#3-value-chain-map">3. Value Chain Map</a></li><li><a href="#4-tam-expansion-analysis">4. TAM Expansion Analysis</a></li><li><a href="#5-positioning-recommendation">5. Positioning Recommendation</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</a></li><li><a href="#7-key-diligence-questions">7. Key Diligence Questions</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>Industry Trend Analysis</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>Edge AI Inference</h1><p class="subtitle">Buy-side thematic read · October 8, 2026 · Theme Conviction 5/10 · Peak verdict: Intact</p></header>
+<h2 id="1-introduction">1. Introduction</h2>
+<ul class="bullets"><li><strong>What it is:</strong> edge AI inference is running trained AI models on the device or near it — phones, PCs, cars, cameras, industrial and IoT equipment, and on-premise or network-edge servers — instead of sending every request to a cloud data center.</li><li><strong>Why now:</strong> small language models (3–8B parameters) with 4-bit quantization now run at usable speed on consumer silicon: Apple&#x27;s on-device model is ~3B parameters across iPhone 15 Pro and newer, Google&#x27;s Gemini Nano is reported on 1B+ Android devices, and Microsoft released the 3.8B Phi-4 Mini in February 2026 (2026 industry roundups; secondary sources).</li><li><strong>Real attach, weak pull:</strong> GenAI-capable smartphones are forecast at 45% of 2026 shipments (36% in 2025, Counterpoint), and AI PCs at ~59% of PCs (Counterpoint) or ~58.7% of laptops (Gartner) — yet Copilot+ PCs were only 1.9% of the PC market in Q1 2025 and Dell dialed back &#x27;AI-first&#x27; consumer messaging at CES 2026 (2026 PC-industry coverage).</li><li><strong>The binding constraint is memory, not compute:</strong> hyperscale AI has pulled ~70% of DRAM output toward AI servers; LPDDR5X rose 78–83% in Q2 2026, memory is now 30–40% of a phone&#x27;s bill of materials versus 10–15% historically, and IDC sees smartphone and PC units falling by roughly 200M combined in 2026 to ~1.34B (IDC, Counterpoint, Gartner; 2026).</li><li><strong>End state:</strong> inference splits across three tiers — device, near-edge and cloud — with the device handling latency-critical, private and offline tasks (cameras, cars, industrial, wearables) while the cloud keeps heavy reasoning. Edge AI market estimates run from $25B (2025) to $165B (2034) at ~23% a year, but they are market-research definitions and far above company-disclosed addressable markets such as Ambarella&#x27;s $5.5B edge-AI SAM (fiscal 2026).</li><li><strong>Why it still matters:</strong> inference is the larger part of AI compute spend — reported at 55% of AI cloud infrastructure spending (~$37.5B) in early 2026 — and moving some of it to billions of devices the user already paid for is an economic shift, even though cloud inference cost per token has fallen ~10x in about 18 months.</li></ul>
+<h2 id="2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Signal</th><th scope="col">Status</th><th scope="col">One-Line Verdict</th></tr></thead><tbody><tr><td>Technology Inflection</td><td class="fill-good">✅ Firing</td><td>Small models plus NPUs in virtually every flagship chip make on-device LLMs usable.</td></tr><tr><td>Regulatory Shift</td><td class="fill-warn">⚠️ Partial</td><td>EU AI Act high-risk obligations (Aug 2, 2026) favor local processing, but there is no edge-specific mandate.</td></tr><tr><td>Behavioral Change</td><td class="fill-warn">⚠️ Partial</td><td>AI-capable devices ship in volume, but buyers are not paying for AI and some vendors are moving features back to the cloud.</td></tr><tr><td>Capital Flow</td><td class="fill-warn">⚠️ Partial</td><td>Capital is concentrating on data-center inference (Nvidia–Groq ~$20B) more than edge, though Qualcomm and Ambarella are making sizable edge bets.</td></tr><tr><td>Narrative Momentum</td><td class="fill-good">✅ Firing</td><td>&#x27;Edge AI&#x27; is a mainstream investing narrative and every OEM markets AI devices; no dedicated edge-AI ETFs were found.</td></tr></tbody></table></div><p class="source">Source: Compiled from the sources cited in the sub-sections below</p>
+<p><strong>Convergence Verdict: 2/5 signals firing (three partial) — Emerging. Estimated cycle stage: Early.</strong> The technology works and the narrative is loud, but the behavioral and capital signals that make a theme investable are not yet confirmed. The most important live constraint — memory supply — sits outside the five signals and is treated in Sections 3, 5 and 6.</p>
+<h3 id="technology-inflection-firing">Technology Inflection — ✅ Firing</h3>
+<ul class="bullets"><li><strong>Model efficiency:</strong> small models distilled from larger ones now do focused tasks competently; an M4/M5 Mac runs 8B models at 30+ tokens a second and recent flagship phones run 5–10B-class models at conversational speed (2026 on-device AI roundups; secondary sources).</li><li><strong>Hardware:</strong> by 2026 virtually every flagship chip from Apple, Qualcomm, Intel, AMD, MediaTek and Samsung includes a dedicated Neural Processing Unit (NPU) (edge AI market research, 2026).</li><li><strong>Edge accelerators:</strong> Hailo launched its Hailo-10 GenAI accelerator for generative AI on edge devices and had raised over $340M in total (company funding announcements, 2024–2026); Nvidia&#x27;s Jetson Thor is 7.5x Orin (Nvidia, CES 2026).</li><li><strong>Caveat:</strong> compute is not the bottleneck — Apple&#x27;s newest on-device model requires at least 12GB of unified memory (Apple, 2026), and average smartphone DRAM content is only ~8.5GB in 2026.</li></ul>
+<h3 id="regulatory-shift-partial">Regulatory Shift — ⚠️ Partial</h3>
+<ul class="bullets"><li><strong>EU AI Act:</strong> high-risk AI obligations, including data-governance requirements, took effect Aug 2, 2026, with fines up to €15M or 3% of global turnover; local processing is one way to control where data is handled (NeuralTrust, particula.tech, 2026).</li><li><strong>Sovereignty pull:</strong> the 2026 debate is about &#x27;technical sovereignty&#x27; — verifiable control over where data is processed — and the US CLOUD Act still reaches US-owned cloud providers even in EU regions (2026 data-sovereignty analyses).</li><li><strong>Tariffs cut the other way:</strong> a 25% Section 232 tariff on certain advanced chips took effect Jan 15, 2026 (downstream products not covered), additional Section 301 tariffs on Chinese semiconductors are set for June 2027, and the US–China truce expires in November 2026 (Mondaq/Sheppard Mullin, 2026).</li><li><strong>Net read:</strong> regulation helps the privacy argument but does not mandate edge deployment, so it scores Partial.</li></ul>
+<h3 id="behavioral-change-partial">Behavioral Change — ⚠️ Partial</h3>
+<ul class="bullets"><li><strong>Attach is high:</strong> GenAI-capable smartphones are forecast at 45% of 2026 shipments (36% in 2025) and AI PCs at ~59% of PCs (Counterpoint, Gartner, 2026).</li><li><strong>Pull is weak:</strong> NPU PCs grew &#x27;because people needed to upgrade their computers, not because they wanted an AI computer&#x27;; Copilot+ PCs were 1.9% of the PC market in Q1 2025; Dell dialed back AI-first messaging at CES 2026 (PC-industry coverage).</li><li><strong>Vendors hedge:</strong> Microsoft said it wants to make every Windows 11 PC an AI PC, with features like &#x27;Hey Copilot&#x27; and Copilot Vision running in the cloud so they do not need 40-TOPS NPUs (Yahoo Tech, PCWorld, 2026).</li><li><strong>Apple&#x27;s pace:</strong> the contextual Siri demoed in 2024 only began rolling out in 2026, ~18 months late, with a reimagined Siri due with iOS 27 this fall (2026 Apple coverage).</li></ul>
+<h3 id="capital-flow-partial">Capital Flow — ⚠️ Partial</h3>
+<ul class="bullets"><li><strong>Where the money is going:</strong> Nvidia struck a ~$20B licensing and hiring deal with inference-chip company Groq (non-exclusive license, founder and senior engineers hired); Groq then raised $350M at $3.5B, half its prior value (aiweekly, digitalcitizen, 2026) — that is data-center inference.</li><li><strong>Edge-specific bets:</strong> Qualcomm made five acquisitions in 18 months including Arduino, Edge Impulse and Foundries.io, and Ambarella signed a May 2026 agreement with Hanwha worth more than $800M over a decade (exoswan, 2026).</li><li><strong>Venture is thin:</strong> Hailo&#x27;s rounds ($120M and a reported $136M) and Axelera&#x27;s $27M Series A are small beside humanoid or data-center rounds (company announcements; not 2026 data in all cases).</li><li><strong>Read:</strong> capital is flowing into inference, but mostly into the cloud tier; edge gets strategic corporate dollars rather than a venture wave.</li></ul>
+<h3 id="narrative-momentum-firing">Narrative Momentum — ✅ Firing</h3>
+<ul class="bullets"><li><strong>Mainstream:</strong> Nasdaq ran &#x27;Prediction: edge computing will define tech winners in 2026&#x27;; &#x27;Top Edge AI Stocks 2026: The Brain Leaves the Building&#x27; and similar lists are everywhere (Nasdaq, exoswan, 2026).</li><li><strong>Marketing saturation:</strong> every major OEM labels flagship devices as AI devices; Qualcomm, Apple and Samsung headline on-device AI.</li><li><strong>Not yet a crowded product trade:</strong> no dedicated edge-AI ETFs were found in the 2026 search, unlike physical AI or optical interconnect.</li><li><strong>Read:</strong> the narrative is strong but rests on device labels rather than on demonstrated willingness to pay.</li></ul>
+<h2 id="3-value-chain-map">3. Value Chain Map</h2>
+<p><em>Companies appear once per layer by primary role; private companies are listed by type where no public comp exists. Quote data: Yahoo Finance, Oct 8, 2026.</em></p>
+<h3 id="layer-1-infrastructure-picks-shovels">Layer 1 — Infrastructure (&#x27;Picks &amp; Shovels&#x27;)</h3>
+<p><em>The processors and chips that run inference on the device: phone and PC SoCs, vision SoCs, FPGAs and embedded controllers.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D6E4F0;color:#0b0b0b">Qualcomm</td><td style="background:#D6E4F0;color:#0b0b0b">QCOM</td><td style="background:#D6E4F0;color:#0b0b0b">Snapdragon SoCs for phones, PCs, cars and IoT; fiscal Q3 2026 revenue $9.9B (−4%) with handsets −20% to $5.1B, automotive +61% to $1.6B and IoT +9% to $1.8B; 17.1x forward P/E, 33% below its high</td><td style="background:#D6E4F0;color:#0b0b0b">High</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Handset volumes are capped by memory costs; Snapdragon X PC share was &lt;0.8% in Q3 2024</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">MediaTek</td><td style="background:#D6E4F0;color:#0b0b0b">2454.TW</td><td style="background:#D6E4F0;color:#0b0b0b">High-volume Android phone SoCs; revenue +1.2%; 32.1x forward P/E, 14% below its high</td><td style="background:#D6E4F0;color:#0b0b0b">Medium–High</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Android handset exposure to the memory squeeze</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Ambarella</td><td style="background:#D6E4F0;color:#0b0b0b">AMBA</td><td style="background:#D6E4F0;color:#0b0b0b">Edge AI vision SoCs; edge AI is ~80% of fiscal 2026 revenue (+37% YoY); ~45M cumulative edge SoCs; Hanwha agreement worth &gt;$800M over a decade; 55.8x forward P/E; 15.6% of float short</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Small scale (fiscal 2026 revenue guide ~$379M) and a premium multiple</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Lattice Semiconductor</td><td style="background:#D6E4F0;color:#0b0b0b">LSCC</td><td style="background:#D6E4F0;color:#0b0b0b">Low-power FPGAs for edge devices; revenue +62.2%, 69.0% gross margin; 39.0x forward P/E</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early–Mid</td><td style="background:#D6E4F0;color:#0b0b0b">FPGA edge-AI content per device unproven</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">NXP / STMicroelectronics</td><td style="background:#D6E4F0;color:#0b0b0b">NXPI / STM</td><td style="background:#D6E4F0;color:#0b0b0b">Embedded processors for automotive and industrial edge; NXP +19.5% growth at 12.7x forward, STM +26.1% at 20.8x; edge-AI revenue not separately disclosed</td><td style="background:#D6E4F0;color:#0b0b0b">Medium–High</td><td style="background:#D6E4F0;color:#0b0b0b">Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Cyclical auto/industrial demand; edge-AI share unquantified</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">AMD / Intel (PC NPUs)</td><td style="background:#D6E4F0;color:#0b0b0b">AMD / INTC</td><td style="background:#D6E4F0;color:#0b0b0b">x86 PC chips with NPUs; AMD revenue +50.1% at 39.4x forward, Intel +25.4% at 51.1x forward</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Mid</td><td style="background:#D6E4F0;color:#0b0b0b">NPU usage is unproven and the PC market is shrinking on memory costs</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps and prices are in local currency and not compared); Qualcomm FQ3&#x27;26 release (SEC 8-K, Jun 28, 2026 quarter); Ambarella (Nasdaq, IR 2026); Notebookcheck (X Elite share)</p>
+<h3 id="layer-2-enablers-platforms-tools">Layer 2 — Enablers (Platforms &amp; Tools)</h3>
+<p><em>The models, runtimes and developer tools that make a device&#x27;s NPU useful.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D5E8D4;color:#0b0b0b">Google (Gemini Nano / Gemma)</td><td style="background:#D5E8D4;color:#0b0b0b">GOOGL</td><td style="background:#D5E8D4;color:#0b0b0b">Gemini Nano is reported on 1B+ Android devices (2.7B parameters); open Gemma models; 23.0x forward P/E</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Early–Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Android features can fall back to the cloud; on-device is not a revenue line</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Microsoft (Phi, Windows ML, Copilot+)</td><td style="background:#D5E8D4;color:#0b0b0b">MSFT</td><td style="background:#D5E8D4;color:#0b0b0b">Phi-4 Mini 3.8B runs offline on a phone; but moved Copilot features to the cloud so they do not require NPUs; 22.1x forward P/E</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Early–Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Has partly decoupled its AI features from NPU hardware</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Qualcomm AI Hub / Edge Impulse</td><td style="background:#D5E8D4;color:#0b0b0b">QCOM</td><td style="background:#D5E8D4;color:#0b0b0b">Developer tooling for deploying models to Snapdragon, expanded through the Edge Impulse and Arduino acquisitions</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early</td><td style="background:#D5E8D4;color:#0b0b0b">Platform lock-in unproven versus open runtimes</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">CEVA</td><td style="background:#D5E8D4;color:#0b0b0b">CEVA</td><td style="background:#D5E8D4;color:#0b0b0b">Licensor of NPU and DSP IP for edge chips; 87.5% gross margin, revenue +13.1%; 41.9x forward P/E; 11.6% short</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early–Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Small royalty base; competes with Arm and in-house NPUs</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Open-weight small models (type)</td><td style="background:#D5E8D4;color:#0b0b0b">Meta Llama / Phi / Gemma</td><td style="background:#D5E8D4;color:#0b0b0b">Freely available 3–8B models that distill frontier capability for devices</td><td style="background:#D5E8D4;color:#0b0b0b">Low</td><td style="background:#D5E8D4;color:#0b0b0b">Early–Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Commoditized — no direct monetization</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps and prices are in local currency and not compared); 2026 on-device AI roundups (secondary sources)</p>
+<h3 id="layer-3-integrators-system-builders">Layer 3 — Integrators (System Builders)</h3>
+<p><em>The companies that combine silicon, memory and models into shipped devices and systems.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FFF2CC;color:#0b0b0b">Apple</td><td style="background:#FFF2CC;color:#0b0b0b">AAPL</td><td style="background:#FFF2CC;color:#0b0b0b">Runs a ~3B on-device model on iPhone 15 Pro and newer, with Private Cloud Compute for harder requests; revenue +16.4%; 35.4x forward P/E, 2% below its 52-week high</td><td style="background:#FFF2CC;color:#0b0b0b">High</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Siri delivery slipped ~18 months; priced near highs</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Samsung Electronics</td><td style="background:#FFF2CC;color:#0b0b0b">005930.KS</td><td style="background:#FFF2CC;color:#0b0b0b">Galaxy AI phones plus the world&#x27;s largest memory maker; revenue +130%, 3.7x forward P/E, 30% below its high</td><td style="background:#FFF2CC;color:#0b0b0b">High</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Memory-cycle exposure dominates its earnings</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">HP / Lenovo / Dell (PC OEMs)</td><td style="background:#FFF2CC;color:#0b0b0b">HPQ / LNVGY / DELL</td><td style="background:#FFF2CC;color:#0b0b0b">AI PC makers; gross margins of 19.7%, 15.9% and 19.9% leave little room to absorb memory cost increases</td><td style="background:#FFF2CC;color:#0b0b0b">Low</td><td style="background:#FFF2CC;color:#0b0b0b">Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Gartner sees memory +130% by end-2026, PC prices +17% and PC shipments −10.4%</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Mobileye</td><td style="background:#FFF2CC;color:#0b0b0b">MBLY</td><td style="background:#FFF2CC;color:#0b0b0b">Camera-based ADAS compute; revenue +0.4%, 3.0x sales, 22.6% of float short, 56% below its high</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Competition from Nvidia DRIVE Thor and Qualcomm Ride</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Nvidia (Jetson / DRIVE)</td><td style="background:#FFF2CC;color:#0b0b0b">NVDA</td><td style="background:#FFF2CC;color:#0b0b0b">Edge robot and automotive compute (Jetson Thor 7.5x Orin; DRIVE Thor); 14.5x forward P/E</td><td style="background:#FFF2CC;color:#0b0b0b">High</td><td style="background:#FFF2CC;color:#0b0b0b">Early–Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Edge is a small slice of a data-center-driven business</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps and prices are in local currency and not compared); Apple Intelligence coverage (2026); Gartner/IDC PC forecasts (2026)</p>
+<h3 id="layer-4-applications-end-use-products">Layer 4 — Applications (End-Use Products)</h3>
+<p><em>The features and products users actually touch: on-device assistants, camera analytics, in-car AI, wearables.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FCE4D6;color:#0b0b0b">Smart camera and video-analytics makers (type)</td><td style="background:#FCE4D6;color:#0b0b0b">e.g. Hanwha Vision</td><td style="background:#FCE4D6;color:#0b0b0b">Edge AI cameras; Hanwha is Ambarella&#x27;s &gt;$800M, ten-year partner; private or not screened</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early–Mid</td><td style="background:#FCE4D6;color:#0b0b0b">Hardware margins; vendor concentration</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">On-device assistant features (type)</td><td style="background:#FCE4D6;color:#0b0b0b">AAPL / GOOGL / MSFT / Samsung</td><td style="background:#FCE4D6;color:#0b0b0b">Writing tools, summaries, translation and Siri-style assistants running locally</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">Monetization unproven; features can fall back to the cloud</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Local-AI developer apps (type)</td><td style="background:#FCE4D6;color:#0b0b0b">various</td><td style="background:#FCE4D6;color:#0b0b0b">Apps shipping with on-device inference as the primary path, enabled by 3–8B models</td><td style="background:#FCE4D6;color:#0b0b0b">Low</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">Thin moats; free substitutes from platform owners</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Automotive in-cabin and ADAS software (type)</td><td style="background:#FCE4D6;color:#0b0b0b">QCOM / NVDA / MBLY</td><td style="background:#FCE4D6;color:#0b0b0b">Snapdragon Digital Chassis powers 75M+ vehicles; automotive revenue +61% at Qualcomm</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early–Mid</td><td style="background:#FCE4D6;color:#0b0b0b">OEM design-cycle timing and in-sourcing</td></tr></tbody></table></div><p class="source">Source: Qualcomm FQ3&#x27;26 release; exoswan (2026); 2026 on-device AI roundups</p>
+<h3 id="layer-5-adjacent-beneficiaries">Layer 5 — Adjacent Beneficiaries</h3>
+<p><em>Network-edge and on-premise infrastructure whose addressable market grows when inference moves closer to users.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#E1D5E7;color:#0b0b0b">Akamai</td><td style="background:#E1D5E7;color:#0b0b0b">AKAM</td><td style="background:#E1D5E7;color:#0b0b0b">Distributed edge network pivoting to inference cloud (see our Oct 8 AKAM deep-research note: PASS, 4/10); 14.7x forward P/E</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Early–Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Margin and FCF down as the AI build is funded; 15.4% of float short</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Cloudflare</td><td style="background:#E1D5E7;color:#0b0b0b">NET</td><td style="background:#E1D5E7;color:#0b0b0b">Edge network running models near users; revenue +35.9%; 203.6x forward P/E, 48.4x sales</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Early–Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Valuation assumes the edge-inference narrative fully pays</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Fastly</td><td style="background:#E1D5E7;color:#0b0b0b">FSLY</td><td style="background:#E1D5E7;color:#0b0b0b">Edge compute platform; revenue +23.3%; 39.4x forward P/E; 15.7% of float short</td><td style="background:#E1D5E7;color:#0b0b0b">Low–Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Early–Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Sub-scale versus Cloudflare and Akamai</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Dell / HPE / Super Micro</td><td style="background:#E1D5E7;color:#0b0b0b">DELL / HPE / SMCI</td><td style="background:#E1D5E7;color:#0b0b0b">On-premise and edge AI servers; Dell revenue +57.7% at 19.8x forward, HPE +33.7% at 15.1x, SMCI +93.2% at 8.0x with 10.8% gross margin</td><td style="background:#E1D5E7;color:#0b0b0b">Low–Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Growth is mostly data-center AI servers, not edge</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps and prices are in local currency and not compared); our Outputs/AKAM note (Oct 8, 2026)</p>
+<h3 id="layer-6-bottleneck-highest-structural-moat">Layer 6 — Bottleneck (Highest Structural Moat)</h3>
+<p><em>The scarce inputs every edge-AI device maker must buy from one or two suppliers: memory, the CPU instruction-set licence and leading-edge foundry capacity.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#F4CCCC;color:#0b0b0b">Micron</td><td style="background:#F4CCCC;color:#0b0b0b">MU</td><td style="background:#F4CCCC;color:#0b0b0b">One of three global DRAM makers; LPDDR5X +78–83% in Q2 2026; memory now 30–40% of phone BOM; supply seen tighter through fiscal 2028; 5.1x forward P/E</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Margin peak mid-2027 per analysts; capex doubling to &gt;$50B</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Samsung / SK hynix (memory)</td><td style="background:#F4CCCC;color:#0b0b0b">005930.KS / 000660.KS</td><td style="background:#F4CCCC;color:#0b0b0b">Together with Micron, redirected ~70% of DRAM output to AI servers; SK hynix not screened this run</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">A supply response would unwind the scarcity premium</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Arm</td><td style="background:#F4CCCC;color:#0b0b0b">ARM</td><td style="background:#F4CCCC;color:#0b0b0b">Instruction-set and CPU IP in virtually all phone chips; royalty revenue $715M (+22%) in fiscal Q1 2027, 97.5% gross margin; 89.7x forward P/E, 39% below its high</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Valuation (56.9x sales); Qualcomm and others developing alternatives</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">TSMC</td><td style="background:#F4CCCC;color:#0b0b0b">TSM</td><td style="background:#F4CCCC;color:#0b0b0b">Leading-edge foundry for Apple, Qualcomm, MediaTek and Nvidia; not screened this run</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Early–Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Taiwan concentration; tariff and export-control exposure</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026 (non-US market caps and prices are in local currency and not compared); Micron FQ4&#x27;26 call coverage (Oct 2026); wccftech / phandroid / dataconomy LPDDR5X coverage (2026); Arm FQ1&#x27;27 (Kalkine, Jul 29, 2026)</p>
+<h2 id="4-tam-expansion-analysis">4. TAM Expansion Analysis</h2>
+<h3 id="4a-market-size-growth-drivers">4a. Market Size &amp; Growth Drivers</h3>
+<p>Edge AI turns an existing device and sensor base into an AI-capable one: the incremental revenue is NPU silicon, extra memory, software and new device categories (smart cameras, AI-enabled industrial controls), not new devices. The honest TAM is therefore modest in dollars relative to the headline device value, and the research-mill forecasts overstate it by treating the whole AI-capable device as &#x27;edge AI&#x27;.</p>
+<ul class="bullets"><li>Edge AI market: $25.2B (2025) → $31.05B (2026) → $164.8B (2034), 23.2% CAGR (Straits Research); another estimate $21.5B (2025) → $149.0B (2034), 24.0% CAGR (market-research aggregators, 2026; definitions vary).</li><li>Edge AI chips: $6.25B (2025) → $60.1B (2034), 28.6% CAGR; edge NPU modules $4.8B (2025) → $28.6B (2034), 22% CAGR (market-research aggregators, 2026).</li><li>Company-disclosed: Ambarella sizes the edge AI serviceable market at $5.5B (fiscal 2026) → $12.9B (fiscal 2031), an 18% CAGR — a much lower slope than the research mills (Ambarella, 2026).</li><li>Attach: GenAI-capable phones at 45% of 2026 shipments, ~486M units on a ~1.08B base (derived from Counterpoint); AI PCs ~143M units (Gartner, 2026) — roughly 630M AI-capable devices in 2026.</li><li>Headwind: IDC expects phones and PCs to total ~1.34B units in 2026, ~200M fewer; forecasts conflict, from −2.9% to −5.2% for smartphones (earlier IDC) to −12.9% (IDC, later) and −13.9% (Counterpoint) (IDC, Counterpoint, 2026).</li></ul>
+<p><strong>Structural vs cyclical.</strong> Structural: privacy and sovereignty requirements (EU AI Act, GDPR), latency below 10ms versus 100–300ms for cloud round trips, offline operation, and model-efficiency gains that keep shrinking the hardware needed for a given capability. Cyclical: the AI-PC and AI-phone upgrade pull is confounded by the Windows 10 end-of-life refresh, NPUs are bundled in every chip regardless of demand, and the memory shortage is a cyclical-looking squeeze that IDC calls a &#x27;potentially permanent, strategic reallocation of the world&#x27;s silicon wafer capacity&#x27;. Cloud inference prices fell ~10x in ~18 months (secondary source), which weakens the cost-only case for the edge.</p>
+<h3 id="4b-primary-beneficiaries-high-tam-capture">4b. Primary Beneficiaries — High TAM Capture</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why High TAM Capture</th><th scope="col">TAM Exposure</th><th scope="col">Upside Scenario</th></tr></thead><tbody><tr><td>Micron / Samsung (memory)</td><td>MU / 005930.KS</td><td>Every on-device LLM needs more RAM (Apple&#x27;s new model needs ≥12GB; average phone DRAM is 8.5GB) and the same wafers feed AI servers</td><td>Mobile and client share of revenue not disclosed in the sources found; memory is 30–40% of phone BOM</td><td>If 45% of ~1.1B phones carry bigger RAM and LPDDR5X holds near $20/GB, content per device rises even as units fall</td></tr><tr><td>Arm</td><td>ARM</td><td>Royalty on virtually every phone and many PC/IoT chips; richer cores raise royalty per chip</td><td>Royalty revenue $715M a quarter (+22%) — edge share not disclosed</td><td>Higher-priced v9/CSS cores on AI devices lift royalty rate per unit; 97.5% gross margin</td></tr><tr><td>Ambarella</td><td>AMBA</td><td>Pure-play edge AI vision SoC with a signed decade-long customer commitment</td><td>Edge AI ~80% of fiscal 2026 revenue</td><td>Hanwha&#x27;s &gt;$800M plus a $12.9B SAM by fiscal 2031 implies a multi-year growth path from ~$379M</td></tr><tr><td>Qualcomm (auto and IoT)</td><td>QCOM</td><td>Diversifying beyond handsets into cars and IoT where edge inference is native</td><td>Automotive $1.6B + IoT $1.8B = $3.4B of $9.9B quarterly revenue (34%, derived)</td><td>Auto +61% and IoT +9% with auto+IoT combined +28% offset handset −20%</td></tr><tr><td>Apple</td><td>AAPL</td><td>Controls silicon, OS and on-device model; privacy positioning; the largest single on-device AI deployment</td><td>On-device AI is a feature across the whole device franchise and is not separately disclosed</td><td>A fuller Siri with iOS 27 plus the most powerful on-device model (limited to iPhone 17 Pro/Air and ≥12GB devices) gives buyers a reason to upgrade</td></tr></tbody></table></div><p class="source">Source: Company disclosures and 2026 coverage cited in Sections 2–3; Yahoo Finance quote data, Oct 8, 2026 (non-US market caps and prices are in local currency and not compared)</p>
+<h3 id="4c-limited-beneficiaries-low-tam-capture-or-tam-risk">4c. Limited Beneficiaries — Low TAM Capture or TAM Risk</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why Limited Capture</th><th scope="col">Common Investor Mistake</th><th scope="col">Signal to Watch</th></tr></thead><tbody><tr><td>HP / Lenovo / Dell (PC OEMs)</td><td>HPQ / LNVGY / DELL</td><td>15.9–19.9% gross margins cannot absorb memory +130% (Gartner); PC shipments forecast −4.9% (IDC) to −10.4% (Gartner)</td><td>Assuming AI PCs lift ASPs by the AI feature rather than by memory pass-through</td><td>PC gross margin and unit trend over the next two quarters</td></tr><tr><td>Qualcomm PC and handset</td><td>QCOM</td><td>Handsets −20% to $5.1B; Snapdragon X PC share was &lt;0.8% in Q3 2024 and the long-term PC target moved from 40–60% by 2027 to 30–50% by 2029</td><td>Treating Snapdragon X as an AI PC share-gain story</td><td>Handset revenue in the Nov FQ4 print and PC share data</td></tr><tr><td>Mobileye</td><td>MBLY</td><td>Revenue +0.4%, 56% below its high, 22.6% of float short; competes with Nvidia Thor and Qualcomm Ride</td><td>Lumping ADAS into the edge AI winner basket</td><td>New design wins versus Nvidia/Qualcomm</td></tr><tr><td>Cloudflare</td><td>NET</td><td>203.6x forward P/E and 48.4x sales; edge inference is a small part of revenue</td><td>Paying for the edge-inference narrative at a cloud-software multiple</td><td>Workers AI usage disclosure vs. the ~36% revenue growth</td></tr><tr><td>CEVA</td><td>CEVA</td><td>NPU IP royalty base is small versus Arm&#x27;s $715M a quarter; 87.5% gross margin but +13.1% growth; 35% below its high</td><td>Counting &#x27;NPU IP&#x27; as an Arm-scale royalty pool</td><td>Royalty revenue growth and design-win conversion</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance quote data, Oct 8, 2026; Gartner, IDC (2026); Notebookcheck, Qualcomm FQ3&#x27;26 release</p>
+<h2 id="5-positioning-recommendation">5. Positioning Recommendation</h2>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Where does edge AI value accrue — OEMs and NPU makers, or somewhere else?</td><td>A device-upgrade supercycle: AI PCs &gt;50% of PCs and AI phones at 45% of units benefit the NPU designers and OEMs that sell them</td><td>Scarcity and pricing power sit in memory, the ISA licence and foundry: memory is now 30–40% of phone BOM versus 10–15%, LPDDR5X rose 78–83% in one quarter, PC OEM gross margins are 16–20% and Qualcomm&#x27;s handset revenue fell 20% while auto rose 61%</td></tr><tr><td>Is the cost case for the edge intact?</td><td>Edge inference wins on cost and will overtake the cloud by 2030</td><td>Cloud inference cost per token fell ~10x in about 18 months, so cost alone no longer carries the case. Edge wins where latency (&lt;10ms vs 100–300ms), privacy or offline operation matter: cameras, cars, industrial, wearables — not general chat</td></tr><tr><td>Is demand pulling the NPU, or only attached to it?</td><td>AI-capable devices are shipping in growing share, proving demand</td><td>Attach is a by-product of bundling NPUs in every chip: Copilot+ was 1.9% of the PC market in Q1 2025, Dell dialed back AI marketing, Microsoft moved features to the cloud, and units are falling 3–14% on memory-driven price increases</td></tr></tbody></table></div><p class="source">Source: Counterpoint, Gartner, IDC (2026); Qualcomm FQ3&#x27;26 release; wccftech/dataconomy (LPDDR5X); PC-industry coverage (Yahoo Tech, PCWorld); Yahoo Finance (Oct 8, 2026)</p>
+<div class="edge"><strong>The edge:</strong> The market is buying AI-labelled devices while the real constraint — the DRAM that on-device models need — sits with three suppliers who are also feeding the data-center AI build; edge AI and cloud AI compete for the same wafers, so the scarce asset is memory, not NPUs.</div>
+<p><strong>Theme Posture: Theme Conviction 5/10 — long a Layer 6 basket (memory, Arm, TSMC) with selective Layer 1 exposure to the segments where edge inference is native (Qualcomm auto/IoT, embedded controllers); underweight the memory-squeezed OEM layer (PC OEMs, Mobileye) and valuation-stretched Layer 5 names (Cloudflare). No Layer 4 pure plays exist worth owning.</strong></p>
+<ul class="bullets"><li><strong>The edge:</strong> own the bottlenecks that every AI device must pay — memory, ISA, foundry — and avoid the OEMs squeezed between rising memory costs and buyers who are not paying for AI.</li></ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">Layer</th><th scope="col">Weight</th><th scope="col">Rationale</th></tr></thead><tbody><tr><td>1 — Infrastructure</td><td class="fill-warn">Neutral</td><td>Selective: auto/IoT edge silicon yes, handset and PC NPUs no</td></tr><tr><td>2 — Enablers</td><td class="fill-warn">Neutral</td><td>Models are free; tooling lock-in unproven</td></tr><tr><td>3 — Integrators</td><td class="fill-bad">Underweight</td><td>Memory squeeze on 16–20% gross-margin OEMs</td></tr><tr><td>4 — Applications</td><td class="fill-warn">Neutral</td><td>No investable pure plays; platform owners hold the value</td></tr><tr><td>5 — Adjacent</td><td class="fill-warn">Neutral</td><td>Akamai at 14.7x is cheap; Cloudflare at 203.6x is not</td></tr><tr><td>6 — Bottlenecks</td><td class="fill-good">Overweight</td><td>Memory, ISA and foundry capture scarcity in every scenario</td></tr></tbody></table></div><p class="source">Source: Our synthesis of Sections 3, 4 and 6; consistent with the Intact peak verdict (continue building on weakness, favor infrastructure and bottlenecks)</p>
+<p><strong>Overweight</strong></p>
+<ul class="bullets"><li><strong>MU / Micron and 005930.KS / Samsung</strong> — the memory bottleneck: LPDDR5X +78–83% in Q2, supply seen tight through fiscal 2028; note the cycle-peak risk flagged in our Oct 8 Micron earnings note (capex ~&gt;$50B in fiscal 2027, margin peak near mid-2027).</li><li><strong>TSM / TSMC</strong> — leading-edge foundry for every major edge SoC; not screened this run, so size after a fundamentals pass.</li><li><strong>ARM / Arm</strong> — the cleanest toll booth (97.5% gross margin, royalties +22%), but at 89.7x forward earnings hold a small position and add on weakness (39% below its high).</li></ul>
+<p><strong>Neutral</strong></p>
+<ul class="bullets"><li><strong>QCOM / Qualcomm</strong> — own for auto (+61%) and IoT; 17.1x forward and 33% below its high, but the handset line (−20%) is the theme&#x27;s weak link.</li><li><strong>AAPL / Apple</strong> — the best-integrated on-device AI franchise, but at 35.4x and 2% below its high, it is priced.</li><li><strong>AMBA / Ambarella, LSCC / Lattice, NXPI / NXP, STM / STMicro</strong> — good edge-native exposure; AMBA (55.8x, 15.6% short) and LSCC (39.0x) are priced for growth, NXP (12.7x) and STM (20.8x) are cheap with unquantified edge content.</li><li><strong>AKAM / Akamai</strong> — see our Oct 8 note (PASS, 4/10): inexpensive at 14.7x but fundamentals are weakening.</li></ul>
+<p><strong>Underweight</strong></p>
+<ul class="bullets"><li><strong>HPQ / HP, LNVGY / Lenovo, DELL / Dell (PC OEMs)</strong> — 15.9–19.9% gross margins with memory costs +130%.</li><li><strong>MBLY / Mobileye</strong> — flat revenue, 56% below its high and 22.6% of float short.</li><li><strong>NET / Cloudflare</strong> — 203.6x forward earnings for edge-inference optionality.</li><li><strong>CEVA</strong> — a small NPU IP royalty base.</li></ul>
+<p>The weights follow the Section 6 verdict: Intact, with one signal firing (macro) and four early warnings, so the right stance is to keep building infrastructure and bottleneck exposure while avoiding the layers where margins are already squeezed. Crowding risk is concentrated in Arm (56.9x sales), Cloudflare and Ambarella; the entry-timing nuance is the Nov 4–5 earnings window (Qualcomm and Arm) and the early-December memory read-through.</p>
+<p>A Layer 4 note: there are no clean public Layer 4 edge-AI applications; the platform owners (Apple, Google, Microsoft) capture the value, so the theme&#x27;s applications show up inside Layer 3 and Layer 2 names rather than as a separate expression.</p>
+<h2 id="6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</h2>
+<p class="call-line good"><strong><strong>Peak Verdict: 1/6 exhaustion signals firing (macro) with four early warnings — Intact, with memory-driven unit declines and weak behavioral pull as the live risks. Estimated time to peak: the theme is at least 2–4 years from a fundamental peak (AI-capable devices are ~630M units a year but monetization is unproven); the near-term risk is a 4–6 quarter air pocket in device units as memory costs reset.</strong> This is consistent with Section 2&#x27;s &#x27;Emerging / Early&#x27; stage: nothing here is saturated, but several signals are one step from firing.</strong></p>
+<h3 id="6a-exhaustion-scorecard">6a. Exhaustion Scorecard</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Exhaustion Signal</th><th scope="col">Status</th><th scope="col">Evidence / What Would Trip It</th></tr></thead><tbody><tr><td>1. Convergence Signal Inversion</td><td class="fill-warn">⚠️ Early warning</td><td>The behavioral signal is the weak link: Copilot+ at 1.9% of PCs (Q1 2025), Dell dialing back AI-first marketing, Microsoft moving features to the cloud. Trips if: Apple or Google also move flagship AI features cloud-only, or AI-capable device share stops rising despite more NPUs.</td></tr><tr><td>2. Supply Catch-Up &amp; Capacity Overshoot</td><td class="fill-good">❌ Not yet</td><td>Scarcity is intact in the bottleneck layer: Micron sees supply tighter through fiscal 2028; LPDDR5X +78–83% in Q2 2026. (For the theme itself the shortage is a headwind to unit volumes.) Trips if: LPDDR5X contract prices fall two quarters in a row.</td></tr><tr><td>3. Valuation &amp; Crowding Extremes</td><td class="fill-warn">⚠️ Early warning</td><td>Pockets of stretch: Arm 89.7x forward and 56.9x sales, Cloudflare 203.6x, Ambarella 55.8x (15.6% short). Offsets: Qualcomm 17.1x, NXP 12.7x, and most edge names are 20–56% below highs. No dedicated edge-AI ETF yet. Trips if: a dedicated edge-AI ETF launches or Arm trades above 100x forward earnings.</td></tr><tr><td>4. Unit Economics &amp; Margin Erosion</td><td class="fill-warn">⚠️ Early warning</td><td>NPUs are bundled into every flagship chip, so &#x27;AI&#x27; commands no visible price premium; PC OEM gross margins are 15.9–19.9% against memory +130%. Trips if: gross margin falls ≥150bp at two or more of HP, Lenovo, Dell, Ambarella (58.5%) or Qualcomm.</td></tr><tr><td>5. Demand-Side Funding Stress</td><td class="fill-warn">⚠️ Early warning</td><td>Demand is funded by consumers&#x27; and enterprises&#x27; own wallets, not venture money — but price elasticity is showing: smartphone ASP +$94 to $550 (IDC) while units fall 3–14%. Trips if: combined phone and PC shipments are cut below ~1.2B units for 2026.</td></tr><tr><td>6. Macro &amp; Policy Regime Shift</td><td class="fill-bad">✅ Firing</td><td>10-year Treasury 5.27% (24-year high), Fed hiked to 3.75–4.00% (see the Oct 8 market sentiment note); durable-goods demand and long-duration stocks are rate-sensitive; US–China truce expires Nov 2026 and Section 301 chip tariffs follow in June 2027.</td></tr></tbody></table></div><p class="source">Source: Sources as cited in Sections 2–5; Oct 8, 2026 market sentiment note (this project); Yahoo Finance</p>
+<p><em>Color logic is inverted versus the Section 2 table: here a firing signal is bad news (pink), &#x27;Not yet&#x27; is good news (green).</em></p>
+<h3 id="6b-tripwires-pre-committed-exit-triggers">6b. Tripwires — Pre-Committed Exit Triggers</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Tripwire</th><th scope="col" class=num>Signal</th><th scope="col">Where Observed</th><th scope="col">Action if Triggered</th></tr></thead><tbody><tr><td>1</td><td>IDC/Counterpoint cut 2026 combined smartphone and PC shipments below ~1.2B units, or Qualcomm&#x27;s handset revenue falls another &gt;15% YoY in fiscal Q4 (reported in November)</td><td class="num">5</td><td>IDC/Counterpoint trackers; Qualcomm FQ4&#x27;26 release</td><td><strong>Halve Layer 1 handset/PC exposure; keep memory and ISA bottlenecks</strong></td></tr><tr><td>2</td><td>A second major platform owner (Apple, Google or Samsung) moves a flagship AI feature to cloud-only, following Microsoft&#x27;s decoupling of Copilot from NPUs</td><td class="num">1</td><td>Product launches and developer documentation</td><td><strong>Cut NPU-dependent Layer 1 and Layer 2 names by a third</strong></td></tr><tr><td>3</td><td>LPDDR5X contract prices fall two consecutive quarters, or Micron/Samsung guide mobile DRAM supply catching demand</td><td class="num">2</td><td>TrendForce/DRAMeXchange; Micron FQ1&#x27;27 call (December)</td><td><strong>Cut Layer 6 memory exposure by half</strong></td></tr><tr><td>4</td><td>Gross margin falls ≥150bp YoY at two or more of Ambarella (58.5%), HP (19.7%), Lenovo (15.9%), Dell (19.9%) or Qualcomm (54.2%)</td><td class="num">4</td><td>Quarterly results of the named companies</td><td><strong>Exit Layer 3 OEMs; trim Ambarella and Qualcomm by a third</strong></td></tr><tr><td>5</td><td>A dedicated edge-AI thematic ETF launches, or Arm trades above 100x forward P/E, or an Arm/Ambarella follow-on or convert is priced into strength</td><td class="num">3</td><td>ETF issuer filings; Yahoo Finance; SEC filings</td><td><strong>Trim Arm, Ambarella and Cloudflare by a third</strong></td></tr><tr><td>6</td><td>10-year Treasury closes above 5.5% for five sessions, or HY OAS above 350 bps with VIX above 20</td><td class="num">6</td><td>FRED DGS10, BAMLH0A0HYM2; Yahoo ^VIX</td><td><strong>Cut theme gross by a third regardless of fundamentals; buy back only if unit data confirms</strong></td></tr><tr><td>7</td><td>Section 232 chip tariffs are extended to downstream devices (currently not covered), or the US–China truce lapses into new electronics tariffs in November 2026</td><td class="num">6</td><td>Federal Register/USTR; Commerce proclamations</td><td><strong>Cut Layer 3 OEMs and phone-exposed names by half</strong></td></tr><tr><td>8</td><td>Qualcomm automotive revenue growth slows below +30% YoY (now +61%) or the Hanwha-type ten-year Ambarella agreement is cut or renegotiated</td><td class="num">1</td><td>Qualcomm and Ambarella quarterly results and filings</td><td><strong>Trim edge-native Layer 1 (QCOM auto/IoT, AMBA) by a third</strong></td></tr></tbody></table></div><p class="source">Source: Our synthesis; thresholds anchored to figures cited in Sections 2–5</p>
+<h3 id="6c-watch-calendar-dated-catalysts">6c. Watch Calendar — Dated Catalysts</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Date / Window</th><th scope="col">Event</th><th scope="col">Bullish if...</th><th scope="col">Bearish if...</th></tr></thead><tbody><tr><td>Oct 28, 2026</td><td>FOMC decision</td><td>Hold with softer language; 10Y retreats from ~5.3%</td><td>Hike or hawkish hold; 10Y above 5.5%</td></tr><tr><td>Fall 2026 (date to be confirmed)</td><td>Apple iOS 27 release with reimagined Siri</td><td>Delivers contextual Siri on the on-device model and drives upgrades</td><td>Another delay or heavier reliance on cloud</td></tr><tr><td>Early Nov 2026 (Qualcomm ~Nov 4; Arm date to be confirmed)</td><td>Qualcomm FQ4&#x27;26 and Arm FQ2&#x27;27 results</td><td>Handset decline narrows; auto stays ≥+30%; Arm royalties stay ≥+20%</td><td>Handset down &gt;15% again; Arm royalty growth slows</td></tr><tr><td>Nov 10, 2026 and November</td><td>China suspension of its Oct 2025 rare-earth escalation ends; US–China trade truce expiry</td><td>Truce extended; no new electronics tariffs</td><td>Lapse with new tariffs on chips or devices</td></tr><tr><td>Early Dec 2026 (date to be confirmed)</td><td>Micron FQ1&#x27;27 results (guided $61.5B ± $1.5B)</td><td>Mobile and client DRAM pricing still rising</td><td>Memory pricing rolls over; mobile demand destruction cited</td></tr><tr><td>Jan 2027 (dates to be confirmed)</td><td>CES 2027</td><td>OEMs show paid AI use cases, not just NPU labels</td><td>AI marketing retreats further</td></tr><tr><td>Mar 15–18, 2027</td><td>Nvidia GTC 2027 (Jetson, DRIVE, edge roadmap)</td><td>Edge/automotive disclosed as a growing segment</td><td>No edge revenue disclosure</td></tr><tr><td>Early 2027 (dates to be confirmed)</td><td>MWC Barcelona and Counterpoint/IDC 2026 shipment results</td><td>2026 phone/PC units come in better than −10%</td><td>Units worse than −13%</td></tr><tr><td>June 2027</td><td>Additional Section 301 tariffs on Chinese semiconductors</td><td>Little supply-chain disruption</td><td>Chip costs rise for device makers</td></tr></tbody></table></div><p class="source">Source: Federal Reserve calendar; Qualcomm/Micron/Arm IR; Nvidia GTC; Apple coverage; Mondaq/Sheppard Mullin; rare-earth-mining.com</p>
+<h3 id="6d-false-alarm-test">6d. False-Alarm Test</h3>
+<ul class="bullets"><li><strong>Are fundamentals confirming?</strong> Check AI-capable device share (GenAI phones 45% of 2026 units; AI PCs ~59%), Qualcomm automotive/IoT growth (+61% / +9%), Ambarella edge AI bookings, and Arm royalty growth (+22%). Falling unit forecasts with rising attach and rising memory content is a memory-price flush, not a thesis break.</li><li><strong>Theme-specific or market-wide?</strong> Compare the basket (QCOM, AMBA, LSCC, NXPI, STM, SLAB, SYNA) with the Nasdaq and SOX: today most edge names are 20–56% below highs while the S&amp;P is near a record, so the de-rating is theme-specific with a rate component (10Y at 5.3%).</li><li><strong>Which signals are firing — structural or cyclical?</strong> Macro (Signal 6) is cyclical; the live structural risk is the behavioral pull (Signal 1) — whether buyers or developers use on-device AI at all. Check feature usage disclosures and whether Microsoft/Apple keep NPU-dependent features.</li><li><strong>Has the end state changed?</strong> End state: a three-tier inference split with the device handling latency-critical, private and offline work. If cloud per-token costs fall another 5–10x and on-device features keep migrating to the cloud, the device tier shrinks to cameras, cars and industrial only.</li></ul>
+<p><strong>Structural signals for this theme (act on):</strong> behavioral pull stalling (features moving cloud-only), margin erosion at silicon vendors (Signal 4), sustained memory-driven unit declines · <strong>Cyclical signals (likely buy the dip):</strong> crowding in Arm/Cloudflare/Ambarella (Signal 3) and macro/yield spikes (Signal 6) while attach and auto/IoT growth hold.</p>
+<h3 id="6e-closest-historical-analogue">6e. Closest Historical Analogue</h3>
+<p>The closest analogue is the 5G smartphone &#x27;supercycle&#x27; of 2020–2021, another case where a new capability bundled into every flagship chip was expected to drive an upgrade wave. Qualcomm closed at a record $181.67 on Dec 15, 2021 after doubling in two years, then smartphone shipments fell 11.3% in 2022 (1.36B to 1.21B, the largest drop IDC recorded) as the upgrade cycle ended, and a $3,000 investment at the high was worth under $1,900 by September 2023 (about −37%). Edge AI differs in that the capability (a useful local model) is new and in its early stage, and the near-term squeeze is a supply-side memory shortage rather than a demand air pocket; it resembles 5G in that attach is high while consumers have shown little willingness to pay a premium. The comparison is unflattering where AI-PC marketing is concerned.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Analogue</td><td>5G smartphone upgrade supercycle, 2020–2021 (Qualcomm and handset OEMs)</td></tr><tr><td>Peak date</td><td>Dec 15, 2021 — Qualcomm closed at a record $181.67 (Motley Fool)</td></tr><tr><td>Peak-to-trough drawdown</td><td>~−37% by September 2023 for Qualcomm (a $3,000 stake worth under $1,900); smartphone shipments −11.3% in 2022 (1.36B → 1.21B), −18.3% in the holiday quarter (IDC)</td></tr><tr><td>Recovery time</td><td>Qualcomm trades at $174.30 vs a ~$260 52-week high (derived from Yahoo&#x27;s −33%), i.e. it regained and exceeded its 2021 record within the past year, nearly five years after the peak</td></tr><tr><td>Key difference vs. this theme</td><td>Edge AI starts with a fresh capability and a supply-side memory squeeze, not an end-of-cycle demand air pocket; but attach without willingness to pay is the shared risk</td></tr></tbody></table></div><p class="source">Source: The Motley Fool (Qualcomm, 2023), IDC (Jan 25, 2023 smartphone tracker); Yahoo Finance (derived 52-week high)</p>
+<h2 id="7-key-diligence-questions">7. Key Diligence Questions</h2>
+<ol class="bullets"><li><strong>Exit/downside case:</strong> if LPDDR5X contract prices rise another &gt;40% from Q2&#x27;s ~$20/GB (from a base that already rose 78–83%), do OEMs cut RAM below what on-device models need (Apple&#x27;s newest model needs ≥12GB; average phone DRAM is 8.5GB), rationing on-device AI to flagships and leaving 2026–27 AI-capable device units flat or down?</li><li>Do Apple, Google and Microsoft keep NPU-dependent features on-device, or does the share moved to the cloud (Microsoft&#x27;s Copilot Vision, &#x27;Hey Copilot&#x27;) grow — and is there a measurable ASP premium for AI devices beyond memory pass-through (IDC: phones +$94 to $550, PCs +4–8%)?</li><li>Can edge silicon vendors hold gross margin as NPUs commoditize — Ambarella at 58.5%, Qualcomm at 54.2% — and does Qualcomm&#x27;s handset line stabilize after −20% to $5.1B?</li><li>If cloud inference costs fall a further 5–10x after the ~10x in 18 months, which edge workloads survive on latency (&lt;10ms vs 100–300ms), privacy or offline alone, and what share of Ambarella&#x27;s ~80% edge-AI revenue and Qualcomm&#x27;s $3.4B quarterly auto+IoT revenue sits in them?</li><li>When does DRAM capacity start returning to consumer devices: Micron guides capex of ~$25B in the first half of fiscal 2027 with new fabs arriving in 2028 and tightness through fiscal 2028 — does that mean memory-constrained device volumes persist through 2027?</li></ol>
+<p class="source">Source: Key sources: <a href="https://counterpointresearch.com/en/insights/genai-smartphone-share-to-rise-to-45-percent-of-global-shipments-in-2026">Counterpoint — GenAI smartphones 45% of 2026</a> · <a href="https://counterpointresearch.com/reports/ai-advanced-pcs-to-surpass-half-of-global-shipments-in-2026">Counterpoint — AI PCs to pass half in 2026</a> · <a href="https://www.thurrott.com/hardware/331174/idc-says-global-memory-shortage-could-tank-pc-and-smartphone-sales-in-2026">IDC via Thurrott — memory shortage and PC/phone sales</a> · <a href="https://www.sec.gov/Archives/edgar/data/0000804328/000080432826000085/qcom062826erex991.htm">Qualcomm FQ3&#x27;26 release</a> · <a href="https://www.nasdaq.com/articles/ambarella-lifts-2026-outlook-ai-surge">Ambarella edge AI outlook</a> · <a href="https://www.digitalcitizen.life/nvidia-strikes-20-billion-deal-to-license-groq-ai-chip-tech/">Nvidia–Groq deal</a> · <a href="https://www.idc.com/resource-center/press-releases/smartphone-shipments-suffer-the-largest-ever-decline-with-18-3-drop-in-the-holiday-quarter-and-a-11-3-decline-in-2022-according-to-idc-tracker/">IDC — 2022 smartphone decline</a> · <a href="https://www.fool.com/investing/2023/09/17/if-invested-3000-qualcomm-2021-how-much-now/">The Motley Fool — Qualcomm 2021 high</a>. Quote data: Yahoo Finance, Oct 8, 2026. Several market-size and memory-price figures come from lower-quality sources (market-research aggregators, wccftech, dataconomy, byteiota, ai2.work) and are flagged where used; shipment forecasts for 2026 conflict between earlier and later IDC/Counterpoint releases.</p>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>

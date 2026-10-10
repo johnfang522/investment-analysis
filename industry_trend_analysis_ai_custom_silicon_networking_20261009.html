@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: null, &quot;skill&quot;: &quot;industry_trend_analysis&quot;, &quot;title&quot;: &quot;AI Custom Silicon (XPU/ASIC) &amp; Scale-Out Networking&quot;, &quot;signal&quot;: null, &quot;conviction&quot;: null, &quot;as_of&quot;: null, &quot;rendered&quot;: &quot;2026-10-09&quot;, &quot;company&quot;: null}">
+<title>AI Custom Silicon (XPU/ASIC) &amp; Scale-Out Networking</title>
+<style>/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 13px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 12px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(11px, 0.9vw, 14px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value { font-size: 20px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 12.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 14px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 11px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 18px; }
+.callout.verdict .signal { font-size: 22px; }
+.callout .scale { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+.call-line { font-size: 17px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 15px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 12.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 11.5px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 12px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 10.5px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 11px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 13px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 12px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 12.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 22px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 30px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 18px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 12.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 13px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 12px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card .new-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--good); color: #fff; font-size: 11px; font-weight: 650; vertical-align: 1px; }
+.toc ol.sub li a::before { content: "• "; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+
+.file-chip { margin-left: 6px; padding: 1px 7px; border: 1px solid var(--grid); border-radius: 999px; font-size: 11px; font-weight: 600; text-decoration: none; color: var(--muted); vertical-align: 1px; }
+.file-chip:hover { color: var(--ink); border-color: var(--muted); }
+</style>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="index.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="index.html">← Investment Research Library</a><ol><li><a href="#1-introduction">1. Introduction</a></li><li><a href="#2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</a></li><li><a href="#3-value-chain-map">3. Value Chain Map</a></li><li><a href="#4-tam-expansion-analysis">4. TAM Expansion Analysis</a></li><li><a href="#5-positioning-recommendation">5. Positioning Recommendation</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</a></li><li><a href="#7-key-diligence-questions">7. Key Diligence Questions</a></li><li><a href="#sources">Sources</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>Industry Trend Analysis</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>AI Custom Silicon (XPU/ASIC) &amp; Scale-Out Networking</h1><p class="subtitle">Triggered by: AVGO — mapped to AI Custom Silicon (XPU/ASIC) &amp; Scale-Out Networking · Buy-side thematic read · October 9, 2026 · Theme Conviction 6/10 · Peak verdict: Peaking (3/6 exhaustion signals firing)</p></header>
+<h2 id="1-introduction">1. Introduction</h2>
+<ul class="bullets"><li><strong>What it is:</strong> hyperscalers and frontier labs designing their own AI accelerators (XPUs/ASICs: Google TPU, Amazon Trainium, Meta MTIA, Microsoft Maia, OpenAI&#x27;s custom chip) with a design partner (mainly Broadcom and Marvell), tied together by Ethernet-based scale-out and scale-up networking instead of InfiniBand and merchant-GPU stacks.</li><li><strong>Why now:</strong> Broadcom&#x27;s FQ3 FY2026 (quarter ended Aug 2, 2026) printed AI semiconductor revenue of <strong>$16.7B (+221% YoY)</strong>, guided FQ4 to <strong>$21.7B (+236%)</strong>, FY2026 to ~$58B, and gave line of sight to ~$115B in FY2027 and ~$230B in FY2028; it now has six XPU customers (Broadcom Form 8-K, Sep 2026; Q3 call). JPMorgan projects AI ASIC unit shipments overtaking GPUs in 2027 (12.5M vs 10.9M units).</li><li><strong>End state:</strong> by 2028 a large share of frontier training and most inference runs on purpose-built silicon (40-65% claimed TCO advantage vs. GPUs at scale), sold as multi-gigawatt rack-scale systems on 102.4 Tb/s Ethernet fabrics. Merchant GPUs remain the flexible, supply-constrained other half of the market, not a casualty.</li><li><strong>Investment opportunity:</strong> big-4 hyperscaler capex is guided to &gt;$700B in 2026 (up from ~$410B) and ~$870B to &gt;$1T in 2027 (Moody&#x27;s; Evercore/BofA); Nvidia&#x27;s CFO put 2027 industry capex at $1.3T. The distinction from prior hype cycles is that the buyers are cash-rich. The part that rhymes with prior cycles is the <strong>marginal buyer</strong> (frontier labs), whose demand is increasingly underwritten by vendor and capital-market financing.</li><li><strong>Critical context 1:</strong> this is not a zero-sum fight with Nvidia in 2027. Nvidia&#x27;s FQ2 FY2027 revenue was <strong>$96.2B (+106%)</strong> and it guided $108B; both camps are supply-constrained (CoWoS fully booked through 2026, HBM sold out), so the scarce inputs, not the chip architecture, set who earns the rents.</li><li><strong>Critical context 2:</strong> the macro regime turned against long-duration assets in September: the Fed hiked 25bp to 3.75-4.00% on Sep 16, 2026 (first hike since 2023) and the 10-year Treasury reportedly touched ~5.2-5.3% (highest since 2007), while semiconductor ETFs absorbed a record ~$46B of inflows in 2026.</li></ul>
+<p>Argument detected as ticker AVGO. Mapped to theme: AI Custom Silicon (XPU/ASIC) &amp; Scale-Out Networking. The analysis is on the theme; Broadcom appears in the value chain alongside its peers.</p>
+<h2 id="2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Signal</th><th scope="col">Status</th><th scope="col">One-Line Verdict</th></tr></thead><tbody><tr><td>Technology Inflection</td><td class="fill-good">✅ Firing</td><td>3nm XPUs, HBM4, 102.4 Tb/s switches and rack-scale design made bespoke silicon cheaper per token than GPUs for the largest buyers.</td></tr><tr><td>Regulatory Shift</td><td class="fill-warn">⚠️ Partial</td><td>No door opened for custom silicon; export controls closed China for the whole AI-compute stack and grid interconnection is the binding policy constraint.</td></tr><tr><td>Behavioral Change</td><td class="fill-good">✅ Firing</td><td>Hyperscalers and labs now run multi-silicon fleets by default (Anthropic on TPU, Trainium and GPU; Meta on MTIA plus TPU).</td></tr><tr><td>Capital Flow</td><td class="fill-good">✅ Firing</td><td>$700B+ capex, a $110B OpenAI round and a $60B Broadcom-syndicated chip financing: concentrated, top-tier money.</td></tr><tr><td>Narrative Momentum</td><td class="fill-good">✅ Firing</td><td>Broadcom is a sell-side top pick and the &#x27;ASIC vs GPU&#x27; story is mainstream, which is itself a crowding flag.</td></tr></tbody></table></div><p class="source">Source: Company filings and press as cited in the sections below; Oct 9, 2026.</p>
+<p><strong>Convergence Verdict: 4/5 signals firing (plus one partial) — Strong conviction. Estimated cycle stage: Mid</strong> (hardware ramp is early-to-mid; positioning is late, see Section 6).</p>
+<h3 id="technology-inflection-firing">Technology Inflection — ✅ Firing</h3>
+<ul class="bullets"><li>Google unveiled TPU 8t / 8i at Cloud Next 2026; Broadcom&#x27;s six XPU customers include Anthropic (Ironwood), Google (TPU v8i), OpenAI and Meta (MTIA) (Q3 FY2026 call, Sep 2026).</li><li>Broadcom ships Tomahawk 6 at <strong>102.4 Tb/s</strong> per chip, double any prior Ethernet switch, and Tomahawk Ultra targets sub-400ns XPU-to-XPU latency for scale-up (Broadcom; StorageReview, 2025).</li><li>AI claims ~36% of TSMC&#x27;s 3nm capacity in 2026, up from ~5% in 2025 (industry estimates, 2026), showing how fast leading-edge capacity migrated to AI silicon.</li><li>Claimed TCO advantage of 40-65% for purpose-built silicon vs. general-purpose GPUs at scale (industry projections; treat as vendor-sourced).</li></ul>
+<h3 id="regulatory-shift-partial">Regulatory Shift — ⚠️ Partial</h3>
+<ul class="bullets"><li>No rule change created the custom-silicon market; the shift is commercial, not regulatory.</li><li>Nvidia&#x27;s Q3 FY2027 guidance explicitly excludes China data center compute, with Hopper under 1% of Q2 data center revenue (Nvidia press release, Aug 26, 2026): export controls are a closed door for the whole stack.</li><li>Power is the binding policy-adjacent constraint: PJM came up 6,625 MW short in its December 2025 capacity auction and summer 2027 is the first season it expects insufficient capacity (Introl; Gartner).</li></ul>
+<h3 id="behavioral-change-firing">Behavioral Change — ✅ Firing</h3>
+<ul class="bullets"><li>Anthropic runs Amazon Trainium, Nvidia GPUs and Google TPUs; its April 2026 expansion took Google TPU capacity to ~3.5 GW via Broadcom and up to 5 GW overall (Maginative; industry reports, 2026).</li><li>Meta reportedly struck a multibillion-dollar deal to use Google TPUs alongside its own MTIA (SiliconANGLE, Feb 26, 2026), making TPU-as-a-service a real external business.</li><li>Marvell reports &gt;20 custom design wins across Amazon, Alphabet, Microsoft and Meta, 18 secured sockets and a ~$75B lifetime-revenue design-win pipeline (Marvell, 2026).</li><li>Broadcom and Marvell together hold ~95% of the custom ASIC co-design market (Broadcom ~60%, Marvell ~35%; Tom&#x27;s Hardware, May 2026).</li></ul>
+<h3 id="capital-flow-firing">Capital Flow — ✅ Firing</h3>
+<ul class="bullets"><li>Big-4 2026 capex guides: Amazon ~$200B, Microsoft ~$190B, Alphabet $175-185B, Meta $115-135B (DatacenterDynamics / Moody&#x27;s, 2026).</li><li>OpenAI secured commitments of up to $110B at a ~$730B valuation, anchored by Nvidia, Amazon and SoftBank (TechSpot; The Next Web, 2026).</li><li>Broadcom&#x27;s syndicate is assembling <strong>$60B</strong> of chip financing: $42B senior secured plus $18B junior led by Blackstone ($9B committed), to fund Anthropic&#x27;s TPU leases (TIKR; AI Weekly, Oct 2026).</li></ul>
+<h3 id="narrative-momentum-firing">Narrative Momentum — ✅ Firing</h3>
+<ul class="bullets"><li>Analysts at Mizuho, Goldman and BofA are reported to expect Broadcom to pass a $2T market cap in 2026; 34 Buys / 6 Holds / 1 Sell (TIKR / MarketBeat, Sep-Oct 2026).</li><li>Record semiconductor ETF flows (~$46B YTD; SOXX $6.92B in July alone) and record volatility (34 daily moves &gt;4% in SMH/SOXX in 2026) show the story has crossed from specialist to consensus (Crypto Briefing; Webull, 2026).</li><li>Michael Burry publicly shorted Micron and a semiconductor ETF on dot-com comparisons (KuCoin News, 2026): contrarian attention has arrived too.</li></ul>
+<h2 id="3-value-chain-map">3. Value Chain Map</h2>
+<h3 id="layer-1-infrastructure-picks-shovels">Layer 1 — Infrastructure (&#x27;Picks &amp; Shovels&#x27;)</h3>
+<p><em>Physical inputs every XPU and switch needs: memory, advanced packaging overflow, lasers and optics, and rack power and cooling.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D6E4F0;color:#0b0b0b">Micron</td><td style="background:#D6E4F0;color:#0b0b0b">MU</td><td style="background:#D6E4F0;color:#0b0b0b">HBM3E/HBM4 supplier; HBM sold out for 2026 across the three producers.</td><td style="background:#D6E4F0;color:#0b0b0b">High</td><td style="background:#D6E4F0;color:#0b0b0b">Early-Mid</td><td style="background:#D6E4F0;color:#0b0b0b">HBM spot pricing (~$2,100 per 36GB module vs $300-400 LTA) mean-reverts as 2028-29 cleanroom capacity lands.</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Samsung Electronics</td><td style="background:#D6E4F0;color:#0b0b0b">005930.KS</td><td style="background:#D6E4F0;color:#0b0b0b">HBM4 volumes &#x27;completely sold out&#x27; for 2026 per its CFO (Q1 2026 call).</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early-Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Qualification and yield slippage at key customers; memory is cyclical.</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">ASE / Amkor</td><td style="background:#D6E4F0;color:#0b0b0b">ASX / AMKR</td><td style="background:#D6E4F0;color:#0b0b0b">Outsourced advanced packaging absorbing CoWoS overflow.</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early-Mid</td><td style="background:#D6E4F0;color:#0b0b0b">TSMC expands CoWoS (target ~125k wafers/month by end 2026) and pulls work back in-house.</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Lumentum</td><td style="background:#D6E4F0;color:#0b0b0b">LITE</td><td style="background:#D6E4F0;color:#0b0b0b">Lasers for AI optics; reported as effectively sold out through 2027, fiscal Q2 revenue +65% YoY.</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early-Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Sold-out lasers invite capacity additions and Chinese entrants.</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Coherent</td><td style="background:#D6E4F0;color:#0b0b0b">COHR</td><td style="background:#D6E4F0;color:#0b0b0b">Transceivers and lasers for 800G/1.6T links as copper runs out of reach.</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early-Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Transceiver price erosion as hyperscalers dual-source.</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Vertiv</td><td style="background:#D6E4F0;color:#0b0b0b">VRT</td><td style="background:#D6E4F0;color:#0b0b0b">Liquid cooling and power distribution for rack-scale AI systems.</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Cooling is increasingly bundled by system integrators; order lumpiness.</td></tr></tbody></table></div><p class="source">Source: Company filings, TrendForce / SiliconAnalysts HBM data, analyst notes; Oct 2026.</p>
+<h3 id="layer-2-enablers-platforms-tools">Layer 2 — Enablers (Platforms &amp; Tools)</h3>
+<p><em>The design tools, IP and connectivity silicon that make a bespoke XPU possible at 3nm and below.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D5E8D4;color:#0b0b0b">Synopsys / Cadence</td><td style="background:#D5E8D4;color:#0b0b0b">SNPS / CDNS</td><td style="background:#D5E8D4;color:#0b0b0b">EDA and IP used by every custom-silicon team; more XPU programs means more tape-outs.</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Mid</td><td style="background:#D5E8D4;color:#0b0b0b">In-sourcing of EDA by hyperscalers is unlikely, but AI-for-EDA could compress seat pricing.</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Arm Holdings</td><td style="background:#D5E8D4;color:#0b0b0b">ARM</td><td style="background:#D5E8D4;color:#0b0b0b">CPU IP (Neoverse) embedded in many custom AI SoCs and host CPUs.</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Royalty exposure is small relative to the accelerator&#x27;s value.</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Astera Labs</td><td style="background:#D5E8D4;color:#0b0b0b">ALAB</td><td style="background:#D5E8D4;color:#0b0b0b">PCIe/CXL retimers and scale-up connectivity silicon in AI racks.</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early-Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Competition from Broadcom and Marvell and from standards fights (UALink vs SUE).</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Credo Technology</td><td style="background:#D5E8D4;color:#0b0b0b">CRDO</td><td style="background:#D5E8D4;color:#0b0b0b">Active electrical cables and SerDes for short-reach AI links.</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early-Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Customer concentration; co-packaged optics could displace copper cables.</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Alchip / GUC</td><td style="background:#D5E8D4;color:#0b0b0b">3661.TW / 3443.TW</td><td style="background:#D5E8D4;color:#0b0b0b">Taiwan design-service houses for ASIC back-end and packaging.</td><td style="background:#D5E8D4;color:#0b0b0b">Low-Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early-Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Dependent on a few customers; big programs gravitate to Broadcom and Marvell.</td></tr></tbody></table></div><p class="source">Source: Company descriptions from public company materials; Oct 2026.</p>
+<h3 id="layer-3-integrators-system-builders">Layer 3 — Integrators (System Builders)</h3>
+<p><em>The design partners that turn a hyperscaler&#x27;s architecture into a manufacturable XPU and, increasingly, a deployable rack.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FFF2CC;color:#0b0b0b">Broadcom</td><td style="background:#FFF2CC;color:#0b0b0b">AVGO</td><td style="background:#FFF2CC;color:#0b0b0b">XPU design partner to six customers; AI revenue $16.7B in FQ3, $21.7B guided for FQ4, ~$115B FY27 and ~$230B FY28 line of sight; gross margin 75% falling to ~73% on mix.</td><td style="background:#FFF2CC;color:#0b0b0b">High</td><td style="background:#FFF2CC;color:#0b0b0b">Early-Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Customer concentration (Anthropic expected to be its largest design customer by next year) and vendor financing of that customer.</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Marvell Technology</td><td style="background:#FFF2CC;color:#0b0b0b">MRVL</td><td style="background:#FFF2CC;color:#0b0b0b">Custom silicon for Amazon Trainium and Microsoft Maia; FQ2 FY27 revenue $2.74B (+37%), FY27 ~$12B, FY28 ~$18B guide.</td><td style="background:#FFF2CC;color:#0b0b0b">Medium-High</td><td style="background:#FFF2CC;color:#0b0b0b">Early-Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Lost or delayed socket at Amazon or Microsoft; much smaller scale than Broadcom.</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">MediaTek</td><td style="background:#FFF2CC;color:#0b0b0b">2454.TW</td><td style="background:#FFF2CC;color:#0b0b0b">Reported second design partner on newer Google TPU variants (unverified in this run).</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">Share gain claims are press-sourced; moat vs Broadcom unproven.</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Rack ODMs (Celestica, Quanta, Wiwynn)</td><td style="background:#FFF2CC;color:#0b0b0b">CLS / 2382.TW / 6669.TW</td><td style="background:#FFF2CC;color:#0b0b0b">Build and integrate XPU racks as Broadcom shifts toward rack-level systems.</td><td style="background:#FFF2CC;color:#0b0b0b">Low-Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Thin margins; customer power over pricing.</td></tr></tbody></table></div><p class="source">Source: Broadcom Form 8-K (Aug 2, 2026 quarter); Marvell Q2 FY2027 results (Aug 27, 2026); press for MediaTek.</p>
+<h3 id="layer-4-applications-end-use-products">Layer 4 — Applications (End-Use Products)</h3>
+<p><em>The owners of the workloads: hyperscalers and frontier labs that turn silicon into tokens and revenue.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FCE4D6;color:#0b0b0b">Alphabet</td><td style="background:#FCE4D6;color:#0b0b0b">GOOGL</td><td style="background:#FCE4D6;color:#0b0b0b">TPU 8t/8i, TPU-as-a-service to Anthropic and Meta; Google invested $40B in Anthropic.</td><td style="background:#FCE4D6;color:#0b0b0b">High</td><td style="background:#FCE4D6;color:#0b0b0b">Mid</td><td style="background:#FCE4D6;color:#0b0b0b">Capex burden and the risk its TPU customers are also competitors.</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Amazon</td><td style="background:#FCE4D6;color:#0b0b0b">AMZN</td><td style="background:#FCE4D6;color:#0b0b0b">Trainium 3 ramping with Marvell; Anthropic&#x27;s primary training partner; capex ~$200B.</td><td style="background:#FCE4D6;color:#0b0b0b">High</td><td style="background:#FCE4D6;color:#0b0b0b">Mid</td><td style="background:#FCE4D6;color:#0b0b0b">Return on capex; Trainium share vs. Nvidia inside AWS.</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Meta Platforms</td><td style="background:#FCE4D6;color:#0b0b0b">META</td><td style="background:#FCE4D6;color:#0b0b0b">MTIA in-house plus reported Google TPU capacity deal; capex $115-135B.</td><td style="background:#FCE4D6;color:#0b0b0b">Medium-High</td><td style="background:#FCE4D6;color:#0b0b0b">Mid</td><td style="background:#FCE4D6;color:#0b0b0b">Spending without third-party revenue to offset it.</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Anthropic (private)</td><td style="background:#FCE4D6;color:#0b0b0b">—</td><td style="background:#FCE4D6;color:#0b0b0b">Largest prospective Broadcom design customer; ~$125.2B five-year TPU lease commitment, of which Broadcom lends up to $42B.</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">Funding dependence; lease acceleration on default.</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">OpenAI (private)</td><td style="background:#FCE4D6;color:#0b0b0b">—</td><td style="background:#FCE4D6;color:#0b0b0b">Custom XPU (&#x27;Jalapeño&#x27;) via Broadcom; $110B round at ~$730B valuation.</td><td style="background:#FCE4D6;color:#0b0b0b">Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">Funding dependence; circular vendor investments.</td></tr></tbody></table></div><p class="source">Source: Company releases and press; TIKR, aiweekly, TechSpot, Oct 2026.</p>
+<h3 id="layer-5-adjacent-beneficiaries">Layer 5 — Adjacent Beneficiaries</h3>
+<p><em>Incumbents whose addressable market or margins improve because AI clusters must be networked, powered and connected across sites.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#E1D5E7;color:#0b0b0b">Arista Networks</td><td style="background:#E1D5E7;color:#0b0b0b">ANET</td><td style="background:#E1D5E7;color:#0b0b0b">Ethernet switching for AI back-end fabrics; Q2 2026 revenue $3.04B (+37.7%); FY26 guide $12.6B with AI fabrics &gt;= $3.5B.</td><td style="background:#E1D5E7;color:#0b0b0b">Medium-High</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Broadcom&#x27;s own switch and system moves, and white-box competition.</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Ciena</td><td style="background:#E1D5E7;color:#0b0b0b">CIEN</td><td style="background:#E1D5E7;color:#0b0b0b">Optical transport for scale-across links between AI data centers.</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Telco and cloud capex lumpiness.</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Independent power producers (Vistra, Constellation)</td><td style="background:#E1D5E7;color:#0b0b0b">VST / CEG</td><td style="background:#E1D5E7;color:#0b0b0b">Firm power for gigawatt-scale AI campuses; PJM capacity shortfall lifts pricing.</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Early-Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Regulatory intervention in capacity pricing.</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Electrical equipment (Eaton)</td><td style="background:#E1D5E7;color:#0b0b0b">ETN</td><td style="background:#E1D5E7;color:#0b0b0b">Power distribution and switchgear for AI campuses.</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Backlog is long, but orders follow capex.</td></tr></tbody></table></div><p class="source">Source: Arista Form 8-K (Q2 2026); Introl / PJM data; company descriptions.</p>
+<h3 id="layer-6-bottleneck-highest-structural-moat">Layer 6 — Bottleneck (Highest Structural Moat)</h3>
+<p><em>The single-source inputs every winner must buy: leading-edge wafers and CoWoS packaging, HBM, EUV tools, and the Ethernet switch and SerDes franchise.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#F4CCCC;color:#0b0b0b">TSMC</td><td style="background:#F4CCCC;color:#0b0b0b">TSM</td><td style="background:#F4CCCC;color:#0b0b0b">3nm/2nm wafers and CoWoS packaging; CoWoS fully booked through 2026, lead times reported at 36-78 weeks, Nvidia holds ~60% of allocation.</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Full cycle</td><td style="background:#F4CCCC;color:#0b0b0b">Geopolitical/Taiwan risk and AI capex digestion.</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">SK Hynix</td><td style="background:#F4CCCC;color:#0b0b0b">000660.KS</td><td style="background:#F4CCCC;color:#0b0b0b">~50-55% of HBM; 2026 output committed; new cleanroom capacity not until 2028-29.</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Full cycle</td><td style="background:#F4CCCC;color:#0b0b0b">HBM pricing normalization when capacity finally arrives.</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">ASML</td><td style="background:#F4CCCC;color:#0b0b0b">ASML</td><td style="background:#F4CCCC;color:#0b0b0b">Sole EUV supplier for leading-edge nodes.</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Full cycle</td><td style="background:#F4CCCC;color:#0b0b0b">China restrictions; slower node transitions.</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Broadcom (switching &amp; SerDes franchise)</td><td style="background:#F4CCCC;color:#0b0b0b">AVGO</td><td style="background:#F4CCCC;color:#0b0b0b">Tomahawk 6/Ultra Ethernet switch silicon and SerDes IP; Ethernet displaced InfiniBand in large AI clusters.</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Full cycle</td><td style="background:#F4CCCC;color:#0b0b0b">UALink or Nvidia NVLink Fusion winning the scale-up layer.</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Grid interconnection (utilities)</td><td style="background:#F4CCCC;color:#0b0b0b">—</td><td style="background:#F4CCCC;color:#0b0b0b">Interconnect queues and transformer lead times gate every gigawatt campus.</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Full cycle</td><td style="background:#F4CCCC;color:#0b0b0b">Regulated returns; slow to monetize.</td></tr></tbody></table></div><p class="source">Source: SiliconAnalysts CoWoS data; TrendForce / SiliconAnalysts HBM pricing; Broadcom product releases; Oct 2026.</p>
+<h2 id="4-tam-expansion-analysis">4. TAM Expansion Analysis</h2>
+<h3 id="4a-market-size-growth-drivers">4a. Market Size &amp; Growth Drivers</h3>
+<p>This theme creates net-new demand: workloads that were uneconomic on general-purpose GPUs (frontier inference at hundreds of millions of users) become viable when the buyer owns the architecture. The numbers that matter come from company guidance, and they run far ahead of third-party market-research forecasts, which look stale.</p>
+<ul class="bullets"><li>Broadcom AI semiconductor revenue: ~$58B (FY2026 guide) → ~$115B (FY2027) → ~$230B (FY2028) (Broadcom Q3 FY2026 call, Sep 2026). Q4 guide $21.7B (+236% YoY).</li><li>Marvell total revenue: ~$12B (FY2027) → ~$18B (FY2028); custom silicon expected to more than double in FY28 (Marvell, Aug 27, 2026).</li><li>Third-party forecast for contrast: custom AI ASIC market $9.25B (2025) → $68.4B (2032), 33% CAGR (MarketsandMarkets). Broadcom alone is guiding above this by FY2027, so treat research-house TAMs as a floor, not a ceiling.</li><li>AI accelerator units: 23.3M in 2027, of which 12.5M ASIC/XPU (53%) and 10.9M GPU (47%) (JPMorgan, via KuCoin News, 2026).</li><li>Hyperscaler capex: &gt;$700B (2026), ~$870B (2027, Moody&#x27;s) to &gt;$1T (Evercore / BofA) and $1.3T industry-wide (Nvidia CFO) (DatacenterDynamics; Crypto Briefing, 2026).</li><li>Nvidia FQ2 FY2027 revenue $96.2B (+106%), data center $89B; FQ3 guide $108B (Nvidia, Aug 26, 2026).</li></ul>
+<p>Structural drivers: the cost per token is the binding economic variable for labs and hyperscalers, and bespoke silicon plus Ethernet fabrics lower it; power and packaging scarcity force buyers to maximize useful work per watt and per CoWoS slot. Cyclical drivers: cheap, abundant capital (vendor loans, private credit, equity rounds into labs), the competitive &#x27;must-have-compute&#x27; dynamic among five or six buyers, and equity-market valuations that fund the capex. The structural half is durable; the cyclical half depends on a financing window that rates at 16-year highs is now testing.</p>
+<h3 id="4b-primary-beneficiaries-high-tam-capture">4b. Primary Beneficiaries — High TAM Capture</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why High TAM Capture</th><th scope="col">TAM Exposure</th><th scope="col">Upside Scenario</th></tr></thead><tbody><tr><td>Broadcom</td><td>AVGO</td><td>Design partner to six XPU customers plus the dominant Ethernet switch franchise; owns both the chip and the fabric.</td><td>AI semis ~$58B of FY26 revenue by guide; Q3 AI share was $16.7B of $29.6B total (56%).</td><td>If the ~$115B FY27 / ~$230B FY28 guide holds, AI revenue alone exceeds the whole company&#x27;s FY26 revenue run-rate several times over.</td></tr><tr><td>TSMC</td><td>TSM</td><td>Every XPU and GPU needs its wafers and CoWoS; AI is ~36% of 3nm in 2026.</td><td>AI is the marginal growth driver; share of revenue rising each quarter.</td><td>CoWoS toward ~125k wafers/month by end 2026 with pricing power as allocation stays tight.</td></tr><tr><td>SK Hynix</td><td>000660.KS</td><td>HBM sold out with ~50-55% share; HBM content per XPU rises each generation.</td><td>HBM is the profit pool of DRAM; contract HBM3E ~$300 per 36GB vs ~$2,100 spot.</td><td>HBM4 at ~$500 per 48GB stack and 65% HBM bit growth in 2027 (Morgan Stanley).</td></tr><tr><td>Marvell</td><td>MRVL</td><td>Trainium and Maia design partner; &gt;50 active AI opportunities across 10+ customers.</td><td>Data center 79% of revenue.</td><td>FY28 ~$18B guide with custom silicon more than doubling.</td></tr><tr><td>Arista Networks</td><td>ANET</td><td>Ethernet back-end fabrics where Ethernet is displacing InfiniBand.</td><td>AI fabrics &gt;= $3.5B of $12.6B FY26 guide (28%).</td><td>Back-end plus scale-up and scale-across Etherlink wins push AI toward 40%+ of revenue.</td></tr></tbody></table></div><p class="source">Source: Broadcom, Marvell, Arista, Nvidia filings; Morgan Stanley / TrendForce via press; Oct 2026.</p>
+<h3 id="4c-limited-beneficiaries-low-tam-capture-or-tam-risk">4c. Limited Beneficiaries — Low TAM Capture or TAM Risk</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why Limited Capture</th><th scope="col">Common Investor Mistake</th><th scope="col">Signal to Watch</th></tr></thead><tbody><tr><td>AMD</td><td>AMD</td><td>Merchant GPU alternative competes for the same hyperscaler dollars as in-house XPUs; scale-up depends on UALink, which Broadcom disparages.</td><td>Assuming &#x27;not Nvidia&#x27; means AMD wins; hyperscalers increasingly choose their own silicon instead.</td><td>MI-series hyperscaler design wins at Alphabet, Amazon or Meta; UALink 200G silicon availability.</td></tr><tr><td>Nvidia</td><td>NVDA</td><td>Still growing 106% YoY but loses incremental share to ASICs by 2027 on JPM&#x27;s unit math; not a TAM loser, a share loser.</td><td>Treating &#x27;ASIC growth&#x27; as a Nvidia revenue decline; it is a share-of-incremental story.</td><td>Hyperscale segment growth (+102% YoY) falling below ACIE (+138%); Rubin pricing.</td></tr><tr><td>Super Micro / Dell</td><td>SMCI / DELL</td><td>Rack-scale XPU systems flow through ODMs and the design partners, not branded server OEMs.</td><td>Lumping all &#x27;AI servers&#x27; together; ASIC racks bypass OEM margin.</td><td>ODM direct share of AI rack shipments; OEM AI gross margin.</td></tr><tr><td>Alchip / GUC</td><td>3661.TW / 3443.TW</td><td>Design-service houses are second-tier to Broadcom and Marvell on the largest programs.</td><td>Treating Taiwan ASIC names as proxies for Broadcom&#x27;s growth.</td><td>Named wins on a top-3 hyperscaler XPU.</td></tr></tbody></table></div><p class="source">Source: Nvidia press release (Aug 26, 2026); JPMorgan via KuCoin News; Tom&#x27;s Hardware (May 2026); our assessment.</p>
+<h2 id="5-positioning-recommendation">5. Positioning Recommendation</h2>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Who captures the economics: ASIC or GPU?</td><td>A zero-sum share war; the ASIC winner (Broadcom) takes it from Nvidia, so buy AVGO and fade NVDA.</td><td>Not zero-sum through 2027: Nvidia +106% and Broadcom AI +221% in the same period. Both are throttled by CoWoS, HBM and power, so the scarce-input owners (TSMC, SK Hynix) hold the pricing power. Broadcom&#x27;s consolidated gross margin already slid from 75% to ~73% guided as XPU and memory content rise.</td></tr><tr><td>Is Broadcom cheap on ~19x forward earnings?</td><td>Yes: $115B FY27 AI revenue makes the multiple look low; target ~$450-532, Morningstar $650.</td><td>The low multiple is the market discounting duration and concentration, not a mispricing: six customers, Anthropic heading to the largest, and Broadcom lending up to $42B (one-third of a $125.2B lease) to that customer. With the 10-year at ~5.2%, a financing-dependent growth path deserves a lower multiple than a cash-funded one. (Forward P/E is from a third-party blog; verify.)</td></tr><tr><td>Is 2028 digestion far away?</td><td>2027 capex approaches $1T; digestion is a 2028+ problem.</td><td>Broadcom&#x27;s own $230B FY28 target is the digestion tripwire: it needs capex well above $1T plus a lab financing market that stays open. The first test is not 2028 but the Dec 2026 print and the pricing of the $18B junior tranche.</td></tr><tr><td>Which scale-up standard wins?</td><td>Ethernet has won; networking is a done deal for Broadcom.</td><td>Ethernet won scale-out against InfiniBand, but scale-up (UALink vs Broadcom SUE vs Nvidia NVLink) is unresolved. Tomahawk Ultra&#x27;s sub-400ns latency is credible; UALink&#x27;s roadmap is unproven. The risk to Broadcom is not scale-out, it is the next layer.</td></tr></tbody></table></div><p class="source">Source: Company filings and press as cited; our assessment.</p>
+<div class="edge"><strong>The edge:</strong> consensus pays for compute-share optionality; the real mispricing is the financing chain that underwrites the marginal XPU order, which the market treats as hyperscaler cash flow when &#x27;lab money plus vendor debt&#x27; is the incremental source.</div>
+<p><strong>Note:</strong> Forward P/E and price targets are from third-party summaries (TIKR, MarketBeat, Sep-Oct 2026) and were not verified against a live quote; AVGO was reported between ~$350 (post-earnings, Sep) and ~$418 (late Sep) across sources.</p>
+<p><strong>Theme Posture: Theme Conviction 6/10 — express as a long basket of Layer 6 bottlenecks (TSMC, SK Hynix, ASML) and Layer 5 networking/power, hold Broadcom and Marvell at no more than current weight (no adds before the Dec print), and fade the most crowded semiconductor ETF beta and thin-margin rack integrators.</strong></p>
+<ul class="bullets"><li><strong>The edge:</strong> the market is pricing a compute-share fight when the swing factor is whether the labs that absorb the incremental XPU orders can keep financing them with rates at 16-year highs.</li></ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">Layer</th><th scope="col">Weight</th><th scope="col">Rationale</th></tr></thead><tbody><tr><td>1 — Infrastructure</td><td class="fill-warn">Neutral</td><td>Sold out and scarce, but breaks most violently when capacity lands (2028-29).</td></tr><tr><td>2 — Enablers</td><td class="fill-warn">Neutral</td><td>Tape-out count rises regardless of who wins; low crowding.</td></tr><tr><td>3 — Integrators</td><td class="fill-warn">Neutral</td><td>Best growth, but concentration and vendor financing cap the multiple.</td></tr><tr><td>4 — Applications</td><td class="fill-bad">Underweight</td><td>Capex return risk and thin visible monetization; labs are private.</td></tr><tr><td>5 — Adjacent</td><td class="fill-good">Overweight</td><td>Networking and power benefit from any winner; less crowded.</td></tr><tr><td>6 — Bottlenecks</td><td class="fill-good">Overweight</td><td>Structural scarcity survives a down-cycle; the defensive core.</td></tr></tbody></table></div><p class="source">Source: Our assessment, consistent with the Section 6 verdict (Peaking: rotate toward Layers 5-6).</p>
+<p><strong>Overweight</strong></p>
+<ul class="bullets"><li><strong>TSM / TSMC</strong> — Owns the 3nm and CoWoS chokepoint that every XPU and GPU needs; benefits whichever architecture wins.</li><li><strong>000660.KS / SK Hynix</strong> — HBM is committed for 2026 with no relief until 2028-29; add on pullbacks, not strength.</li><li><strong>ANET / Arista</strong> — AI fabric exposure with less hyperscaler-lab financing risk than the XPU designers; add on weakness.</li><li><strong>ASML</strong> — Sole EUV supplier; the least cyclical way to own leading-edge demand.</li></ul>
+<p><strong>Neutral</strong></p>
+<ul class="bullets"><li><strong>AVGO / Broadcom</strong> — Best asset in the theme, but stop adding: Dec 10-11 print and the $60B financing syndication are the next two tests, and 3/6 exhaustion signals say distribution risk is real.</li><li><strong>MRVL / Marvell</strong> — Trainium 3 ramp is credible and FY28 guide implies ~50% growth; hold, size below Broadcom given smaller scale.</li><li><strong>LITE / COHR / MU</strong> — Sold-out inputs are valuable but sit in the layer that unwinds fastest on capacity catch-up; hold and trim into strength.</li></ul>
+<p><strong>Underweight</strong></p>
+<ul class="bullets"><li><strong>SMCI / Dell and Taiwan rack ODMs</strong> — XPU racks route through design partners and ODMs at thin margins.</li><li><strong>Alchip / GUC and other second-tier ASIC service names</strong> — Highest beta to a financing scare, least pricing power.</li><li><strong>Broad semiconductor ETF beta (SOXX/SMH)</strong> — Record $46B inflows and 34 daily moves &gt;4% signal crowded positioning; prefer owning individual bottlenecks over the basket.</li></ul>
+<p>Crowding is the issue, not fundamentals: semiconductor ETF assets roughly quadrupled to ~$165B in 2026, and a hiccup in capex forecasts could cause a violent unwind. Valuation caution applies most to Layer 1 and Layer 3 names that trade on 2027-28 estimates that embed lab financing continuing. This weighting is consistent with the Section 6 verdict of Peaking (3/6): we are not adding to Layers 1, 3 or 4, and we lean on Layers 5 and 6, which break last.</p>
+<p>Entry timing: because the three firing signals (crowding, vendor financing, macro) are cyclical or financing-driven rather than supply-driven, a 15-25% drawdown in Layer 3 with backlog intact would be an entry, not an exit. Wait for the Dec print and the Q4 hyperscaler capex guides in late January before re-engaging.</p>
+<h2 id="6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</h2>
+<p class="call-line serious"><strong>Peak Verdict: 3/6 exhaustion signals firing — Peaking (positioning, financing and macro-led; supply and margin signals are not firing). Estimated time to peak in fundamentals: 4-8 quarters (calendar 2027 H2 to 2028), because Broadcom&#x27;s own FY28 target and the capex path run through then; the equity risk is nearer-term, as Signals 3, 5 and 6 are already live.</strong></p>
+<p>Reconciliation with Section 2: fundamentals (Signals 1-5 of the entry set) are mid-cycle and intact, while positioning, financing and the discount rate are late-cycle. The &#x27;Peaking&#x27; label reflects risk to the equities, not an end to the build-out. Layer weights follow the mapping: stop adding and rotate toward Layers 5-6.</p>
+<h3 id="6a-exhaustion-scorecard">6a. Exhaustion Scorecard</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Exhaustion Signal</th><th scope="col">Status</th><th scope="col">Evidence / What Would Trip It</th></tr></thead><tbody><tr><td>1. Convergence Signal Inversion</td><td class="fill-warn">⚠️ Early warning</td><td>Narrative is saturated (record ETF flows, short-seller dot-com comparisons) but cost curves, capital and behavior are intact. Trips if two entry signals fail: e.g., a hyperscaler cuts a 2027 capex framing or a top-3 lab raise prices flat/down.</td></tr><tr><td>2. Supply Catch-Up &amp; Capacity Overshoot</td><td class="fill-good">❌ Not yet</td><td>CoWoS booked through 2026, lead times 36-78 weeks, HBM sold out; HBM spot ~$2,100 vs LTA $300-400 for 36GB. Trips if CoWoS lead times &lt;26 weeks, TSMC 2027 capacity forecasts reach the high end (~200k wpm) without demand, or HBM spot falls below 2x contract.</td></tr><tr><td>3. Valuation &amp; Crowding Extremes</td><td class="fill-bad">✅ Firing</td><td>$46B record semiconductor ETF inflows in 2026, SOXX $6.92B in July alone, record $7.1B single-day flow, 34 daily moves &gt;4%, 34 Buys / 6 Holds / 1 Sell on AVGO. Cyclical: crowding unwinds reverse.</td></tr><tr><td>4. Unit Economics &amp; Margin Erosion</td><td class="fill-warn">⚠️ Early warning</td><td>Broadcom gross margin 75% in FQ3 (-210bp QoQ) to ~73% guided for FQ4 on XPU/memory mix and potential rack sales; Marvell non-GAAP GM 58.9%. Trips if consolidated Broadcom GM guide &lt;72% or Marvell GM &lt;55% outside of mix.</td></tr><tr><td>5. Demand-Side Funding Stress</td><td class="fill-bad">✅ Firing</td><td>Broadcom lends Anthropic up to $42B (about one-third of a $125.2B lease) inside a $60B syndicate with an $18B Blackstone-led junior tranche; filings flag conflict-of-interest and acceleration risk; Nvidia has &gt;$40B of AI equity bets in 2026. If capital markets closed for 12 months, lab-sourced XPU demand (Anthropic, OpenAI) is the share at risk.</td></tr><tr><td>6. Macro &amp; Policy Regime Shift</td><td class="fill-bad">✅ Firing</td><td>Fed hiked to 3.75-4.00% on Sep 16, 2026 (first hike since 2023, 12-0), markets price further hikes; 10-year reportedly 5.2-5.3% (highest since 2007) on an energy shock. Cyclical, but a long-duration asset class.</td></tr></tbody></table></div><p class="source">Source: CNBC (Fed, Sep 16, 2026); StockMarketWatch; Crypto Briefing (ETF flows); TIKR / AI Weekly (financing); SiliconAnalysts; Broadcom 8-K; Oct 9, 2026.</p>
+<p><em>Color note: in this table a firing signal is bad news, so green means &#x27;not yet&#x27; and red means &#x27;firing&#x27; — the inverse of the Section 2 table.</em></p>
+<h3 id="6b-tripwires-pre-committed-exit-triggers">6b. Tripwires — Pre-Committed Exit Triggers</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Tripwire</th><th scope="col" class=num>Signal</th><th scope="col">Where Observed</th><th scope="col">Action if Triggered</th></tr></thead><tbody><tr><td>1</td><td>Broadcom guides next-quarter AI semiconductor revenue growth below +10% QoQ, or drops/qualifies the ~$115B FY27 line of sight</td><td class="num">1, 5</td><td>Broadcom FQ4 call (expected Dec 10-11, 2026)</td><td><strong>Cut AVGO and MRVL by half; stop adding to Layer 3</strong></td></tr><tr><td>2</td><td>Broadcom consolidated gross margin guide &lt;72%, or a rack-level sale that takes GM below that without an operating-margin offset</td><td class="num">4</td><td>Broadcom quarterly guidance</td><td><strong>Cut AVGO by a third; rotate to Layer 6</strong></td></tr><tr><td>3</td><td>The $18B junior tranche of the Broadcom/Anthropic financing fails to syndicate, prices &gt;100bp wider than talk, or any frontier-lab round prices flat/down</td><td class="num">5</td><td>Bloomberg / Reuters deal coverage; lab funding announcements</td><td><strong>Cut lab-exposed Layer 3-4 by half; pair against Layer 6</strong></td></tr><tr><td>4</td><td>Any big-4 hyperscaler lowers its 2027 capex framing, or total big-4 capex falls sequentially for a quarter</td><td class="num">1, 5</td><td>Late-Oct and late-Jan 2027 earnings (10-Qs)</td><td><strong>Exit Layers 1 and 3 baskets; keep TSMC/ASML only</strong></td></tr><tr><td>5</td><td>CoWoS lead times fall below 26 weeks, or 36GB HBM3E spot falls below 2x the ~$300-400 LTA</td><td class="num">2</td><td>TrendForce / SiliconAnalysts; TSMC, SK Hynix, Micron calls</td><td><strong>Cut Layer 1 memory/packaging by half</strong></td></tr><tr><td>6</td><td>10-year Treasury yield &gt;5.5% for two weeks, or Fed funds guided beyond 4.50%, or HY OAS &gt;450bp</td><td class="num">6</td><td>FRED DGS10, BAMLH0A0HYM2; FOMC (Oct 28, mid-Dec)</td><td><strong>Cut gross theme exposure by a third (reduce beta, hold bottlenecks)</strong></td></tr><tr><td>7</td><td>A top-3 XPU program is lost or dual-sourced away from Broadcom (design-win share loss at Google, Meta or OpenAI)</td><td class="num">4</td><td>Hyperscaler disclosures; Broadcom/MediaTek calls</td><td><strong>Cut AVGO to underweight; re-underwrite concentration</strong></td></tr></tbody></table></div><p class="source">Source: Our tripwires; observation sources named in table.</p>
+<h3 id="6c-watch-calendar-dated-catalysts">6c. Watch Calendar — Dated Catalysts</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Date / Window</th><th scope="col">Event</th><th scope="col">Bullish if...</th><th scope="col">Bearish if...</th></tr></thead><tbody><tr><td>Oct 27-28, 2026</td><td>FOMC decision (Oct 28)</td><td>Pause with a softer hiking path; 10-year retreats toward 4.5-4.8%</td><td>Second hike; 10-year holds above 5.2%</td></tr><tr><td>Late Oct 2026 (dates per company; verify)</td><td>Alphabet, Microsoft, Amazon, Meta Q3 earnings</td><td>2027 capex framing raised; TPU/Trainium demand cited as supply-constrained</td><td>Capex growth decelerates; commentary on &#x27;digestion&#x27; or ROI scrutiny</td></tr><tr><td>Mid/late Nov 2026 (reported Nov 18-25)</td><td>Nvidia FQ3 FY2027 results</td><td>Beat vs $108B guide and Rubin on schedule</td><td>Guide light; evidence of ASIC share gains hitting pricing</td></tr><tr><td>Early Dec 2026 (verify)</td><td>Marvell FQ3 FY2027 results</td><td>FY28 ~$18B reiterated; Trainium 3 ramp on track</td><td>Socket delay or custom guide cut</td></tr><tr><td>Dec 10-11, 2026 (unconfirmed)</td><td>Broadcom FQ4 FY2026 results and FY27 guide</td><td>FY27 AI ~$115B reiterated; GM guide &gt;=72%</td><td>Soft FQ1 guide; financing/concentration commentary worsens</td></tr><tr><td>Mid-Dec 2026 (verify)</td><td>FOMC</td><td>Hiking cycle ends</td><td>Third hike</td></tr><tr><td>Mid-Jan 2027 (typical)</td><td>TSMC Q4 results and 2027 capex/CoWoS guide</td><td>CoWoS and AI revenue guide raised</td><td>Capacity added beyond demand; AI growth guide trimmed</td></tr><tr><td>Late Jan 2027</td><td>Hyperscaler Q4 earnings and 2027 capex guides</td><td>Combined 2027 capex &gt;= $870B</td><td>Guides below Moody&#x27;s ~$870B</td></tr><tr><td>H1 2027</td><td>Anthropic&#x27;s ~3.5 GW of TPU capacity begins coming online; Ironwood/TPU v8i volume</td><td>On-time rack deliveries and power</td><td>Power or packaging delays; lease acceleration disclosed</td></tr><tr><td>Summer 2027</td><td>PJM: first season expecting insufficient capacity</td><td>Grid response (new generation, flexible load) keeps campuses on schedule</td><td>Curtailments or delays at AI campuses</td></tr></tbody></table></div><p class="source">Source: Federal Reserve calendar; company IR pages and press (dates marked verify/unconfirmed were not confirmed in this run).</p>
+<h3 id="6d-false-alarm-test">6d. False-Alarm Test</h3>
+<ul class="bullets"><li><strong>Are the fundamentals confirming?</strong> Yes today: Broadcom guided Q4 AI revenue +236% YoY, Nvidia guided $108B, Marvell raised FY28, CoWoS is booked through 2026. A drawdown without a change in backlog, lead times (36-78 weeks) or hyperscaler capex guides is a positioning flush; a drawdown with lead times falling under 26 weeks is the real thing.</li><li><strong>Theme-specific or market-wide?</strong> Compare an XPU/networking basket (AVGO, MRVL, ANET, TSM) against SMH and the Nasdaq-100 around FOMC dates. With the 10-year at 5.2%+, a move that tracks other long-duration assets is a discount-rate event, not a thesis event.</li><li><strong>Which signals are firing — structural or cyclical?</strong> Signals 3 (crowding) and 6 (macro) are cyclical; Signal 5 (financing) can turn structural if a lab financing fails. Signals 2 and 4 are structural and are not yet firing; they are the ones to act on immediately.</li><li><strong>Has the end state changed?</strong> Restate: by 2028 most frontier workloads run on custom silicon over Ethernet fabrics. That stays credible if the Broadcom FY27 ~$115B line of sight holds and capex stays above ~$870B in 2027; it changes if lab financing closes and 2027 capex is cut.</li></ul>
+<p><strong>Structural signals for this theme (act on):</strong> supply catch-up (CoWoS lead times, HBM spot vs contract), gross-margin erosion at Broadcom/Marvell beyond mix, and failed lab financing. · <strong>Cyclical signals (likely buy the dip):</strong> ETF-flow reversals, rate spikes, and sentiment-driven de-ratings with backlog intact.</p>
+<h3 id="6e-closest-historical-analogue">6e. Closest Historical Analogue</h3>
+<p>The closest analogue is Cisco and the networking/optical build-out at the March 2000 peak: genuine technology, a few dominant suppliers, and demand from customers that were increasingly financed by capital markets and vendor credit. Cisco peaked at $51.93 on March 27, 2000, fell to $5.58 by Oct 8, 2002 (-89%), and took until December 2025 to regain its high. The unflattering part for this theme is the parallel: Broadcom is itself lending up to $42B to a customer to buy its chips, which is the same financing signature that preceded the 2000-2002 unwind. The difference is that today&#x27;s anchor buyers (Alphabet, Amazon, Meta, Microsoft) are profitable and fund most capex from operating cash flow, whereas the 2000 customers were largely debt-financed telecom upstarts.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Analogue</td><td>Cisco / dot-com networking and optical build-out (2000)</td></tr><tr><td>Peak date</td><td>March 27, 2000 (CSCO $51.93)</td></tr><tr><td>Peak-to-trough drawdown</td><td>-89.25% (trough $5.58 on Oct 8, 2002)</td></tr><tr><td>Recovery time</td><td>~25.7 years (new high Dec 10, 2025)</td></tr><tr><td>Key difference vs. this theme</td><td>Anchor buyers are cash-rich hyperscalers rather than debt-funded telcos; the incremental lab buyer is the weak link and the financing resembles 2000.</td></tr></tbody></table></div><p class="source">Source: ChartRow / Tiger Brokers (Cisco history), Oct 2026; our assessment.</p>
+<h2 id="7-key-diligence-questions">7. Key Diligence Questions</h2>
+<ol class="bullets"><li>Can Anthropic and OpenAI together fund the roughly $125B-plus of multi-year TPU/XPU lease and purchase commitments without Broadcom&#x27;s $42B loan being drawn in a down market: what share of Broadcom&#x27;s FY27 ~$115B AI revenue is sourced from customers whose own revenue does not yet cover their compute commitments?</li><li>Does Broadcom&#x27;s consolidated gross margin stay at or above 72% when XPU racks and higher HBM content scale in FY27, or does the dilution from ~75% to ~73% continue, pushing operating margin leverage into question?</li><li>Does TSMC&#x27;s CoWoS capacity (target ~125k wafers/month at end-2026; 2027 forecasts 112k-200k) stay below combined XPU plus GPU demand through 2027, i.e. do lead times stay above 36 weeks?</li><li>Does scale-up land on Broadcom&#x27;s Ethernet (SUE/Tomahawk Ultra) rather than UALink or NVLink Fusion in the 2027 rack generation: which hyperscaler publicly commits to which standard?</li><li><strong>Downside / exit case:</strong> what would have to be true for the theme to peak within 12 months: a Fed funds rate above 4.5% with the 10-year above 5.5%, an $18B junior tranche that fails to syndicate, and one big-4 hyperscaler cutting its 2027 capex framing by &gt;10%. How many of the three are already partly in motion (the first is), and what is the portfolio response?</li></ol>
+<h2 id="sources">Sources</h2>
+<ul class="bullets"><li><a href="https://www.sec.gov/Archives/edgar/data/0001730168/000173016826000076/avgo-08022026x8kxex99.htm">Broadcom Form 8-K, quarter ended Aug 2, 2026</a></li><li><a href="https://www.fool.com/earnings/call-transcripts/2026/09/09/broadcom-avgo-q3-2026-earnings-call-transcript/">Broadcom Q3 FY2026 earnings call transcript (Motley Fool, Sep 9, 2026)</a></li><li><a href="https://www.tomshardware.com/tech-industry/semiconductors/custom-ai-asics-examined-from-broadcom-to-mtia">Tom&#x27;s Hardware — custom AI ASIC state of play (May 2026)</a></li><li><a href="https://www.marketsandmarkets.com/Market-Reports/custom-ai-asic-market-130951669.html">MarketsandMarkets — Custom AI ASIC market</a></li><li><a href="https://www.kucoin.com/news/flash/jpmorgan-ai-asic-shipments-to-surpass-gpus-by-2027">JPMorgan: AI ASIC shipments to exceed GPUs by 2027 (KuCoin News)</a></li><li><a href="https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/">DatacenterDynamics — US hyperscaler capex to top $700B in 2026</a></li><li><a href="https://cryptobriefing.com/nvidia-cfo-cloud-backlog-2-trillion-capex-2027/">Crypto Briefing — Nvidia CFO: capex to hit $1.3T in 2027</a></li><li><a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Second-Quarter-Fiscal-2027/">Nvidia Q2 FY2027 results</a></li><li><a href="https://siliconanalysts.com/market-data/cowos-capacity">SiliconAnalysts — CoWoS capacity</a></li><li><a href="https://siliconanalysts.com/data/hbm-pricing">SiliconAnalysts — HBM pricing</a></li><li><a href="https://fourweekmba.com/ai-marvell-technology-fy28-custom-silicon-guide-data-center/">Marvell FY28 guide (FourWeekMBA)</a></li><li><a href="https://www.sec.gov/Archives/edgar/data/0001596532/000159653226000174/ex991q226-earningsrelease.htm">Arista Q2 2026 results (SEC 8-K)</a></li><li><a href="https://www.storagereview.com/news/broadcom-ships-tomahawk-6-switch-series-unleashing-102-4-tbps-switching-capacity">StorageReview — Tomahawk 6</a></li><li><a href="https://www.tikr.com/blog/broadcom-isnt-just-selling-anthropic-chips-anymore-its-underwriting-them-with-up-to-42-billion">TIKR — Broadcom&#x27;s up to $42B Anthropic financing</a></li><li><a href="https://aiweekly.co/alerts/broadcom-and-blackstone-amass-60b-debt-to-fund-anthropic-chips">AI Weekly — Broadcom and Blackstone $60B debt</a></li><li><a href="https://cryptobriefing.com/us-semiconductor-etfs-record-inflows-2026/">Crypto Briefing — record $46B semiconductor ETF inflows</a></li><li><a href="https://www.cnbc.com/2026/09/16/fed-rate-decision-september-2026.html">CNBC — Fed rate decision, Sep 16, 2026</a></li><li><a href="https://stockmarketwatch.com/bonds/reports/october-2026">Treasury yields, October 2026 (StockMarketWatch)</a></li><li><a href="https://introl.com/blog/pjm-grid-crisis-6gw-shortfall-data-center-power-2027">Introl — PJM grid shortfall</a></li><li><a href="https://www.itiger.com/news/1166753772">Cisco 25-year recovery (Tiger Brokers)</a></li></ul>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>

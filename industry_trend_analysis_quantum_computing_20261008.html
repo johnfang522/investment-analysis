@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: null, &quot;skill&quot;: &quot;industry_trend_analysis&quot;, &quot;title&quot;: &quot;Quantum Computing&quot;, &quot;signal&quot;: null, &quot;conviction&quot;: null, &quot;as_of&quot;: null, &quot;rendered&quot;: &quot;2026-10-08&quot;, &quot;company&quot;: null}">
+<title>Quantum Computing</title>
+<style>/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 13px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 12px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(11px, 0.9vw, 14px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 12px; }
+.stat .value { font-size: 20px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 12.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 14px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 11px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 18px; }
+.callout.verdict .signal { font-size: 22px; }
+.callout .scale { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+.call-line { font-size: 17px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 15px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 12.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 11.5px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 12px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 10.5px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 11px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 13px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 12px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 12.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 22px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 30px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 18px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 12.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 13px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 12px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 14px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card .new-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--good); color: #fff; font-size: 11px; font-weight: 650; vertical-align: 1px; }
+.toc ol.sub li a::before { content: "• "; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 13px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 12px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+
+.file-chip { margin-left: 6px; padding: 1px 7px; border: 1px solid var(--grid); border-radius: 999px; font-size: 11px; font-weight: 600; text-decoration: none; color: var(--muted); vertical-align: 1px; }
+.file-chip:hover { color: var(--ink); border-color: var(--muted); }
+</style>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="index.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="index.html">← Investment Research Library</a><ol><li><a href="#1-introduction">1. Introduction</a></li><li><a href="#2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</a></li><li><a href="#3-value-chain-map">3. Value Chain Map</a></li><li><a href="#4-tam-expansion-analysis">4. TAM Expansion Analysis</a></li><li><a href="#5-positioning-recommendation">5. Positioning Recommendation</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</a></li><li><a href="#7-key-diligence-questions">7. Key Diligence Questions</a></li><li><a href="#sources">Sources</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>Industry Trend Analysis</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>Quantum Computing</h1><p class="subtitle">Buy-side thematic read · October 8, 2026 · Theme Conviction 5/10 · Peak verdict: Late-cycle (2/6 exhaustion signals firing)</p></header>
+<h2 id="1-introduction">1. Introduction</h2>
+<ul class="bullets"><li><strong>What it is:</strong> computers that use qubits (superposition and entanglement) to solve a narrow set of problems (chemistry/materials simulation, optimization, cryptanalysis) that scale badly on classical machines. Competing hardware modalities: superconducting (IBM, Google, Rigetti), trapped ion (IonQ, Quantinuum), neutral atom (QuEra, Atom Computing, Infleqtion), photonic (PsiQuantum), annealing (D-Wave), silicon spin (Diraq).</li><li><strong>Why now:</strong> error correction crossed from theory to hardware in 2026. Quantinuum&#x27;s Helios ran 48 logical qubits, Atom Computing entangled 24 logical qubits from 112 physical, QuEra reported 100 logical qubits on 10,000+ physical, and Google&#x27;s Willow showed logical error rates falling about 2.14x with each larger surface-code lattice (The Quantum Insider; paperguide.ai, 2026). The state also became a buyer: Commerce signed $2.01B of CHIPS letters of intent with nine companies on May 21, 2026, taking minority equity stakes in seven (NIST; CNBC).</li><li><strong>End state:</strong> fault-tolerant machines (IBM targets Starling in 2029: 200 logical qubits, 100 million gates) that make quantum chemistry and materials design routine, and a mandatory migration of public-key cryptography (a June 22, 2026 executive order sets federal post-quantum deadlines of Dec 31, 2030 for key establishment and Dec 31, 2031 for signatures) [IBM; The Hacker News].</li><li><strong>Investment opportunity:</strong> the science is real but the revenue is not yet: the six listed pure-plays we screened (IONQ, RGTI, QBTS, QUBT, QNT, INFQ) have <strong>$347M of combined trailing revenue against a $41.5B combined market cap, about 119x sales</strong> [Yahoo Finance, Oct 8, 2026]. Independent 2030 market forecasts run from $2.5B (BCG baseline) to $20.2B (MarketsandMarkets); McKinsey sees up to $97B of quantum technology revenue by 2035.</li><li><strong>Critical context:</strong> this is a two-clock theme. The technology clock is early (fault tolerance 2029+), while the equity clock has already run one full leg: 2026 brought a Quantinuum IPO ($1.68B, June 4), an IQM listing (July 3) and an Infleqtion listing, then a 30% pullback in the pure-plays in a month. Pure-plays are now 50-75% below their 1-year highs (IONQ $39.45 vs $82.09; RGTI $14.14 vs $56.34; QBTS $14.60 vs $44.78; QNT $41.52 vs $83.17) [Yahoo Finance].</li></ul>
+<h2 id="2-trend-assessment-the-5-convergence-signals">2. Trend Assessment: The 5 Convergence Signals</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Signal</th><th scope="col">Status</th><th scope="col">One-Line Verdict</th></tr></thead><tbody><tr><td>Technology Inflection</td><td>✅ Firing</td><td>Error-corrected logical qubits now exist at 12-100 scale across four modalities; Google shows below-threshold scaling.</td></tr><tr><td>Regulatory Shift</td><td>✅ Firing</td><td>Federal post-quantum migration deadlines (2030/2031) and $2.01B of CHIPS LOIs with equity stakes make the state a buyer and a mandate-setter.</td></tr><tr><td>Behavioral Change</td><td>⚠️ Partial</td><td>Orders are rising (IonQ RPO $485M vs $122M a year ago) but revenue is tiny, pilot-driven and government-heavy; no paid, repeatable production workload is proven.</td></tr><tr><td>Capital Flow</td><td>✅ Firing</td><td>PsiQuantum $1.5B at $10.5B, Quantinuum $1.68B IPO, $2B Commerce package; but venture funding is slowing ($1.2B YTD vs $4.1B in 2025).</td></tr><tr><td>Narrative Momentum</td><td>✅ Firing</td><td>Mainstream and retail saturation (daily retail-finance coverage, IPO wave, executive orders): firing, but this is also an exhaustion marker.</td></tr></tbody></table></div><p class="source">Source: Analyst judgment on sourced evidence below</p>
+<p><strong>Convergence Verdict: 4/5 signals firing — Strong conviction on the theme. Estimated cycle stage: Early for the technology and revenue cycle; the equity cycle is already late in its first leg (see Section 6, which reconciles the two).</strong></p>
+<h3 id="technology-inflection-firing">Technology Inflection — ✅ Firing</h3>
+<ul class="bullets"><li>Quantinuum Helios reached 48 logical qubits on trapped-ion hardware; Microsoft and Quantinuum created 12 highly reliable logical qubits and ran an end-to-end chemistry simulation within chemical accuracy (The Quantum Insider, Jun 13, 2026).</li><li>Google&#x27;s Willow (105 physical qubits) showed logical error rates fall about 2.14x per lattice-size step, the first hardware-scale evidence that fault-tolerance scaling curves hold (paperguide.ai, 2026).</li><li>QuEra&#x27;s third-generation model targets 100 logical qubits on 10,000+ physical qubits (about 100:1); Atom Computing reported 24 logical from 112 physical. Ratios are not comparable across code definitions: treat as direction, not a benchmark.</li><li>IBM expects verified quantum advantage by end-2026 and its Kookaburra qLDPC module in 2026; Starling (200 logical qubits) is slated for 2029 (IBM).</li></ul>
+<h3 id="regulatory-shift-firing">Regulatory Shift — ✅ Firing</h3>
+<ul class="bullets"><li>June 22, 2026 executive order: federal post-quantum key establishment by Dec 31, 2030 and digital signatures by Dec 31, 2031, pulling the 2035 target forward 4-5 years; contractors must comply by Dec 31, 2030 (The Hacker News; Sectigo).</li><li>May 21, 2026: Commerce announced letters of intent for $2.01B under the CHIPS Act: IBM $1B, GlobalFoundries $375M, $100M each to D-Wave, Rigetti, Infleqtion, PsiQuantum, Quantinuum and Atom Computing, Diraq up to $38M; equity stakes in seven (NIST; Manufacturing Dive).</li><li>Oct 7, 2026: DARPA moved Atom Computing, Diraq, IBM and IonQ into Stage C of the Quantum Benchmarking Initiative (about $200M new DARPA funding plus a $150M conditional loan for PsiQuantum); IonQ&#x27;s Stage C agreement is worth up to $300M (HPCwire; The Quantum Insider).</li><li>National Quantum Initiative Reauthorization (S.3597 / H.R.8462) cleared both committees in April 2026 but still awaits floor votes: a pending, not a completed, tailwind.</li></ul>
+<h3 id="behavioral-change-partial">Behavioral Change — ⚠️ Partial</h3>
+<ul class="bullets"><li>IonQ Q2 2026 revenue $80.1M (+287% YoY), RPO $485M vs $122M a year earlier; growth includes the $1.8B SkyWater acquisition, so organic growth is not separable from the filings we found (Investing.com; Globe and Mail call transcript).</li><li>D-Wave: Q2 revenue $3.1M (flat YoY), bookings $2.1M, H1 bookings $35.5M including a $20M Advantage2 sale to Florida Atlantic University; about 100 customers, 62.4% of revenue from commercial enterprises (D-Wave release; Quantum Computing Report).</li><li>Rigetti Q2 revenue $5.1M with a $28.1M operating loss (DCD, Aug 2026). IQM cites more than €102M of orders (The Quantum Insider, Aug 4).</li><li>Key test not yet passed: a customer paying for quantum output that beats the classical alternative on a repeatable workload. IBM&#x27;s end-2026 advantage claim is the next checkpoint.</li></ul>
+<h3 id="capital-flow-firing">Capital Flow — ✅ Firing</h3>
+<ul class="bullets"><li>PsiQuantum closed $1.5B at a $10.5B valuation in May 2026 and has a conditional $150M loan from the Office of Strategic Capital; Quantinuum raised $1.68B in its June 4 IPO; IQM listed July 3 (Crunchbase; CNBC).</li><li>Quantonation closed a €220M second fund in February 2026, the largest dedicated quantum fund (The Quantum Insider).</li><li>Caution: venture funding is $1.2B so far in 2026 against a record $4.1B in 2025, with the largest 2026 round a $200M financing for Photonic (Crunchbase News, 2026): late-stage and public money is replacing early-stage money.</li></ul>
+<h3 id="narrative-momentum-firing">Narrative Momentum — ✅ Firing</h3>
+<ul class="bullets"><li>Google Quantum AI launched a neutral-atom program in Boulder under Prof. Adam Kaufman (March 2026); IonQ closed the $1.8B SkyWater deal for onshore fabrication (Quantum Insider; Investing.com).</li><li>NVIDIA&#x27;s NVQLink connects quantum processors to GPU supercomputers, announced with 17 quantum builders and nine national labs; Quantum Machines added CUDA-Q/NVQLink support in September 2026.</li><li>Multiple pure-play and ETF stories a day in retail finance media (Motley Fool, 24/7 Wall St., Oct 2026): mainstream attention has arrived, which historically is late in the equity cycle.</li></ul>
+<h2 id="3-value-chain-map">3. Value Chain Map</h2>
+<h3 id="layer-1-infrastructure-picks-shovels">Layer 1 — Infrastructure (&#x27;Picks &amp; Shovels&#x27;)</h3>
+<p><em>Cryogenics, control electronics, lasers and the fabs that physically build qubits.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D6E4F0;color:#0b0b0b">Bluefors (private; Finland, Syracuse NY plant)</td><td style="background:#D6E4F0;color:#0b0b0b">Private</td><td style="background:#D6E4F0;color:#0b0b0b">Dilution refrigerators: one of three global suppliers, about 20 systems/yr from Syracuse and roughly one system/day total throughput; 6-9 month lead times.</td><td style="background:#D6E4F0;color:#0b0b0b">High</td><td style="background:#D6E4F0;color:#0b0b0b">Early</td><td style="background:#D6E4F0;color:#0b0b0b">Private: no listed exposure; concentration in one vendor</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Oxford Instruments</td><td style="background:#D6E4F0;color:#0b0b0b">OXIG (London)</td><td style="background:#D6E4F0;color:#0b0b0b">Dilution refrigerator supplier, one of the three-vendor oligopoly (War on the Rocks; PostQuantum).</td><td style="background:#D6E4F0;color:#0b0b0b">High</td><td style="background:#D6E4F0;color:#0b0b0b">Early</td><td style="background:#D6E4F0;color:#0b0b0b">Quantum is a small share of a diversified instrument business (judgment)</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">Coherent Corp.</td><td style="background:#D6E4F0;color:#0b0b0b">COHR</td><td style="background:#D6E4F0;color:#0b0b0b">Lasers and photonics used in trapped-ion and neutral-atom systems; $59.2B market cap, 8.3x sales (Yahoo).</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early-Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Quantum is immaterial to revenue; AI optics drives the stock</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">FormFactor</td><td style="background:#D6E4F0;color:#0b0b0b">FORM</td><td style="background:#D6E4F0;color:#0b0b0b">Cryogenic probe stations and test; 11.9x sales, +20% in the last month (Yahoo).</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early-Mid</td><td style="background:#D6E4F0;color:#0b0b0b">Quantum share of revenue unverified; priced as an AI test name</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">GlobalFoundries</td><td style="background:#D6E4F0;color:#0b0b0b">GFS</td><td style="background:#D6E4F0;color:#0b0b0b">Foundry for quantum and photonic chips; $375M CHIPS letter of intent (Commerce).</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early</td><td style="background:#D6E4F0;color:#0b0b0b">LOI is not a final award; commodity foundry economics</td></tr><tr><td style="background:#D6E4F0;color:#0b0b0b">SkyWater (acquired by IonQ; $1.8B)</td><td style="background:#D6E4F0;color:#0b0b0b">IonQ</td><td style="background:#D6E4F0;color:#0b0b0b">US trusted foundry now vertically integrated into IonQ.</td><td style="background:#D6E4F0;color:#0b0b0b">Medium</td><td style="background:#D6E4F0;color:#0b0b0b">Early</td><td style="background:#D6E4F0;color:#0b0b0b">Quantum demand has to fill a fab; integration risk</td></tr></tbody></table></div><p class="source">Source: Company filings and press releases cited; Yahoo Finance (Oct 8, 2026) for prices, market caps and sales multiples; moat and timing are analyst judgment</p>
+<h3 id="layer-2-enablers-platforms-tools">Layer 2 — Enablers (Platforms &amp; Tools)</h3>
+<p><em>Software, control stacks and cloud access that make qubits programmable.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#D5E8D4;color:#0b0b0b">NVIDIA</td><td style="background:#D5E8D4;color:#0b0b0b">NVDA</td><td style="background:#D5E8D4;color:#0b0b0b">CUDA-Q and NVQLink tie quantum processors to GPUs for error-correction decoding; announced with 17 builders and nine labs. Quantum is negligible versus $303B revenue.</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Early-Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Quantum may route around GPUs as decoders move on-chip</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Microsoft</td><td style="background:#D5E8D4;color:#0b0b0b">MSFT</td><td style="background:#D5E8D4;color:#0b0b0b">Azure Quantum plus Majorana research; co-developed 12 logical qubits with Quantinuum; DARPA QBI Stage C participant.</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Early-Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Topological bet unproven</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">IBM (Qiskit)</td><td style="background:#D5E8D4;color:#0b0b0b">IBM</td><td style="background:#D5E8D4;color:#0b0b0b">Largest open quantum software ecosystem and 2026 developer conference host (Nov 11-13).</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Early-Mid</td><td style="background:#D5E8D4;color:#0b0b0b">Open-source limits direct monetization</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Alphabet</td><td style="background:#D5E8D4;color:#0b0b0b">GOOGL</td><td style="background:#D5E8D4;color:#0b0b0b">Cirq/Willow cloud access opened to outside experiments (March 2026).</td><td style="background:#D5E8D4;color:#0b0b0b">High</td><td style="background:#D5E8D4;color:#0b0b0b">Early</td><td style="background:#D5E8D4;color:#0b0b0b">Quantum is a research cost center; no revenue disclosed</td></tr><tr><td style="background:#D5E8D4;color:#0b0b0b">Quantum Machines; Classiq; Q-CTRL</td><td style="background:#D5E8D4;color:#0b0b0b">Private</td><td style="background:#D5E8D4;color:#0b0b0b">Control hardware and compiler software across modalities; Quantum Machines integrates CUDA-Q.</td><td style="background:#D5E8D4;color:#0b0b0b">Medium</td><td style="background:#D5E8D4;color:#0b0b0b">Early</td><td style="background:#D5E8D4;color:#0b0b0b">Private; modality-agnostic means no lock-in</td></tr></tbody></table></div><p class="source">Source: Company filings and press releases cited; Yahoo Finance (Oct 8, 2026) for prices, market caps and sales multiples; moat and timing are analyst judgment</p>
+<h3 id="layer-3-integrators-system-builders">Layer 3 — Integrators (System Builders)</h3>
+<p><em>Companies that assemble qubits, control and error correction into a deliverable machine.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FFF2CC;color:#0b0b0b">IonQ</td><td style="background:#FFF2CC;color:#0b0b0b">IONQ</td><td style="background:#FFF2CC;color:#0b0b0b">Trapped-ion leader; Q2 revenue $80.1M (+287%), RPO $485M, $2.0B pro forma cash after SkyWater; $39.45, 65x sales, $16.0B cap; DARPA QBI Stage C. 2026 revenue guide: $280-290M per Q2 call coverage (one article cites $450-460M after SkyWater, unreconciled).</td><td style="background:#FFF2CC;color:#0b0b0b">High</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">Acquisition-driven growth; insiders net sellers of $454M since Sept 2024</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">IBM</td><td style="background:#FFF2CC;color:#0b0b0b">IBM</td><td style="background:#FFF2CC;color:#0b0b0b">Superconducting leader; $1B CHIPS LOI, QBI Stage C, Kookaburra 2026 and Starling 2029; $226.61, 3.1x sales.</td><td style="background:#FFF2CC;color:#0b0b0b">High</td><td style="background:#FFF2CC;color:#0b0b0b">Early-Mid</td><td style="background:#FFF2CC;color:#0b0b0b">Quantum is a rounding error versus $69B revenue; roadmap slippage</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Quantinuum</td><td style="background:#FFF2CC;color:#0b0b0b">QNT</td><td style="background:#FFF2CC;color:#0b0b0b">Trapped-ion, Helios 48 logical qubits; $100M CHIPS LOI; IPO June 2026; $41.52 (about -50% from the high), 480x TTM sales ($23.0M revenue).</td><td style="background:#FFF2CC;color:#0b0b0b">High</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">IPO lock-up expires about early December 2026</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Rigetti</td><td style="background:#FFF2CC;color:#0b0b0b">RGTI</td><td style="background:#FFF2CC;color:#0b0b0b">Superconducting; Q2 revenue $5.1M, operating loss $28.1M; $100M CHIPS LOI; 353x TTM sales.</td><td style="background:#FFF2CC;color:#0b0b0b">Low-Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">Sub-scale revenue; 19% short interest</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">D-Wave</td><td style="background:#FFF2CC;color:#0b0b0b">QBTS</td><td style="background:#FFF2CC;color:#0b0b0b">Annealing plus gate-model program; $546.2M cash (-33% YoY); Q2 revenue $3.1M flat; 446x TTM sales.</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">Annealing&#x27;s addressable problem set is narrow</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">Infleqtion; IQM</td><td style="background:#FFF2CC;color:#0b0b0b">INFQ; IQMX</td><td style="background:#FFF2CC;color:#0b0b0b">Neutral-atom (INFQ, $42.4M TTM revenue, 59x sales) and superconducting (IQM, listed July 3, 2026, more than €102M orders).</td><td style="background:#FFF2CC;color:#0b0b0b">Medium</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">Newly listed; IQM lock-up about early Jan 2027</td></tr><tr><td style="background:#FFF2CC;color:#0b0b0b">PsiQuantum; Atom Computing; QuEra</td><td style="background:#FFF2CC;color:#0b0b0b">Private</td><td style="background:#FFF2CC;color:#0b0b0b">Photonic ($10.5B valuation), neutral atom (QBI Stage C) and neutral atom (100-logical-qubit design).</td><td style="background:#FFF2CC;color:#0b0b0b">Medium-High</td><td style="background:#FFF2CC;color:#0b0b0b">Early</td><td style="background:#FFF2CC;color:#0b0b0b">Private; cannot be owned in the public basket</td></tr></tbody></table></div><p class="source">Source: Company filings and press releases cited; Yahoo Finance (Oct 8, 2026) for prices, market caps and sales multiples; moat and timing are analyst judgment</p>
+<h3 id="layer-4-applications-end-use-products">Layer 4 — Applications (End-Use Products)</h3>
+<p><em>Paid workloads: optimization, drug and materials discovery, finance, and quantum-secure communications.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#FCE4D6;color:#0b0b0b">D-Wave customers (about 100; Florida Atlantic University $20M system)</td><td style="background:#FCE4D6;color:#0b0b0b">QBTS</td><td style="background:#FCE4D6;color:#0b0b0b">Annealing-based optimization pilots; 62.4% of Q2 revenue is commercial.</td><td style="background:#FCE4D6;color:#0b0b0b">Low-Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">Classical solvers are improving; revenue $3.1M/quarter</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Quantum Computing Inc.</td><td style="background:#FCE4D6;color:#0b0b0b">QUBT</td><td style="background:#FCE4D6;color:#0b0b0b">Thin-film lithium niobate photonic foundry and devices; $9.8M TTM revenue, $1.7B cap, 172x sales, 32% short.</td><td style="background:#FCE4D6;color:#0b0b0b">Low</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">Sub-scale; thin moat</td></tr><tr><td style="background:#FCE4D6;color:#0b0b0b">Algorithm and software firms (Classiq, Phasecraft, Q-CTRL)</td><td style="background:#FCE4D6;color:#0b0b0b">Private</td><td style="background:#FCE4D6;color:#0b0b0b">Workflow and algorithm software for chemistry and optimization.</td><td style="background:#FCE4D6;color:#0b0b0b">Low-Medium</td><td style="background:#FCE4D6;color:#0b0b0b">Early</td><td style="background:#FCE4D6;color:#0b0b0b">Dependent on hardware advantage arriving</td></tr></tbody></table></div><p class="source">Source: Company filings and press releases cited; Yahoo Finance (Oct 8, 2026) for prices, market caps and sales multiples; moat and timing are analyst judgment</p>
+<h3 id="layer-5-adjacent-beneficiaries">Layer 5 — Adjacent Beneficiaries</h3>
+<p><em>Incumbents that gain from quantum-era mandates or gain a cheaper way to do their job.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#E1D5E7;color:#0b0b0b">Post-quantum cryptography vendors (SEALSQ; Arqit)</td><td style="background:#E1D5E7;color:#0b0b0b">LAES; ARQQ</td><td style="background:#E1D5E7;color:#0b0b0b">PQC chips and key management for the 2030/2031 federal deadlines; SEALSQ $24.6M TTM revenue, Arqit $1.1M.</td><td style="background:#E1D5E7;color:#0b0b0b">Low-Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Early-Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Micro-caps; incumbents can bundle PQC</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Cybersecurity and network platforms (Palo Alto, Cloudflare)</td><td style="background:#E1D5E7;color:#0b0b0b">PANW; NET</td><td style="background:#E1D5E7;color:#0b0b0b">PQC migration as a feature in existing security stacks (judgment; exposure not disclosed).</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid</td><td style="background:#E1D5E7;color:#0b0b0b">Quantum exposure is a small share of revenue</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Honeywell</td><td style="background:#E1D5E7;color:#0b0b0b">HON</td><td style="background:#E1D5E7;color:#0b0b0b">Carve-out parent of Quantinuum; indirect exposure through its stake (size not verified); $206.60, 1.7x sales.</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Early</td><td style="background:#E1D5E7;color:#0b0b0b">Quantinuum is small versus a $65B conglomerate</td></tr><tr><td style="background:#E1D5E7;color:#0b0b0b">Pharma and materials R&amp;D buyers</td><td style="background:#E1D5E7;color:#0b0b0b">Various</td><td style="background:#E1D5E7;color:#0b0b0b">Chemistry simulation is the first plausible paid workload (Microsoft-Quantinuum catalyst demo).</td><td style="background:#E1D5E7;color:#0b0b0b">Medium</td><td style="background:#E1D5E7;color:#0b0b0b">Mid-Late</td><td style="background:#E1D5E7;color:#0b0b0b">Benefit arrives after 2029 fault tolerance</td></tr></tbody></table></div><p class="source">Source: Company filings and press releases cited; Yahoo Finance (Oct 8, 2026) for prices, market caps and sales multiples; moat and timing are analyst judgment</p>
+<h3 id="layer-6-bottleneck-highest-structural-moat">Layer 6 — Bottleneck (Highest Structural Moat)</h3>
+<p><em>Single-source inputs and gatekeepers every winner has to pass through.</em></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company / Type</th><th scope="col">Ticker</th><th scope="col">Description</th><th scope="col">Moat Strength</th><th scope="col">Cycle Timing</th><th scope="col">Key Risk</th></tr></thead><tbody><tr><td style="background:#F4CCCC;color:#0b0b0b">Dilution refrigerator vendors (Bluefors, Oxford Instruments, Janis)</td><td style="background:#F4CCCC;color:#0b0b0b">Private; OXIG</td><td style="background:#F4CCCC;color:#0b0b0b">Every superconducting and spin-qubit machine needs one: three suppliers, 6-9 month lead times against 12-18 month hardware cycles.</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Durable</td><td style="background:#F4CCCC;color:#0b0b0b">Fridges are scarce today but a magnetic-cooling alternative (Kiutra, CAS) is in development</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Helium-3 supply</td><td style="background:#F4CCCC;color:#0b0b0b">N/A</td><td style="background:#F4CCCC;color:#0b0b0b">Rare isotope from tritium decay in a shrinking weapons stockpile; $1,900-$2,600 per liter; Bluefors has contracted Interlune for lunar mining.</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Durable</td><td style="background:#F4CCCC;color:#0b0b0b">Substitute cooling or recycling could cap pricing</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">DARPA QBI validation and Commerce CHIPS awards</td><td style="background:#F4CCCC;color:#0b0b0b">N/A</td><td style="background:#F4CCCC;color:#0b0b0b">Government gatekeepers: Stage C selects who gets up to $300M-class contracts and independent verification.</td><td style="background:#F4CCCC;color:#0b0b0b">High</td><td style="background:#F4CCCC;color:#0b0b0b">Durable</td><td style="background:#F4CCCC;color:#0b0b0b">Policy-driven and election-sensitive</td></tr><tr><td style="background:#F4CCCC;color:#0b0b0b">Cryo-CMOS and NVIDIA decoding interconnect</td><td style="background:#F4CCCC;color:#0b0b0b">NVDA; Private</td><td style="background:#F4CCCC;color:#0b0b0b">Control and decoding electronics needed at scale; NVQLink is the leading open standard.</td><td style="background:#F4CCCC;color:#0b0b0b">Medium-High</td><td style="background:#F4CCCC;color:#0b0b0b">Mid</td><td style="background:#F4CCCC;color:#0b0b0b">Standards fragmentation</td></tr></tbody></table></div><p class="source">Source: Company filings and press releases cited; Yahoo Finance (Oct 8, 2026) for prices, market caps and sales multiples; moat and timing are analyst judgment</p>
+<h2 id="4-tam-expansion-analysis">4. TAM Expansion Analysis</h2>
+<h3 id="4a-market-size-growth-drivers">4a. Market Size &amp; Growth Drivers</h3>
+<p>Quantum computing does not displace an existing market: it opens chemistry, materials and optimization workloads that classical computers cannot economically solve, plus a forced post-quantum cryptography refresh of every network. The net-new demand is real, but forecasters disagree by an order of magnitude on how soon it is paid for, and today&#x27;s revenue is a few hundred million dollars.</p>
+<ul class="bullets"><li>BCG baseline: about $2.5B of quantum computing revenue by 2030; optimistic scenario $5B (BCG, 2026).</li><li>BCC Research: $7.3B by 2030 at a 34.6% CAGR (BCC Research, Aug 2025).</li><li>MarketsandMarkets: about $20.2B by 2030 at a 41.8% CAGR (2025-2030).</li><li>McKinsey: up to $97B of quantum technology revenue by 2035, of which about $72B is quantum computing.</li><li>Today: six listed pure-plays have $347M combined TTM revenue against a $41.5B combined market cap (about 119x); that cap is 8.3x BCG&#x27;s optimistic 2030 market and 2.1x the most bullish 2030 forecast above (Yahoo Finance, Oct 8, 2026; our computation).</li></ul>
+<p>Structural drivers: the 2030/2031 federal post-quantum deadlines are legally dated and will spend regardless of qubit progress; the $2.01B CHIPS package and DARPA&#x27;s QBI are funded; chemistry simulation has a clear value ceiling if fault tolerance arrives (IBM 2029). Cyclical drivers: retail enthusiasm, equity-funded balance sheets (ATM offerings), and the timing of commercial advantage claims, which are management-reported and unaudited.</p>
+<h3 id="4b-primary-beneficiaries-high-tam-capture">4b. Primary Beneficiaries — High TAM Capture</h3>
+<div class="table-wrap"><table class=sortable><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why High TAM Capture</th><th scope="col">TAM Exposure</th><th scope="col">Upside Scenario</th></tr></thead><tbody><tr><td>IBM</td><td>IBM</td><td>Full-stack (hardware, software, cloud), $1B CHIPS LOI, QBI Stage C, public roadmap to 200 logical qubits by 2029</td><td>Not disclosed; quantum is likely low single-digit % of $69.1B revenue (judgment)</td><td>Quantum becomes a $5-10B line by 2030-35 (judgment on McKinsey/BCG range), still under 15% of IBM revenue; priced at 3.1x sales</td></tr><tr><td>IonQ</td><td>IONQ</td><td>Largest pure-play with scale: $80.1M Q2 revenue, $485M RPO, $2.0B pro forma cash, own fab via SkyWater, QBI Stage C up to $300M</td><td>Essentially 100% (pure-play)</td><td>If the 2026 guide of $280-290M compounds 40%/yr, revenue is about $1.5B by 2031, so 65x sales is a 2031 story priced today (judgment)</td></tr><tr><td>NVIDIA</td><td>NVDA</td><td>Owns the decoding/hybrid layer (CUDA-Q, NVQLink) and sells GPUs to every builder</td><td>Negligible today versus $303B revenue</td><td>Option value at no extra valuation; any quantum win is upside</td></tr><tr><td>Alphabet</td><td>GOOGL</td><td>Willow below-threshold scaling; neutral-atom program; $4.26T cap</td><td>Negligible</td><td>Strategic option for Google Cloud; no standalone revenue</td></tr><tr><td>Quantinuum</td><td>QNT</td><td>Helios 48 logical qubits; Microsoft partnership; $100M CHIPS LOI; best published error-correction results</td><td>Essentially 100%</td><td>Technology leader but priced at 480x TTM sales ($23.0M)</td></tr><tr><td>Bluefors / dilution-fridge vendors</td><td>Private; OXIG</td><td>Sole-source cryogenics with 6-9 month lead times</td><td>Moderate (Oxford Instruments); high (Bluefors)</td><td>Sells to every superconducting builder regardless of winner</td></tr></tbody></table></div><p class="source">Source: Company releases; Yahoo Finance (Oct 8, 2026); upside scenarios are analyst judgment</p>
+<h3 id="4c-limited-beneficiaries-low-tam-capture-or-tam-risk">4c. Limited Beneficiaries — Low TAM Capture or TAM Risk</h3>
+<div class="table-wrap"><table class=sortable><thead><tr><th scope="col">Company</th><th scope="col">Ticker</th><th scope="col">Why Limited Capture</th><th scope="col">Common Investor Mistake</th><th scope="col">Signal to Watch</th></tr></thead><tbody><tr><td>D-Wave</td><td>QBTS</td><td>Annealing solves a narrow optimization class; Q2 revenue $3.1M flat YoY; cash $546.2M (-33% YoY) at 446x sales</td><td>Lumped in as a &#x27;quantum computer&#x27; maker</td><td>Gate-model program and conversion of the $40.7M RPO into revenue</td></tr><tr><td>Rigetti</td><td>RGTI</td><td>Q2 revenue $5.1M against a $28.1M operating loss; $100M CHIPS LOI is not a customer</td><td>Treated as IBM-lite on superconducting qubits</td><td>Quarterly revenue above $15M and fidelity milestones</td></tr><tr><td>Quantum Computing Inc.</td><td>QUBT</td><td>Photonic foundry with $9.8M TTM revenue and a $1.7B cap; 32% short interest</td><td>Trades on the &#x27;quantum&#x27; label, not the product</td><td>Third-party foundry customers and gross margin</td></tr><tr><td>Arqit; SEALSQ</td><td>ARQQ; LAES</td><td>PQC market is real but incumbents bundle it; revenue of $1.1M and $24.6M TTM</td><td>Mistaken for &#x27;quantum computing&#x27; exposure when it is a cryptography play</td><td>Federal contractor PQC procurements after the FAR rule</td></tr><tr><td>Cybersecurity incumbents</td><td>PANW; NET</td><td>PQC is a feature, not a TAM expansion large enough to move revenue (judgment)</td><td>Added to quantum baskets for narrative</td><td>Any disclosed PQC bookings</td></tr></tbody></table></div><p class="source">Source: Company releases; Yahoo Finance (Oct 8, 2026); judgment</p>
+<h2 id="5-positioning-recommendation">5. Positioning Recommendation</h2>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Who captures the economics of quantum?</td><td>Retail and thematic ETFs own small-cap pure-plays (IONQ, RGTI, QBTS) as the &#x27;purest&#x27; expression; the Defiance Quantum ETF (QTUM) is at $150.89</td><td>Government and incumbents fund the build: $2.01B CHIPS LOIs, DARPA QBI, IBM/Google/Microsoft R&amp;D. Value accrues to the cash-rich integrator (IonQ, IBM) and the sole-source bottlenecks, not to sub-scale pure-plays at 350-450x sales</td></tr><tr><td>How close is paid demand?</td><td>Management roadmaps assume advantage in 2026 and fault tolerance by 2029 (IBM) are on schedule</td><td>Logical-qubit demos are real, but $347M of listed pure-play revenue vs a $41.5B cap prices 2030+ revenue ($5-20B market forecasts) as if it were already here; first checkpoint is IBM&#x27;s end-2026 advantage claim (Nov 11-13 conference)</td></tr><tr><td>Is crowding extreme?</td><td>Narrative says the trade is crowded after the IPO wave</td><td>Mixed: price already corrected 50-75% from 1-year highs and short interest is 10-32%, so squeezes on policy headlines (+7% days) cut both ways; insiders sold $895M net vs $2M bought since Sept 2024</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance (Oct 8, 2026); Motley Fool insider data (Sept 22, 2026); company releases</p>
+<div class="edge"><strong>The edge:</strong> The market is paying equity prices for fault-tolerant revenue that arrives after 2029 while the actual cash flows go to incumbents and sole-source suppliers; the mispricing closes through dilution and lock-ups (Quantinuum about Dec 1-8), not through a technology failure.</div>
+<p><strong>Theme Posture: Theme Conviction 5/10 — own the theme through cash-rich integrators and bottlenecks (long IBM, IonQ as the single pure-play, NVIDIA/Alphabet/Microsoft as free options), and fade sub-scale pure-plays (RGTI, QBTS, QUBT) as a funding short or underweight; no new adds to the late-cycle equity basket until the lock-up and Q3-print window passes.</strong></p>
+<ul class="bullets"><li><strong>The edge:</strong> technology is early and real; the pure-play equity cycle is late and funded by dilution and government. We want exposure to the former without paying the latter&#x27;s multiple.</li></ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">Layer</th><th scope="col">Weight</th><th scope="col">Rationale</th></tr></thead><tbody><tr><td>1 Infrastructure</td><td class="fill-good">Overweight</td><td>Sole-source cryogenics; fridge lead times 6-9 months; mostly private or a small share of listed vendors</td></tr><tr><td>2 Enablers</td><td class="fill-good">Overweight</td><td>NVIDIA, Microsoft, Alphabet: quantum is a free option on big-cap cash flows</td></tr><tr><td>3 Integrators</td><td class="fill-warn">Neutral</td><td>Own IBM and IonQ; underweight RGTI/QBTS/QNT at 350-480x TTM sales</td></tr><tr><td>4 Applications</td><td class="fill-bad">Underweight</td><td>Revenue is $3-10M quarterly; no paid workload proven</td></tr><tr><td>5 Adjacent</td><td class="fill-warn">Neutral</td><td>PQC mandates are dated but small-cap vendors are thin; use incumbents</td></tr><tr><td>6 Bottleneck</td><td class="fill-good">Overweight</td><td>Fridges, helium-3, DARPA/CHIPS gatekeeping survive any modality winner</td></tr></tbody></table></div><p class="source">Source: Analyst judgment</p>
+<p><strong>Overweight</strong></p>
+<ul class="bullets"><li><strong>IBM</strong> — Superconducting leader at 3.1x sales with a $1B CHIPS LOI, QBI Stage C and a dated roadmap; it fell 20.6% in three months, so quantum optionality is nearly free.</li><li><strong>NVDA / GOOGL / MSFT</strong> — Quantum enablement and research with negligible valuation impact; own for the base business, treat quantum as upside.</li><li><strong>Dilution-fridge and cryogenics suppliers (Oxford Instruments; Bluefors if accessible)</strong> — Sole-source, lead-time-constrained, modality-agnostic.</li></ul>
+<p><strong>Neutral</strong></p>
+<ul class="bullets"><li><strong>IONQ</strong> — The only listed pure-play with scale ($80.1M Q2 revenue, $485M RPO, $2.0B pro forma cash) but 65x sales and growth acquired via SkyWater; hold a small position, not a core one.</li><li><strong>HON</strong> — Indirect Quantinuum exposure inside a 1.7x-sales conglomerate; stake size not verified.</li></ul>
+<p><strong>Underweight</strong></p>
+<ul class="bullets"><li><strong>RGTI / QBTS / QUBT</strong> — 353x, 446x and 172x TTM sales on $13M, $12M and $10M of revenue; fund as shorts only in a pair against IBM given 19-32% short interest and violent policy-headline rallies.</li><li><strong>QNT</strong> — Best published technology at 480x TTM sales with a lock-up expiring about early December; wait for a post-lock-up entry.</li></ul>
+<p>Consistency with Section 6: the peak verdict is Late-cycle (2 of 6 signals firing, 3 early warnings), which is why Layer 4 is Underweight, no layer is chased, and weight is rotated toward Layers 1, 2 and 6. Crowding risk is skewed: the pure-play basket has already lost 50-75% from its highs, so the asymmetric risk is further dilution, not a first de-rating. Entry timing: add pure-play beta only after the Quantinuum lock-up and Q3 prints, or after a verified commercial-advantage demonstration.</p>
+<h2 id="6-peak-reversal-watch-when-to-be-concerned">6. Peak &amp; Reversal Watch — When to Be Concerned</h2>
+<p class="call-line warn"><strong><strong>Peak Verdict: 2/6 exhaustion signals firing (valuation/crowding; demand-side funding) with 3 early warnings — Late-cycle. Estimated time to peak: the first-leg equity peak has probably passed (pure-plays are 50-75% below 1-year highs); a second leg needs a verified commercial-advantage demonstration, with the next checkpoints Nov 11-13, 2026 (IBM) and the early-December Quantinuum lock-up. Reconciliation with Section 2: the technology cycle is early, the financial cycle is late; both can be true, and this verdict governs sizing.</strong></strong></p>
+<h3 id="6a-exhaustion-scorecard">6a. Exhaustion Scorecard</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Exhaustion Signal</th><th scope="col">Status</th><th scope="col">Evidence / What Would Trip It</th></tr></thead><tbody><tr><td>1. Convergence Signal Inversion</td><td class="fill-warn">⚠️ Early warning</td><td>Venture funding is $1.2B YTD vs $4.1B in 2025 (Crunchbase) and the NQI reauthorization is not yet law; would fire if CHIPS LOIs are not finalized by end of Q1 2027 or IBM&#x27;s advantage claim slips past Dec 31, 2026.</td></tr><tr><td>2. Supply Catch-Up &amp; Capacity Overshoot</td><td class="fill-good">❌ Not yet</td><td>Fridges are scarce (6-9 month lead times; about 1 system/day) and helium-3 is finite; would fire if lead times fall below ~3 months or announced capacity (e.g., Bluefors, Oxford Instruments) exceeds orders.</td></tr><tr><td>3. Valuation &amp; Crowding Extremes</td><td class="fill-bad">✅ Firing</td><td>About 119x sales for the pure-play group; RGTI 353x, QBTS 446x, QNT 480x, IONQ 65x; insiders net sold $895.1M at four names since Sept 2024 vs $2.3M bought; issuance window open (Quantinuum $1.68B IPO, IQM, Infleqtion, D-Wave $400M ATM); lock-ups Dec 2026-Jan 2027. Offset: short interest 10-32% and a 50-75% drawdown already.</td></tr><tr><td>4. Unit Economics &amp; Margin Erosion</td><td class="fill-warn">⚠️ Early warning</td><td>Rigetti $28.1M operating loss on $5.1M revenue; D-Wave revenue flat at $3.1M with cash down 33%; IonQ growth is acquired; no gross-margin series found for the layer. Would fire if two or more integrators show falling gross margin or IonQ organic growth below 50%.</td></tr><tr><td>5. Demand-Side Funding Stress</td><td class="fill-bad">✅ Firing</td><td>Demand is government and strategic: $2.01B CHIPS LOIs (equity stakes in seven), DARPA QBI up to $300M for IonQ, DOE $215M, Pentagon $350M, plus a $20M university system sale for D-Wave. If capital markets and government closed for 12 months, most pure-play revenue and runway would disappear.</td></tr><tr><td>6. Macro &amp; Policy Regime Shift</td><td class="fill-warn">⚠️ Early warning</td><td>10-year Treasury 5.23% (Yahoo ^TNX), a hostile discount rate for long-duration, loss-making equities; US midterms Nov 3, 2026; would fire at a 10-year above 5.75% or reversal of CHIPS/QBI funding.</td></tr></tbody></table></div><p class="source">Source: Company releases; Crunchbase; Yahoo Finance (Oct 8, 2026); Motley Fool insider data (Sept 22, 2026)</p>
+<p><em>Color logic is inverted versus the Section 2 table: here a firing signal (pink) is bad news and &#x27;Not yet&#x27; (green) is good news.</em></p>
+<h3 id="6b-tripwires-pre-committed-exit-triggers">6b. Tripwires — Pre-Committed Exit Triggers</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Tripwire</th><th scope="col" class=num>Signal</th><th scope="col">Where Observed</th><th scope="col">Action if Triggered</th></tr></thead><tbody><tr><td>1</td><td>Dilution-fridge lead times fall below 3 months, or a Bluefors/Oxford Instruments capacity addition exceeds order backlog</td><td class="num">2</td><td>Supplier results and trade press (Oxford Instruments, Bluefors)</td><td><strong>Cut Layer 1 exposure by half</strong></td></tr><tr><td>2</td><td>Any of IONQ, RGTI, QBTS or QUBT announces a follow-on or ATM above $500M in a quarter, or insider net selling in the group exceeds $1.2B (from $895M)</td><td class="num">3</td><td>SEC 8-Ks and Form 4 filings</td><td><strong>Cut the pure-play basket to zero; keep IBM only</strong></td></tr><tr><td>3</td><td>QNT closes below $35 (-16% from the current $41.52) after the early-December lock-up</td><td class="num">3</td><td>Nasdaq price data; Quantinuum 424B4 lock-up terms</td><td><strong>Exit QNT and reduce Layer 3 pure-plays by half</strong></td></tr><tr><td>4</td><td>CHIPS LOIs not converted to final awards by March 31, 2027, or NQI reauthorization not passed before the 119th Congress adjourns (early Jan 2027)</td><td class="num">1, 6</td><td>NIST/Commerce announcements; Congress.gov S.3597/H.R.8462</td><td><strong>Cut Layers 3-4 to Underweight; no adds</strong></td></tr><tr><td>5</td><td>IBM does not publish a verified quantum-advantage result by Dec 31, 2026, or Kookaburra slips beyond 2026</td><td class="num">1</td><td>IBM Quantum Developer Conference (Nov 11-13); IBM roadmap page</td><td><strong>Push the end-state date out; cut Layer 3/4 weights</strong></td></tr><tr><td>6</td><td>IonQ cuts its $280-290M 2026 revenue guide or Q3/Q4 revenue growth falls below 50% YoY</td><td class="num">4</td><td>IonQ quarterly releases</td><td><strong>Exit IONQ</strong></td></tr><tr><td>7</td><td>10-year Treasury above 5.75%, or a US government funding reversal for quantum</td><td class="num">6</td><td>Treasury/FRED; Commerce and DARPA notices</td><td><strong>Reduce all long-duration pure-play exposure</strong></td></tr></tbody></table></div><p class="source">Source: Analyst judgment; thresholds anchored to figures cited in Sections 2-6</p>
+<h3 id="6c-watch-calendar-dated-catalysts">6c. Watch Calendar — Dated Catalysts</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Date / Window</th><th scope="col">Event</th><th scope="col">Bullish if...</th><th scope="col">Bearish if...</th></tr></thead><tbody><tr><td>Nov 3, 2026</td><td>US midterm elections</td><td>Continuity of bipartisan quantum policy</td><td>Funding or CHIPS equity-stake policy gets reopened</td></tr><tr><td>Early-mid Nov 2026 (dates unconfirmed)</td><td>Q3 earnings: IONQ, RGTI, QBTS, QUBT, QNT, INFQ, IQMX</td><td>IonQ above $80.1M revenue; D-Wave bookings convert to revenue; Rigetti revenue steps up</td><td>IonQ guide cut; revenue flat while cash burns</td></tr><tr><td>Nov 11-13, 2026</td><td>IBM Quantum Developer Conference (Chicago)</td><td>Verified quantum-advantage claim and Kookaburra shown</td><td>Advantage claim deferred or unverified</td></tr><tr><td>About Dec 1-8, 2026 (estimated from the June 3 pricing)</td><td>Quantinuum 180-day lock-up expiry</td><td>Stock absorbs supply and holds above $41.52</td><td>New lows below $35 on insider sales</td></tr><tr><td>Before early Jan 2027</td><td>Floor votes on the National Quantum Initiative Reauthorization (S.3597 / H.R.8462)</td><td>Enacted through December 2034</td><td>Lapses; program funding uncertainty</td></tr><tr><td>About early Jan 2027 (estimated from the July 3 listing)</td><td>IQM lock-up expiry</td><td>Orders above €102M support the price</td><td>Supply overhang on a newly listed name</td></tr><tr><td>Late 2026 - early 2027</td><td>Reported Google Willow successor (500-1,000 physical qubits)</td><td>Logical error rates continue to fall</td><td>Scaling stalls or is delayed</td></tr><tr><td>Dec 31, 2026 / Mar 31, 2027</td><td>IBM&#x27;s advantage deadline; target for final CHIPS awards</td><td>Awards finalized with equity terms</td><td>LOIs lapse or are renegotiated</td></tr><tr><td>Dec 31, 2027</td><td>NIST post-quantum pilot migration completes (per the June 2026 executive order)</td><td>PQC procurement ramps</td><td>Deadlines pushed back</td></tr></tbody></table></div><p class="source">Source: The Quantum Insider; HPCwire; entangledfuture.com; The Hacker News; analyst estimates marked as estimated or unconfirmed</p>
+<h3 id="6d-false-alarm-test">6d. False-Alarm Test</h3>
+<ul class="bullets"><li><strong>Are fundamentals confirming?</strong> Check IonQ RPO ($485M, up from $122M), D-Wave RPO ($40.7M, +668%) and IQM orders (€102M+): backlog is rising while prices fall, which is a positioning flush, not a fundamental break. A decline in RPO or bookings would flip this.</li><li><strong>Theme-specific or market-wide?</strong> In the last month IONQ +3.4%, RGTI -7.2%, QBTS -14.7%, QNT -15.1%, while NVDA +3.2% and IBM -5.6% (Yahoo Finance): the pure-plays are falling alone, so this is a thesis/supply event for them, not a discount-rate event.</li><li><strong>Which signals are structural?</strong> Funding dependence (5) and unit economics (4) are structural; crowding (3) and macro (6) are cyclical.</li><li><strong>Has the end state changed?</strong> The end state is 200 logical qubits (IBM Starling, 2029) and PQC migration by 2030-31; neither has slipped. If IBM&#x27;s 2026 advantage claim or Kookaburra slips by a year, the timeline has changed.</li></ul>
+<p><strong>Structural signals for this theme (act on):</strong> demand-side funding stress (government-funded revenue), unit-economics erosion at the integrators, supply-chain catch-up in cryogenics · <strong>Cyclical signals (likely buy the dip):</strong> crowding and insider selling after a 50-75% drawdown, macro yield spikes, lock-up-driven weakness.</p>
+<h3 id="6e-closest-historical-analogue">6e. Closest Historical Analogue</h3>
+<p>3D printing in 2014 is the closest analogue: real technology, genuine enterprise pilots, a listing wave, and demand that did not move from innovation budgets into operating budgets. Stratasys peaked at $127.61 in February 2014 with a $6.4B market cap and lost $3.4B within a year; it fell almost 90% between September 2014 and February 2016 (Globes; Calcalist). The comparison is unflattering for pure-plays at 350-480x sales, but quantum differs in one concrete way: governments are a funded, multi-year buyer (CHIPS equity stakes, DARPA QBI) and IBM, Google and Microsoft carry R&amp;D regardless of equity prices. The drawdown has already started: IONQ is 52% below its 1-year high.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Analogue</td><td>3D printing (Stratasys, 3D Systems), 2013-2016</td></tr><tr><td>Peak date</td><td>February 2014 (Stratasys $127.61)</td></tr><tr><td>Peak-to-trough drawdown</td><td>About -90% over September 2014 to February 2016 (Globes; Calcalist)</td></tr><tr><td>Recovery time</td><td>A full recovery was not found in the sources reviewed</td></tr><tr><td>Key difference vs. this theme</td><td>Government funding with equity stakes and incumbent R&amp;D, but pure-plays trade at far higher sales multiples (about 119x for the group)</td></tr></tbody></table></div><p class="source">Source: Globes; Calcalist; Yahoo Finance (Oct 8, 2026)</p>
+<h2 id="7-key-diligence-questions">7. Key Diligence Questions</h2>
+<ol class="bullets"><li>Does IBM publish an independently verified quantum-advantage result on a commercially relevant workload by Dec 31, 2026, and does Kookaburra ship in 2026? A miss on either pushes the 2029 Starling timeline and every pure-play multiple out by at least a year.</li><li>Is IonQ&#x27;s $485M RPO converting to revenue organically: do Q3 and Q4 2026 revenue show at least 50% YoY growth excluding SkyWater, and does the 2026 guide of $280-290M hold?</li><li>Can any modality demonstrate at least 100 logical qubits at a logical error rate below 1e-6 with fewer than roughly 100 physical qubits per logical qubit by 2028 (QuEra&#x27;s design is ~100:1; Atom Computing&#x27;s detection-level ratio is ~4.7:1 and not comparable)?</li><li>How many quarters of runway do D-Wave ($546.2M cash, down 33% YoY), Rigetti and Quantum Computing Inc. have if the CHIPS LOIs are not finalized and the 10-year stays above 5.2%?</li><li><strong>Downside/exit case:</strong> what would have to be true for the theme to peak within 12 months? If the Quantinuum lock-up (about Dec 1-8) and Q3 earnings push the pure-play group another 30% lower while IBM&#x27;s advantage claim lands without a paying customer, does the thesis still hold, and which of tripwires 2-5 would already have fired?</li></ol>
+<h2 id="sources">Sources</h2>
+<ul class="bullets"><li><a href="https://www.cnbc.com/2026/05/21/quantum-stocks--us-taking-equity-stakes.html">CNBC: quantum stocks and the US equity stakes (May 21, 2026)</a> · <a href="https://www.nist.gov/news-events/news/2026/05/department-commerce-announces-letters-intent-9-companies-2-billion">NIST: nine Commerce letters of intent</a> · <a href="https://www.manufacturingdive.com/news/commerce-department-announces-2b-for-9-companies-under-chips-act-ibm-globalfoundries/820903/">Manufacturing Dive</a></li><li><a href="https://www.hpcwire.com/2026/10/07/atom-computing-diraq-ibm-and-ionq-advance-to-darpa-qbi-stage-c/">HPCwire: DARPA QBI Stage C (Oct 7, 2026)</a> · <a href="https://thequantuminsider.com/2026/06/13/microsoft-and-quantinuum-report-on-major-gains-in-quantum-error-correction/">The Quantum Insider: Microsoft-Quantinuum error correction</a> · <a href="https://news.crunchbase.com/venture/quantum-computing-startup-investment-data-quantinuum-ipo/">Crunchbase News: quantum investment 2026</a></li><li><a href="https://www.cnbc.com/2026/06/04/honeywells-quantinuum-raises-1point68-billion-in-us-ipo-as-quantum-computing-heats-up-reuters-reports.html">CNBC: Quantinuum IPO</a> · <a href="https://www.investing.com/news/company-news/ionq-q2-2026-slides-record-revenue-skywater-deal-reshape-quantum-93CH-4839824">IonQ Q2 2026 slides (Investing.com)</a> · <a href="https://quantumcomputingreport.com/d-wave-reports-its-q2-2026-financial-results-showing-bookings-surge-technical-progress-and-qci-acquisition-impact/">D-Wave Q2 2026 (Quantum Computing Report)</a> · <a href="https://www.datacenterdynamics.com/en/news/quantum-earnings-q2-2026-d-wave-ionq-and-rigetti-publish-financial-results-alongside-newly-ipo-ed-iqm-quantum-computers/">DCD: quantum Q2 earnings</a></li><li><a href="https://thehackernews.com/2026/06/trump-order-sets-2030-deadline-for.html">The Hacker News: federal PQC deadline</a> · <a href="https://www.ibm.com/quantum/blog/large-scale-ftqc">IBM: fault-tolerant roadmap</a> · <a href="https://nvidianews.nvidia.com/news/nvidia-nvqlink-quantum-gpu-computing">NVIDIA NVQLink</a> · <a href="https://warontherocks.com/cogs-of-war/the-supply-chain-chokepoints-in-quantum/">War on the Rocks: quantum supply chain</a> · <a href="https://www.fool.com/investing/2026/09/22/ionq-rigetti-dwave-quantum-computing-send-shockwaves-through-wall-street-with-895-million-warning/">Motley Fool: $895M insider-selling warning</a></li><li><a href="https://www.bcg.com/publications/2026/ceos-need-to-shape-where-quantum-creates-value">BCG: quantum value creation (2026)</a> · <a href="https://www.bccresearch.com/pressroom/ift/global-quantum-computing-market-to-grow-346">BCC Research</a> · <a href="https://www.marketsandmarkets.com/Market-Reports/quantum-computing-market-144888301.html">MarketsandMarkets</a> · <a href="https://en.globes.co.il/en/article-3d-printer-co-stratasys-loses-its-luster-1001006816">Globes: Stratasys</a></li><li>Prices, market caps, short interest and sales multiples: Yahoo Finance (Oct 8, 2026). The $2.01B CHIPS awards are letters of intent, not final awards. One article cites IonQ 2026 revenue guidance of $450-460M; Q2 call coverage says $280-290M; unreconciled. Secondary-source figures (market forecasts, insider-selling totals, supplier lead times) are unverified against primary filings. <em>Research for the user&#x27;s own decision-making, not personalized investment advice.</em></li></ul>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>
