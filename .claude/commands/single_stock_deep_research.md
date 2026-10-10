@@ -124,6 +124,7 @@ Keys: `current_price, week52_low, week52_high, rsi, market_cap, revenue, rev_gro
 - **Our base case, FY+3 / FY+5 revenue:** $X.XB (+X% CAGR) / $X.XB (+X% CAGR); FY+5 operating margin X% (from business potential analysis)
 - **Top growth drivers:** the 2–3 largest drivers with their FY+5 incremental revenue and status (✅ shipping / ⚠️ signed or launched / 🔴 pipeline) (from business potential analysis)
 - **FY+5 revenue — bear / base / bull / extreme bull:** $X.XB / $X.XB / $X.XB / $X.XB (with each scenario's probability)
+- **Implied FY+5 share price — bear / base / bull / extreme bull:** $X / $X / $X / $X at Xx / Xx / Xx / Xx P/E (or P/S); **probability-weighted $X (±X% vs current, ±X%/yr)** (from business potential analysis; our assumptions, not a 12-month target)
 - One sentence: is growth accelerating, decelerating, or stable, and does our base case sit above, in line with, or below consensus?
 
 #### Valuation

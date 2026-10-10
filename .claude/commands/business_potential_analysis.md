@@ -39,6 +39,7 @@ DOCUMENT CONTENT — the sections below are the document outline. Write them as 
 | Base-Case Operating Income, FY+5 | $X.XB (X% margin vs X% today) |
 | Top Growth Driver | [driver — $X.XB incremental revenue by FY+5] |
 | Our Base vs Consensus | Above / In line / Below — FY+2 revenue $X.XB vs consensus $X.XB (±X%) |
+| Probability-Weighted FY+5 Share Price | $X (±X% vs $X current; ±X%/yr) — base $X at Xx P/E |
 | Single Biggest Advantage | [1 phrase] |
 | Single Biggest Risk | [1 phrase] |
 
@@ -104,7 +105,30 @@ Name every material driver of revenue or margin growth (typically 4–8). Cover 
 - **Extreme Bull** is the blue-sky case: what the business looks like if every driver in the inventory works, including the speculative 🔴 ones, at the top of the market-size range. It is not a price target; it sizes the right tail. Keep its probability low (typically ≤10%) and name the 1–2 proof points that would have to appear first.
 - Probabilities sum to 100%; state the probability-weighted FY+5 revenue and operating income.
 - If the Extreme Bull case needs a market share the Addressable Market Check below flags as implausible, say so in its "What has to happen" cell.
-- Hand-off: the valuation skill prices these; here, state only whether the growth itself is high-quality (recurring, diversified, contract-backed) or low-quality (one product, one customer, cyclical).
+- Quality: state whether the growth itself is high-quality (recurring, diversified, contract-backed) or low-quality (one product, one customer, cyclical).
+- Hand-off: the next sub-section turns these scenarios into an indicative FY+5 share price; the valuation skill still sets the 12-month price target and stop.
+
+### 4b. Implied Share Price at FY+5
+
+*What the stock could be worth at the end of FY+5 in each scenario, and the annualized return from today's price. It is a long-horizon, probability-weighted view of the growth outlook — not the 12-month price target. The multiple is the biggest uncertainty here, so every assumption is shown.*
+
+**Method (every step shown in the table or a note):**
+1. **FY+5 earnings per share** = (FY+5 operating income − net interest expense) × (1 − tax rate) ÷ FY+5 diluted shares. State the tax rate (use the company's effective or guided rate, cite it) and the share-count path: today's diluted shares from `digest.py` / Yahoo `sharesOutstanding`, adjusted for the dilution (stock-based compensation, acquisitions paid in stock) or net buybacks you assume — one assumption for all scenarios unless a scenario changes it. Say whether EPS is **GAAP or non-GAAP** and apply a multiple consistent with that basis (non-GAAP EPS earns a lower P/E than GAAP).
+2. **Multiple at FY+5** — assume it, label it "our assumption", and justify each in one phrase from evidence: today's multiple, the company's own 5-year range, and what mature peers with the FY+5 growth rate trade at (cite peers with source and date). A company growing 15% in FY+5 does not keep a multiple earned at 40% growth: **multiples compress as growth slows**, so Bear < Base < Bull, and the Extreme Bull multiple must not exceed today's unless you can show why. Use **P/E** when FY+5 EPS is solidly positive; use **P/S** (FY+5 revenue per share × assumed P/S) when earnings are thin, negative or distorted — and say why.
+3. **Implied FY+5 price** = FY+5 EPS × P/E (or revenue per share × P/S). **Return** = implied price ÷ current price; **annualized return** = (implied price ÷ current price)^(1 ÷ years to FY+5 year-end) − 1, stating the years and using the live Yahoo `currentPrice` with its date.
+
+| Scenario | Probability | FY+5 EPS | Multiple (P/E or P/S) | Implied FY+5 Price | vs Current | Annualized Return | Why this multiple |
+|----------|-------------|----------|-----------------------|--------------------|------------|-------------------|-------------------|
+| Bear | X% | $X.XX | Xx P/E | $X | ±X% | ±X%/yr | [growth at FY+5, peer/history evidence] |
+| Base | X% | $X.XX | Xx P/E | $X | ±X% | ±X%/yr | [..] |
+| Bull | X% | $X.XX | Xx P/E | $X | ±X% | ±X%/yr | [..] |
+| Extreme Bull | X% | $X.XX | Xx P/E | $X | ±X% | ±X%/yr | [..] |
+| **Probability-weighted** | 100% | $X.XX | — | **$X** | **±X%** | **±X%/yr** | Σ(probability × price) |
+
+- **Probability-weighted price** = Σ(probability × implied price) from the table above, not an average of the multiples; compute the weighted annualized return from that weighted price.
+- **Sensitivity:** one compact table of the **Base-case** implied price at three multiples (a low, the base, a high — e.g., 15x / 20x / 25x) against EPS at −20% / base / +20%, so the PM sees what the answer hinges on.
+- **Read:** 1 bullet — does the probability-weighted annualized return clear a reasonable hurdle (state it, e.g., 10–12%/yr) at today's price, and which scenario carries most of the value (e.g., "Extreme Bull is 8% likely but supplies 30% of the weighted price").
+- **Consistency:** the scenario revenues and operating margins must be the ones in table 4 above, and the current price and share count must match the ones used by the valuation and income-statement analyses (reconcile, don't restate).
 
 ### 5. Addressable Market Check
 
@@ -208,8 +232,8 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 
 - Spec: `Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_{YYYYMMDD}_spec.json` with `"skill": "business_potential"`, `"title": "{TICKER} — Business Potential"`, `"output": "Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_analysis_{YYYYMMDD}.docx"`
 - `{YYYYMMDD}` is the run date (use the date the parent `/single_stock_deep_research` run passed in, else today's): a same-day re-run overwrites these files, earlier dates stay as history, and the HTML hub links the pages of the same date.
-- Growth Outlook: the four `###` sub-sections are `heading` blocks with `"level": 2`. Driver Inventory: `fills` on the Status cell — `C6EFCE` for ✅, `FFEB9C` for ⚠️, `FFC7CE` for 🔴. Revenue Bridge and Profitability Path: `bold_rows` on the Total revenue row; `F2F2F2` fills on every "our estimate" cell (FY+3 / FY+5 columns) to mark estimates. Scenarios: fill every cell of the Bear row `FFC7CE`, Base `FFEB9C`, Bull `C6EFCE`, Extreme Bull `A9D08E`. Each table's `source` names the reported, guided, consensus and our-estimate inputs.
-- `summary.key_figures` must include: base-case FY+3 and FY+5 revenue with CAGR, base-case FY+5 operating margin, the FY+5 revenue range across bear / bull / extreme bull, the top driver with its FY+5 dollars, and the NBT readiness score — `/single_stock_deep_research` reads these for its Growth Outlook.
+- Growth Outlook: the `###` sub-sections (1–5, including 4b) are `heading` blocks with `"level": 2`. Driver Inventory: `fills` on the Status cell — `C6EFCE` for ✅, `FFEB9C` for ⚠️, `FFC7CE` for 🔴. Revenue Bridge and Profitability Path: `bold_rows` on the Total revenue row; `F2F2F2` fills on every "our estimate" cell (FY+3 / FY+5 columns) to mark estimates. Scenarios and the Implied Share Price table (4b): fill every cell of the Bear row `FFC7CE`, Base `FFEB9C`, Bull `C6EFCE`, Extreme Bull `A9D08E`; `bold_rows` on the Probability-weighted row with no fill; `F2F2F2` on the EPS and Multiple cells (our assumptions). Each table's `source` names the reported, guided, consensus and our-estimate inputs.
+- `summary.key_figures` must include: base-case FY+3 and FY+5 revenue with CAGR, base-case FY+5 operating margin, the FY+5 revenue range across bear / bull / extreme bull, the probability-weighted FY+5 share price with its annualized return and the base-case multiple, the top driver with its FY+5 dollars, and the NBT readiness score — `/single_stock_deep_research` reads these for its Growth Outlook.
 - NBT Readiness Scorecard: `bold_rows` on the Total row and a `fills` entry on its score cell — `C6EFCE` for 17–20, `FFEB9C` for 9–16, `FFC7CE` for ≤8.
 - Close with a `read_through` block (dimension: `NBT-Readiness`) — it replaces the Read-Through section above.
 - Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/6_{ticker_lowercase}_business_potential_{YYYYMMDD}_spec.json` — writes the `.docx`, the interactive `.html`, `6_{ticker_lowercase}_business_potential_{YYYYMMDD}_summary.json` and refreshes `Outputs/index.html`
@@ -218,4 +242,4 @@ Do not write a python-docx script. Write the content as a JSON spec and render i
 
 ## Changes Since Last Run (when an earlier run exists)
 
-Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/6_{ticker_lowercase}_business_potential {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: base-case FY+3 / FY+5 revenue, CAGR and operating margin; each growth driver's status and FY+5 dollars (new, dropped, upgraded ⚠️→✅); scenario probabilities; NBT readiness score (/20) and each dimension score; NBT spend ratio; new signed deals, capacity, launches; the primary emerging opportunity if it changed.
+Before writing the spec, run `PYTHONIOENCODING=utf-8 .venv/Scripts/python prior_run.py Outputs/{TICKER}/6_{ticker_lowercase}_business_potential {YYYYMMDD}` (today's run date). If it returns `{"prior": null}` this is initial coverage and nothing below applies. Otherwise this is an update: follow `references/changes-since-last-run.md` and add a **"What Changed Since {prior date}"** section straight after the verdict / read-through / opening block. Items to compare for this skill: base-case FY+3 / FY+5 revenue, CAGR and operating margin; each growth driver's status and FY+5 dollars (new, dropped, upgraded ⚠️→✅); scenario probabilities; implied FY+5 share price per scenario, the probability-weighted price and the multiples assumed; NBT readiness score (/20) and each dimension score; NBT spend ratio; new signed deals, capacity, launches; the primary emerging opportunity if it changed.
