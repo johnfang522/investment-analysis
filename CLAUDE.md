@@ -26,64 +26,32 @@ An investment research toolkit that turns a few commands into hedge-fund-style r
 - **Stage 3 — Quick Filter:** screen candidates on financial quality before committing to deep research
 - **Stage 4 — Individual Stock Analysis:** deep-dive on specific names across all dimensions, ending in a research note
 
-### All skills at a glance
-
-**Stage 1 — Market Conditions**
-- `/market_sentiment_analysis` — *Is the market healthy or frothy?*
-  - Scores 7 indicators (VIX, Fear & Greed, put/call, breadth, credit spreads, Shiller CAPE, Buffett Indicator)
-  - Adds a 3–6 month macro outlook (Fed, rates, deficit, Treasury yields) and a margin-debt leverage check
-  - Ends with a Risk-On / Neutral / Risk-Off posture and a bubble-risk verdict
-
-**Stage 2 — Theme Discovery**
-- `/theme_discovery_scanner` — *What themes are emerging that I should be watching?* Scans five channels (capital flows, talent, incumbents' fear, science, cost curves) and keeps a ranked watchlist
-- `/emerging_industry_trend` — *Where are the bottlenecks before the market prices them in?* Signal scorecard, value chain map, positioning
-- `/industry_trend_analysis` — *Who wins in this theme, and when do I get out?* Maps the full value chain with stocks at every layer, TAM expansion, a variant view, and pre-committed exit tripwires
-- `/industry_deep_dive` — *How does this industry actually work?* Porter's Five Forces, economics, competitors, barriers to entry
-- `/ai_company_deep_dive` — *Is this company's AI story real?* Places it in the AI stack, scores chokepoint strength and revenue quality, and builds a 3-scenario thesis
-- `/multibagger_screener` — *Which stocks could 5x–100x?* Screens a theme or quality universe into a scored 3–7 name shortlist (no Buy/Sell calls)
-
-**Stage 3 — Quick Filter**
-- `/quick_stock_metrics` — *Which names deserve a deeper look?* Side-by-side Excel and HTML grid of 22 financial metrics for all tickers in `tickers.txt`, with a long/short screen read
-
-**Stage 4 — Individual Stock Analysis**
-- Eight component analyses (each ends with a Bullish / Neutral / Bearish read and a variant view)
-  - `/business_overview_analysis` — what the company does and how it competes
-  - `/leadership_analysis` — management quality, ownership and capital allocation
-  - `/income_statement_analysis` — growth, margins, what drove the quarter, and consensus outlook
-  - `/balance_sheet_analysis` — leverage, liquidity and off-balance-sheet risks
-  - `/cash_flow_analysis` — free cash flow quality and conversion
-  - `/business_potential_analysis` — readiness to capture its next big opportunity
-  - `/valuation_analysis` — what the stock is worth (DCF, multiples, peers) with a price target
-  - `/technical_analysis` — trend, moving averages, momentum and entry levels
-- `/single_stock_deep_research` — *The full research package.* Runs all 8 analyses, then writes a 2–3 page note with LONG / SHORT / PASS, conviction, price target, stop and risk/reward
-- `/single_stock_quick_research` — *A faster initiation note.* Seven-pillar single-stock read; the default for "should I buy X?"
-- `/earnings_report_analyzer` — *Was the quarter actually good?* Scores one earnings report across 7 dimensions, going beyond the headline beat/miss
-
-### Outputs by skill
+### Skills and outputs
 - Every report is **HTML by default** (`.html`); a `.docx` is written only on request (add `--docx` or `--both`)
 - Paths show the base name; swap the extension as needed
+- How each skill behaves and what to keep consistent when editing it: **Skill Details** below
 
-| Stage | Skill | Argument | Output |
-|---|---|---|---|
-| 1 | `/market_sentiment_analysis` | _(none)_ | `Outputs/market_sentiment_analysis_{YYYYMMDD}.html` + 10 PNGs + dashboard PNG |
-| 2 | `/theme_discovery_scanner` | CHANNEL/SECTOR hint or _(none)_ | `Outputs/theme_discovery_scan_{YYYYMMDD}.html` |
-| 2 | `/emerging_industry_trend` | THEME, TICKER, or _(none)_ | `Outputs/emerging_industry_trends_{theme}_{YYYYMMDD}.html` |
-| 2 | `/industry_trend_analysis` | THEME or TICKER | `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.html` |
-| 2 | `/industry_deep_dive` | THEME or TICKER | `Outputs/industry_deep_dive_{theme}_{YYYYMMDD}.html` |
-| 2 | `/ai_company_deep_dive` | TICKER | `Outputs/{TICKER}/{ticker}_company_deep_dive_{YYYYMMDD}.html` |
-| 2 | `/multibagger_screener` | THEME or _(none)_ | `Outputs/multibagger_screener_{theme_or_date}_{YYYYMMDD}.html` |
-| 3 | `/quick_stock_metrics` | _(none — reads `tickers.txt`)_ | Excel `Outputs/quick_stock_metrics_YYYYMMDD.xlsx` (Summary sheet = screen read) + `.html` |
-| 4 | `/business_overview_analysis` | TICKER | `Outputs/{TICKER}/1_{ticker}_business_overview_analysis_{YYYYMMDD}.html` |
-| 4 | `/leadership_analysis` | TICKER | `Outputs/{TICKER}/2_{ticker}_leadership_analysis_{YYYYMMDD}.html` |
-| 4 | `/income_statement_analysis` | TICKER | `Outputs/{TICKER}/3_{ticker}_income_statement_analysis_{YYYYMMDD}.html` |
-| 4 | `/balance_sheet_analysis` | TICKER | `Outputs/{TICKER}/4_{ticker}_balance_sheet_analysis_{YYYYMMDD}.html` |
-| 4 | `/cash_flow_analysis` | TICKER | `Outputs/{TICKER}/5_{ticker}_cash_flow_analysis_{YYYYMMDD}.html` |
-| 4 | `/business_potential_analysis` | TICKER | `Outputs/{TICKER}/6_{ticker}_business_potential_analysis_{YYYYMMDD}.html` |
-| 4 | `/valuation_analysis` | TICKER | `Outputs/{TICKER}/7_{ticker}_valuation_analysis_{YYYYMMDD}.html` |
-| 4 | `/technical_analysis` | TICKER | `Outputs/{TICKER}/8_{ticker}_technical_analysis_{YYYYMMDD}.html` |
-| 4 | `/single_stock_deep_research` | TICKER | Note `Outputs/{TICKER}/{ticker}_stock_deep_research_notes_YYYYMMDD.html` (the hub); with Word, also the merged `{ticker}_stock_deep_research_YYYYMMDD.docx` package |
-| 4 | `/single_stock_quick_research` | TICKER | `Outputs/{TICKER}/{ticker}_stock_quick_research_YYYYMMDD.html` |
-| 4 | `/earnings_report_analyzer` | TICKER | `Outputs/{TICKER}/{ticker}_earnings_analysis_YYYYMMDD.html` |
+| Stage | Skill | Argument | What it answers | Output |
+|---|---|---|---|---|
+| 1 | `/market_sentiment_analysis` | _(none)_ | Is the market healthy or frothy? 7 indicators (VIX, Fear & Greed, put/call, breadth, credit spreads, CAPE, Buffett), 3–6 month macro outlook, margin-debt check → Risk-On / Neutral / Risk-Off + bubble-risk verdict | `Outputs/market_sentiment_analysis_{YYYYMMDD}.html` + 10 PNGs + dashboard PNG |
+| 2 | `/theme_discovery_scanner` | CHANNEL/SECTOR hint or _(none)_ | What themes are emerging? Five-channel scan → ranked watchlist | `Outputs/theme_discovery_scan_{YYYYMMDD}.html` |
+| 2 | `/emerging_industry_trend` | THEME, TICKER, or _(none)_ | Where are the bottlenecks before the market prices them in? Signal scorecard, value chain, positioning | `Outputs/emerging_industry_trends_{theme}_{YYYYMMDD}.html` |
+| 2 | `/industry_trend_analysis` | THEME or TICKER | Who wins in this theme, and when do I get out? Value chain with stocks, TAM, variant view, exit tripwires | `Outputs/industry_trend_analysis_{theme}_{YYYYMMDD}.html` |
+| 2 | `/industry_deep_dive` | THEME or TICKER | How does this industry work? Porter's Five Forces, economics, competitors, barriers | `Outputs/industry_deep_dive_{theme}_{YYYYMMDD}.html` |
+| 2 | `/ai_company_deep_dive` | TICKER | Is this company's AI story real? AI-stack position, chokepoint, revenue quality, 3 scenarios | `Outputs/{TICKER}/{ticker}_company_deep_dive_{YYYYMMDD}.html` |
+| 2 | `/multibagger_screener` | THEME or _(none)_ | Which stocks could 5x–100x? Scored 3–7 name shortlist (no Buy/Sell calls) | `Outputs/multibagger_screener_{theme_or_date}_{YYYYMMDD}.html` |
+| 3 | `/quick_stock_metrics` | _(none — reads `tickers.txt`)_ | Which names deserve a deeper look? 22-metric grid + long/short screen read | Excel `Outputs/quick_stock_metrics_YYYYMMDD.xlsx` (Summary sheet = screen read) + `.html` |
+| 4 | `/business_overview_analysis` | TICKER | What the company does and how it competes | `Outputs/{TICKER}/1_{ticker}_business_overview_analysis_{YYYYMMDD}.html` |
+| 4 | `/leadership_analysis` | TICKER | Management quality, ownership, capital allocation | `Outputs/{TICKER}/2_{ticker}_leadership_analysis_{YYYYMMDD}.html` |
+| 4 | `/income_statement_analysis` | TICKER | Growth, margins, what drove the quarter, consensus outlook | `Outputs/{TICKER}/3_{ticker}_income_statement_analysis_{YYYYMMDD}.html` |
+| 4 | `/balance_sheet_analysis` | TICKER | Leverage, liquidity, off-balance-sheet risks | `Outputs/{TICKER}/4_{ticker}_balance_sheet_analysis_{YYYYMMDD}.html` |
+| 4 | `/cash_flow_analysis` | TICKER | Free cash flow quality and conversion | `Outputs/{TICKER}/5_{ticker}_cash_flow_analysis_{YYYYMMDD}.html` |
+| 4 | `/business_potential_analysis` | TICKER | 3–5 year growth outlook (sourced driver inventory, revenue bridge in $ and %, margin path, bear/base/bull/extreme-bull scenarios, TAM check) and readiness to capture the next big opportunity | `Outputs/{TICKER}/6_{ticker}_business_potential_analysis_{YYYYMMDD}.html` |
+| 4 | `/valuation_analysis` | TICKER | What the stock is worth (DCF, multiples, peers) with a price target | `Outputs/{TICKER}/7_{ticker}_valuation_analysis_{YYYYMMDD}.html` |
+| 4 | `/technical_analysis` | TICKER | Trend, moving averages, momentum, entry levels | `Outputs/{TICKER}/8_{ticker}_technical_analysis_{YYYYMMDD}.html` |
+| 4 | `/single_stock_deep_research` | TICKER | The full package: runs all 8 analyses (components 1–8 each end in a Bullish / Neutral / Bearish read), then a note with LONG / SHORT / PASS, conviction, target, stop, risk/reward | Note `Outputs/{TICKER}/{ticker}_stock_deep_research_notes_YYYYMMDD.html` (the hub); with Word, also the merged `{ticker}_stock_deep_research_YYYYMMDD.docx` package |
+| 4 | `/single_stock_quick_research` | TICKER | Faster seven-pillar initiation note; the default for "should I buy X?" | `Outputs/{TICKER}/{ticker}_stock_quick_research_YYYYMMDD.html` |
+| 4 | `/earnings_report_analyzer` | TICKER | Was the quarter actually good? One report scored across 7 dimensions | `Outputs/{TICKER}/{ticker}_earnings_analysis_YYYYMMDD.html` |
 
 ---
 
@@ -96,7 +64,8 @@ Everything below is for working on the code and the skills.
 - **Always use the project's virtual environment**
   - Run scripts: `.venv/Scripts/python`
   - Install packages: `.venv/Scripts/pip`
-- **Key dependencies:** `yfinance`, `openpyxl`, `python-docx`, `matplotlib`, `numpy`
+- **Key dependencies:** `yfinance`, `requests` (every SEC EDGAR and FRED fetch), `pandas`, `openpyxl`, `python-docx`, `matplotlib`, `numpy`
+  - There is no `requirements.txt`; this list is the only record
 - **No test suite, linter or build step**
   - Verification = run the relevant script and inspect the file it writes to `Outputs/`
 - **Prefix every Python invocation that prints to the console with `PYTHONIOENCODING=utf-8`**
@@ -176,6 +145,9 @@ Everything below is for working on the code and the skills.
   - **Closes are dividend-adjusted** (`auto_adjust=True`); `current_price` and the 52-week range are not
   - For material dividend payers (yield above ~2%, e.g. REITs), older prices, moving averages and closing highs/lows are understated
   - The technical skill recomputes from unadjusted closes (`auto_adjust=False`) for those names
+- **Live quote vs last close:** `_quick_metrics.json` `currentPrice` is Yahoo's live (intraday) quote, while `_price_history.json` ends at the prior close
+  - So skills in one run can quote different prices (ISRG: valuation $423.96 quote vs technical $415.41 Oct 8 close)
+  - State which price and which date a figure uses; the deep-research verdict uses `currentPrice`
 - File conventions
   - Output path: `Outputs/{TICKER}/` (one subfolder per ticker, created automatically)
   - `{ticker_lower}` = `ticker.lower()` (e.g. `nvda`), used in all JSON filenames
@@ -206,6 +178,8 @@ Everything below is for working on the code and the skills.
   - `de` is `-10.1x` for negative book equity (SMG) and `_short_comment` calls it "Very conservative"
   - `roe` goes negative on negative equity
   - `trailing_pe` can diverge from Yahoo's with discontinued operations
+  - A large non-cash charge wrecks the GAAP-based keys: LITE's $7.8B convertible-note extinguishment loss made `ni_margin` −230%, `roe` −149% and `trailing_pe` N/A — label them not meaningful and use operating / adjusted figures
+  - Yahoo's `forwardEps` (behind `forward_pe` and `peg`) can sit above every fiscal-year consensus: LITE's $35.57 vs FY2028E $26.40 showed 31x / PEG 0.63 when fiscal-year consensus gave 42–69x. Recompute from the fiscal-year EPS that `/income_statement_analysis` sources before quoting either
   - Check the balance sheet's sign before repeating a label
 - Output: `Outputs/quick_stock_metrics_YYYYMMDD.xlsx`
   - Sheets: `Summary` (buy-side screen read) → `Comparison` (per-cell hover-note sources + legend) → per-ticker sheets (with a "Source" column)
@@ -436,7 +410,8 @@ Everything below is for working on the code and the skills.
 - **`/single_stock_deep_research`**
   - Always re-fetches fresh data via `fetch_all()`
   - Re-runs all 8 component analyses in sequence (including `/leadership_analysis`; output prefixes 1–8)
-  - Synthesizes a 2–3 page hedge-fund research note (conviction score + LONG/SHORT/PASS with price target)
+  - Each subagent prompt carries the sourced facts established by earlier subagents (one-off charges, debt, share count, consensus, current price) with "reconcile, don't restate" — later subagents catch and correct earlier errors (LITE: the cash-flow subagent corrected a TTM FCF of $224.7M to $300.1M)
+  - Synthesizes a hedge-fund research note (conviction score + LONG/SHORT/PASS with price target)
   - The note's HTML page is the hub linking the 8 component pages
   - Assembles the single `_stock_deep_research_` Word package (`assemble_package.py`) only when Word is requested
 - **`/single_stock_quick_research`**
@@ -497,75 +472,24 @@ Everything below is for working on the code and the skills.
 - **Word rendering**
   - The Verdict / Read-Through block is bold
   - Full-call verdicts use a colored Heading-1-style line: green `007000` for LONG / Risk-On, red `C00000` for SHORT / Risk-Off, neutral for PASS
-  - The Variant View table follows the standard table rules below
+  - The Variant View table follows the Word table rules below
+- **Source citations: every quantitative figure must cite where it came from**
+  - Sources: SEC EDGAR, Yahoo Finance, a hybrid of both, or a WebSearch source (name the publication and date)
+  - Figures from `compute_metrics()`: call with `with_sources=True` and read the per-metric label (`SRC_SEC`, `SRC_YAHOO`, `SRC_HYBRID`, `SRC_COMPUTED`, `SRC_NA`); never assume it from the metric name
+  - Figures read directly from JSON: statements → "SEC EDGAR"; quick_metrics / price_history → "Yahoo Finance"
+  - Reference implementation: `quick_stock_metrics.py`'s Excel output ("Source" column, per-cell hover-notes, legend on the Comparison sheet)
 
 ## Word Document Generation
 
-- Skills no longer write python-docx code
-  - `report_renderer.py` and `doc_utils.py` implement these rules
-  - They matter when editing the renderer, `assemble_package.py` or a one-off script
-- **Tables**
-  - Always initialize with `rows=1` (header only), then `table.add_row()` for each data row
-    - Never use `rows=1+len(data)` upfront: it creates blank rows between the header and data
-  - Call `autofit_table(table)` then `add_table_borders(table)` **after** all rows are added
-    - Never at table creation time: rows added later won't inherit the settings
-    - `autofit_table`
-      - Sets `tblW`/`tblLayout` to autofit and strips fixed `w:tcW` cell widths
-      - Centers the table on the page
-      - Never use `table.columns[i].width` or fixed widths; don't set `table.alignment` yourself
-      - `apply_house_style()` (run by `add_footnote()`) re-centers every table as a backstop
-    - `add_table_borders`
-      - Thin single border (`sz=4`, `val="single"`, `color="000000"`) on all four sides plus inner dividers (`insideH`/`insideV`) via `w:tcBorders`
-  - All non-header cell text is size 10 Arial
-    - Call `set_row_font_size(row)` on every data row right after `table.add_row()`
-    - Do **not** call it on the header row
-  - **Never place two tables back to back**
-    - Word merges adjacent tables and the columns collapse
-    - `autofit_table()` inserts a spacer paragraph automatically; still put a heading, caption or source line between tables
-- **Imports in generated scripts**
-  - Scripts are saved under `Outputs/{TICKER}/` but run from the project root
-    ```python
-    import sys; sys.path.insert(0, '.')
-    from doc_utils import setup_document, autofit_table, add_table_borders, set_row_font_size, add_footnote, fmt_value
-    ```
-  - The `sys.path.insert(0, '.')` is required
-- **Formatting values**
-  - Always use `fmt_value(v)` for dollar amounts in Word table cells
-    - Never hardcode `/ 1e9` or append `"B"`
-    - Auto-scales: ≥$1B → `$X.XXB`, ≥$1M → `$X.XM`, ≥$1K → `$X.XK`, else raw dollars
-    - Pass `prefix=''` for non-dollar values
-  - `smart_scale(values)` is defined locally in each `chart_*.py` (not in `doc_utils`)
-    - Returns `(divisor, axis_label, suffix)` to pick a shared Y-axis scale
-    - Copy an existing implementation when writing a new chart script
-- **Apostrophe pitfall in generated Python**
-  - Use double-quoted strings for literals containing apostrophes (`"Tesla's"`)
-  - Single-quoted strings with an apostrophe raise `SyntaxError: unterminated string literal`
-  - The most common bug in skill-generated `generate_*.py` scripts
-- **Footnote:** every skill calls `add_footnote(doc)` immediately before `doc.save(...)` (standard AI-generated disclaimer and "not investment advice" notice)
-- **Source citations: every quantitative figure must cite where it came from**
-  - Sources: SEC EDGAR, Yahoo Finance, a hybrid of both, or a WebSearch source
-  - Figures from `compute_metrics()`
-    - Call with `with_sources=True` for the per-metric label (`SRC_SEC`, `SRC_YAHOO`, `SRC_HYBRID`, `SRC_COMPUTED`, `SRC_NA`)
-    - Read the label; never assume it from the metric name
-    - Cite with `add_source_note()` inline, or as a trailing small-print line under a snapshot table
-  - Figures read directly from JSON
-    - Statements → "SEC EDGAR"; quick_metrics / price_history → "Yahoo Finance"
-  - Figures from `WebSearch` (estimates, guidance, news, peer comps)
-    - Cite the source name/publication and date
-  - Reference implementation: `quick_stock_metrics.py`'s Excel output
-    - Visible "Source" column on ticker sheets
-    - Hover-note per cell plus a legend on the Comparison sheet
-    - Every value cell also carries the hover-note as the literal footnote
-- **House format**
-  - Landscape Letter (11" × 8.5"), 0.5" margins on all sides, Arial throughout, 10pt for all text except headings
-  - Call `setup_document(doc)` right after `doc = Document()`
-    ```python
-    setup_document(doc)  # landscape Letter, 0.5" margins, Arial 10pt body text
-    ```
-  - Don't set explicit run sizes on body text, table cells, citations or captions
-  - `add_footnote(doc)` re-applies the format via `apply_house_style(doc)`
-    - Forces any explicit non-heading run size below 14pt down to 10pt, so a stray `Pt(12)` can't break the style
-  - Embed full-width charts at `width=Inches(9.5)` (`doc_utils.CHART_WIDTH`)
+- Only relevant when editing `report_renderer.py`, `assemble_package.py`, `doc_utils.py` or a one-off python-docx script; skills never write python-docx code, and the rules are implemented in `doc_utils.py`
+- **House format:** landscape Letter, 0.5" margins, Arial 10pt except headings — `setup_document(doc)` right after `Document()`; `add_footnote(doc)` (disclaimer) immediately before `doc.save()`, which also re-applies the style via `apply_house_style()`; full-width charts at `doc_utils.CHART_WIDTH` (9.5")
+- **Table traps**
+  - Create with `rows=1` and `add_row()` per data row — `rows=1+len(data)` leaves blank rows
+  - `autofit_table()` then `add_table_borders()` only **after** all rows are added; never set fixed widths or `table.alignment`
+  - `set_row_font_size(row)` on every data row, never the header
+  - Never put two tables back to back (Word merges them); `autofit_table()` inserts a spacer, but still add a heading or source line between
+- **Values:** `fmt_value(v)` for dollar cells (auto-scales to `$X.XXB` / `$X.XM` / `$X.XK`; `prefix=''` for non-dollar); never hardcode `/ 1e9`. `smart_scale()` lives in each `chart_*.py`, not `doc_utils` — copy one for a new chart script
+- **One-off scripts** saved under `Outputs/{TICKER}/` run from the project root, so start with `import sys; sys.path.insert(0, '.')` before importing `doc_utils`; use double quotes for literals with apostrophes (`"Tesla's"`) — the most common `SyntaxError` in generated scripts
 
 ## External Data Sources
 

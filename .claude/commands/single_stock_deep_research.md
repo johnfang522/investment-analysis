@@ -29,6 +29,8 @@ For each skill, use this prompt template:
 
 > Read the file `.claude/commands/{skill_filename}` and execute all instructions in it for ticker {TICKER}. The working directory is the investment-analysis project root. Use `.venv/Scripts/python` to run any Python scripts. Use run date {YYYYMMDD} (today, YYYYMMDD) in every dated filename the skill names. All data (including the 5-year price history) was already downloaded by the parent in Step 0, so skip the skill's own "re-download first" / `fetch_all` step and read the existing JSON in `Outputs/{TICKER}/`. **Your final reply goes to the orchestrator, not the user — keep it under 200 words and in exactly this shape:** `.docx` path · `Signal: BULLISH/NEUTRAL/BEARISH · Conviction X/10` · one-line so-what · one-line what-flips-it · up to 6 key figures as `label: value [source]` · the Variant View edge in one line · if the skill's "Changes Since Last Run" block found an earlier run, one line with the net read and the biggest change vs that run. Do not restate the document.
 
+**Carry facts forward:** from subagent 2 on, append "Established facts from earlier subagents: … Reconcile, don't restate; if your data disagrees, use the better-sourced figure and say which." listing the sourced figures earlier replies fixed that later skills will reuse — one-off or non-cash charges, total debt and cash, share count change, consensus revenue/EPS, guidance, and the current price with its date. When a later reply corrects one of them, pass the corrected figure from then on and use it in Step 2.
+
 Execute in this exact order:
 
 1. Subagent → `.claude/commands/business_overview_analysis.md` for {TICKER}
@@ -50,7 +52,7 @@ Each subagent runs in a fresh context and exits after saving its `.docx` to `Out
 
 **Inputs:** synthesize from the 8 subagent replies plus the `Outputs/{TICKER}/*_{YYYYMMDD}_summary.json` files of this run's date (prefer the JSON where both exist) — **do not open the 8 appendix `.docx` files**. If a figure the note needs is missing from them, run `digest.py` or a targeted read of that one figure, not a full document read.
 
-Synthesize the findings from all 8 analyses into a **2–3 page hedge-fund research note**. Each of the 8 appendices now carries its own directional **Read-Through** (BULLISH / NEUTRAL / BEARISH) and a dimension conviction score — roll these up into a single house view, weighting the dimensions that actually drive this name. Write it as a seasoned buy-side analyst pitching the PM — direct, opinionated, anchored to specific data points, and explicit about the variant view and the risk/reward asymmetry.
+Synthesize the findings from all 8 analyses into a **hedge-fund research note**. Each of the 8 appendices now carries its own directional **Read-Through** (BULLISH / NEUTRAL / BEARISH) and a dimension conviction score — roll these up into a single house view, weighting the dimensions that actually drive this name. Write it as a seasoned buy-side analyst pitching the PM — direct, opinionated, anchored to specific data points, and explicit about the variant view and the risk/reward asymmetry.
 
 **Writing standards (non-negotiable):**
 - Every section must carry a distinct analytical point of view. Avoid generic filler ("the company has a strong balance sheet") — say *why* it matters and *how* it compares to peers or history.
@@ -119,7 +121,10 @@ Keys: `current_price, week52_low, week52_high, rsi, market_cap, revenue, rev_gro
 - **EPS 3-Year CAGR:** X% (compute from `_income_statement_annual.json` Diluted EPS; cite SEC EDGAR)
 - **Consensus revenue / EPS CAGR (next 2–3 FYs):** X% / X% (from income statement analysis)
 - **Forward EPS estimate (next FY):** $X.XX (+X% vs trailing)
-- One sentence: is growth accelerating, decelerating, or stable?
+- **Our base case, FY+3 / FY+5 revenue:** $X.XB (+X% CAGR) / $X.XB (+X% CAGR); FY+5 operating margin X% (from business potential analysis)
+- **Top growth drivers:** the 2–3 largest drivers with their FY+5 incremental revenue and status (✅ shipping / ⚠️ signed or launched / 🔴 pipeline) (from business potential analysis)
+- **FY+5 revenue — bear / base / bull / extreme bull:** $X.XB / $X.XB / $X.XB / $X.XB (with each scenario's probability)
+- One sentence: is growth accelerating, decelerating, or stable, and does our base case sit above, in line with, or below consensus?
 
 #### Valuation
 - **Trailing P/E:** Xx | **Forward P/E:** Xx | **PEG:** X.Xx
