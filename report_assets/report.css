@@ -112,6 +112,7 @@ main { min-width: 0; }
 /* ---------- sections ---------- */
 h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
 h3 { font-size: 17px; margin: 28px 0 10px; }
+h4 { font-size: 15px; margin: 22px 0 8px; }
 main > h2:first-of-type { margin-top: 8px; }
 p { margin: 10px 0; }
 ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }

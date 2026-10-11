@@ -525,7 +525,7 @@ def render_html(spec, out_path, summary):
     used, toc, parts, toc_sub = set(), [], [], {}
 
     def heading(text, level=1):
-        tag = "h2" if level <= 1 else "h3"
+        tag = "h2" if level <= 1 else ("h3" if level == 2 else "h4")
         slug = _slug(text, used)
         if tag == "h2":
             toc.append((slug, text))
