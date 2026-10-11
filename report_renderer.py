@@ -511,13 +511,18 @@ def _assets():
     return css, js
 
 
+# Restores a collapsed side panel before first paint (report.js adds the buttons and keeps the state).
+TOC_RESTORE_SCRIPT = ('<script>try{if(localStorage.getItem("toc-collapsed")==="1")'
+                      'document.documentElement.classList.add("toc-collapsed")}catch(e){}</script>')
+
+
 def _page(title, body, meta=None):
     css, js = _assets()
     meta_tag = (f'<meta name="report-meta" content="{html.escape(json.dumps(meta, ensure_ascii=False))}">\n'
                 if meta else "")
     return (f'<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             f'<meta name="viewport" content="width=device-width, initial-scale=1">\n{meta_tag}'
-            f'<title>{html.escape(title)}</title>\n<style>{css}</style>\n</head>\n<body>\n{body}\n'
+            f'<title>{html.escape(title)}</title>\n<style>{css}</style>\n{TOC_RESTORE_SCRIPT}\n</head>\n<body>\n{body}\n'
             f'<script>{js}</script>\n</body>\n</html>\n')
 
 

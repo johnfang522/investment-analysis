@@ -25,6 +25,34 @@
     });
   });
 
+  // ---------- collapsible side panel ----------
+  // The "toc-collapsed" class lives on <html>; a tiny script in <head> restores it before first paint.
+  (function () {
+    var toc = document.querySelector(".shell:not(.wide) > .toc");
+    if (!toc) return;   // wide layout has no side panel
+    var root = document.documentElement;
+    function stored() { try { return localStorage.getItem("toc-collapsed") === "1"; } catch (e) { return false; } }
+    function store(v) { try { localStorage.setItem("toc-collapsed", v ? "1" : "0"); } catch (e) { /* private mode */ } }
+    var hide = document.createElement("button");
+    hide.type = "button"; hide.className = "toc-toggle"; hide.textContent = "‹ Hide panel";
+    hide.title = "Hide the side panel"; hide.setAttribute("aria-expanded", "true");
+    toc.insertBefore(hide, toc.firstChild);
+    var show = document.createElement("button");
+    show.type = "button"; show.className = "toc-expand"; show.textContent = "☰";
+    show.title = "Show the side panel"; show.setAttribute("aria-label", "Show the side panel");
+    show.setAttribute("aria-expanded", "false");
+    document.body.appendChild(show);
+    function set(collapsed, persist) {
+      root.classList.toggle("toc-collapsed", collapsed);
+      hide.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      show.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      if (persist) store(collapsed);
+    }
+    hide.addEventListener("click", function () { set(true, true); });
+    show.addEventListener("click", function () { set(false, true); });
+    set(stored(), false);
+  })();
+
   // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
   function fmtUSD(v, compact) {
     if (v === null || v === undefined) return "N/A";

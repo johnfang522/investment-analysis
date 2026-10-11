@@ -94,6 +94,18 @@ main { min-width: 0; }
   .toc { display: none; }
 }
 
+/* ---------- collapsible side panel (buttons are added by report.js; the class is set on <html>) ---------- */
+.toc-toggle { display: flex; align-items: center; gap: 6px; width: fit-content; margin: 0 0 12px auto; padding: 3px 10px; font: inherit; font-size: 12px; color: var(--muted); background: transparent; border: 1px solid var(--grid); border-radius: 999px; cursor: pointer; }
+.toc-toggle:hover { color: var(--ink); border-color: var(--muted); }
+.toc-expand { display: none; position: fixed; top: 12px; left: 12px; z-index: 40; width: 34px; height: 34px; align-items: center; justify-content: center; padding: 0; font-size: 17px; line-height: 1; color: var(--ink-2); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; }
+.toc-expand:hover { color: var(--ink); border-color: var(--muted); }
+@media (min-width: 961px) {
+  .toc-collapsed .shell:not(.wide) { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 64px; }
+  .toc-collapsed .shell:not(.wide) > .toc { display: none; }
+  .toc-collapsed .toc-expand { display: inline-flex; }
+}
+@media (max-width: 960px) { .toc-toggle, .toc-expand { display: none; } }
+
 /* ---------- header ---------- */
 .report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
 .report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
@@ -258,7 +270,7 @@ img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #f
 @media print {
   :root { color-scheme: light; }
   body { background: #ffffff; font-size: 11pt; }
-  .toc, .back-fab, .theme-toggle, details.viz-data summary { display: none; }
+  .toc, .back-fab, .theme-toggle, .toc-toggle, .toc-expand, details.viz-data summary { display: none; }
   .shell { display: block; padding: 0; }
   figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
   hr.page-break { break-after: page; border: 0; }
