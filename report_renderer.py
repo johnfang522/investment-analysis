@@ -637,6 +637,7 @@ def render_html(spec, out_path, summary):
     meta = {"ticker": spec.get("ticker"), "skill": spec.get("skill"), "title": spec["title"],
             "signal": summary.get("signal"), "conviction": summary.get("conviction"),
             "as_of": summary.get("as_of"), "rendered": date.today().isoformat(),
+            "rendered_at": datetime.now().isoformat(timespec="seconds"),
             "company": _longname(spec["ticker"]) if spec.get("ticker") else None}
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(_page(spec["title"], body, meta))
@@ -668,8 +669,10 @@ def _retarget_back_links(note_path):
             text = fh.read()
         new = re.sub(r'(<a class="back-fab" href=")[^"]*(")', lambda m: m.group(1) + note + m.group(2), text, count=1)
         if new != text:
+            st = os.stat(path)
             with open(path, "w", encoding="utf-8") as fh:
                 fh.write(new)
+            os.utime(path, (st.st_atime, st.st_mtime))   # a link retarget is not a new run
 
 
 def _read_meta(path):
@@ -715,7 +718,7 @@ def _index_item(m, children="", strip_prefix=None):
     if m.get("signal"):
         conv = f' {m["conviction"]}/10' if m.get("conviction") is not None else ""
         badge = _badge(m["signal"], html.escape(conv))
-    when = datetime.fromtimestamp(m["mtime"]).strftime("%Y-%m-%d %H:%M")
+    when = _fmt_when(m["mtime"])
     title = m.get("title") or m["href"]
     if strip_prefix and title.startswith(strip_prefix):
         title = title[len(strip_prefix):]
@@ -750,7 +753,7 @@ def _card(folder, items):
     lis = [li for _, li in sorted(entries, key=lambda e: -e[0])]
     last = max(m["mtime"] for m in (notes[:1] or items))
     label = "Last research run" if notes else "Last run"
-    stamp = datetime.fromtimestamp(last).strftime("%Y-%m-%d %H:%M")
+    stamp = _fmt_when(last)
     top = (notes[:1] or [None])[0]
     badge = ""
     if top and top.get("signal"):
@@ -793,7 +796,7 @@ def _skill_card(label, items):
         if m.get("ticker") and not title.upper().startswith(m["ticker"].upper()):
             title = f'{m["ticker"]} — {title}'
         lis.append(_index_item(dict(m, title=title)))
-    last = datetime.fromtimestamp(items[0]["mtime"]).strftime("%Y-%m-%d %H:%M")
+    last = _fmt_when(items[0]["mtime"])
     return (f'<section class="card"><h2>{html.escape(label)}</h2><p class="last-run">Last run: '
             f'<time>{last}</time></p><ul>{"".join(lis)}</ul></section>')
 
@@ -832,6 +835,32 @@ def _attach_files(metas, root):
     return orphans
 
 
+def _run_time(meta, path):
+    """When the report was produced: the render time stamped in its metadata; for older files without one, the
+    date in the filename (file mtime is only trusted when it falls on that date, since later rewrites touch it)."""
+    try:
+        return datetime.fromisoformat(meta["rendered_at"]).timestamp()
+    except (KeyError, ValueError, TypeError):
+        pass
+    d = re.search(r"_(\d{8})\.html$", path)
+    mtime = os.path.getmtime(path)
+    if not d:
+        return mtime
+    day = datetime.strptime(d.group(1), "%Y%m%d")
+    # The spec/summary sidecars are written once per run and never rewritten, so their mtime is the run time.
+    stem = path[:-len(".html")].replace("_analysis_" + d.group(1), "_" + d.group(1))
+    for cand in (stem + "_summary.json", stem + "_spec.json"):
+        if os.path.exists(cand) and datetime.fromtimestamp(os.path.getmtime(cand)).date() == day.date():
+            return os.path.getmtime(cand)
+    return mtime if datetime.fromtimestamp(mtime).date() == day.date() else day.timestamp()
+
+
+def _fmt_when(ts):
+    """Date and time, or the date alone when only the date is known (an exact midnight)."""
+    dt = datetime.fromtimestamp(ts)
+    return dt.strftime("%Y-%m-%d") if dt.time() == datetime.min.time() else dt.strftime("%Y-%m-%d %H:%M")
+
+
 def build_index(root="Outputs"):
     """Rebuild Outputs/index.html: a left navigation and the reports organised by the 4 workflow stages
     (market conditions, theme discovery, quick filter, then one card per ticker in A→Z order)."""
@@ -841,7 +870,7 @@ def build_index(root="Outputs"):
             continue
         rel = os.path.relpath(path, root).replace(os.sep, "/")
         meta = _read_meta(path)
-        meta.update(href=rel, mtime=os.path.getmtime(path), folder=rel.split("/")[0] if "/" in rel else "")
+        meta.update(href=rel, mtime=_run_time(meta, path), folder=rel.split("/")[0] if "/" in rel else "")
         metas.append(meta)
     metas += _attach_files(metas, root)
     by_stage = {n: [] for n, *_ in STAGES}
