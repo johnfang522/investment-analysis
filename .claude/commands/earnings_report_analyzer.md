@@ -151,7 +151,7 @@ Always produce a saved `.docx` document containing:
 1. **Snapshot table** — ticker, quarter, headline revenue/EPS vs. consensus, guidance direction, one-line verdict.
 2. **Scoring key, then scored dimension table**
    - **Scoring key first (always):** before any score appears, a short "How to Read the Scores" section so the reader knows what a number means before seeing one
-     - The scale: +2 clear, durable bright spot · +1 modestly positive · 0 neutral / no meaningful signal · −1 modest headwind · −2 clear, structural red flag. Say that the 7 scores sum to −14…+14 and map to the verdict bands in Step 3
+     - The scale, as two parent bullets with sub-bullets: (1) "Each of the seven dimensions is scored from −2 to +2:" with one sub-bullet per score (+2 clear, durable bright spot · +1 modestly positive · 0 neutral, no meaningful signal · −1 modest headwind · −2 clear, structural red flag); (2) "The seven scores sum to a net score between −14 and +14:" with one sub-bullet per verdict band from Step 3 (+8 or more strong-quality beat · +3 to +7 constructive · −2 to +2 mixed · −3 to −7 deteriorating · −8 or lower red-flag quarter)
      - A per-dimension table (7 rows; columns: Dimension · What it measures · What +2 looks like · What −2 looks like), written for this company and quarter where possible (e.g. "+2 = gross margin up 150+ bps YoY on pricing, not mix"), not generic boilerplate
    - **Then** the scored dimension table — all 7 dimensions with score, one-line rationale, and a bright-spot or headwind tag. Each score is read against the key above.
 3. **Bright spots** — 3-5 bullets, most durable first.
@@ -174,7 +174,7 @@ Do not write a python-docx script. Write the analysis as a JSON report spec and 
 
 1. Spec: `Outputs/{TICKER}/{ticker_lowercase}_earnings_analysis_{YYYYMMDD}_spec.json` with `"output": "Outputs/{TICKER}/{ticker_lowercase}_earnings_analysis_{YYYYMMDD}.docx"`.
 2. `"ticker"`, `"skill": "earnings"`, `"title"`: "{TICKER} — Earnings Report Analysis", `"subtitle"`: quarter and date.
-3. "How to Read the Scores" heading + a `paragraph` (scale and sum-to-verdict) + the per-dimension key `table`, placed immediately **before** the scored dimension table; no fills on the key. Scored dimension table: `fills` on the Score cell — `C6EFCE` for +1/+2, `FFC7CE` for −1/−2, none for 0.
+3. "How to Read the Scores" heading + one `bullets` block with two parent bullets, each with `children` sub-bullets (`{"text": "Each of the seven dimensions is scored from −2 to +2:", "children": ["**+2** ...", "**+1** ...", ...]}` and `{"text": "The seven scores sum to a net score between −14 and +14:", "children": [<one per verdict band>]}`; not a paragraph) + the per-dimension key `table`, placed immediately **before** the scored dimension table; no fills on the key. Scored dimension table: `fills` on the Score cell — `C6EFCE` for +1/+2, `FFC7CE` for −1/−2, none for 0.
 4. Charts are `chart` blocks at the places listed above; the Read-Through is a `read_through` block (dimension: `Earnings-Quality`), the Variant View a `variant_view` block, the follow-up questions a `bullets` block with `"numbered": true`.
 5. Render: `PYTHONIOENCODING=utf-8 .venv/Scripts/python report_renderer.py Outputs/{TICKER}/{ticker_lowercase}_earnings_analysis_{YYYYMMDD}_spec.json` — writes the `.docx`, an interactive `.html` next to it, and refreshes the `Outputs/index.html` library page.
 

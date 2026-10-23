@@ -33,7 +33,7 @@ Spec shape (all keys optional except title / output / blocks):
 BLOCK TYPES — inline text in any string may use **bold** and *italic*; "\\n" breaks a line:
   {"type": "heading", "text": "At a Glance", "level": 1}
   {"type": "paragraph", "text": "..."}
-  {"type": "bullets", "items": ["**Bottom line:** ...", "..."]}
+  {"type": "bullets", "items": ["**Bottom line:** ...", "..."]}   # an item may be {"text": "...", "children": ["sub-bullet", ...]}
   {"type": "table", "headers": [...], "rows": [[...], ...],
        "bold_rows": [6, 8],                    # 0-based data-row indexes
        "fills": [[row, col, "C6EFCE"], ...],   # cell fills: C6EFCE good / FFEB9C watch / FFC7CE bad
@@ -169,9 +169,15 @@ def render_chart(doc, block):
         add_source_note(p, block["source"])
 
 
-def render_bullets(doc, items, numbered=False):
+def render_bullets(doc, items, numbered=False, depth=0):
     for item in items:
-        add_inline(doc.add_paragraph(style="List Number" if numbered else "List Bullet"), item)
+        children = []
+        if isinstance(item, dict):
+            children, item = item.get("children", []), item["text"]
+        style = "List Number" if numbered else "List Bullet"
+        add_inline(doc.add_paragraph(style=style if depth == 0 else f"{style} {min(depth + 1, 3)}"), item)
+        if children:
+            render_bullets(doc, children, numbered, depth + 1)
 
 
 def render_variant_view(doc, block):
@@ -486,9 +492,15 @@ def html_chart(block):
     return f'<p class="source">[Chart not found: {html.escape(block["path"])}]</p>'
 
 
-def html_bullets(items, numbered=False):
+def html_bullets(items, numbered=False, nested=False):
     tag = "ol" if numbered else "ul"
-    return f'<{tag} class="bullets">' + "".join(f"<li>{md_inline(i)}</li>" for i in items) + f"</{tag}>"
+
+    def li(i):
+        if isinstance(i, dict):
+            return f"<li>{md_inline(i['text'])}{html_bullets(i.get('children', []), numbered, True)}</li>"
+        return f"<li>{md_inline(i)}</li>"
+    attr = "" if nested else ' class="bullets"'
+    return f"<{tag}{attr}>" + "".join(li(i) for i in items) + f"</{tag}>"
 
 
 def _signal_class(signal):
