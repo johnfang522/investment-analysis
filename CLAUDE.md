@@ -258,7 +258,7 @@ Everything below is for working on the code and the skills.
     - Component reports go back to their research package page
     - Other pages go back to the library
 - Blocks
-  - Core: heading, paragraph (optional `color` for verdict lines), bullets (`numbered`), table (`fills`, `bold_rows`, `sortable`), chart, source, variant_view, read_through, verdict, page_break
+  - Core: heading, paragraph (optional `color` for verdict lines), bullets (`numbered`; an item may be `{"text", "children": [...]}` for sub-bullets), table (`fills`, `bold_rows`, `sortable`), chart, source, variant_view, read_through, verdict, page_break
   - Macro blocks (expanded before rendering)
     - `income_trend` — trend tables from `chart_income_statement`'s own rows
     - `metrics_snapshot` — deep-research Financial Snapshot (values, sources, colors from `compute_metrics()`; the spec supplies only comments)
