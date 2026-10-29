@@ -52,6 +52,7 @@ An investment research toolkit that turns a few commands into hedge-fund-style r
 | 4 | `/single_stock_deep_research` | TICKER | The full package: runs all 8 analyses (components 1–8 each end in a Bullish / Neutral / Bearish read), then a note with LONG / SHORT / PASS, conviction, target, stop, risk/reward | Note `Outputs/{TICKER}/{ticker}_stock_deep_research_notes_YYYYMMDD.html` (the hub); with Word, also the merged `{ticker}_stock_deep_research_YYYYMMDD.docx` package |
 | 4 | `/single_stock_quick_research` | TICKER | Faster seven-pillar initiation note; the default for "should I buy X?" | `Outputs/{TICKER}/{ticker}_stock_quick_research_YYYYMMDD.html` |
 | 4 | `/earnings_report_analyzer` | TICKER | Was the quarter actually good? One report scored across 7 dimensions | `Outputs/{TICKER}/{ticker}_earnings_analysis_YYYYMMDD.html` |
+| 4 | `/fisher_growth_investing_framework` | TICKER | Is this a Fisher-grade compounder, and is the price worth paying? Scuttlebutt, 15 Points (/30), integrity knockout gate, modern overlays (/10), EPS-growth vs multiple-compression return model, sell rules → LONG / PASS / AVOID | `Outputs/{TICKER}/{ticker}_fisher_analysis_YYYYMMDD.html` |
 
 ---
 
@@ -105,7 +106,7 @@ Everything below is for working on the code and the skills.
       - `/technical_analysis`, `/income_statement_analysis`, `/earnings_report_analyzer`, `/quick_stock_metrics`, `/ai_company_deep_dive`, `/single_stock_quick_research`
       - `/single_stock_deep_research` via its Step 0
     - Skills that never use it pass `price_history=False`
-      - business overview, leadership, balance sheet, cash flow, business potential, valuation, multibagger
+      - business overview, leadership, balance sheet, cash flow, business potential, valuation, multibagger, Fisher
     - Subagents spawned by `/single_stock_deep_research` skip the download (the parent already did it)
     - Chart scripts and `compute_metrics()` only read the JSON
 - `load_tickers()` — reads `tickers.txt` (ignores `#` comments and blank lines)
@@ -135,6 +136,9 @@ Everything below is for working on the code and the skills.
 - Balance sheet extras
   - `"Temporary Equity"` so `Assets − Liabilities − Equity` reconciles
   - `"Shares Outstanding"` from the `dei` namespace (in shares, not USD)
+    - Empty for multi-class filers that report each class separately (GOOGL: `{}`, so `digest.py balance_sheet` shows `null`); take the class totals from the latest earnings release or 10-Q cover, or derive diluted shares as net income ÷ diluted EPS, and say which
+- **Per-share history mixes split bases:** older fiscal years keep the EPS reported before a later split (NVDA FY2022 `3.85` is pre-10:1, FY2023 `0.17` is post); never compute an EPS CAGR straight from `Diluted EPS`; use net income, or split-adjust first
+- An annual line item can be missing for one year (GOOGL FY2022 `Total Revenue`); check the years before computing a CAGR across them
 - TTM: `_best_ttm()` anchors every line item to the same four quarter-end dates
 - **Full mechanics:** `references/data-layer.md`
 
@@ -179,7 +183,11 @@ Everything below is for working on the code and the skills.
   - `roe` goes negative on negative equity
   - `trailing_pe` can diverge from Yahoo's with discontinued operations
   - A large non-cash charge wrecks the GAAP-based keys: LITE's $7.8B convertible-note extinguishment loss made `ni_margin` −230%, `roe` −149% and `trailing_pe` N/A — label them not meaningful and use operating / adjusted figures
+  - Large mark-to-market gains do the reverse: GOOGL's Q2 2026 net income ($112.19B) was ~3x operating income from SpaceX/Anthropic stake gains, putting `trailing_pe` at 16x and `ni_margin` at 55%; NVDA's H1 FY2027 net income was 20% equity gains. When net income far exceeds operating income, value off operating income or fiscal-year consensus EPS, not GAAP net income
   - Yahoo's `forwardEps` (behind `forward_pe` and `peg`) can sit above every fiscal-year consensus: LITE's $35.57 vs FY2028E $26.40 showed 31x / PEG 0.63 when fiscal-year consensus gave 42–69x. Recompute from the fiscal-year EPS that `/income_statement_analysis` sources before quoting either
+    - `forwardEps` is the *next* fiscal year, not the current one: NVDA's $15.91 is FY2028 (Jan 2028), so its 13.5x "forward" P/E is two years out (22.9x on FY2027E)
+  - Peer comparisons pulled straight from `yf.Ticker(t).info`: for foreign ADRs (TM, BYDDY, TSM) `freeCashflow` and revenue are in local currency while `marketCap` is USD, so FCF yield and EV/Sales are nonsense; mark them n/m
+  - On an earnings day `currentPrice` can predate the release (GOOGL $324.89 vs ~$288 after hours); check the report time and state both prices
   - Check the balance sheet's sign before repeating a label
 - Output: `Outputs/quick_stock_metrics_YYYYMMDD.xlsx`
   - Sheets: `Summary` (buy-side screen read) → `Comparison` (per-cell hover-note sources + legend) → per-ticker sheets (with a "Source" column)
@@ -426,6 +434,21 @@ Everything below is for working on the code and the skills.
   - Re-fetches JSON via `get_financial_data.py` and reuses `chart_income_statement.py` for charts
   - Uses `WebSearch` for the press release, call transcript and prior guidance
   - Use when the ask is about one specific print, not a full initiation note
+- **`/fisher_growth_investing_framework`**
+  - Long-term growth analysis of a ticker through Philip Fisher's lens (*Common Stocks and Uncommon Profits*): is the business outstanding, how long can it compound, and is the price worth paying
+  - Workflow
+    - Business snapshot, then digital scuttlebutt across six channels (customers, suppliers, competitors, employees, experts, management behavior) → Strong / Mixed / Weak
+    - Fisher's 15 Points, each scored 0–2 with sourced, dated evidence (max 30)
+    - Knockout gate (PASS / FLAG / FAIL): Points 14 or 15 at 0, accounting or related-party red flags, dilution-funded growth, or no growth runway; a FAIL ends the case but the report is still completed
+    - Modern overlays scored 0–2 each (max 10): ROIC vs cost of capital, FCF per share growth, durability of advantage, capital allocation, cyclicality/concentration
+    - Valuation: Bear / Base / Bull return model `((EPS_end × PE_end) / (EPS_now × PE_now))^(1/N) − 1`, multiple-compression test (−25% / −50%), reverse check, 3–5 peers; ranges, never a single-point target
+    - Sell rules (Fisher's three triggers, made company-specific) plus buy-more triggers
+  - Classification: combined score /40 + gate → Fisher-grade compounder (34–40) / Strong candidate (27–33) / Watchlist (20–26) / Does not meet Fisher's standard; paired with a price-attractiveness rating (Attractive / Fair / Demanding / Unattractive)
+  - Full-call `verdict` block mapped from classification × price: LONG (compounder or strong candidate at an attractive/fair price), PASS (great business at a demanding price, or watchlist), AVOID (fails the standard or the gate); long-only, never SHORT
+    - Keeps Fisher's no-single-point-target rule: the verdict carries the bear–bull price range at year N and the base-case annualized return instead of a 12-month target
+  - Re-fetches via `fetch_all(..., price_history=False)` and reads statements through `digest.py`; Yahoo is used only for the quote and multiples; unverifiable figures are marked `UNVERIFIED`
+  - Defaults to a 5–10 year holding period when the user gives none
+  - Writes a spec rendered by `report_renderer.py` (`"skill": "fisher"`, so the library files it under Stage 4); includes the Variant View, a REIT block and "Changes Since Last Run"
 
 ### Common behaviors
 - **Re-runs report what changed**
@@ -438,7 +461,7 @@ Everything below is for working on the code and the skills.
   - Runs its `chart_*.py` (PNGs + `.chart.json` sidecars)
   - Writes a JSON report spec and runs `report_renderer.py`
   - Produces the interactive `.html` (and a `.docx` if requested)
-- All skills except `/quick_stock_metrics` require a TICKER or THEME argument
+- Argument rules are in the outputs table: `/market_sentiment_analysis` takes none, `/quick_stock_metrics` reads `tickers.txt`, `/theme_discovery_scanner`, `/emerging_industry_trend` and `/multibagger_screener` work with or without one, and every other skill needs a TICKER or THEME. Skills accept a company name too (`/fisher_growth_investing_framework google` → GOOGL); state the ticker mapping, and for dual-class names say which class is used
 
 ## Hedge-Fund House Style
 
@@ -542,6 +565,8 @@ Everything below is for working on the code and the skills.
   - Full mechanics of `sec_edgar_data.py` (tag selection, discrete-quarter derivation, backfills, stale-item dropping, TTM anchoring)
   - And `quick_stock_metrics.py` (sourcing rules per metric, unit traps, the `METRICS` contract)
   - CLAUDE.md keeps the summary and traps; read this before editing either module or debugging a statement number
+- `references/changes-since-last-run.md`
+  - Rules for the "What Changed Since {date}" section and `summary.changes_since` on re-runs (driven by `prior_run.py`)
 - `references/report-spec.md`
   - Skill-facing rules for writing a report spec (blocks, output-format rule, market/theme report conventions, final reply)
 - `references/reit-framework.md`
@@ -553,7 +578,7 @@ Everything below is for working on the code and the skills.
   - Data-source caveats: SEC EDGAR is GAAP-only and often lacks Total Debt/capex/dividend lines for REITs
   - The unadjusted-price rule for dividend payers
   - Every single-stock skill carries a short `REIT HANDLING` block pointing here
-    - `business_overview`, `leadership`, `income_statement`, `balance_sheet`, `cash_flow`, `business_potential`, `valuation`, `technical`, `single_stock_deep_research`, `single_stock_quick_research`, `earnings_report_analyzer`, `ai_company_deep_dive`, `quick_stock_metrics`
+    - `business_overview`, `leadership`, `income_statement`, `balance_sheet`, `cash_flow`, `business_potential`, `valuation`, `technical`, `single_stock_deep_research`, `single_stock_quick_research`, `earnings_report_analyzer`, `fisher_growth_investing_framework`, `ai_company_deep_dive`, `quick_stock_metrics`
     - The block applies only when the company is a REIT; keep it and the reference consistent when editing either
 
 ## Adding a New Skill
