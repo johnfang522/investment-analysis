@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: &quot;JPM&quot;, &quot;skill&quot;: &quot;earnings&quot;, &quot;title&quot;: &quot;JPM — Earnings Report Analysis&quot;, &quot;signal&quot;: &quot;NEUTRAL&quot;, &quot;conviction&quot;: 5, &quot;as_of&quot;: &quot;Q3 2026 (reported Oct 13, 2026)&quot;, &quot;rendered&quot;: &quot;2026-10-17&quot;, &quot;rendered_at&quot;: &quot;2026-10-17T12:11:04&quot;, &quot;company&quot;: &quot;JPMorgan Chase &amp; Co.&quot;}">
+<title>JPM — Earnings Report Analysis</title>
+<style>/* font-scale 1.15 */
+/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 15px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 14px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(12.5px, 0.9vw, 16px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- collapsible side panel (buttons are added by report.js; the class is set on <html>) ---------- */
+.toc-toggle { display: flex; align-items: center; gap: 6px; width: fit-content; margin: 0 0 12px auto; padding: 3px 10px; font: inherit; font-size: 14px; color: var(--muted); background: transparent; border: 1px solid var(--grid); border-radius: 999px; cursor: pointer; }
+.toc-toggle:hover { color: var(--ink); border-color: var(--muted); }
+.toc-expand { display: none; position: fixed; top: 12px; left: 12px; z-index: 40; width: 34px; height: 34px; align-items: center; justify-content: center; padding: 0; font-size: 19.5px; line-height: 1; color: var(--ink-2); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; }
+.toc-expand:hover { color: var(--ink); border-color: var(--muted); }
+@media (min-width: 961px) {
+  .toc-collapsed .shell:not(.wide) { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 64px; }
+  .toc-collapsed .shell:not(.wide) > .toc { display: none; }
+  .toc-collapsed .toc-expand { display: inline-flex; }
+}
+@media (max-width: 960px) { .toc-toggle, .toc-expand { display: none; } }
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 34.5px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 14px; }
+.stat .value { font-size: 23px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 24px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 19.5px; margin: 28px 0 10px; }
+h4 { font-size: 17px; margin: 22px 0 8px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 14.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 16px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 12.5px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 20.5px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 16px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 20.5px; }
+.callout.verdict .signal { font-size: 25.5px; }
+.callout .scale { color: var(--muted); font-size: 14.5px; margin-top: 8px; }
+.call-line { font-size: 19.5px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 17px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 14.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 13px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 14px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 12px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 12.5px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 14.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 15px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 14px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 14.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 25.5px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 34.5px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 20.5px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 14.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 15px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 14px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 16px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card .new-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--good); color: #fff; font-size: 12.5px; font-weight: 650; vertical-align: 1px; }
+.toc ol.sub li a::before { content: "• "; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 15px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 14px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, .toc-toggle, .toc-expand, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+
+.file-chip { margin-left: 6px; padding: 1px 7px; border: 1px solid var(--grid); border-radius: 999px; font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--muted); vertical-align: 1px; }
+.file-chip:hover { color: var(--ink); border-color: var(--muted); }
+</style>
+<script>try{if(localStorage.getItem("toc-collapsed")==="1")document.documentElement.classList.add("toc-collapsed")}catch(e){}</script>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="../index.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="../index.html">← Investment Research Library</a><ol><li><a href="#snapshot">Snapshot</a></li><li><a href="#scored-dimensions">Scored Dimensions</a></li><li><a href="#bright-spots">Bright Spots</a></li><li><a href="#risk-headwinds">Risk Headwinds</a></li><li><a href="#margin-and-growth-trends">Margin and Growth Trends</a></li><li><a href="#net-verdict">Net Verdict</a></li><li><a href="#read-through-to-the-call">Read-Through to the Call</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#follow-up-questions-for-next-quarter">Follow-Up Questions for Next Quarter</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>JPM · Earnings</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>JPM — Earnings Report Analysis</h1><p class="subtitle">Buy-side earnings-quality read · October 17, 2026 · Q3 2026 (quarter ended Sept 30, 2026; reported Oct 13, 2026) · SEC EDGAR statements run through Q2 2026 (Q3 10-Q not yet filed)</p><div class="call-strip"><div class="stat"><div class="label">Signal</div><div class="value"><span class="badge neutral"><span class="dot"></span>NEUTRAL</span></div></div><div class="stat"><div class="label">Conviction</div><div class="value">5 / 10</div><div class="meter"><span style="width:50%"></span></div></div><div class="stat"><div class="label">Thesis bias</div><div class="value">PASS</div></div><div class="stat" title="Source: JPM Q3 2026 results via Motley Fool transcript"><div class="label">Net income / EPS</div><div class="value">$15.3B / $5.57</div></div><div class="stat" title="Source: JPM Q3 2026 call"><div class="label">Net interest income</div><div class="value">$27.1B</div><div class="sub">(+13% YoY)</div></div><div class="stat" title="Source: JPM Q3 2026 call"><div class="label">Expense growth</div><div class="value">+12% vs rev +8%</div></div></div></header>
+<h2 id="snapshot">Snapshot</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Item</th><th scope="col">Q3 2026</th><th scope="col">Context</th></tr></thead><tbody><tr><td>Net income / diluted EPS</td><td><strong>$15.3B / $5.57</strong></td><td>EPS +10% YoY (from $5.07); ex-significant item EPS $5.75 vs ~$5.92 consensus (first miss in six quarters)</td></tr><tr><td>Managed revenue</td><td><strong>$50.9B (+8% YoY)</strong></td><td>+9% ex $658M Corporate securities losses; reported $50.17B vs ~$51.2B consensus</td></tr><tr><td>Net interest income (NII)</td><td><strong>$27.1B (+13% YoY)</strong></td><td>Q4 guide ~$28B total, ~$25.5B ex-markets; FY2026 raised to ~$106.2B (was ~$105.5B)</td></tr><tr><td>Noninterest expense</td><td><strong>$27.3B (+12% YoY)</strong></td><td>Grew faster than revenue; Q4 guide ~$27.5B</td></tr><tr><td>Credit costs</td><td><strong>$2.7B</strong></td><td>$2.2B net charge-offs + $539M reserve build; card NCO rate guide ~3.2% (unchanged)</td></tr><tr><td>Capital</td><td><strong>CET1 13.9% (−30bp QoQ)</strong></td><td>Buybacks $664M (−84% vs Q2); ~$30B excess capital per Dimon; dividend $1.65 (+10%)</td></tr><tr><td>Stock reaction</td><td><strong>−0.86% on Oct 13</strong> ($334.30 → $331.43)</td><td>Now $339.72 (Oct 16 close, +2.5% since the print)</td></tr><tr><td>One-line verdict</td><td><strong>Mixed (net 0): growth and NII momentum offset by a headline miss, negative operating leverage and a buyback cut.</strong></td><td></td></tr></tbody></table></div><p class="source">Source: JPMorgan Q3 2026 call/8-K via <a href="https://www.fool.com/earnings/call-transcripts/2026/10/13/jpmorgan-chase-jpm-q3-2026-earnings-call-transcript/">Motley Fool transcript</a>, <a href="https://www.marketbeat.com/instant-alerts/transcript-jpmorgan-chase-co-q3-earnings-call-highlights-2026-10-13/">MarketBeat</a>, <a href="https://www.money365.market/articles/jp-morgan-q3-2026-earnings-analysis">money365</a> (consensus figures vary by source); prices Yahoo Finance</p>
+<h2 id="scored-dimensions">Scored Dimensions</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Dimension</th><th scope="col" class=num>Score</th><th scope="col">Rationale</th><th scope="col">Tag</th></tr></thead><tbody><tr><td>1</td><td>Headline Quality</td><td class="num">0</td><td>EPS +10% YoY and NII guide raised, but ex-item EPS $5.75 missed ~$5.92 and revenue missed; $658M securities losses hit Corporate. Net: beat on trend, miss on the Street number.</td><td>⚠️ Mixed</td></tr><tr><td>2</td><td>Margin Trajectory</td><td class="num fill-bad">-1</td><td>Expense +12% vs revenue +8% = negative operating leverage; managed overhead ratio ≈ 53.6% ($27.3B ÷ $50.9B, computed). ROTCE 20% vs 23% underlying in Q2.</td><td>⚠️ Headwind</td></tr><tr><td>3</td><td>Growth Durability</td><td class="num fill-good">+1</td><td>NII +13%, equities +49%, IB fees +14%, AUM $5.2T (+13%), ~650K net new checking accounts. Offsets: fixed income −4%, equities revenue is cyclical, 2027 NII ex-markets (~$107B) flagged as highly uncertain.</td><td>✅ Bright spot</td></tr><tr><td>4</td><td>Balance Sheet &amp; Cash Flow Quality</td><td class="num">0</td><td>CET1 13.9% still ample with ~$30B excess, but down 30bp as risk-weighted assets rose ~$52B. Reserve build $539M. Bank operating cash flow is not a meaningful quality test (TTM OCF −$162.5B on $57.0B net income, driven by trading/loan balance moves).</td><td>→ Neutral</td></tr><tr><td>5</td><td>Management Commentary Shift</td><td class="num">0</td><td>Consumer &#x27;very healthy&#x27; and credit tightening (&#x27;tightening up a little bit&#x27;), but buybacks cut 84% to redeploy into organic growth and the 2027 NII outlook was hedged. No repeat-question read available (automated transcript).</td><td>→ Neutral</td></tr><tr><td>6</td><td>Headwinds / Red Flags</td><td class="num fill-bad">-1</td><td>Securities losses; expense growth; deposit pressure as rising rates move balances to higher-yield products; loose covenants/aggressive structures in lending; AI-related concentration flagged by management.</td><td>🔴 Headwind</td></tr><tr><td>7</td><td>Valuation Reality Check</td><td class="num fill-good">+1</td><td>Muted −0.9% reaction fits a mixed print. At $339.72: 13.3x forward P/E, 2.57x price/book, 1.94% dividend yield versus a 20% ROTCE.</td><td>✅ Bright spot</td></tr></tbody></table></div><p class="source">Source: Company results and call (links above); Yahoo Finance quick metrics (price, multiples); SEC EDGAR cash flow (TTM OCF, net income); scores are our assessment. Net score: 0</p>
+<h2 id="bright-spots">Bright Spots</h2>
+<ul class="bullets"><li><strong>NII +13% to $27.1B</strong> and FY2026 guide raised to ~$106.2B; Q4 ~$28B total, ~$25.5B ex-markets.</li><li><strong>Equities revenue +49%</strong> and investment banking fees +14% drove Commercial &amp; Investment Bank net income +20% to $8.2B.</li><li><strong>Asset &amp; Wealth Management AUM $5.2T (+13%)</strong> with $51B of long-term net inflows.</li><li><strong>Consumer engine intact:</strong> Consumer &amp; Community Banking net income +13% to $5.7B, debit/credit spend +10%, card NCO guide held at ~3.2%.</li><li><strong>Capital flexibility:</strong> ~$30B excess capital, dividend +10% to $1.65.</li></ul>
+<h2 id="risk-headwinds">Risk Headwinds</h2>
+<ul class="bullets"><li><strong>Negative operating leverage:</strong> expense +12% vs revenue +8%; Q4 expense guide ~$27.5B leaves no relief.</li><li><strong>Headline miss:</strong> ex-item EPS $5.75 vs ~$5.92 — first shortfall in six quarters (per money365; consensus varies by source).</li><li><strong>Buyback cut 84% to $664M</strong> removes a per-share EPS support; CET1 fell 30bp as RWA rose ~$52B.</li><li><strong>Rate and deposit sensitivity:</strong> management expects rising rates to push balances into higher-yield products; aggressive hikes would raise unemployment and weaken credit.</li><li><strong>2027 NII (~$107B ex-markets) is low-visibility:</strong> about a quarter of implied growth from the Q4 run rate relies on the forward curve; credit terms in the market are loosening.</li></ul>
+<h2 id="margin-and-growth-trends">Margin and Growth Trends</h2>
+<figure class="viz" data-chart><figcaption><span class="viz-title">JPM Quarterly Income Statement Trend</span></figcaption><script type="application/json" class="chart-data">{"kind": "bar", "title": "JPM Quarterly Income Statement Trend", "unit": "usd", "categories": ["Mar 2013", "Jun 2013", "Sep 2013", "Dec 2013", "Mar 2014", "Jun 2014", "Sep 2014", "Dec 2014"], "category_notes": ["period end Mar 31, 2013", "period end Jun 30, 2013", "period end Sep 30, 2013", "period end Dec 31, 2013", "period end Mar 31, 2014", "period end Jun 30, 2014", "period end Sep 30, 2014", "period end Dec 31, 2014"], "series": [{"name": "Revenue", "values": [25122000000, 25211000000, 23117000000, 23917000000, 22993000000, 24454000000, 24246000000, 23419000000], "notes": ["-4% YoY", "+14% YoY", "-8% YoY", "+1% YoY", "-8% YoY", "-3% YoY", "+5% YoY", "-2% YoY"], "slot": 1}, {"name": "Gross Profit", "values": [null, null, null, null, null, null, null, null], "notes": [null, null, null, null, null, null, null, null], "slot": 2}, {"name": "Operating Income", "values": [null, null, null, null, null, null, null, null], "notes": [null, null, null, null, null, null, null, null], "slot": 3}, {"name": "Net Income", "values": [6529000000, 6496000000, -380000000, 5241000000, 5269000000, 5980000000, 5565000000, 4931000000], "notes": ["+33% YoY, NM 26.0%", "+31% YoY, NM 25.8%", "-107% YoY, NM -1.6%", "-8% YoY, NM 21.9%", "-19% YoY, NM 22.9%", "-8% YoY, NM 24.5%", "n/m YoY, NM 23.0%", "-6% YoY, NM 21.1%"], "slot": 4}], "category_dates": ["03/31/2013", "06/30/2013", "09/30/2013", "12/31/2013", "03/31/2014", "06/30/2014", "09/30/2014", "12/31/2014"], "legend_latest": false}</script><p class="source">Source: SEC EDGAR (through Q2 2026; Q3 10-Q not yet filed), Yahoo Finance share price</p></figure>
+<figure class="viz" data-chart><figcaption><span class="viz-title">JPM Annual Income Statement Trend</span></figcaption><script type="application/json" class="chart-data">{"kind": "bar", "title": "JPM Annual Income Statement Trend", "unit": "usd", "categories": ["FY2021", "FY2022", "FY2023", "FY2024", "FY2025"], "category_notes": ["period end Dec 31, 2021 · close $139.87", "period end Dec 31, 2022 · close $122.19", "period end Dec 31, 2023 · close $159.61", "period end Dec 31, 2024 · close $230.31", "period end Dec 31, 2025 · close $316.13"], "series": [{"name": "Revenue", "values": [121649000000, 128695000000, 158104000000, 177556000000, 182447000000], "notes": [null, "+6% YoY", "+23% YoY", "+12% YoY", "+3% YoY"], "slot": 1}, {"name": "Gross Profit", "values": [null, null, null, null, null], "notes": [null, null, null, null, null], "slot": 2}, {"name": "Operating Income", "values": [null, null, null, null, null], "notes": [null, null, null, null, null], "slot": 3}, {"name": "Net Income", "values": [48300000000, 37700000000, 49600000000, 58500000000, 57000000000], "notes": ["NM 39.7%", "-22% YoY, NM 29.3%", "+32% YoY, NM 31.4%", "+18% YoY, NM 32.9%", "-3% YoY, NM 31.2%"], "slot": 4}], "category_dates": ["12/31/2021", "12/31/2022", "12/31/2023", "12/31/2024", "12/31/2025"], "legend_latest": false, "overlay": {"name": "Share price", "unit": "price", "slot": 7, "points": [139.87, 122.19, 159.61, 230.31, 316.13], "daily": {"x": [0.0, 0.0082, 0.011, 0.0137, 0.0164, 0.0192, 0.0274, 0.0301, 0.0329, 0.0356, 0.0384, 0.0493, 0.0521, 0.0548, 0.0575, 0.0658, 0.0685, 0.0712, 0.074, 0.0767, 0.0849, 0.0877, 0.0904, 0.0932, 0.0959, 0.1041, 0.1068, 0.1096, 0.1123, 0.1151, 0.1233, 0.126, 0.1288, 0.1315, 0.1342, 0.1452, 0.1479, 0.1507, 0.1534, 0.1616, 0.1644, 0.1671, 0.1699, 0.1726, 0.1808, 0.1836, 0.1863, 0.189, 0.1918, 0.2, 0.2027, 0.2055, 0.2082, 0.211, 0.2192, 0.2219, 0.2247, 0.2274, 0.2301, 0.2384, 0.2411, 0.2438, 0.2466, 0.2493, 0.2575, 0.2603, 0.263, 0.2658, 0.2685, 0.2767, 0.2795, 0.2822, 0.2849, 0.2959, 0.2986, 0.3014, 0.3041, 0.3068, 0.3151, 0.3178, 0.3205, 0.3233, 0.326, 0.3342, 0.337, 0.3397, 0.3425, 0.3452, 0.3534, 0.3562, 0.3589, 0.3616, 0.3644, 0.3726, 0.3753, 0.3781, 0.3808, 0.3836, 0.3918, 0.3945, 0.3973, 0.4, 0.4027, 0.4137, 0.4164, 0.4192, 0.4219, 0.4301, 0.4329, 0.4356, 0.4384, 0.4411, 0.4493, 0.4521, 0.4548, 0.4575, 0.4603, 0.4712, 0.474, 0.4767, 0.4795, 0.4877, 0.4904, 0.4932, 0.4959, 0.4986, 0.5096, 0.5123, 0.5151, 0.5178, 0.526, 0.5288, 0.5315, 0.5342, 0.537, 0.5452, 0.5479, 0.5507, 0.5534, 0.5562, 0.5644, 0.5671, 0.5699, 0.5726, 0.5753, 0.5836, 0.5863, 0.589, 0.5918, 0.5945, 0.6027, 0.6055, 0.6082, 0.611, 0.6137, 0.6219, 0.6247, 0.6274, 0.6301, 0.6329, 0.6411, 0.6438, 0.6466, 0.6493, 0.6521, 0.6603, 0.663, 0.6658, 0.6685, 0.6712, 0.6822, 0.6849, 0.6877, 0.6904, 0.6986, 0.7014, 0.7041, 0.7068, 0.7096, 0.7178, 0.7205, 0.7233, 0.726, 0.7288, 0.737, 0.7397, 0.7425, 0.7452, 0.7479, 0.7562, 0.7589, 0.7616, 0.7644, 0.7671, 0.7753, 0.7781, 0.7808, 0.7836, 0.7863, 0.7945, 0.7973, 0.8, 0.8027, 0.8055, 0.8137, 0.8164, 0.8192, 0.8219, 0.8247, 0.8329, 0.8356, 0.8384, 0.8411, 0.8438, 0.8521, 0.8548, 0.8575, 0.8603, 0.863, 0.8712, 0.874, 0.8767, 0.8795, 0.8822, 0.8904, 0.8932, 0.8959, 0.9014, 0.9096, 0.9123, 0.9151, 0.9178, 0.9205, 0.9288, 0.9315, 0.9342, 0.937, 0.9397, 0.9479, 0.9507, 0.9534, 0.9562, 0.9589, 0.9671, 0.9699, 0.9726, 0.9753, 0.9781, 0.989, 0.9918, 0.9945, 0.9973, 1.0082, 1.011, 1.0137, 1.0164, 1.0247, 1.0274, 1.0301, 1.0329, 1.0356, 1.0466, 1.0493, 1.0521, 1.0548, 1.063, 1.0658, 1.0685, 1.0712, 1.074, 1.0822, 1.0849, 1.0877, 1.0904, 1.0932, 1.1014, 1.1041, 1.1068, 1.1096, 1.1123, 1.1205, 1.1233, 1.126, 1.1288, 1.1315, 1.1425, 1.1452, 1.1479, 1.1507, 1.1589, 1.1616, 1.1644, 1.1671, 1.1699, 1.1781, 1.1808, 1.1836, 1.1863, 1.189, 1.1973, 1.2, 1.2027, 1.2055, 1.2082, 1.2164, 1.2192, 1.2219, 1.2247, 1.2274, 1.2356, 1.2384, 1.2411, 1.2438, 1.2466, 1.2548, 1.2575, 1.2603, 1.263, 1.274, 1.2767, 1.2795, 1.2822, 1.2849, 1.2932, 1.2959, 1.2986, 1.3014, 1.3041, 1.3123, 1.3151, 1.3178, 1.3205, 1.3233, 1.3315, 1.3342, 1.337, 1.3397, 1.3425, 1.3507, 1.3534, 1.3562, 1.3589, 1.3616, 1.3699, 1.3726, 1.3753, 1.3781, 1.3808, 1.389, 1.3918, 1.3945, 1.3973, 1.4, 1.411, 1.4137, 1.4164, 1.4192, 1.4274, 1.4301, 1.4329, 1.4356, 1.4384, 1.4466, 1.4493, 1.4521, 1.4548, 1.4575, 1.4685, 1.4712, 1.474, 1.4767, 1.4849, 1.4877, 1.4904, 1.4932, 1.4959, 1.5041, 1.5096, 1.5123, 1.5151, 1.5233, 1.526, 1.5288, 1.5315, 1.5342, 1.5425, 1.5452, 1.5479, 1.5507, 1.5534, 1.5616, 1.5644, 1.5671, 1.5699, 1.5726, 1.5808, 1.5836, 1.5863, 1.589, 1.5918, 1.6, 1.6027, 1.6055, 1.6082, 1.611, 1.6192, 1.6219, 1.6247, 1.6274, 1.6301, 1.6384, 1.6411, 1.6438, 1.6466, 1.6493, 1.6575, 1.6603, 1.663, 1.6658, 1.6685, 1.6795, 1.6822, 1.6849, 1.6877, 1.6959, 1.6986, 1.7014, 1.7041, 1.7068, 1.7151, 1.7178, 1.7205, 1.7233, 1.726, 1.7342, 1.737, 1.7397, 1.7425, 1.7452, 1.7534, 1.7562, 1.7589, 1.7616, 1.7644, 1.7726, 1.7753, 1.7781, 1.7808, 1.7836, 1.7918, 1.7945, 1.7973, 1.8, 1.8027, 1.811, 1.8137, 1.8164, 1.8192, 1.8219, 1.8301, 1.8329, 1.8356, 1.8384, 1.8411, 1.8493, 1.8521, 1.8548, 1.8575, 1.8603, 1.8685, 1.8712, 1.874, 1.8767, 1.8795, 1.8877, 1.8904, 1.8932, 1.8986, 1.9068, 1.9096, 1.9123, 1.9151, 1.9178, 1.926, 1.9288, 1.9315, 1.9342, 1.937, 1.9452, 1.9479, 1.9507, 1.9534, 1.9562, 1.9644, 1.9671, 1.9699, 1.9726, 1.9753, 1.9863, 1.989, 1.9918, 1.9945, 2.0055, 2.0082, 2.0109, 2.0137, 2.0219, 2.0246, 2.0273, 2.0301, 2.0328, 2.0437, 2.0464, 2.0492, 2.0519, 2.0601, 2.0628, 2.0656, 2.0683, 2.071, 2.0792, 2.082, 2.0847, 2.0874, 2.0902, 2.0984, 2.1011, 2.1038, 2.1066, 2.1093, 2.1175, 2.1202, 2.123, 2.1257, 2.1284, 2.1393, 2.1421, 2.1448, 2.1475, 2.1557, 2.1585, 2.1612, 2.1639, 2.1667, 2.1749, 2.1776, 2.1803, 2.1831, 2.1858, 2.194, 2.1967, 2.1995, 2.2022, 2.2049, 2.2131, 2.2158, 2.2186, 2.2213, 2.224, 2.2322, 2.235, 2.2377, 2.2404, 2.2514, 2.2541, 2.2568, 2.2596, 2.2623, 2.2705, 2.2732, 2.276, 2.2787, 2.2814, 2.2896, 2.2923, 2.2951, 2.2978, 2.3005, 2.3087, 2.3115, 2.3142, 2.3169, 2.3197, 2.3279, 2.3306, 2.3333, 2.3361, 2.3388, 2.347, 2.3497, 2.3525, 2.3552, 2.3579, 2.3661, 2.3689, 2.3716, 2.3743, 2.377, 2.3852, 2.388, 2.3907, 2.3934, 2.3962, 2.4071, 2.4098, 2.4126, 2.4153, 2.4235, 2.4262, 2.429, 2.4317, 2.4344, 2.4426, 2.4454, 2.4481, 2.4508, 2.4536, 2.4617, 2.4645, 2.4699, 2.4727, 2.4809, 2.4836, 2.4863, 2.4891, 2.4918, 2.5, 2.5027, 2.5055, 2.5109, 2.5191, 2.5219, 2.5246, 2.5273, 2.5301, 2.5383, 2.541, 2.5437, 2.5464, 2.5492, 2.5574, 2.5601, 2.5628, 2.5656, 2.5683, 2.5765, 2.5792, 2.582, 2.5847, 2.5874, 2.5956, 2.5984, 2.6011, 2.6038, 2.6066, 2.6148, 2.6175, 2.6202, 2.623, 2.6257, 2.6339, 2.6366, 2.6393, 2.6421, 2.6448, 2.653, 2.6557, 2.6585, 2.6612, 2.6639, 2.6749, 2.6776, 2.6803, 2.6831, 2.6913, 2.694, 2.6967, 2.6995, 2.7022, 2.7104, 2.7131, 2.7158, 2.7186, 2.7213, 2.7295, 2.7322, 2.735, 2.7377, 2.7404, 2.7486, 2.7514, 2.7541, 2.7568, 2.7596, 2.7678, 2.7705, 2.7732, 2.776, 2.7787, 2.7869, 2.7896, 2.7923, 2.7951, 2.7978, 2.806, 2.8087, 2.8115, 2.8142, 2.8169, 2.8251, 2.8279, 2.8306, 2.8333, 2.8361, 2.8443, 2.847, 2.8497, 2.8525, 2.8552, 2.8634, 2.8661, 2.8689, 2.8716, 2.8743, 2.8825, 2.8852, 2.888, 2.8907, 2.8934, 2.9016, 2.9044, 2.9071, 2.9126, 2.9208, 2.9235, 2.9262, 2.929, 2.9317, 2.9399, 2.9426, 2.9454, 2.9481, 2.9508, 2.959, 2.9617, 2.9645, 2.9672, 2.9699, 2.9781, 2.9809, 2.9863, 2.9891, 2.9973, 3.0, 3.0055, 3.0082, 3.0164, 3.0192, 3.0219, 3.0274, 3.0356, 3.0384, 3.0411, 3.0438, 3.0466, 3.0575, 3.0603, 3.063, 3.0658, 3.074, 3.0767, 3.0795, 3.0822, 3.0849, 3.0932, 3.0959, 3.0986, 3.1014, 3.1041, 3.1123, 3.1151, 3.1178, 3.1205, 3.1233, 3.1342, 3.137, 3.1397, 3.1425, 3.1507, 3.1534, 3.1562, 3.1589, 3.1616, 3.1699, 3.1726, 3.1753, 3.1781, 3.1808, 3.189, 3.1918, 3.1945, 3.1973, 3.2, 3.2082, 3.211, 3.2137, 3.2164, 3.2192, 3.2274, 3.2301, 3.2329, 3.2356, 3.2384, 3.2466, 3.2493, 3.2521, 3.2548, 3.2575, 3.2658, 3.2685, 3.2712, 3.274, 3.2767, 3.2849, 3.2877, 3.2904, 3.2932, 3.3041, 3.3068, 3.3096, 3.3123, 3.3151, 3.3233, 3.326, 3.3288, 3.3315, 3.3342, 3.3425, 3.3452, 3.3479, 3.3507, 3.3534, 3.3616, 3.3644, 3.3671, 3.3699, 3.3726, 3.3808, 3.3836, 3.3863, 3.389, 3.3918, 3.4027, 3.4055, 3.4082, 3.411, 3.4192, 3.4219, 3.4247, 3.4274, 3.4301, 3.4384, 3.4411, 3.4438, 3.4466, 3.4493, 3.4575, 3.4603, 3.463, 3.4685, 3.4767, 3.4795, 3.4822, 3.4849, 3.4877, 3.4959, 3.4986, 3.5014, 3.5041, 3.5151, 3.5178, 3.5205, 3.5233, 3.526, 3.5342, 3.537, 3.5397, 3.5425, 3.5452, 3.5534, 3.5562, 3.5589, 3.5616, 3.5644, 3.5726, 3.5753, 3.5781, 3.5808, 3.5836, 3.5918, 3.5945, 3.5973, 3.6, 3.6027, 3.611, 3.6137, 3.6164, 3.6192, 3.6219, 3.6301, 3.6329, 3.6356, 3.6384, 3.6411, 3.6493, 3.6521, 3.6548, 3.6575, 3.6603, 3.6712, 3.674, 3.6767, 3.6795, 3.6877, 3.6904, 3.6932, 3.6959, 3.6986, 3.7068, 3.7096, 3.7123, 3.7151, 3.7178, 3.726, 3.7288, 3.7315, 3.7342, 3.737, 3.7452, 3.7479, 3.7507, 3.7534, 3.7562, 3.7644, 3.7671, 3.7699, 3.7726, 3.7753, 3.7836, 3.7863, 3.789, 3.7918, 3.7945, 3.8027, 3.8055, 3.8082, 3.811, 3.8137, 3.8219, 3.8247, 3.8274, 3.8301, 3.8329, 3.8411, 3.8438, 3.8466, 3.8493, 3.8521, 3.8603, 3.863, 3.8658, 3.8685, 3.8712, 3.8795, 3.8822, 3.8849, 3.8877, 3.8904, 3.8986, 3.9014, 3.9041, 3.9096, 3.9178, 3.9205, 3.9233, 3.926, 3.9288, 3.937, 3.9397, 3.9425, 3.9452, 3.9479, 3.9562, 3.9589, 3.9616, 3.9644, 3.9671, 3.9753, 3.9781, 3.9808, 3.9863, 3.9945, 3.9973, 4.0, 4.0042, 4.0104, 4.0125, 4.0145, 4.0166, 4.0187, 4.0249, 4.027, 4.0291, 4.0311, 4.0332, 4.0415, 4.0436, 4.0457, 4.0478, 4.054, 4.0561, 4.0581, 4.0602, 4.0623, 4.0685, 4.0706, 4.0727, 4.0747, 4.0768, 4.083, 4.0851, 4.0872, 4.0893, 4.0913, 4.0997, 4.1017, 4.1038, 4.1059, 4.1121, 4.1142, 4.1163, 4.1183, 4.1204, 4.1266, 4.1287, 4.1308, 4.1329, 4.1349, 4.1412, 4.1433, 4.1453, 4.1474, 4.1495, 4.1557, 4.1578, 4.1599, 4.1619, 4.164, 4.1702, 4.1723, 4.1744, 4.1765, 4.1785, 4.1848, 4.1869, 4.1889, 4.191, 4.1993, 4.2014, 4.2035, 4.2055, 4.2076, 4.2138, 4.2159, 4.218, 4.2201, 4.2221, 4.2284, 4.2304, 4.2325, 4.2346, 4.2367, 4.2429, 4.245, 4.2471, 4.2491, 4.2512, 4.2574, 4.2595, 4.2616, 4.2637, 4.2657, 4.272, 4.274, 4.2761, 4.2782, 4.2803, 4.2865, 4.2886, 4.2907, 4.2927, 4.2948, 4.3031, 4.3052, 4.3073, 4.3093, 4.3156, 4.3176, 4.3197, 4.3218, 4.3239, 4.3301, 4.3322, 4.3343, 4.3363, 4.3384, 4.3446, 4.3467, 4.3488, 4.3509, 4.3592, 4.3612, 4.3633, 4.3654, 4.3675, 4.3737, 4.3758, 4.3779, 4.3799, 4.3882, 4.3903, 4.3924, 4.3945, 4.3965, 4.4028, 4.4048, 4.4069, 4.409, 4.4111, 4.4173, 4.4194, 4.4215, 4.4235, 4.4256, 4.4318, 4.4339, 4.436, 4.4381, 4.4401, 4.4464, 4.4484, 4.4505, 4.4526, 4.4547, 4.4609, 4.463, 4.4651, 4.4671, 4.4692, 4.4754, 4.4775, 4.4796, 4.4817, 4.4837, 4.49, 4.492, 4.4941, 4.4962, 4.4983, 4.5045, 4.5066, 4.5087, 4.5107, 4.5128, 4.5211, 4.5232, 4.5253, 4.5273, 4.5336, 4.5356, 4.5377, 4.5398, 4.5419, 4.5481, 4.5502, 4.5522, 4.5543, 4.5564, 4.5626, 4.5647, 4.5668, 4.5689, 4.5709, 4.5772, 4.5792, 4.5813, 4.5834, 4.5855, 4.5917, 4.5938, 4.5958, 4.5979, 4.6], "y": [139.87, 142.83, 148.25, 145.54, 147.08, 148.54, 148.68, 148.83, 149.68, 149.49, 140.3, 134.42, 132.34, 131.21, 128.92, 128.8, 130.21, 131.44, 129.12, 130.28, 132.05, 134.31, 133.24, 132.14, 135.57, 136.02, 138.58, 139.16, 138.58, 136.78, 135.5, 137.49, 137.73, 134.56, 135.19, 134.95, 132.13, 128.45, 131.49, 126.01, 121.25, 123.77, 122.89, 119.43, 114.82, 114.01, 118.58, 117.17, 114.53, 115.67, 117.72, 122.98, 124.54, 124.49, 124.09, 126.73, 124.21, 125.02, 126.11, 125.18, 125.45, 124.89, 121.14, 120.24, 120.77, 119.37, 117.71, 117.35, 119.5, 119.06, 117.75, 113.96, 112.9, 115.0, 117.38, 117.79, 116.88, 113.52, 113.48, 110.13, 108.69, 110.41, 106.85, 107.83, 110.14, 113.78, 110.93, 110.75, 109.09, 106.43, 105.76, 105.67, 106.61, 105.87, 109.38, 107.5, 105.91, 105.04, 111.54, 113.12, 113.91, 115.87, 117.51, 118.37, 116.3, 118.17, 116.52, 116.13, 116.44, 114.59, 112.18, 107.02, 103.83, 102.11, 103.31, 101.54, 101.18, 103.69, 103.11, 101.98, 105.02, 104.18, 103.68, 103.22, 100.81, 102.1, 101.71, 101.05, 103.61, 103.28, 101.93, 102.03, 101.07, 97.54, 102.01, 100.96, 103.46, 103.44, 104.15, 103.64, 104.06, 102.43, 104.08, 103.69, 104.18, 103.14, 101.54, 102.6, 101.47, 104.54, 103.27, 104.2, 106.92, 108.5, 110.3, 110.6, 111.65, 110.71, 109.86, 107.14, 105.37, 104.33, 104.58, 107.06, 103.56, 103.31, 103.33, 102.71, 103.42, 102.69, 102.72, 104.67, 107.11, 107.62, 108.9, 105.11, 104.87, 106.45, 105.74, 106.71, 104.61, 101.59, 100.44, 98.57, 96.44, 95.59, 97.53, 95.87, 94.38, 97.29, 101.84, 100.59, 98.54, 96.57, 95.67, 92.91, 94.41, 99.66, 101.32, 105.57, 108.29, 106.16, 105.82, 111.38, 111.51, 111.8, 113.09, 113.54, 114.88, 114.7, 116.77, 115.69, 115.9, 119.08, 119.7, 119.78, 118.22, 123.08, 123.28, 122.02, 121.13, 121.3, 120.77, 121.95, 121.23, 123.05, 124.36, 124.6, 122.42, 124.43, 125.91, 124.14, 123.16, 119.7, 119.9, 119.82, 121.08, 120.42, 122.29, 122.17, 121.56, 118.55, 117.81, 118.51, 119.08, 120.42, 119.06, 119.62, 120.04, 120.7, 121.39, 122.19, 123.12, 124.27, 124.24, 126.62, 126.1, 127.22, 128.17, 128.04, 131.27, 129.24, 125.36, 123.69, 123.99, 126.0, 127.09, 127.7, 128.49, 128.8, 127.71, 128.47, 128.13, 127.54, 129.51, 130.27, 131.86, 130.93, 128.9, 129.46, 130.87, 131.45, 132.0, 130.18, 130.57, 128.17, 127.19, 128.21, 129.36, 130.49, 131.59, 130.85, 129.49, 131.87, 131.1, 127.24, 126.49, 119.64, 122.68, 120.48, 123.57, 117.73, 120.02, 115.48, 116.71, 119.84, 116.74, 116.43, 114.66, 117.94, 118.3, 118.54, 118.18, 119.62, 119.48, 117.88, 118.06, 117.93, 118.32, 118.9, 118.88, 119.33, 128.34, 129.36, 130.81, 130.65, 130.27, 130.02, 130.19, 127.36, 125.11, 126.79, 127.89, 130.63, 128.52, 125.8, 124.08, 126.5, 126.81, 126.2, 126.26, 125.86, 124.06, 125.11, 124.26, 128.08, 129.06, 128.76, 127.7, 126.36, 125.21, 125.51, 126.69, 127.17, 125.55, 127.28, 129.95, 128.68, 128.91, 130.16, 130.19, 130.45, 130.44, 131.39, 130.9, 132.38, 132.53, 131.86, 131.66, 129.13, 128.45, 128.77, 128.78, 128.21, 132.69, 134.55, 135.63, 134.73, 133.4, 134.45, 135.21, 137.32, 138.0, 138.67, 139.51, 142.87, 143.13, 143.68, 145.45, 144.33, 147.17, 146.08, 146.95, 145.33, 146.16, 147.14, 146.41, 144.75, 145.64, 145.33, 146.02, 145.2, 143.25, 143.04, 143.87, 144.17, 140.5, 139.9, 138.45, 138.76, 139.24, 136.35, 137.27, 137.14, 136.97, 137.45, 138.57, 138.01, 136.3, 136.76, 135.25, 135.03, 133.87, 133.98, 134.56, 136.31, 136.38, 139.02, 138.61, 138.9, 138.73, 138.14, 137.06, 135.75, 136.42, 135.0, 135.79, 137.48, 135.08, 133.92, 132.93, 133.53, 134.09, 136.16, 135.85, 136.67, 137.14, 136.82, 138.88, 138.74, 138.44, 136.92, 136.33, 134.14, 132.31, 132.47, 131.75, 132.08, 127.33, 128.95, 130.49, 130.38, 132.7, 134.19, 135.2, 135.13, 135.8, 135.4, 137.4, 136.79, 139.29, 140.51, 142.11, 143.4, 143.84, 143.54, 143.88, 144.08, 143.75, 144.08, 144.81, 146.46, 147.17, 148.25, 148.23, 146.67, 147.13, 148.75, 149.29, 150.63, 151.13, 153.88, 155.04, 155.98, 158.07, 156.28, 157.18, 157.08, 158.01, 158.96, 159.8, 159.61, 161.47, 160.77, 161.84, 162.65, 162.41, 161.13, 161.47, 160.79, 159.61, 158.61, 157.76, 158.07, 160.8, 160.61, 159.55, 160.98, 163.28, 162.66, 163.08, 166.42, 164.62, 164.03, 164.97, 164.75, 165.32, 165.63, 165.04, 165.23, 165.97, 164.53, 166.2, 169.82, 169.03, 169.69, 170.8, 172.84, 173.71, 173.12, 173.2, 174.08, 175.67, 174.94, 176.25, 178.02, 178.94, 177.38, 177.71, 177.77, 179.24, 180.69, 177.47, 179.67, 181.9, 182.97, 185.36, 187.94, 185.64, 183.94, 184.8, 188.38, 189.11, 187.83, 187.75, 187.22, 185.8, 187.51, 188.49, 187.22, 185.63, 185.59, 173.59, 173.68, 171.7, 171.01, 172.12, 176.45, 179.87, 182.47, 183.36, 183.63, 183.75, 183.55, 182.09, 182.2, 182.01, 180.92, 182.33, 182.1, 185.8, 187.56, 188.76, 188.72, 191.36, 191.93, 192.28, 194.48, 185.73, 189.47, 188.33, 187.01, 190.6, 189.46, 188.14, 189.29, 192.43, 191.66, 189.13, 187.33, 187.0, 189.88, 189.56, 184.57, 181.89, 183.91, 184.02, 185.16, 187.08, 188.67, 186.42, 188.87, 188.1, 187.49, 189.14, 192.08, 195.11, 198.32, 198.18, 195.56, 195.92, 198.27, 198.43, 198.1, 195.7, 200.58, 203.99, 207.09, 200.51, 200.32, 200.8, 200.85, 199.19, 199.26, 202.67, 201.34, 205.49, 203.21, 198.58, 190.16, 186.11, 191.31, 191.36, 194.86, 196.52, 196.89, 198.56, 200.76, 202.01, 204.32, 205.74, 204.85, 204.92, 206.86, 208.47, 209.29, 210.25, 211.31, 212.19, 214.66, 210.37, 209.44, 207.82, 202.88, 207.03, 196.29, 197.89, 197.29, 195.11, 198.49, 199.82, 198.17, 200.99, 201.57, 201.91, 202.05, 200.71, 200.32, 201.01, 201.35, 197.71, 197.94, 195.98, 202.93, 202.65, 202.48, 205.05, 204.49, 213.57, 212.79, 213.66, 214.87, 215.62, 216.53, 214.25, 215.33, 214.64, 216.15, 213.59, 216.65, 214.15, 215.61, 213.21, 214.19, 211.16, 212.8, 237.37, 227.11, 227.68, 229.9, 230.16, 231.7, 232.38, 235.69, 235.42, 233.55, 231.33, 235.16, 238.8, 240.47, 240.16, 239.99, 239.92, 236.59, 235.21, 233.85, 235.85, 237.66, 234.24, 233.33, 233.98, 232.05, 230.53, 230.18, 229.01, 221.33, 223.82, 228.28, 229.04, 232.8, 233.6, 231.71, 229.93, 230.31, 230.58, 233.74, 232.6, 234.84, 234.8, 231.65, 235.84, 238.99, 243.7, 245.56, 250.28, 254.02, 253.83, 256.84, 255.76, 256.74, 257.98, 257.44, 259.04, 258.14, 257.67, 258.76, 261.16, 267.41, 266.35, 261.75, 265.57, 266.01, 266.85, 267.11, 270.36, 269.68, 257.66, 255.18, 252.38, 248.58, 249.92, 250.17, 255.58, 251.69, 241.67, 242.91, 238.09, 233.98, 224.26, 221.29, 220.09, 217.47, 224.47, 225.91, 226.92, 230.92, 230.82, 233.35, 239.56, 242.52, 242.43, 239.62, 234.53, 236.89, 235.31, 237.4, 220.85, 204.32, 208.37, 210.73, 227.7, 220.68, 229.51, 228.07, 226.53, 223.11, 225.39, 222.5, 228.92, 234.06, 237.71, 236.65, 236.33, 237.69, 237.69, 239.9, 245.36, 245.41, 242.19, 242.33, 246.29, 245.91, 252.68, 255.56, 258.12, 259.91, 259.98, 257.38, 258.15, 253.65, 253.29, 253.33, 257.78, 256.03, 256.88, 256.52, 257.16, 258.73, 256.74, 254.53, 258.2, 259.18, 260.99, 260.56, 260.64, 257.45, 262.7, 261.89, 266.2, 267.21, 270.39, 273.29, 276.01, 280.57, 278.98, 281.7, 282.18, 283.73, 289.0, 285.07, 276.09, 276.47, 281.38, 280.08, 281.87, 279.78, 279.06, 283.05, 284.38, 284.09, 284.54, 289.74, 289.54, 291.56, 291.23, 290.02, 292.55, 289.24, 282.53, 287.3, 284.48, 284.46, 280.16, 281.93, 282.71, 285.93, 283.66, 287.21, 283.62, 284.64, 283.79, 285.33, 284.58, 289.24, 287.93, 291.51, 292.2, 293.95, 294.29, 292.61, 292.43, 296.64, 287.42, 285.98, 290.81, 293.43, 298.34, 299.65, 301.6, 301.88, 304.38, 305.82, 307.34, 305.05, 305.35, 306.01, 306.04, 308.59, 308.23, 307.97, 303.36, 300.28, 302.7, 303.34, 301.88, 298.29, 299.76, 295.2, 302.15, 296.37, 299.91, 292.9, 291.94, 296.65, 291.48, 288.55, 288.97, 294.76, 298.4, 299.59, 299.74, 303.59, 305.24, 303.5, 303.41, 305.79, 307.5, 308.27, 310.9, 309.66, 314.36, 303.63, 297.87, 294.69, 293.75, 297.54, 292.74, 292.39, 292.37, 297.27, 301.83, 307.16, 303.08, 302.06, 306.23, 310.13, 309.09, 309.25, 294.83, 304.25, 311.38, 312.5, 313.97, 309.59, 309.03, 307.09, 311.22, 316.98, 319.77, 322.95, 321.71, 317.63, 317.31, 316.13, 319.33, 327.73, 329.77, 322.26, 325.02, 324.43, 319.79, 306.4, 303.42, 304.78, 307.95, 298.36, 297.67, 299.24, 293.41, 296.68, 295.96, 296.42, 301.99, 301.46, 303.68, 310.29, 312.68, 305.67, 317.73, 317.44, 313.67, 306.32, 298.26, 298.17, 302.69, 304.31, 303.59, 306.29, 293.36, 293.0, 298.91, 301.7, 295.95, 293.25, 295.92, 295.06, 289.3, 285.29, 285.72, 284.55, 283.36, 278.8, 279.34, 282.02, 282.74, 283.58, 283.8, 282.41, 285.71, 288.17, 291.15, 287.44, 278.75, 279.66, 289.9, 291.11, 290.34, 292.66, 294.6, 305.07, 307.4, 306.95, 310.72, 308.19, 303.05, 307.03, 307.37, 314.0, 310.05, 310.07, 308.75, 305.37, 308.69, 308.51, 306.33, 310.28, 309.52, 304.75, 306.48, 311.93, 303.38, 299.25, 297.17, 302.01, 297.42, 297.08, 295.0, 297.9, 292.91, 299.13, 300.14, 303.49, 303.85, 296.46, 293.93, 296.49, 293.78, 298.12, 298.01, 307.96, 309.43, 308.18, 309.75, 306.23, 310.53, 317.7, 316.39, 328.02, 330.32, 322.15, 328.36, 330.99, 330.31, 331.96, 325.95, 326.29, 324.24, 330.92, 331.32, 336.04, 337.54, 328.98, 333.8, 334.8, 332.87, 341.19, 345.19, 341.45, 339.41, 337.19, 343.52, 346.48, 348.16, 351.46, 354.43, 355.54, 343.0, 349.11, 350.04, 350.89, 355.75, 357.46, 354.53, 355.75, 358.0, 360.24, 363.37, 361.31, 361.04, 359.17, 361.45, 355.49, 349.8, 349.83, 354.62, 354.92, 354.73, 352.46, 355.84, 354.25, 353.19, 354.45, 360.26, 356.86, 351.76, 352.95, 351.8, 354.46, 348.39, 350.74, 347.19, 347.58, 347.93, 350.29, 338.31, 335.85, 336.88, 341.36, 334.92, 333.32, 329.19, 331.53, 330.73, 330.73, 331.28, 329.58, 331.42, 332.99, 334.3, 331.43, 335.28, 335.53, 339.72], "last_label": "Latest $339.72 (10/16/2026)"}}}</script><p class="source">Source: SEC EDGAR, Yahoo Finance share price</p></figure>
+<p>Note: Q2 2026 net income of $21.16B (SEC EDGAR) includes a ~$4.6B Visa-share gain and ~$1.0B of equity-investment gains; underlying was ~$16.9B (per press coverage). Q3 net income of $15.3B is therefore down QoQ on a reported basis and about 10% below the Q2 underlying run rate.</p>
+<h2 id="net-verdict">Net Verdict</h2>
+<p class="call-line warn"><strong>Net score: 0 → Mixed (−2 to +2). Bright spots (NII, markets, wealth, valuation) and headwinds (expense, miss, buyback cut, red flags) offset. The −0.9% day-of move, followed by a +2.5% gain since, is a fair read of a mixed print — the market is not overreacting.</strong></p>
+<h2 id="read-through-to-the-call">Read-Through to the Call</h2>
+<div class="callout neutral"><div class="signal"><span class="badge neutral"><span class="dot"></span>NEUTRAL</span> Earnings-Quality conviction 5 / 10</div><ul class="bullets"><li><strong>So what:</strong> Revenue and NII momentum are real, but 12% expense growth and a lower buyback cadence cap per-share compounding, so the quarter neither adds to nor undermines a long.</li><li><strong>What flips it:</strong> Q4 expense landing at or below ~$27.5B with revenue growth above expense growth would turn it BULLISH; expense creep plus a rising reserve build would turn it BEARISH.</li></ul><div class="scale">Conviction scale (this dimension only): 9–10 = decisive support for the call · 7–8 = strong · 5–6 = mixed/neutral · 3–4 = weak · 1–2 = red flag</div></div>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Is the Q3 miss a signal?</td><td>Headline &#x27;first miss in six quarters&#x27; reads as a blemish on a premium-multiple bank.</td><td>Largely noise: $658M securities losses explain most of the shortfall, and the NII guide went up. The real issue is expense growth outrunning revenue (+12% vs +8%).</td></tr><tr><td>Is the buyback cut a negative?</td><td>Fewer buybacks = less EPS accretion and a weaker capital-return story.</td><td>Neutral-to-modest negative: ~$30B excess capital and 20% ROTCE make organic redeployment defensible, but it only pays off if loan growth and returns hold; CET1 already fell 30bp.</td></tr><tr><td>Is 2027 NII safe?</td><td>~$107B ex-markets central case treated as an anchor.</td><td>Low visibility: management itself called it highly uncertain, and a quarter of the growth depends on the forward curve.</td></tr></tbody></table></div><p class="source">Source: Company call commentary; consensus per press coverage; our scoring</p>
+<div class="edge"><strong>The edge:</strong> The market is right to be muted — the print is mixed, not broken; the variable that decides next quarter is expense discipline, not the EPS miss.</div>
+<p><strong>Note:</strong> Our scored read broadly confirms the −0.9% reaction, so no forced differentiated view.</p>
+<h2 id="follow-up-questions-for-next-quarter">Follow-Up Questions for Next Quarter</h2>
+<ol class="bullets"><li>Does Q4 noninterest expense land at or below ~$27.5B, and does management give a 2027 expense figure?</li><li>Does Q4 NII hit ~$28B total / ~$25.5B ex-markets, and is the ~$107B 2027 ex-markets case refined up or down?</li><li>Does the Q4 reserve build exceed $539M, or card NCOs break above ~3.2%?</li><li>Does CET1 rebuild from 13.9%, and what pace of buybacks resumes versus organic growth deployment?</li><li>Is the Q3 equities surge (+49%) repeated, or does markets revenue fall seasonally by more than management suggested?</li></ol>
+<p class="source">Source: Data gaps: SEC EDGAR statements end at Q2 2026 (Q3 10-Q not yet filed); EDGAR lacks Total Debt, cash and capex for banks; consensus and stock-reaction figures differ across secondary sources; the transcript is automated and may contain errors.</p>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- collapsible side panel ----------
+  // The "toc-collapsed" class lives on <html>; a tiny script in <head> restores it before first paint.
+  (function () {
+    var toc = document.querySelector(".shell:not(.wide) > .toc");
+    if (!toc) return;   // wide layout has no side panel
+    var root = document.documentElement;
+    function stored() { try { return localStorage.getItem("toc-collapsed") === "1"; } catch (e) { return false; } }
+    function store(v) { try { localStorage.setItem("toc-collapsed", v ? "1" : "0"); } catch (e) { /* private mode */ } }
+    var hide = document.createElement("button");
+    hide.type = "button"; hide.className = "toc-toggle"; hide.textContent = "‹ Hide panel";
+    hide.title = "Hide the side panel"; hide.setAttribute("aria-expanded", "true");
+    toc.insertBefore(hide, toc.firstChild);
+    var show = document.createElement("button");
+    show.type = "button"; show.className = "toc-expand"; show.textContent = "☰";
+    show.title = "Show the side panel"; show.setAttribute("aria-label", "Show the side panel");
+    show.setAttribute("aria-expanded", "false");
+    document.body.appendChild(show);
+    function set(collapsed, persist) {
+      root.classList.toggle("toc-collapsed", collapsed);
+      hide.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      show.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      if (persist) store(collapsed);
+    }
+    hide.addEventListener("click", function () { set(true, true); });
+    show.addEventListener("click", function () { set(false, true); });
+    set(stored(), false);
+  })();
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>
