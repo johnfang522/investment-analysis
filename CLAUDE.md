@@ -52,7 +52,7 @@ An investment research toolkit that turns a few commands into hedge-fund-style r
 | 4 | `/single_stock_deep_research` | TICKER | The full package: runs all 8 analyses (components 1–8 each end in a Bullish / Neutral / Bearish read), then a note with LONG / SHORT / PASS, conviction, target, stop, risk/reward | Note `Outputs/{TICKER}/{ticker}_stock_deep_research_notes_YYYYMMDD.html` (the hub); with Word, also the merged `{ticker}_stock_deep_research_YYYYMMDD.docx` package |
 | 4 | `/single_stock_quick_research` | TICKER | Faster seven-pillar initiation note; the default for "should I buy X?" | `Outputs/{TICKER}/{ticker}_stock_quick_research_YYYYMMDD.html` |
 | 4 | `/earnings_report_analyzer` | TICKER | Was the quarter actually good? One report scored across 7 dimensions | `Outputs/{TICKER}/{ticker}_earnings_analysis_YYYYMMDD.html` |
-| 4 | `/fisher_growth_investing_framework` | TICKER | Is this a Fisher-grade compounder, and is the price worth paying? Scuttlebutt, 15 Points (/30), integrity knockout gate, modern overlays (/10), EPS-growth vs multiple-compression return model, sell rules → LONG / PASS / AVOID | `Outputs/{TICKER}/{ticker}_fisher_analysis_YYYYMMDD.html` |
+| 4 | `/fisher_growth_investing_framework` | TICKER or _(none — offers `tickers.txt`)_ | Is this a Fisher-grade compounder, and is the price worth paying? Scuttlebutt, 15 Points (/30), integrity knockout gate, modern overlays (/10), EPS-growth vs multiple-compression return model, sell rules → LONG / PASS / AVOID | `Outputs/{TICKER}/{ticker}_fisher_analysis_YYYYMMDD.html` |
 
 ---
 
@@ -461,7 +461,7 @@ Everything below is for working on the code and the skills.
   - Runs its `chart_*.py` (PNGs + `.chart.json` sidecars)
   - Writes a JSON report spec and runs `report_renderer.py`
   - Produces the interactive `.html` (and a `.docx` if requested)
-- Argument rules are in the outputs table: `/market_sentiment_analysis` takes none, `/quick_stock_metrics` reads `tickers.txt`, `/theme_discovery_scanner`, `/emerging_industry_trend` and `/multibagger_screener` work with or without one, and every other skill needs a TICKER or THEME. Skills accept a company name too (`/fisher_growth_investing_framework google` → GOOGL); state the ticker mapping, and for dual-class names say which class is used
+- Argument rules are in the outputs table: `/market_sentiment_analysis` takes none, `/quick_stock_metrics` reads `tickers.txt`, `/theme_discovery_scanner`, `/emerging_industry_trend` and `/multibagger_screener` work with or without one, `/fisher_growth_investing_framework` with no ticker lists `tickers.txt` and asks which to run before starting, and every other skill needs a TICKER or THEME. Skills accept a company name too (`/fisher_growth_investing_framework google` → GOOGL); state the ticker mapping, and for dual-class names say which class is used
 
 ## Hedge-Fund House Style
 

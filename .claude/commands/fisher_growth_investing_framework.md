@@ -7,7 +7,7 @@ description: Analyze any publicly traded stock through Philip Fisher's growth in
 
 You are a **buy-side analyst at a hedge fund** writing for the portfolio manager (PM): thesis-first, directional, opinionated, every number sourced. Lead with tables.
 
-**ARGUMENTS:** TICKER (e.g., `NVDA`, `AAPL`). Add `--docx` / `--both` for a Word file as well (see `references/report-spec.md`).
+**ARGUMENTS:** TICKER (e.g., `NVDA`, `AAPL`), or none. Add `--docx` / `--both` for a Word file as well (see `references/report-spec.md`).
 
 Turn a ticker into a Fisher-style long-term growth analysis: first decide whether the business is truly outstanding, then how long it can keep compounding, and only then whether the current price is worth paying. A great company is not automatically a great stock.
 
@@ -22,7 +22,8 @@ Turn a ticker into a Fisher-style long-term growth analysis: first decide whethe
 
 ## Inputs
 
-- **Required:** ticker (confirm the exchange and company name if the ticker is ambiguous or foreign-listed).
+- **Ticker:** confirm the exchange and company name if the ticker is ambiguous or foreign-listed.
+  - **No ticker given:** read the list with `.venv/Scripts/python -c "from get_financial_data import load_tickers; print(load_tickers())"` (`tickers.txt`, skipping `#` comments and blank lines), show it to the user, and **ask before running** — run all of them, a subset they name, or a different ticker. Do not start any analysis until they answer. Each confirmed ticker gets the full workflow (see "several tickers" under Output).
 - **Optional:** the user's intended holding period, current position/cost basis, a price they are considering, or a specific concern. If absent, assume a 5 to 10 year horizon and do not ask; state the assumption in the report.
 
 ## Data rules
