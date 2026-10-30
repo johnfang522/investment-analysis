@@ -34,7 +34,7 @@ END_STR   = END.strftime("%Y-%m-%d")
 # from a web search each run (see /market_sentiment_analysis Step 1) and
 # passed here; without a fresh value the Buffett chart/current-reading will
 # silently drift from the true current level over time.
-BUFFETT_ANCHOR_VALUE = 234.0   # % Market Cap/GDP, as of 2026-10-08 (web search: 234%, vs. 237% record in May 2026)
+BUFFETT_ANCHOR_VALUE = 228.0   # % Market Cap/GDP, as of 2026-10-30 (234% on Oct 8 scaled by S&P 500 7765 -> 7557; chartrow Fed-Z.1 basis reads 260%)
 
 STYLE = {
     "figure.facecolor": "white",
