@@ -1,0 +1,1021 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: &quot;AMZN&quot;, &quot;skill&quot;: &quot;business_potential&quot;, &quot;title&quot;: &quot;AMZN — Business Potential&quot;, &quot;signal&quot;: &quot;NEUTRAL&quot;, &quot;conviction&quot;: 6, &quot;as_of&quot;: &quot;Q2 2026 (FY0 = FY2025)&quot;, &quot;rendered&quot;: &quot;2026-10-10&quot;, &quot;company&quot;: &quot;Amazon.com, Inc.&quot;}">
+<title>AMZN — Business Potential</title>
+<style>/* font-scale 1.15 */
+/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 15px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 14px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(12.5px, 0.9vw, 16px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- collapsible side panel (buttons are added by report.js; the class is set on <html>) ---------- */
+.toc-toggle { display: flex; align-items: center; gap: 6px; width: fit-content; margin: 0 0 12px auto; padding: 3px 10px; font: inherit; font-size: 14px; color: var(--muted); background: transparent; border: 1px solid var(--grid); border-radius: 999px; cursor: pointer; }
+.toc-toggle:hover { color: var(--ink); border-color: var(--muted); }
+.toc-expand { display: none; position: fixed; top: 12px; left: 12px; z-index: 40; width: 34px; height: 34px; align-items: center; justify-content: center; padding: 0; font-size: 19.5px; line-height: 1; color: var(--ink-2); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; }
+.toc-expand:hover { color: var(--ink); border-color: var(--muted); }
+@media (min-width: 961px) {
+  .toc-collapsed .shell:not(.wide) { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 64px; }
+  .toc-collapsed .shell:not(.wide) > .toc { display: none; }
+  .toc-collapsed .toc-expand { display: inline-flex; }
+}
+@media (max-width: 960px) { .toc-toggle, .toc-expand { display: none; } }
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 34.5px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 14px; }
+.stat .value { font-size: 23px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 24px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 19.5px; margin: 28px 0 10px; }
+h4 { font-size: 17px; margin: 22px 0 8px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 14.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 16px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 12.5px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 20.5px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 16px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 20.5px; }
+.callout.verdict .signal { font-size: 25.5px; }
+.callout .scale { color: var(--muted); font-size: 14.5px; margin-top: 8px; }
+.call-line { font-size: 19.5px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 17px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 14.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 13px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 14px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 12px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 12.5px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 14.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 15px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 14px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 14.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 25.5px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 34.5px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 20.5px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 14.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 15px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 14px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 16px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card .new-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--good); color: #fff; font-size: 12.5px; font-weight: 650; vertical-align: 1px; }
+.toc ol.sub li a::before { content: "• "; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 15px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 14px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, .toc-toggle, .toc-expand, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+
+.file-chip { margin-left: 6px; padding: 1px 7px; border: 1px solid var(--grid); border-radius: 999px; font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--muted); vertical-align: 1px; }
+.file-chip:hover { color: var(--ink); border-color: var(--muted); }
+</style>
+
+<script>try{if(localStorage.getItem("toc-collapsed")==="1")document.documentElement.classList.add("toc-collapsed")}catch(e){}</script>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="amzn_stock_deep_research_notes_20261010.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="../index.html">← Investment Research Library</a><ol><li><a href="#at-a-glance">At a Glance</a></li><li><a href="#growth-outlook-3-5-years">Growth Outlook — 3–5 Years</a></li><li><a href="#nbt-readiness-scorecard">NBT Readiness Scorecard</a></li><li><a href="#value-alignment">Value Alignment</a></li><li><a href="#operational-agility">Operational Agility</a></li><li><a href="#financial-runway">Financial Runway</a></li><li><a href="#ecosystem-control">Ecosystem Control</a></li><li><a href="#strengths-vs-risks">Strengths vs Risks</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#read-through-to-the-call">Read-Through to the Call</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>AMZN · Business Potential</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>AMZN — Business Potential</h1><p class="subtitle">Buy-side business potential read · October 10, 2026 · Data as of: Q2 2026 (June 30, 2026); FY0 = FY2025</p><div class="call-strip"><div class="stat"><div class="label">Signal</div><div class="value"><span class="badge neutral"><span class="dot"></span>NEUTRAL</span></div></div><div class="stat"><div class="label">Conviction</div><div class="value">6 / 10</div><div class="meter"><span style="width:60%"></span></div></div><div class="stat"><div class="label">Thesis bias</div><div class="value">PASS</div></div><div class="stat" title="Source: Our estimate"><div class="label">Base FY+5 revenue</div><div class="value">$1,278B</div><div class="sub">(12.3% CAGR)</div></div><div class="stat" title="Source: Our estimate"><div class="label">Prob-weighted FY+5 price</div><div class="value">$334</div><div class="sub">(+5.9%/yr)</div></div><div class="stat" title="Source: SEC EDGAR; Amazon Q2 2026"><div class="label">NBT readiness</div><div class="value">15/20 Strong</div></div></div></header>
+<p><strong>Data as of:</strong> FY0 = FY2025 (year ended Dec 31, 2025); latest quarter Q2 2026 (June 30, 2026); price $262.43 (Yahoo Finance, Oct 10 2026 run).</p>
+<h2 id="at-a-glance">At a Glance</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Primary Emerging Opportunity</td><td>AI compute and cloud capacity (AWS + Trainium custom silicon), with advertising as the second profit engine</td></tr><tr><td>Next Big Thing (NBT) Readiness Score</td><td class="fill-warn"><strong>15 / 20</strong> — Strong</td></tr><tr><td>Thesis Bias</td><td class="fill-warn"><strong>PASS</strong> (quality compounder; probability-weighted return below hurdle at $262)</td></tr><tr><td>Conviction (Optionality)</td><td><strong>6 / 10</strong></td></tr><tr><td>Base-Case Revenue, FY+3 / FY+5</td><td>$1,059B (+13.9% CAGR) / $1,278B (+12.3% CAGR) from $716.9B in FY0 (FY2025); FY+3 = FY2028, FY+5 = FY2030</td></tr><tr><td>Base-Case Operating Income, FY+5</td><td>$210.1B (16.4% margin vs 11.2% in FY0 and 12.1% TTM)</td></tr><tr><td>Top Growth Driver</td><td>AWS — +$251.7B incremental revenue by FY+5 (45% of total growth)</td></tr><tr><td>Our Base vs Consensus</td><td class="fill-warn">Above — FY+2 (FY2027) revenue $943.7B vs consensus $919.1B (+2.7%)</td></tr><tr><td>Probability-Weighted FY+5 Share Price</td><td>$334 (+27.3% vs $262.43 current; +5.9%/yr over 4.2 yrs) — base $308 at 21x P/E</td></tr><tr><td>Single Biggest Advantage</td><td>Owns the largest cloud plus a $496B AWS backlog (6.4-yr weighted term) and a 26%-growth ad business on top of retail traffic</td></tr><tr><td>Single Biggest Risk</td><td>AI capex ($220B guided 2026, capex/OCF 1.07x) fails to earn its cost of capital, so AWS margin and free cash flow disappoint</td></tr></tbody></table></div><p class="source">Source: Amazon Q2 2026 release; SEC EDGAR; Yahoo Finance; our estimates (Growth Outlook below).</p>
+<h2 id="growth-outlook-3-5-years">Growth Outlook — 3–5 Years</h2>
+<ul class="bullets"><li><strong>FY0 definition:</strong> FY2025 (Dec 2025), not TTM. The fiscal year closed 9.3 months ago, just past the 9-month rule, but FY2025 is the last year with audited segment and line-of-business data, and TTM to Jun 2026 is distorted by the $53.4B non-operating Anthropic gain. FY+3 = FY2028; FY+5 = FY2030 (year-end Dec 31, 2030, 4.2 years from today).</li><li><strong>Anthropic stake is excluded</strong> from operating income and from FY+5 EPS (non-operating mark-to-market; $53.4B pre-tax gain in Q2 2026). It is upside optionality outside this model; FY+5 EPS is built from operating income, so it carries no Anthropic gains.</li><li><strong>Backlog conflict (flagged):</strong> AWS backlog is $496B at Q2 2026 per the earnings call/RPO tracker (2.5x the $195B of Q2 2025; 3.3x AWS TTM revenue; 6.4-yr term; <a href="https://www.regardsofwallstreet.com/data/rpo/entity/amazon">RPO Tracker</a>). An earlier $244B figure does not reconcile to the YoY and multiple math; we use $496B and treat $244B as stale or partial. The split attributable to Anthropic is undisclosed.</li><li><strong>Consensus is stale:</strong> FY2026E revenue $806B implies only +12.4% growth, yet Q1 2026 was about +13.6% and Q2 +19.6% with Q3 guided $197-202B; our FY2026E is $828.6B (Q1 ~$181.5B derived from TTM, Q2 $200.6B, Q3 ~$199.5B guide midpoint, Q4 ~$246B at +15%).</li></ul>
+<h3 id="1-growth-driver-inventory">1. Growth Driver Inventory</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Driver</th><th scope="col">Category</th><th scope="col">Status</th><th scope="col">Timing (revenue starts → material)</th><th scope="col">Incremental Revenue by FY+3</th><th scope="col">Incremental Revenue by FY+5</th><th scope="col">Margin Effect</th><th scope="col">Evidence (cite)</th></tr></thead><tbody><tr><td>1</td><td>AWS cloud and AI compute (incl. Trainium, Bedrock)</td><td>New platform / existing volume</td><td class="fill-good">✅ Shipping</td><td>Revenue now; material FY26-FY28</td><td class="fill-muted">+$149.3B (14.1% of FY+3 rev)</td><td class="fill-muted">+$251.7B (19.7% of FY+5 rev)</td><td>↑ Op. margin 39.3% in Q2&#x27;26 but depreciation from $220B capex a headwind</td><td>Q2&#x27;26 AWS $42.2B +37%, $169B run-rate; backlog $496B; most 2027 capacity reserved (Q2&#x27;26 call)</td></tr><tr><td>2</td><td>Third-party seller services (fees, fulfillment, logistics)</td><td>Volume / take-rate</td><td class="fill-good">✅ Shipping</td><td>Now</td><td class="fill-muted">+$64.6B (6.1%)</td><td class="fill-muted">+$106.7B (8.3%)</td><td>→ Mix-neutral; logistics scale offsets</td><td>FY2025 base ~$173B is our estimate (not located in sources); +12.5% FY26 decelerating to 8%; Q2&#x27;26 NA +16%, Intl +15%</td></tr><tr><td>3</td><td>Advertising (Sponsored Products, Prime Video ads, DSP)</td><td>Recurring / services layer</td><td class="fill-good">✅ Shipping</td><td>Now</td><td class="fill-muted">+$51.8B (4.9%)</td><td class="fill-muted">+$85.1B (6.7%)</td><td>↑↑ Highest-margin line; lifts NA/Intl margin</td><td>FY2025 $68.6B; Q2&#x27;26 $19.8B +26% (Amazon Q2 release)</td></tr><tr><td>4</td><td>Online and physical stores 1P, other (incl. Other Bets)</td><td>Existing volume / pricing</td><td class="fill-good">✅ Shipping</td><td>Now</td><td class="fill-muted">+$60.0B (5.7%)</td><td class="fill-muted">+$91.0B (7.1%)</td><td>→ Robotics/regionalized fulfillment cuts cost-to-serve</td><td>Base $297B is residual (total less AWS, ads, subs, 3P); 8% growing to 4%</td></tr><tr><td>5</td><td>Subscriptions (Prime, Music, Video)</td><td>Recurring layer</td><td class="fill-good">✅ Shipping</td><td>Now</td><td class="fill-muted">+$16.4B (1.5%)</td><td class="fill-muted">+$26.7B (2.1%)</td><td>→</td><td>FY2025 $49.6B (third-party analysis, ~+11%); slows to 7% by FY2030</td></tr><tr><td>6</td><td>Kuiper / satellite broadband, healthcare, Zoox, other optionality</td><td>New TAM</td><td class="fill-bad">🔴 Pipeline</td><td>FY28+ if ever</td><td class="fill-muted">~$0 in base</td><td class="fill-muted">~$0 in base (extreme bull only)</td><td>↓ Early-stage losses</td><td>Not in the base bridge: no disclosed revenue; sized only in Extreme Bull</td></tr><tr><td>7</td><td>Margin lever: AWS scale and ads mix vs depreciation</td><td>Margin</td><td class="fill-warn">⚠️ Partly offsetting</td><td>FY26-FY30</td><td class="fill-muted">n/a</td><td class="fill-muted">+$130.1B op. income FY0→FY+5 via mix (see profit path)</td><td>↑ Op. margin 11.2% → 16.4%</td><td>FY2025 op. margin 11.2%; Q2&#x27;26 13.7% (+2.3 pp YoY)</td></tr></tbody></table></div><p class="source">Source: Reported: SEC EDGAR via digest.py (FY2025 and TTM Jun 2026); <a href="https://s2.q4cdn.com/299287126/files/doc_earnings/2025/q4/earnings-result/AMZN-Q4-2025-Earnings-Release.pdf">Amazon Q4 2025 release</a>; <a href="https://ir.aboutamazon.com/news-release/news-release-details/2026/Amazon-com-Announces-Second-Quarter-Results">Amazon Q2 2026 release, Jul 30 2026</a>. Our-estimate cells are shaded grey. Line-of-business FY2025 base: advertising and subscriptions per Amazon / third-party coverage; 3P seller services and residual 1P are our estimates (shaded).</p>
+<ul class="bullets"><li><strong>Not a driver:</strong> Kuiper, Zoox and healthcare are excluded from the base (no disclosed revenue and each below 2% of FY+5 revenue on any evidenced case); the Anthropic stake is non-operating and excluded; M&amp;A is not assumed.</li><li><strong>Segment cross-check (reported):</strong> FY2025 North America $426.3B (+10%, op. income $29.6B, 6.9% margin), International $161.9B (+13%, $4.7B, 2.9%), AWS $128.7B (+20%, $45.6B, 35.4%); ads, subscriptions and 3P sit inside the North America and International segments. Q2&#x27;26: AWS $42.2B +37% with $16.6B op. income (60% of the $27.5B total), North America $116.2B (+16%, $9.1B), International $42.2B (+15%, $1.7B) (<a href="https://www.aboutamazon.com/news/company-news/amazon-earnings-q2-2026-report">Amazon Q2 2026</a>).</li></ul>
+<h3 id="2-revenue-bridge-fy0-to-fy-5-base-case">2. Revenue Bridge — FY0 to FY+5 (Base Case)</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Component</th><th scope="col" class=num>FY0 (FY2025, reported)</th><th scope="col">FY+3 (FY2028)</th><th scope="col">FY+5 (FY2030)</th><th scope="col" class=num>$ Change FY0→FY+5</th><th scope="col" class=num>CAGR</th><th scope="col">Basis</th></tr></thead><tbody><tr><td>AWS (cloud + AI)</td><td class="num">$128.7B</td><td class="fill-muted">$278.0B</td><td class="fill-muted">$380.4B</td><td class="num">+$251.7B</td><td class="num">24.2%</td><td>FY26 +34%, FY27 +30%, FY28 +24%, FY29 +19%, FY30 +15%; backlog 3.3x TTM revenue supports FY26-27</td></tr><tr><td>Third-party seller services</td><td class="num">~$173.0B</td><td class="fill-muted">$237.6B</td><td class="fill-muted">$279.7B</td><td class="num">+$106.7B</td><td class="num">10.1%</td><td>+12.5%, +11%, +10%, +9%, +8%; FY0 base our estimate</td></tr><tr><td>Advertising</td><td class="num">$68.6B</td><td class="fill-muted">$120.4B</td><td class="fill-muted">$153.7B</td><td class="num">+$85.1B</td><td class="num">17.5%</td><td>+25%, +20%, +17%, +14%, +12%; Q2&#x27;26 run-rate +26%</td></tr><tr><td>Online + physical stores (1P), other</td><td class="num">~$297.0B</td><td class="fill-muted">$357.0B</td><td class="fill-muted">$388.0B</td><td class="num">+$91.0B</td><td class="num">5.5%</td><td>+8%, +6%, +5%, +4.5%, +4%; residual base</td></tr><tr><td>Subscriptions</td><td class="num">$49.6B</td><td class="fill-muted">$66.0B</td><td class="fill-muted">$76.3B</td><td class="num">+$26.7B</td><td class="num">9.0%</td><td>+11%, +10%, +9%, +8%, +7%</td></tr><tr><td>Headwinds (price cuts, consumer slowdown, AWS share loss)</td><td class="num">—</td><td class="fill-muted">incl. above</td><td class="fill-muted">incl. above</td><td class="num">—</td><td class="num">—</td><td>Embedded in decelerating growth rates; explicit only in Bear</td></tr><tr class=bold><td><strong>Total revenue</strong></td><td class="num"><strong>$716.9B</strong></td><td class="fill-muted"><strong>$1,059.1B</strong></td><td class="fill-muted"><strong>$1,278.2B</strong></td><td class="num"><strong>+$561.3B (+78%)</strong></td><td class="num"><strong>12.3%</strong></td><td>FY+3 CAGR 13.9%</td></tr><tr><td>Consensus</td><td class="num">—</td><td>N/A (FY2026E $806B, FY2027E $919.1B only)</td><td>N/A</td><td class="num">—</td><td class="num">—</td><td>TickFlow Aug 1 2026; StockAnalysis/Finnhub undated snapshot (Oct 10 2026)</td></tr></tbody></table></div><p class="source">Source: Reported: SEC EDGAR via digest.py (FY2025 and TTM Jun 2026); <a href="https://s2.q4cdn.com/299287126/files/doc_earnings/2025/q4/earnings-result/AMZN-Q4-2025-Earnings-Release.pdf">Amazon Q4 2025 release</a>; <a href="https://ir.aboutamazon.com/news-release/news-release-details/2026/Amazon-com-Announces-Second-Quarter-Results">Amazon Q2 2026 release, Jul 30 2026</a>. Our-estimate cells are shaded grey.</p>
+<ul class="bullets"><li><strong>Growth shape:</strong> accelerates in FY2026 (+15.6%, AWS +34%) then decelerates every year to +9.1% in FY2030 as AWS comps get harder; FY2026 is the peak.</li><li><strong>Our base vs consensus:</strong> above by $22.6B in FY2026 ($828.6B vs $806B) and $24.6B in FY2027 ($943.7B vs $919.1B), driven by AWS conversion of the $496B backlog (our FY2027 AWS $224.2B).</li><li><strong>Concentration:</strong> AWS is 44.8% of FY0→FY+5 growth ($251.7B of $561.3B); the top three drivers (AWS, 3P, ads) are 79%. Top customer (Anthropic) share of backlog is undisclosed.</li></ul>
+<h3 id="3-profitability-path">3. Profitability Path</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">FY0 (FY2025, reported)</th><th scope="col" class=num>FY+3 (FY2028, base)</th><th scope="col">FY+5 (FY2030, base)</th><th scope="col">Driver of the change</th></tr></thead><tbody><tr><td>Gross margin</td><td>50.3%</td><td class="num fill-muted">52.0%</td><td class="fill-muted">53.0%</td><td>Ads and AWS mix (reported FY2025: $360.5B / $716.9B)</td></tr><tr><td>Operating margin</td><td>11.2%</td><td class="num fill-muted">15.0%</td><td class="fill-muted">16.4%</td><td>AWS 35.4%→36%→34%; non-AWS margin 5.8%→7.5%→9.0% (ads mix, robotics)</td></tr><tr><td>Operating income</td><td>$80.0B</td><td class="num fill-muted">$158.7B</td><td class="fill-muted">$210.1B (+21.3% CAGR)</td><td>FY+5 = AWS $380.4B × 34% ($129.3B) + non-AWS $897.7B × 9.0% ($80.8B); FY+3 = $278.0B × 36% + $781.0B × 7.5%</td></tr><tr><td>EPS (diluted, GAAP, ex-Anthropic gains)</td><td>n/m (FY2025 GAAP includes non-operating gains)</td><td class="num fill-muted">$11.13</td><td class="fill-muted">$14.65 (vs TTM GAAP $12.43 incl. $53.4B gain)</td><td>(Op. income − net interest $11B) × (1 − 18% tax) ÷ 11.15B shares; FY+3 interest $8B, 11.0B shares</td></tr><tr><td>FCF</td><td>$7.70B</td><td class="num fill-muted">~$45B</td><td class="fill-muted">~$110B</td><td>Capex peaks 2026-27 ($220B guided 2026) then falls to ~14% of revenue; OCF ~$285B at FY+5 (our estimate)</td></tr></tbody></table></div><p class="source">Source: FY0: SEC EDGAR (digest.py). FY+3/FY+5: our estimates; tax 18% is our assumption (statutory 21% less credits), not re-sourced.</p>
+<ul class="bullets"><li><strong>Incremental margin:</strong> FY0→FY+5 operating income rises $130.1B on $561.3B more revenue = 23.2% incremental margin vs 11.2% today; credible because AWS and ads carry high margins, but it requires AWS to hold a 34% margin through the depreciation wave.</li><li><strong>Margin risk:</strong> depreciation on $173B TTM capex (+68% YoY) is the line most likely to absorb AWS growth; every 5 pp of AWS margin is ~$19B of FY+5 operating income (~$1.4 EPS).</li></ul>
+<h3 id="4-scenarios-fy-5-from-revenue-to-share-price">4. Scenarios — FY+5 (From Revenue to Share Price)</h3>
+<p><em>Four scenarios, each worked end to end: what has to happen, FY+5 revenue and profit, FY+5 earnings per share (EPS), the multiple, and the implied share price and return. The price is an indicative long-horizon value, not the 12-month target ($255 in the valuation analysis). The method and common assumptions below apply to every scenario.</em></p>
+<ul class="bullets"><li><strong>EPS basis:</strong> GAAP diluted EPS built from operating income, excluding all Anthropic mark-to-market and other non-operating gains; net interest expense $15B / $11B / $8B / $5B (Bear/Base/Bull/Extreme) as debt-funded capex raises borrowings; tax rate 18% (our assumption); FY+5 diluted shares 11.15B = today&#x27;s ~10.88B (TTM net income $135.28B ÷ $12.43 EPS) plus ~0.5%/yr stock-based-compensation dilution with no net buybacks.</li><li><strong>Price and horizon:</strong> $262.43 (Yahoo Finance, Oct 10 2026 run; last close Oct 9); end-FY2030 is 4.22 years away.</li><li><strong>Multiple evidence (forward P/E, snapshots of differing dates):</strong> Amazon 25.1x now (Yahoo Finance, Oct 10 2026); Microsoft 24.5x, Alphabet 28.1x, Meta 22.1x (Jul 6 2026 screen, <a href="https://stockti.com/stocks/mega-cap-forward-pe">Mega-Cap Forward P/E</a>); Walmart 36.1x (Oct 7 2026, <a href="https://valueinvesting.io/WMT/metric/forward-pe">valueinvesting.io</a>); Costco ~42-44x (<a href="https://www.fool.com/investing/2026/08/16/should-investors-be-concerned-that-costco-stock-tr/">Motley Fool, Aug 16 2026</a>); Oracle 32.5x (undated, <a href="https://valueinvesting.io/ORCL/metric/forward-pe">valueinvesting.io</a>); Shopify 119.4x (Aug 5 2026, <a href="https://eulerpool.com/stock/Shopify-Stock-CA82509L1076/forwardpe">Eulerpool</a>). Amazon&#x27;s own history is unreliable by source (trailing 5-yr averages of 44-65x; forward P/E 26-32x in recent snapshots per Trendlyne and TradingView), so we cap at today&#x27;s 25x. The multiple is applied to FY+5 GAAP EPS.</li></ul>
+<h4 id="bear-20-probability">Bear — 20% probability</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Basis</th></tr></thead><tbody><tr><td class="fill-bad">Probability</td><td class="fill-bad">20%</td><td class="fill-bad">AI overbuild is a live risk given capex/OCF of 1.07x and negative FCF</td></tr><tr><td class="fill-bad">FY+5 revenue (FY2030)</td><td class="fill-bad">$1,072.8B (+8.4% CAGR from FY0 $716.9B)</td><td class="fill-bad">AWS grows 14%/yr to $247.8B; non-AWS grows 7%</td></tr><tr><td class="fill-bad">FY+5 operating margin (GAAP)</td><td class="fill-bad">10.7%</td><td class="fill-bad">our estimate</td></tr><tr><td class="fill-bad">FY+5 operating income</td><td class="fill-bad">$114.8B</td><td class="fill-bad">revenue × margin</td></tr><tr><td class="fill-bad">FY+5 EPS (GAAP, ex-Anthropic)</td><td class="fill-muted">$7.34</td><td class="fill-bad">($114.8B − $15B net interest) × (1 − 18%) ÷ 11.15B shares</td></tr><tr><td class="fill-bad">Multiple at FY+5</td><td class="fill-muted">16x P/E</td><td class="fill-bad">growth 8%, margin compression; ex-growth megacap multiple (our assumption)</td></tr><tr class=bold><td class="fill-bad"><strong>Implied FY+5 share price</strong></td><td class="fill-bad"><strong>$117</strong></td><td class="fill-bad">EPS × multiple</td></tr><tr><td class="fill-bad">Return vs current</td><td class="fill-bad">−55.3% (−17.4%/yr over 4.22 years)</td><td class="fill-bad">vs $262.43 (Yahoo, Oct 10, 2026; Oct 9 close)</td></tr></tbody></table></div><p class="source">Source: Our estimates; segment margins anchored on reported FY2025 (AWS 35.4%, North America+International 5.8%) and Q2 2026 (AWS 39.3%); price Yahoo Finance, Oct 10, 2026; peer multiples as cited in the common-assumptions bullets</p>
+<ul class="bullets"><li><strong>What has to happen:</strong> AI overbuild: AWS grows 14%/yr to $247.8B at a 28% margin on depreciation and price cuts; non-AWS grows 7% at 5.5% margin; capex fails to earn its cost.</li><li><strong>Early evidence:</strong> AWS margin below 30% or a backlog miss (the read-through&#x27;s Bear trigger); the capex guide rising above $220B, or cash-only net debt passing ~$100B without AWS growth above 35% (cash flow analysis).</li></ul>
+<h4 id="base-45-probability">Base — 45% probability</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Basis</th></tr></thead><tbody><tr><td class="fill-warn">Probability</td><td class="fill-warn">45%</td><td class="fill-warn">central case: the bridged drivers deliver, capex growth slows after 2027</td></tr><tr><td class="fill-warn">FY+5 revenue (FY2030)</td><td class="fill-warn">$1,278.2B (+12.3% CAGR from FY0 $716.9B)</td><td class="fill-warn">revenue bridge (section 2): AWS $380.4B at 34%, non-AWS $897.7B at 9.0%</td></tr><tr><td class="fill-warn">FY+5 operating margin (GAAP)</td><td class="fill-warn">16.4%</td><td class="fill-warn">our estimate</td></tr><tr><td class="fill-warn">FY+5 operating income</td><td class="fill-warn">$210.1B</td><td class="fill-warn">revenue × margin</td></tr><tr><td class="fill-warn">FY+5 EPS (GAAP, ex-Anthropic)</td><td class="fill-muted">$14.65</td><td class="fill-warn">($210.1B − $11B net interest) × (1 − 18%) ÷ 11.15B shares</td></tr><tr><td class="fill-warn">Multiple at FY+5</td><td class="fill-muted">21x P/E</td><td class="fill-warn">~9% growth in FY2030: below Microsoft/Alphabet (24–28x) as growth slows; under today&#x27;s 25x (our assumption)</td></tr><tr class=bold><td class="fill-warn"><strong>Implied FY+5 share price</strong></td><td class="fill-warn"><strong>$308</strong></td><td class="fill-warn">EPS × multiple</td></tr><tr><td class="fill-warn">Return vs current</td><td class="fill-warn">+17.2% (+3.8%/yr over 4.22 years)</td><td class="fill-warn">vs $262.43 (Yahoo, Oct 10, 2026; Oct 9 close)</td></tr></tbody></table></div><p class="source">Source: Our estimates; segment margins anchored on reported FY2025 (AWS 35.4%, North America+International 5.8%) and Q2 2026 (AWS 39.3%); price Yahoo Finance, Oct 10, 2026; peer multiples as cited in the common-assumptions bullets</p>
+<ul class="bullets"><li><strong>What has to happen:</strong> As bridged: AWS $380.4B at 34%, non-AWS $897.7B at 9.0%.</li><li><strong>Early evidence:</strong> AWS growth holding ~30%+ through 2027, and Q3 2026 revenue inside the $197–$202B guide with operating income inside $22.5–$26.5B (late-October print).</li></ul>
+<h4 id="bull-25-probability">Bull — 25% probability</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Basis</th></tr></thead><tbody><tr><td class="fill-good">Probability</td><td class="fill-good">25%</td><td class="fill-good">needs the AWS backlog to convert and Trainium to cut cost</td></tr><tr><td class="fill-good">FY+5 revenue (FY2030)</td><td class="fill-good">$1,411.0B (+14.5% CAGR from FY0 $716.9B)</td><td class="fill-good">AWS 28% CAGR to $442B; non-AWS 10.5% CAGR to $969B (ads reach ~$190B)</td></tr><tr><td class="fill-good">FY+5 operating margin (GAAP)</td><td class="fill-good">18.5%</td><td class="fill-good">our estimate</td></tr><tr><td class="fill-good">FY+5 operating income</td><td class="fill-good">$260.9B</td><td class="fill-good">revenue × margin</td></tr><tr><td class="fill-good">FY+5 EPS (GAAP, ex-Anthropic)</td><td class="fill-muted">$18.60</td><td class="fill-good">($260.9B − $8B net interest) × (1 − 18%) ÷ 11.15B shares</td></tr><tr><td class="fill-good">Multiple at FY+5</td><td class="fill-muted">24x P/E</td><td class="fill-good">growth ~11% with an 18.5% margin; in line with Microsoft (24.5x) (our assumption)</td></tr><tr class=bold><td class="fill-good"><strong>Implied FY+5 share price</strong></td><td class="fill-good"><strong>$446</strong></td><td class="fill-good">EPS × multiple</td></tr><tr><td class="fill-good">Return vs current</td><td class="fill-good">+70.1% (+13.4%/yr over 4.22 years)</td><td class="fill-good">vs $262.43 (Yahoo, Oct 10, 2026; Oct 9 close)</td></tr></tbody></table></div><p class="source">Source: Our estimates; segment margins anchored on reported FY2025 (AWS 35.4%, North America+International 5.8%) and Q2 2026 (AWS 39.3%); price Yahoo Finance, Oct 10, 2026; peer multiples as cited in the common-assumptions bullets</p>
+<ul class="bullets"><li><strong>What has to happen:</strong> AWS 28% CAGR to $442B at 36% (backlog converts, Trainium cuts cost); non-AWS 10.5% CAGR to $969B at 10.5% (ads reach ~$190B).</li><li><strong>Early evidence:</strong> AWS growth above 35% through 2027 with the $496B backlog converting and capex/OCF falling toward 0.8x (the read-through&#x27;s Bull trigger).</li></ul>
+<h4 id="extreme-bull-10-probability">Extreme Bull — 10% probability</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Basis</th></tr></thead><tbody><tr><td style="background:#A9D08E;color:#0b0b0b">Probability</td><td style="background:#A9D08E;color:#0b0b0b">10%</td><td style="background:#A9D08E;color:#0b0b0b">blue-sky tail; kept at 10%</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">FY+5 revenue (FY2030)</td><td style="background:#A9D08E;color:#0b0b0b">$1,589.0B (+17.3% CAGR from FY0 $716.9B)</td><td style="background:#A9D08E;color:#0b0b0b">AWS 34% CAGR to $553B; non-AWS 12% CAGR to $1,036B; Kuiper and healthcare contribute</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">FY+5 operating margin (GAAP)</td><td style="background:#A9D08E;color:#0b0b0b">21.0%</td><td style="background:#A9D08E;color:#0b0b0b">our estimate</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">FY+5 operating income</td><td style="background:#A9D08E;color:#0b0b0b">$334.5B</td><td style="background:#A9D08E;color:#0b0b0b">revenue × margin</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">FY+5 EPS (GAAP, ex-Anthropic)</td><td class="fill-muted">$24.23</td><td style="background:#A9D08E;color:#0b0b0b">($334.5B − $5B net interest) × (1 − 18%) ÷ 11.15B shares</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">Multiple at FY+5</td><td class="fill-muted">25x P/E</td><td style="background:#A9D08E;color:#0b0b0b">capped at today&#x27;s 25x; no re-rating above current assumed (our assumption)</td></tr><tr class=bold><td style="background:#A9D08E;color:#0b0b0b"><strong>Implied FY+5 share price</strong></td><td style="background:#A9D08E;color:#0b0b0b"><strong>$606</strong></td><td style="background:#A9D08E;color:#0b0b0b">EPS × multiple</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">Return vs current</td><td style="background:#A9D08E;color:#0b0b0b">+130.8% (+21.9%/yr over 4.22 years)</td><td style="background:#A9D08E;color:#0b0b0b">vs $262.43 (Yahoo, Oct 10, 2026; Oct 9 close)</td></tr></tbody></table></div><p class="source">Source: Our estimates; segment margins anchored on reported FY2025 (AWS 35.4%, North America+International 5.8%) and Q2 2026 (AWS 39.3%); price Yahoo Finance, Oct 10, 2026; peer multiples as cited in the common-assumptions bullets</p>
+<ul class="bullets"><li><strong>What has to happen:</strong> AWS 34% CAGR to $553B at 38%; non-AWS 12% CAGR to $1,036B at 12%; Kuiper and healthcare contribute. Needs AWS share well above today&#x27;s in a market growing faster than third-party forecasts, so treat it as right-tail sizing, not a plan.</li><li><strong>Early evidence:</strong> AWS growth above 40% in 2027 and backlog above $700B.</li></ul>
+<h4 id="probability-weighted-outcome">Probability-Weighted Outcome</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Probability-weighted</th></tr></thead><tbody><tr><td>FY+5 revenue</td><td>$1,301.4B</td></tr><tr><td>FY+5 operating income</td><td>$216.2B</td></tr><tr><td>FY+5 EPS (GAAP, ex-Anthropic)</td><td>$15.13</td></tr><tr class=bold><td><strong>Implied FY+5 share price</strong></td><td><strong>$334 (Σ probability × scenario price)</strong></td></tr><tr><td>Return vs current</td><td>+27.3% (+5.9%/yr over 4.22 years)</td></tr></tbody></table></div><p class="source">Source: Our estimates; weights 20/45/25/10; price Yahoo Finance, Oct 10, 2026</p>
+<p><strong>Sensitivity — Base-case implied FY+5 price (EPS vs P/E):</strong></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Base-case price</th><th scope="col" class=num>EPS -20% ($11.72)</th><th scope="col" class=num>Base EPS ($14.65)</th><th scope="col" class=num>EPS +20% ($17.58)</th></tr></thead><tbody><tr><td>17x P/E</td><td class="num">$199</td><td class="num">$249</td><td class="num">$299</td></tr><tr><td>21x P/E (base)</td><td class="num">$246</td><td class="num fill-warn">$308</td><td class="num">$369</td></tr><tr><td>25x P/E</td><td class="num">$293</td><td class="num">$366</td><td class="num">$439</td></tr></tbody></table></div><p class="source">Source: Our estimates.</p>
+<ul class="bullets"><li><strong>Weights and price:</strong> 20% + 45% + 25% + 10% = 100%; the weighted price is Σ(probability × scenario price) = $334 (+27.3% vs $262.43; +5.9%/yr), weighted EPS $15.13; the weighted annualized return is computed from that price.</li><li><strong>Read:</strong> the probability-weighted +5.9%/yr misses a 10-12%/yr hurdle; the base +3.8%/yr misses it too. Value is skewed: Bull and Extreme Bull (35% combined) supply $146 of the $334 weighted price (44%), while the Bear loses 55%. At 25x forward the stock already prices roughly the Bull-lite path.</li><li><strong>Quality:</strong> high-quality growth: contract-backed (AWS backlog), diversified across five revenue lines, mostly recurring in AWS, ads and subscriptions; the risk is capital intensity and customer concentration (Anthropic), not demand.</li><li><strong>Consistency:</strong> scenario revenues and margins equal the bridge (section 2) and profitability path (section 3); price and share count match the valuation and income-statement reports ($262.43; ~10.9B diluted).</li></ul>
+<h3 id="5-addressable-market-check">5. Addressable Market Check</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Market</th><th scope="col">TAM Today</th><th scope="col">TAM in FY+5</th><th scope="col">TAM CAGR</th><th scope="col">Company Share Today</th><th scope="col">Share Implied by Base Case</th><th scope="col">Source</th></tr></thead><tbody><tr><td>Cloud infrastructure and AI services (AWS)</td><td>N/A (not sourced this run)</td><td>N/A</td><td>N/A</td><td>N/A (AWS FY2025 revenue $128.7B)</td><td>AWS revenue grows 2.96x; share holds only if the market grows ~24%/yr</td><td>Our check; third-party TAM not retrieved</td></tr><tr><td>Digital advertising (Amazon Ads)</td><td>N/A (not sourced)</td><td>N/A</td><td>N/A</td><td>$68.6B FY2025</td><td>Ads 2.24x to $153.7B</td><td>Amazon; TAM not retrieved</td></tr><tr><td>Retail commerce (1P + 3P + subscriptions)</td><td>N/A (not sourced)</td><td>N/A</td><td>N/A</td><td>~$520B (our build)</td><td>1.4x to $744B</td><td>Our build</td></tr></tbody></table></div><p class="source">Source: TAM figures were not retrieved this run, so shares are not computed; flagged as a gap rather than extrapolated.</p>
+<ul class="bullets"><li>The base case needs AWS to compound at 24% for five years; plausible only if AI demand keeps the market growing 20%+. This is the unproven step and is flagged; no contested market needs share above 2x today&#x27;s in the base case on a growth-matching basis.</li></ul>
+<h2 id="nbt-readiness-scorecard">NBT Readiness Scorecard</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Dimension</th><th scope="col" class=num>Score</th><th scope="col">Key Evidence (must cite source)</th></tr></thead><tbody><tr><td>1. Value Alignment — does the trend extend the core business?</td><td class="num">5/5</td><td>AI compute is the next leg of AWS (+37%, $169B run-rate, Q2&#x27;26); Trainium, Bedrock and Prime customer data extend existing moats — <a href="https://www.aboutamazon.com/news/company-news/amazon-earnings-q2-2026-report">Amazon Q2 2026</a></td></tr><tr><td>2. Operational Agility — can it pivot resources fast?</td><td class="num">4/5</td><td>2026 capex guide raised $200B→$220B; TTM capex +68% YoY to $173.0B; fastest AWS growth in 18 quarters — SEC EDGAR, Q2&#x27;26 release</td></tr><tr><td>3. Financial Runway — can it self-fund the transition?</td><td class="num">2/5</td><td>TTM FCF -$11.62B (OCF $161.40B less capex $173.03B); FCF after SBC -$30.94B; cash-only net debt $54.0B; interest coverage ~28x — SEC EDGAR</td></tr><tr><td>4. Ecosystem Control — does it own a toll booth?</td><td class="num">4/5</td><td>Largest cloud with $496B backlog (6.4-yr term), Anthropic as anchor tenant; but depends on Nvidia supply and Anthropic concentration — RPO Tracker, Q2&#x27;26 call</td></tr><tr class=bold><td><strong>Total</strong></td><td class="num fill-warn"><strong>15/20</strong></td><td>Strong (13-16)</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR; Amazon Q2 2026 release and call; RPO Tracker (Jul 30 2026).</p>
+<h2 id="value-alignment">Value Alignment</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Question</th><th scope="col">Verdict</th><th scope="col">Evidence (1 phrase)</th></tr></thead><tbody><tr><td>Does the trend solve a core problem for existing customers?</td><td>✅</td><td>Enterprises and Anthropic buy AWS capacity; 2027 capacity mostly reserved</td></tr><tr><td>Do current moats extend (data, brand, IP, distribution)?</td><td>✅</td><td>Scale, custom silicon, global logistics and Prime traffic feed AWS and ads</td></tr><tr><td>Is the legacy business sticky enough to fund the pivot?</td><td>⚠️</td><td>Retail cash flow is strong but TTM capex exceeds OCF; debt now partly funds the build</td></tr></tbody></table></div><p class="source">Source: Amazon Q2 2026 call; SEC EDGAR.</p>
+<h2 id="operational-agility">Operational Agility</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Notes</th></tr></thead><tbody><tr><td>R&amp;D Spend (annual)</td><td>N/A</td><td>Technology and infrastructure line not pulled this run</td></tr><tr><td>Capex growth (YoY)</td><td>+68.4% TTM</td><td>vs revenue +19.6%; SEC EDGAR</td></tr><tr><td>Recent time-to-market</td><td>N/A</td><td>Trainium generations and Bedrock cadence not sourced</td></tr><tr><td>Capacity Expansion</td><td>$220B 2026 capex guide; leases not yet commenced $137.2B; purchase obligations $130.1B</td><td>10-Q Q2 2026 Note 4</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR; Amazon 10-Q Q2 2026.</p>
+<ul class="bullets"><li><strong>Talent &amp; infrastructure:</strong> scale-up readiness is proven (capex roughly doubled in two years); the constraint is power and chip supply, not talent.</li><li><strong>Forward-looking proof:</strong> $496B backlog; most 2027 capacity reserved and a significant portion of 2028 committed (Q2&#x27;26 call); Anthropic compute commitment.</li></ul>
+<h2 id="financial-runway">Financial Runway</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Annual Free Cash Flow (TTM)</td><td>-$11.62B (Amazon-defined -$7.60B incl. $4.02B proceeds); FY2025 $7.70B</td></tr><tr><td>Estimated Trend Capex / R&amp;D</td><td>$173.03B TTM gross capex (mostly AI and logistics)</td></tr><tr><td><strong>NBT Spend Ratio</strong></td><td class="fill-bad"><strong>1.07x</strong> (TTM capex $173.03B ÷ OCF $161.40B; Q2&#x27;26 119%) — 🔴 &gt;1.0, reliant on outside capital</td></tr><tr><td>FCF Margin</td><td>-1.5%</td></tr><tr><td>Net Cash / (Net Debt)</td><td>Net debt $54.0B cash-only (net cash $2.0B a year ago); fully loaded net debt/EBITDA 2.34x vs 0.05x reported; bonds $132.2B (EDGAR) vs $251.6B incl. leases (Yahoo)</td></tr><tr><td>Interest Coverage</td><td>~28x</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR (digest.py); Yahoo Finance; Amazon Q2 2026; earlier balance sheet and cash flow reports.</p>
+<ul class="bullets"><li><strong>Legacy revenue drag:</strong> minimal (under 5% of revenue in disrupted lines); the drag is capital intensity, not disrupted revenue.</li></ul>
+<h2 id="ecosystem-control">Ecosystem Control</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Question</th><th scope="col">Verdict</th><th scope="col">Evidence (1 phrase)</th></tr></thead><tbody><tr><td>Toll booth — owns critical infrastructure?</td><td>✅</td><td>Largest cloud; $496B backlog; compute for Anthropic</td></tr><tr><td>Open ecosystem or closed niche?</td><td>⚠️ Mixed</td><td>Multi-model Bedrock but dependent on Nvidia and its own Trainium</td></tr><tr><td>Helping write the rules (regulatory engagement)?</td><td>⚠️</td><td>Large policy footprint but active antitrust exposure on the stores business</td></tr></tbody></table></div><p class="source">Source: Amazon Q2 2026 call; RPO Tracker.</p>
+<h2 id="strengths-vs-risks">Strengths vs Risks</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">✅ Structural Advantages</th><th scope="col">⚠️ Execution Risks</th></tr></thead><tbody><tr><td>AWS $496B backlog, 6.4-yr term, +37% growth</td><td>Capex/OCF 1.07x; TTM FCF -$11.6B, FCF after SBC -$30.9B</td></tr><tr><td>Ads $19.8B/quarter growing 26% at high margin</td><td>Fully loaded net debt/EBITDA 2.34x incl. $137.2B uncommenced leases and $130.1B purchase obligations</td></tr><tr><td>Retail traffic and logistics scale feed every other line</td><td>Anthropic is both customer and equity investee ($53.4B non-cash gain): circularity and concentration; Bezos selling ~$4B (10b5-1, Aug 2026)</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR; Amazon Q2 2026; earlier leadership and balance sheet reports.</p>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>How fast does revenue grow through FY+3/FY+5?</td><td>Consensus FY2026E $806B (+12.4%), FY2027E $919.1B (+14.0%); FY2028+ not covered (TickFlow Aug 1 2026; StockAnalysis undated)</td><td>Ours $828.6B and $943.7B; FY+3 $1,059B, FY+5 $1,278B (12.3% CAGR); the gap is AWS backlog conversion (+$24.6B in FY2027)</td></tr><tr><td>Is AI capex earning its return?</td><td>Market pays 25x forward EPS for an accelerating AWS</td><td>Mostly yes in revenue (backlog 3.3x TTM) but FCF is negative; probability-weighted return only +5.9%/yr, so returns, not demand, are the debate</td></tr><tr><td>Can Amazon self-fund the build?</td><td>Treated as a non-issue given $78.2B cash and 28x coverage</td><td>No: capex/OCF 1.07x, FCF after SBC -$30.9B, and $267B of lease and purchase commitments; base case needs capex to fall after 2027</td></tr></tbody></table></div><p class="source">Source: Consensus: TickFlow, StockAnalysis/Finnhub; our estimates; SEC EDGAR.</p>
+<div class="edge"><strong>The edge:</strong> The market credits the AWS acceleration but under-prices the funding and depreciation drag, so upside is capped near the base case ($308) and the weighted +5.9%/yr does not clear the hurdle.</div>
+<p><strong>Note:</strong> The readiness data (15/20) broadly matches how the market prices the optionality; the differentiated point is return per unit of risk at $262, not business quality.</p>
+<h2 id="read-through-to-the-call">Read-Through to the Call</h2>
+<div class="callout neutral"><div class="signal"><span class="badge neutral"><span class="dot"></span>NEUTRAL</span> NBT-Readiness conviction 6 / 10</div><ul class="bullets"><li><strong>So what:</strong> Base case adds about $561B of revenue to $1,278B by FY2030 (12.3% CAGR, 16.4% operating margin), but a probability-weighted $334 (+5.9%/yr) is below hurdle: great business, no margin of safety at $262.</li><li><strong>What flips it:</strong> AWS growth holding above 35% through 2027 with the $496B backlog converting and capex/OCF falling toward 0.8x would move us to the Bull scenario ($446); AWS margin below 30% or a backlog miss moves us to Bear.</li></ul><div class="scale">Conviction scale (this dimension only): 9–10 = decisive support for the call · 7–8 = strong · 5–6 = mixed/neutral · 3–4 = weak · 1–2 = red flag</div></div>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- collapsible side panel ----------
+  // The "toc-collapsed" class lives on <html>; a tiny script in <head> restores it before first paint.
+  (function () {
+    var toc = document.querySelector(".shell:not(.wide) > .toc");
+    if (!toc) return;   // wide layout has no side panel
+    var root = document.documentElement;
+    function stored() { try { return localStorage.getItem("toc-collapsed") === "1"; } catch (e) { return false; } }
+    function store(v) { try { localStorage.setItem("toc-collapsed", v ? "1" : "0"); } catch (e) { /* private mode */ } }
+    var hide = document.createElement("button");
+    hide.type = "button"; hide.className = "toc-toggle"; hide.textContent = "‹ Hide panel";
+    hide.title = "Hide the side panel"; hide.setAttribute("aria-expanded", "true");
+    toc.insertBefore(hide, toc.firstChild);
+    var show = document.createElement("button");
+    show.type = "button"; show.className = "toc-expand"; show.textContent = "☰";
+    show.title = "Show the side panel"; show.setAttribute("aria-label", "Show the side panel");
+    show.setAttribute("aria-expanded", "false");
+    document.body.appendChild(show);
+    function set(collapsed, persist) {
+      root.classList.toggle("toc-collapsed", collapsed);
+      hide.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      show.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      if (persist) store(collapsed);
+    }
+    hide.addEventListener("click", function () { set(true, true); });
+    show.addEventListener("click", function () { set(false, true); });
+    set(stored(), false);
+  })();
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>
