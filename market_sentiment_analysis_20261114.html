@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: null, &quot;skill&quot;: &quot;market_sentiment&quot;, &quot;title&quot;: &quot;Market Sentiment Analysis&quot;, &quot;signal&quot;: &quot;NEUTRAL&quot;, &quot;conviction&quot;: 6, &quot;as_of&quot;: &quot;Nov 13, 2026 close&quot;, &quot;rendered&quot;: &quot;2026-11-14&quot;, &quot;rendered_at&quot;: &quot;2026-11-14T12:58:35&quot;, &quot;company&quot;: null}">
+<title>Market Sentiment Analysis</title>
+<style>/* font-scale 1.15 */
+/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 15px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 14px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(12.5px, 0.9vw, 16px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- collapsible side panel (buttons are added by report.js; the class is set on <html>) ---------- */
+.toc-toggle { display: flex; align-items: center; gap: 6px; width: fit-content; margin: 0 0 12px auto; padding: 3px 10px; font: inherit; font-size: 14px; color: var(--muted); background: transparent; border: 1px solid var(--grid); border-radius: 999px; cursor: pointer; }
+.toc-toggle:hover { color: var(--ink); border-color: var(--muted); }
+.toc-expand { display: none; position: fixed; top: 12px; left: 12px; z-index: 40; width: 34px; height: 34px; align-items: center; justify-content: center; padding: 0; font-size: 19.5px; line-height: 1; color: var(--ink-2); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; }
+.toc-expand:hover { color: var(--ink); border-color: var(--muted); }
+@media (min-width: 961px) {
+  .toc-collapsed .shell:not(.wide) { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 64px; }
+  .toc-collapsed .shell:not(.wide) > .toc { display: none; }
+  .toc-collapsed .toc-expand { display: inline-flex; }
+}
+@media (max-width: 960px) { .toc-toggle, .toc-expand { display: none; } }
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 34.5px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 14px; }
+.stat .value { font-size: 23px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 24px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 19.5px; margin: 28px 0 10px; }
+h4 { font-size: 17px; margin: 22px 0 8px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 14.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 16px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 12.5px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 20.5px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 16px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 20.5px; }
+.callout.verdict .signal { font-size: 25.5px; }
+.callout .scale { color: var(--muted); font-size: 14.5px; margin-top: 8px; }
+.call-line { font-size: 19.5px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 17px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 14.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 13px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 14px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 12px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 12.5px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 14.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 15px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 14px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 14.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 25.5px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 34.5px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 20.5px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 14.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 15px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 14px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 16px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card .new-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--good); color: #fff; font-size: 12.5px; font-weight: 650; vertical-align: 1px; }
+.toc ol.sub li a::before { content: "• "; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 15px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 14px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, .toc-toggle, .toc-expand, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+
+.file-chip { margin-left: 6px; padding: 1px 7px; border: 1px solid var(--grid); border-radius: 999px; font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--muted); vertical-align: 1px; }
+.file-chip:hover { color: var(--ink); border-color: var(--muted); }
+</style>
+<script>try{if(localStorage.getItem("toc-collapsed")==="1")document.documentElement.classList.add("toc-collapsed")}catch(e){}</script>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="index.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="index.html">← Investment Research Library</a><ol><li><a href="#risk-posture">Risk Posture</a></li><li><a href="#what-changed-since-oct-30-2026">What Changed Since Oct 30, 2026</a></li><li><a href="#composite-sentiment-score">Composite Sentiment Score</a></li><li><a href="#indicator-dashboard">Indicator Dashboard</a></li><li><a href="#indicator-detail">Indicator Detail</a></li><li><a href="#macro-policy-outlook-next-3-6-months">Macro &amp; Policy Outlook (Next 3–6 Months)</a></li><li><a href="#market-leverage-margin-debt">Market Leverage — Margin Debt</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li><li><a href="#bubble-risk-assessment">Bubble Risk Assessment</a></li><li><a href="#overall-market-opinion">Overall Market Opinion</a></li><li><a href="#sources">Sources</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>Market Sentiment</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>Market Sentiment Analysis</h1><p class="subtitle">November 14, 2026 · Buy-side risk-posture read · Update to the Oct 30 run · Data as of the Nov 13, 2026 close (VIX, SKEW, SPY, RSP, F&amp;G, 10Y via ^TNX); HY OAS, 2Y and FRED 10Y are the Nov 12 prints; CAPE from multpl.com</p><div class="call-strip"><div class="stat"><div class="label">Signal</div><div class="value"><span class="badge neutral"><span class="dot"></span>NEUTRAL</span></div></div><div class="stat"><div class="label">Conviction</div><div class="value">6 / 10</div><div class="meter"><span style="width:60%"></span></div></div><div class="stat"><div class="label">Thesis bias</div><div class="value">NEUTRAL</div></div><div class="stat" title="Source: references/scoring-tables.md weights"><div class="label">Composite sentiment</div><div class="value">47/100</div><div class="sub">(Neutral, mid-band)</div></div><div class="stat" title="Source: Yahoo Finance ^TNX (Nov 13, 2026)"><div class="label">10Y Treasury yield</div><div class="value">5.15%</div><div class="sub">(+31 bp since Nov 5)</div></div><div class="stat" title="Source: FRED BAMLH0A0HYM2"><div class="label">HY OAS</div><div class="value">320 bps</div><div class="sub">(348 peak Nov 5)</div></div></div></header>
+<h2 id="risk-posture">Risk Posture</h2>
+<div class="callout verdict neutral"><div class="signal"><span class="badge neutral"><span class="dot"></span>NEUTRAL</span> Conviction 6 / 10</div><div class="call-strip"><div class="stat"><div class="label">Composite Score</div><div class="value">47/100 — Neutral, mid-band (42 on Oct 30; broader breadth and a Fear &amp; Greed recovery from 20 offset the same stretched valuation)</div></div><div class="stat"><div class="label">Macro overlay (3–6 mo)</div><div class="value">Headwind — 4 of 4 factors are Headwinds → posture capped at Neutral, conviction reduced by 1 (7 → 6)</div></div><div class="stat"><div class="label">Margin picture</div><div class="value">Critical — FINRA margin debt $1.48T (Sep) ≈ 4.5% of GDP vs 3.8–4.0% at the 2021 peak; YoY +31% (October data not yet released)</div></div><div class="stat"><div class="label">Bubble risk</div><div class="value">Elevated (2 of 6 conditions firing; bumped up one notch from Moderate on Critical margin leverage)</div></div><div class="stat"><div class="label">Suggested tilt</div><div class="value">Neutral net exposure, moderate gross, hedges on. Stay overweight equal-weight versus cap-weight; underweight long-duration, high-multiple growth while the 10Y is above 5%. Buy fear only in scaled steps; do not add shorts while credit is tightening.</div></div><div class="stat"><div class="label">Key swing factor</div><div class="value">Rates, not AI headlines: the 10Y rose 31 bp in six sessions (4.84% Nov 5 → 5.15% Nov 13) into a ~90%-priced Dec 9 hike. Credit is the line — HY OAS at 320 bps; a break above 350 bps moves the call to Risk-Off</div></div></div><ul class="bullets"><li><strong>Net-exposure implication:</strong> hold net at neutral with moderate gross. This is a multiple-compression tape driven by yields, not a credit event: HY OAS spiked to 348 bps in the Nov 5 selloff and is back to 320 bps, while the 10Y and 30Y keep making cycle highs.</li><li><strong>Why not Risk-Off:</strong> credit and breadth both improved since Oct 30 (HY OAS 326 → 320 bps; RSP − SPY +3.6 → +5.3 pp), and positioning has already washed out once (Fear &amp; Greed 20 on Nov 6).</li><li><strong>Why not Risk-On:</strong> a December hike is ~90% priced with an ~11% tail on 50 bp, the 30-year auction tailed at 5.441%, CAPE is still ~40 and margin leverage is at a record share of GDP. Nothing on the rate side supports a higher multiple.</li></ul><p class="source">Source: Yahoo Finance (Nov 13, 2026 close); FRED BAMLH0A0HYM2, DGS10, DGS2 (Nov 12, 2026); CNN dataviz API (Nov 13, 2026); multpl.com; CME FedWatch via Investing.com (Nov 10, 2026); FINRA via Advisor Perspectives (Oct 23, 2026). Scores: references/scoring-tables.md</p><div class="scale">Conviction scale: 9–10 = highest-conviction book position · 7–8 = high · 5–6 = moderate/starter · 3–4 = low/watchlist · 1–2 = avoid or short candidate</div></div>
+<h2 id="what-changed-since-oct-30-2026">What Changed Since Oct 30, 2026</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Item</th><th scope="col">Prior (Oct 30 run; intraday)</th><th scope="col">Now (Nov 13 close)</th><th scope="col">What changed and why it matters</th></tr></thead><tbody><tr><td>Composite score</td><td>42 — Neutral (low end)</td><td class="fill-good">47 — Neutral (mid-band)</td><td>Up 5 points: Fear &amp; Greed (24 → 39), breadth (70 → 79) and VIX (53 → 60). Valuation scores unchanged at the floor.</td></tr><tr><td>CNN Fear &amp; Greed</td><td>23.9 (Extreme Fear)</td><td class="fill-good">38.6 (Fear)</td><td>Fell to 20.0 on Nov 6 after the Nov 5 crash day, then recovered as the S&amp;P 500 regained 2.8%. Score 24 → 39.</td></tr><tr><td>VIX</td><td>21.65 intraday (17.20 Oct 29 close)</td><td class="fill-good">19.30</td><td>Spiked to 28.18 on Nov 5 (S&amp;P 500 −4.4%), then back under 20. The close above 20 lasted two sessions. Score 53 → 60.</td></tr><tr><td>SKEW (put-demand proxy)</td><td>20-day avg 152.4</td><td class="fill-warn">20-day avg 151.5; spot 147.1</td><td>Tail-hedge demand still high but easing. Score 21 → 23.</td></tr><tr><td>Breadth (RSP − SPY YTD)</td><td>+3.6 pp</td><td class="fill-good">+5.3 pp (RSP +16.8%, SPY +11.5%)</td><td>Since Oct 30 RSP +1.3% vs SPY −0.2%: the rotation away from mega-cap AI continued through the Nvidia shock. Score 70 → 79.</td></tr><tr><td>HY OAS</td><td>326 bps</td><td class="fill-good">320 bps (Nov 12; 348 on Nov 5)</td><td>Widened 22 bps on the crash day, then fully retraced. Credit is still not confirming equity stress. Score 72 → 73.</td></tr><tr><td>Shiller CAPE</td><td>40.9</td><td class="fill-warn">~40.0</td><td>S&amp;P 500 −2.1% since Oct 29. Score unchanged at 15.</td></tr><tr><td>Buffett Indicator</td><td>~228%</td><td class="fill-warn">~228%</td><td>S&amp;P 500 flat versus the Oct 30 anchor. Score unchanged at 15.</td></tr><tr><td>10Y / 2Y Treasury</td><td>5.05% / 4.67% (FRED)</td><td class="fill-bad">5.15% (^TNX, Nov 13) / 4.86% (FRED, Nov 12); 30Y 5.48%</td><td>Bear-flattening: the 2Y rose ~19 bp on hike pricing; the curve narrowed from +38 bp to +24 bp. The 30Y is at a cycle high.</td></tr><tr><td>Fed / rate path</td><td>December hike ~83%</td><td class="fill-bad">December hike ~90%; ~11% odds of 50 bp</td><td>October CPI +0.4% m/m (core +0.3%) and a strong jobs report; Waller backed a hike and floated 50 bp.</td></tr><tr><td>Inflation / oil</td><td>Sep PCE 3.6%; Brent ~$114</td><td class="fill-warn">Oct PPI +6.5% y/y (highest since Nov 2022); Brent ~$96</td><td>Oil −16% is real headline relief, but core and pipeline inflation are still rising.</td></tr><tr><td>Treasury supply</td><td>Refunding pending (Nov 4)</td><td class="fill-bad">$125B refunding; 30Y tailed at 5.441%, bid-to-cover 2.36, dealers 11.4%</td><td>Weak end demand for duration at a $2T deficit: term premium is still rising.</td></tr><tr><td>AI leadership shock</td><td>Alphabet/Amazon earnings selloff</td><td class="fill-bad">Nvidia CEO Jensen Huang resigned Nov 12; NVDA −13% on the week</td><td>A governance shock to the market&#x27;s largest weight; neoclouds and optics hit hardest. Credit did not react.</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance (Nov 13, 2026 close); FRED (Nov 12, 2026); CNN dataviz API; multpl.com; CME FedWatch via Investing.com and CNBC (Nov 10, 2026); CNBC PPI (Nov 13, 2026); Treasury (Nov 4, 2026); Here Rock Hill (Nov 13, 2026); TechCrunch and CNBC (Nov 12–13, 2026). Prior figures quoted from the Oct 30, 2026 report</p>
+<ul class="bullets"><li><strong>Net read:</strong> thesis intact (Neutral, defensive lean, conviction 6 → 6). Sentiment indicators improved, but the rate overlay worsened by about as much. The composite rose, while the 10Y, 30Y and hike odds all moved against the multiple.</li><li><strong>Driver:</strong> the Nov 5 AI/semis crash (S&amp;P 500 −4.4%, VIX 28) and its rebound, then the Nvidia CEO resignation on Nov 12. Rates did the real damage: the hot October CPI (Nov 10) and the weak 30-year auction (Nov 12) took the 10Y from 4.84% to 5.15% in six sessions.</li><li><strong>Prior triggers:</strong> the Oct 30 Risk-Off trigger (HY OAS above ~350 bps) did not fire: it peaked at 348 bps on Nov 5, 2 bps short. The VIX trigger (a sustained close above 20) fired on Nov 5–6 and then reversed. The December hike is now fully priced, as flagged, and the 50 bp tail is new.</li></ul>
+<h2 id="composite-sentiment-score">Composite Sentiment Score</h2>
+<p><strong>47 — Neutral (mid-band of 40–60)</strong></p>
+<p>Credit (73) and broad participation (79) hold the composite up. Positioning (F&amp;G 39) and volatility (VIX 60) have recovered from the Nov 5–6 washout, while tail-hedge demand (SKEW 23) and record valuation (CAPE and Buffett both 15) still weigh. A Neutral composite with a Headwind macro overlay argues for balanced, not aggressive, exposure.</p>
+<h2 id="indicator-dashboard">Indicator Dashboard</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Indicator</th><th scope="col">Current Value</th><th scope="col" class=num>Score (0–100)</th><th scope="col">Signal</th><th scope="col">Trend</th></tr></thead><tbody><tr><td>VIX</td><td>19.30 (Nov 13 close)</td><td class="num">60</td><td class="fill-warn">Neutral</td><td>↓ from 28.18 on Nov 5; ↑ from 17.49 on Nov 11</td></tr><tr><td>CNN Fear &amp; Greed</td><td>38.6 (Fear)</td><td class="num">39</td><td class="fill-bad">Bearish</td><td>↑ from 20.0 (Nov 6) and 23.9 (Oct 30); 45.6 a month ago</td></tr><tr><td>Put/Call demand (SKEW 20-day avg proxy)</td><td>151.5 (spot 147.1)</td><td class="num">23</td><td class="fill-bad">Bearish</td><td>↓ slightly from 152.4; Cboe equity P/C 0.89 on Nov 5</td></tr><tr><td>Market breadth (RSP − SPY YTD)</td><td>+5.3 pp (RSP +16.8%, SPY +11.5%)</td><td class="num">79</td><td class="fill-good">Bullish</td><td>↑ from +3.6 pp; equal-weight leading</td></tr><tr><td>HY OAS spread</td><td>320 bps (Nov 12)</td><td class="num">73</td><td class="fill-good">Bullish</td><td>↓ from 348 bps (Nov 5) and 326 bps (Oct 30)</td></tr><tr><td>Shiller CAPE</td><td>~40.0</td><td class="num">15</td><td class="fill-bad">Bearish</td><td>↓ from 40.9 on the price dip; record ~44.2 (Dec 1999)</td></tr><tr><td>Buffett Indicator</td><td>~228%</td><td class="num">15</td><td class="fill-bad">Bearish</td><td>→ flat versus Oct 30</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance (^VIX, ^SKEW, RSP, SPY; Nov 13, 2026); CNN dataviz API (Nov 13, 2026); FRED BAMLH0A0HYM2 (Nov 12, 2026); multpl.com (CAPE); Buffett: ^FTW5000 / FRED GDP anchored to ~228% (our estimate); Cboe daily statistics (Nov 5, 2026). Weights: VIX 15%, F&amp;G 15%, SKEW 10%, breadth 15%, HY OAS 20%, CAPE 15%, Buffett 10%</p>
+<h2 id="indicator-detail">Indicator Detail</h2>
+<h3 id="vix">VIX</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Current Value</th><th scope="col" class=num>Score</th><th scope="col">Trend</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>19.30</td><td class="num">60</td><td>↓ from 28.18 (Nov 5)</td><td>Neutral</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance ^VIX (Nov 13, 2026 close)</p>
+<ul class="bullets"><li><strong>So what:</strong> the Nov 5 spike to 28 was the highest close of this cycle, but it lasted two sessions. Implied vol is back below 20 despite the Nvidia CEO news. That points to an orderly repricing, not a forced de-risking.</li><li><strong>Watch:</strong> a close above 22 into the Nov 17 Nvidia print or the Dec 9 FOMC would confirm that fear is rebuilding rather than fading.</li></ul>
+<figure class="viz" data-chart><figcaption><span class="viz-title">VIX — CBOE Volatility Index</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "VIX — CBOE Volatility Index", "unit": "num", "categories": ["2021-11-12", "2021-11-19", "2021-11-26", "2021-12-03", "2021-12-10", "2021-12-17", "2021-12-24", "2021-12-31", "2022-01-07", "2022-01-14", "2022-01-21", "2022-01-28", "2022-02-04", "2022-02-11", "2022-02-18", "2022-02-25", "2022-03-04", "2022-03-11", "2022-03-18", "2022-03-25", "2022-04-01", "2022-04-08", "2022-04-15", "2022-04-22", "2022-04-29", "2022-05-06", "2022-05-13", "2022-05-20", "2022-05-27", "2022-06-03", "2022-06-10", "2022-06-17", "2022-06-24", "2022-07-01", "2022-07-08", "2022-07-15", "2022-07-22", "2022-07-29", "2022-08-05", "2022-08-12", "2022-08-19", "2022-08-26", "2022-09-02", "2022-09-09", "2022-09-16", "2022-09-23", "2022-09-30", "2022-10-07", "2022-10-14", "2022-10-21", "2022-10-28", "2022-11-04", "2022-11-11", "2022-11-18", "2022-11-25", "2022-12-02", "2022-12-09", "2022-12-16", "2022-12-23", "2022-12-30", "2023-01-06", "2023-01-13", "2023-01-20", "2023-01-27", "2023-02-03", "2023-02-10", "2023-02-17", "2023-02-24", "2023-03-03", "2023-03-10", "2023-03-17", "2023-03-24", "2023-03-31", "2023-04-07", "2023-04-14", "2023-04-21", "2023-04-28", "2023-05-05", "2023-05-12", "2023-05-19", "2023-05-26", "2023-06-02", "2023-06-09", "2023-06-16", "2023-06-23", "2023-06-30", "2023-07-07", "2023-07-14", "2023-07-21", "2023-07-28", "2023-08-04", "2023-08-11", "2023-08-18", "2023-08-25", "2023-09-01", "2023-09-08", "2023-09-15", "2023-09-22", "2023-09-29", "2023-10-06", "2023-10-13", "2023-10-20", "2023-10-27", "2023-11-03", "2023-11-10", "2023-11-17", "2023-11-24", "2023-12-01", "2023-12-08", "2023-12-15", "2023-12-22", "2023-12-29", "2024-01-05", "2024-01-12", "2024-01-19", "2024-01-26", "2024-02-02", "2024-02-09", "2024-02-16", "2024-02-23", "2024-03-01", "2024-03-08", "2024-03-15", "2024-03-22", "2024-03-29", "2024-04-05", "2024-04-12", "2024-04-19", "2024-04-26", "2024-05-03", "2024-05-10", "2024-05-17", "2024-05-24", "2024-05-31", "2024-06-07", "2024-06-14", "2024-06-21", "2024-06-28", "2024-07-05", "2024-07-12", "2024-07-19", "2024-07-26", "2024-08-02", "2024-08-09", "2024-08-16", "2024-08-23", "2024-08-30", "2024-09-06", "2024-09-13", "2024-09-20", "2024-09-27", "2024-10-04", "2024-10-11", "2024-10-18", "2024-10-25", "2024-11-01", "2024-11-08", "2024-11-15", "2024-11-22", "2024-11-29", "2024-12-06", "2024-12-13", "2024-12-20", "2024-12-27", "2025-01-03", "2025-01-10", "2025-01-17", "2025-01-24", "2025-01-31", "2025-02-07", "2025-02-14", "2025-02-21", "2025-02-28", "2025-03-07", "2025-03-14", "2025-03-21", "2025-03-28", "2025-04-04", "2025-04-11", "2025-04-18", "2025-04-25", "2025-05-02", "2025-05-09", "2025-05-16", "2025-05-23", "2025-05-30", "2025-06-06", "2025-06-13", "2025-06-20", "2025-06-27", "2025-07-04", "2025-07-11", "2025-07-18", "2025-07-25", "2025-08-01", "2025-08-08", "2025-08-15", "2025-08-22", "2025-08-29", "2025-09-05", "2025-09-12", "2025-09-19", "2025-09-26", "2025-10-03", "2025-10-10", "2025-10-17", "2025-10-24", "2025-10-31", "2025-11-07", "2025-11-14", "2025-11-21", "2025-11-28", "2025-12-05", "2025-12-12", "2025-12-19", "2025-12-26", "2026-01-02", "2026-01-09", "2026-01-16", "2026-01-23", "2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-03", "2026-04-10", "2026-04-17", "2026-04-24", "2026-05-01", "2026-05-08", "2026-05-15", "2026-05-22", "2026-05-29", "2026-06-05", "2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03", "2026-07-10", "2026-07-17", "2026-07-24", "2026-07-31", "2026-08-07", "2026-08-14", "2026-08-21", "2026-08-28", "2026-09-04", "2026-09-11", "2026-09-18", "2026-09-25", "2026-10-02", "2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-13"], "series": [{"name": "VIX", "values": [16.29, 17.91, 28.62, 30.67, 18.69, 21.57, 17.96, 17.22, 18.76, 19.19, 28.85, 27.66, 23.22, 27.36, 27.75, 27.59, 31.98, 30.75, 23.87, 20.81, 19.63, 21.16, 22.7, 28.21, 33.4, 30.19, 28.87, 29.43, 25.72, 24.79, 27.75, 31.13, 27.23, 26.7, 24.64, 24.23, 23.03, 21.33, 21.15, 19.53, 20.6, 25.56, 25.47, 22.79, 26.3, 29.92, 31.62, 31.36, 32.02, 29.69, 25.75, 24.55, 22.52, 23.12, 20.5, 19.06, 22.83, 22.62, 20.87, 21.67, 21.13, 18.35, 19.85, 18.51, 18.33, 20.53, 20.02, 21.67, 18.49, 24.8, 25.51, 21.74, 18.7, 18.4, 17.07, 16.77, 15.78, 17.19, 17.03, 16.81, 17.95, 14.6, 13.83, 13.54, 13.44, 13.59, 14.83, 13.34, 13.6, 13.33, 17.1, 14.84, 17.3, 15.68, 13.09, 13.84, 13.79, 17.2, 17.52, 17.45, 19.32, 21.71, 21.27, 14.91, 14.17, 13.8, 12.46, 12.63, 12.35, 12.28, 13.03, 12.45, 13.35, 12.7, 13.3, 13.26, 13.85, 12.93, 14.24, 13.75, 13.11, 14.74, 14.41, 13.06, 13.01, 16.03, 17.31, 18.71, 15.03, 13.49, 12.55, 11.99, 11.93, 12.92, 12.22, 12.66, 13.2, 12.44, 12.48, 12.46, 16.52, 16.39, 23.39, 20.37, 14.8, 15.86, 15.0, 22.38, 16.56, 16.15, 16.96, 19.21, 20.46, 18.03, 20.33, 21.88, 14.94, 16.14, 15.24, 13.51, 12.77, 13.81, 18.36, 15.95, 16.13, 19.54, 15.97, 14.85, 16.43, 16.54, 14.77, 18.21, 19.63, 23.37, 21.77, 19.28, 21.65, 45.31, 37.56, 29.65, 24.84, 22.68, 21.9, 17.24, 22.29, 18.57, 16.77, 20.82, 20.62, 16.32, 16.38, 16.4, 16.41, 14.93, 20.38, 15.15, 15.09, 14.22, 15.36, 15.18, 14.76, 15.45, 15.29, 16.65, 21.66, 20.78, 16.37, 17.44, 19.08, 19.83, 23.43, 16.35, 15.41, 15.74, 14.91, 13.6, 14.51, 14.49, 15.86, 16.09, 17.44, 20.37, 20.6, 19.09, 19.86, 29.49, 27.19, 26.78, 31.05, 23.87, 19.23, 17.48, 18.71, 16.99, 17.19, 18.43, 16.7, 15.32, 21.51, 17.68, 16.4, 18.41, 16.15, 15.03, 18.77, 18.58, 15.99, 14.9, 14.25, 15.13, 14.43, 14.53, 15.84, 14.81, 14.87, 15.31, 14.84, 19.99, 19.45, 19.42, 25.64, 19.3]}], "refs": [{"value": 15, "label": "15 complacency"}, {"value": 20, "label": "20 caution"}, {"value": 30, "label": "30 fear"}]}</script><p class="source">Source: Yahoo Finance ^VIX, 5-year daily</p></figure>
+<h3 id="cnn-fear-greed">CNN Fear &amp; Greed</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Current Value</th><th scope="col" class=num>Score</th><th scope="col">Trend</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>38.6 (Fear)</td><td class="num">39</td><td>↑ from 20.0 (Nov 6)</td><td>Bearish</td></tr></tbody></table></div><p class="source">Source: CNN dataviz API (Nov 13, 2026)</p>
+<ul class="bullets"><li><strong>So what:</strong> the Nov 6 reading of 20 was the low of this cycle and marked a washout. The index has recovered to Fear, not Neutral, so the contrarian buy signal has largely been used up.</li><li><strong>Watch:</strong> a move back below 25 with HY OAS still under 350 bps would be the next scaled buying opportunity.</li></ul>
+<figure class="viz" data-chart><figcaption><span class="viz-title">CNN Fear &amp; Greed Index</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "CNN Fear & Greed Index", "unit": "num", "categories": ["2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-25", "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-05", "2026-10-06", "2026-10-07", "2026-10-08", "2026-10-09", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-19", "2026-10-20", "2026-10-21", "2026-10-22", "2026-10-23", "2026-10-26", "2026-10-27", "2026-10-28", "2026-10-29", "2026-10-30", "2026-11-02", "2026-11-03", "2026-11-04", "2026-11-05", "2026-11-06", "2026-11-09", "2026-11-10", "2026-11-11", "2026-11-12", "2026-11-13", "2026-11-13"], "series": [{"name": "Fear & Greed", "values": [22.06, 11.64, 8.9, 7.86, 5.17, 5.66, 13.69, 15.03, 17.66, 21.77, 22.09, 23.26, 24.77, 36.03, 38.14, 40.77, 40.94, 36.37, 43.74, 39.29, 49.31, 46.4, 37.69, 42.37, 44.2, 54.89, 58.57, 58.0, 54.86, 47.89, 46.11, 43.26, 45.23, 47.6, 52.86, 48.57, 48.37, 54.11, 58.0, 59.09, 58.63, 63.66, 63.77, 50.86, 53.86, 54.77, 54.89, 57.66, 64.97, 65.54, 63.83, 58.6, 63.4, 43.34, 47.23, 34.94, 45.37, 48.49, 47.23, 49.91, 36.36, 33.84, 33.31, 34.16, 34.4, 42.34, 32.54, 40.26, 43.14, 42.91, 41.17, 34.29, 31.63, 33.07, 31.63, 25.26, 22.23, 20.27, 18.31, 16.67, 23.91, 22.89, 13.61, 18.31, 8.4, 11.63, 10.36, 16.54, 10.26, 8.17, 5.77, 14.89, 15.86, 18.29, 21.86, 21.57, 29.17, 33.8, 38.06, 40.97, 47.26, 56.2, 61.49, 68.57, 69.97, 67.57, 68.46, 66.17, 65.4, 66.29, 67.43, 66.23, 69.51, 71.17, 66.89, 67.26, 68.74, 67.29, 67.29, 66.63, 65.69, 64.97, 65.91, 63.23, 62.09, 59.26, 60.51, 57.51, 58.23, 59.83, 60.63, 60.71, 60.46, 59.46, 56.97, 54.63, 54.57, 41.86, 39.37, 33.77, 27.29, 29.69, 33.51, 40.14, 39.51, 32.94, 37.34, 33.94, 28.46, 26.46, 25.43, 24.66, 26.86, 29.97, 31.63, 32.54, 41.66, 39.77, 38.63, 44.71, 46.83, 40.86, 41.06, 44.43, 41.86, 37.0, 36.0, 42.77, 44.43, 40.86, 40.77, 38.23, 37.14, 25.56, 38.11, 39.57, 46.14, 58.97, 60.23, 59.69, 65.14, 64.37, 60.09, 61.69, 66.11, 64.31, 59.14, 54.63, 56.63, 51.37, 54.66, 54.97, 59.6, 53.94, 57.31, 53.74, 49.2, 44.86, 46.06, 47.51, 45.23, 39.14, 38.2, 31.91, 33.11, 32.09, 29.26, 27.03, 29.46, 28.49, 33.94, 35.23, 33.66, 34.51, 36.91, 32.4, 31.06, 30.31, 29.23, 38.2, 43.09, 47.03, 44.71, 39.17, 43.51, 45.23, 45.6, 28.79, 32.0, 18.21, 19.51, 28.74, 30.26, 19.99, 16.69, 29.83, 32.89, 34.4, 30.77, 26.32, 19.39, 23.54, 34.17, 19.99, 24.35, 31.51, 37.37, 35.94, 40.34, 38.6, 38.6]}], "refs": [{"value": 75, "label": "75 extreme greed"}, {"value": 25, "label": "25 extreme fear"}], "y_min": 0, "y_max": 100}</script><p class="source">Source: CNN dataviz API (~250 trading days)</p></figure>
+<h3 id="put-call-demand-skew-proxy">Put/Call Demand (SKEW proxy)</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Current Value</th><th scope="col" class=num>Score</th><th scope="col">Trend</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>151.5 (20-day avg); spot 147.1</td><td class="num">23</td><td>↓ from 152.4</td><td>Bearish</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance ^SKEW (Nov 13, 2026)</p>
+<ul class="bullets"><li><strong>So what:</strong> tail-protection demand is still in the 145–155 band, which signals fear. The spot reading is the lowest since mid-October, so hedgers are starting to monetise. The Cboe equity put/call ratio was 0.89 on Nov 5 (score-equivalent ~43): fear, but not panic.</li><li><strong>Note:</strong> SKEW is the proxy because the CBOE equity put/call history is not freely available after 2019.</li></ul>
+<figure class="viz" data-chart><figcaption><span class="viz-title">CBOE SKEW Index (put-demand proxy)</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "CBOE SKEW Index (put-demand proxy)", "unit": "num", "categories": ["2021-11-19", "2021-11-26", "2021-12-03", "2021-12-10", "2021-12-17", "2021-12-24", "2021-12-31", "2022-01-07", "2022-01-14", "2022-01-21", "2022-01-28", "2022-02-04", "2022-02-11", "2022-02-18", "2022-02-25", "2022-03-04", "2022-03-11", "2022-03-18", "2022-03-25", "2022-04-01", "2022-04-08", "2022-04-15", "2022-04-22", "2022-04-29", "2022-05-06", "2022-05-13", "2022-05-20", "2022-05-27", "2022-06-03", "2022-06-10", "2022-06-17", "2022-06-24", "2022-07-01", "2022-07-08", "2022-07-15", "2022-07-22", "2022-07-29", "2022-08-05", "2022-08-12", "2022-08-19", "2022-08-26", "2022-09-02", "2022-09-09", "2022-09-16", "2022-09-23", "2022-09-30", "2022-10-07", "2022-10-14", "2022-10-21", "2022-10-28", "2022-11-04", "2022-11-11", "2022-11-18", "2022-11-25", "2022-12-02", "2022-12-09", "2022-12-16", "2022-12-23", "2022-12-30", "2023-01-06", "2023-01-13", "2023-01-20", "2023-01-27", "2023-02-03", "2023-02-10", "2023-02-17", "2023-02-24", "2023-03-03", "2023-03-10", "2023-03-17", "2023-03-24", "2023-03-31", "2023-04-07", "2023-04-14", "2023-04-21", "2023-04-28", "2023-05-05", "2023-05-12", "2023-05-19", "2023-05-26", "2023-06-02", "2023-06-09", "2023-06-16", "2023-06-23", "2023-06-30", "2023-07-07", "2023-07-14", "2023-07-21", "2023-07-28", "2023-08-04", "2023-08-11", "2023-08-18", "2023-08-25", "2023-09-01", "2023-09-08", "2023-09-15", "2023-09-22", "2023-09-29", "2023-10-06", "2023-10-13", "2023-10-20", "2023-10-27", "2023-11-03", "2023-11-10", "2023-11-17", "2023-11-24", "2023-12-01", "2023-12-08", "2023-12-15", "2023-12-22", "2023-12-29", "2024-01-05", "2024-01-12", "2024-01-19", "2024-01-26", "2024-02-02", "2024-02-09", "2024-02-16", "2024-02-23", "2024-03-01", "2024-03-08", "2024-03-15", "2024-03-22", "2024-03-29", "2024-04-05", "2024-04-12", "2024-04-19", "2024-04-26", "2024-05-03", "2024-05-10", "2024-05-17", "2024-05-24", "2024-05-31", "2024-06-07", "2024-06-14", "2024-06-21", "2024-06-28", "2024-07-05", "2024-07-12", "2024-07-19", "2024-07-26", "2024-08-02", "2024-08-09", "2024-08-16", "2024-08-23", "2024-08-30", "2024-09-06", "2024-09-13", "2024-09-20", "2024-09-27", "2024-10-04", "2024-10-11", "2024-10-18", "2024-10-25", "2024-11-01", "2024-11-08", "2024-11-15", "2024-11-22", "2024-11-29", "2024-12-06", "2024-12-13", "2024-12-20", "2024-12-27", "2025-01-03", "2025-01-10", "2025-01-17", "2025-01-24", "2025-01-31", "2025-02-07", "2025-02-14", "2025-02-21", "2025-02-28", "2025-03-07", "2025-03-14", "2025-03-21", "2025-03-28", "2025-04-04", "2025-04-11", "2025-04-18", "2025-04-25", "2025-05-02", "2025-05-09", "2025-05-16", "2025-05-23", "2025-05-30", "2025-06-06", "2025-06-13", "2025-06-20", "2025-06-27", "2025-07-04", "2025-07-11", "2025-07-18", "2025-07-25", "2025-08-01", "2025-08-08", "2025-08-15", "2025-08-22", "2025-08-29", "2025-09-05", "2025-09-12", "2025-09-19", "2025-09-26", "2025-10-03", "2025-10-10", "2025-10-17", "2025-10-24", "2025-10-31", "2025-11-07", "2025-11-14", "2025-11-21", "2025-11-28", "2025-12-05", "2025-12-12", "2025-12-19", "2025-12-26", "2026-01-02", "2026-01-09", "2026-01-16", "2026-01-23", "2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-03", "2026-04-10", "2026-04-17", "2026-04-24", "2026-05-01", "2026-05-08", "2026-05-15", "2026-05-22", "2026-05-29", "2026-06-05", "2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03", "2026-07-10", "2026-07-17", "2026-07-24", "2026-07-31", "2026-08-07", "2026-08-14", "2026-08-21", "2026-08-28", "2026-09-04", "2026-09-11", "2026-09-18", "2026-09-25", "2026-10-02", "2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-13"], "series": [{"name": "SKEW (20-day avg)", "values": [143.8, 145.11, 146.94, 148.03, 147.42, 146.19, 147.13, 145.61, 143.49, 142.73, 137.82, 134.86, 132.36, 131.35, 130.53, 130.96, 131.61, 132.64, 134.91, 136.45, 138.72, 139.74, 139.0, 138.35, 134.84, 130.76, 127.34, 123.6, 121.86, 120.91, 121.3, 121.17, 120.92, 120.32, 120.12, 119.64, 120.02, 120.8, 122.17, 123.4, 124.08, 123.7, 122.6, 121.36, 119.69, 119.45, 120.01, 119.56, 119.66, 118.03, 115.41, 113.8, 113.33, 114.37, 116.14, 117.48, 119.43, 118.6, 117.46, 116.49, 115.37, 115.58, 117.48, 119.92, 121.61, 121.96, 122.29, 121.79, 121.85, 124.77, 125.57, 126.49, 127.84, 127.71, 128.47, 130.75, 132.23, 134.05, 134.76, 136.05, 138.86, 143.22, 146.38, 146.39, 145.84, 145.98, 145.07, 142.83, 144.55, 145.08, 143.29, 141.4, 138.57, 136.67, 136.01, 137.3, 138.18, 137.59, 135.7, 135.32, 135.26, 134.7, 134.56, 135.58, 136.76, 137.16, 139.61, 141.54, 144.83, 142.59, 141.89, 139.9, 139.91, 138.32, 141.66, 146.08, 150.18, 152.94, 151.77, 150.81, 148.24, 144.35, 145.15, 146.75, 145.96, 145.19, 143.05, 139.1, 136.42, 135.02, 136.5, 140.34, 142.75, 144.45, 145.9, 147.17, 145.61, 145.65, 148.59, 148.45, 145.9, 143.35, 142.9, 140.61, 141.01, 145.93, 149.99, 150.05, 154.07, 155.91, 155.84, 158.68, 159.83, 155.63, 153.4, 151.9, 148.21, 149.65, 152.88, 158.22, 163.8, 167.7, 169.17, 167.34, 164.51, 163.92, 166.0, 163.64, 165.19, 165.82, 166.06, 163.85, 159.98, 151.72, 142.68, 139.79, 139.26, 139.32, 138.57, 134.56, 132.21, 131.39, 133.02, 135.47, 136.56, 138.22, 139.75, 142.85, 145.79, 145.89, 146.29, 145.51, 146.21, 148.95, 151.18, 152.11, 150.6, 150.77, 150.66, 150.54, 150.14, 148.59, 146.83, 145.28, 144.64, 146.47, 146.05, 145.88, 144.7, 142.62, 143.56, 144.6, 146.68, 150.37, 152.31, 152.68, 151.63, 150.87, 148.52, 146.93, 146.43, 144.68, 143.28, 143.0, 145.45, 146.7, 146.45, 145.74, 144.09, 142.95, 144.43, 144.11, 143.46, 141.28, 140.16, 139.07, 138.98, 140.16, 141.01, 142.23, 143.13, 144.74, 145.01, 145.87, 147.08, 145.68, 142.54, 140.02, 138.79, 139.56, 143.42, 146.22, 147.59, 147.8, 146.71, 145.63, 148.51, 151.15, 152.61, 153.96, 151.55]}], "refs": [{"value": 150, "label": "150 elevated tail risk"}, {"value": 135, "label": "135 caution"}, {"value": 115, "label": "115 complacency"}]}</script><p class="source">Source: Yahoo Finance ^SKEW, 5-year daily</p></figure>
+<h3 id="market-breadth-rsp-vs-spy">Market Breadth (RSP vs SPY)</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Current Value</th><th scope="col" class=num>Score</th><th scope="col">Trend</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>RSP +16.8% vs SPY +11.5% YTD → +5.3 pp</td><td class="num">79</td><td>↑ from +3.6 pp</td><td>Bullish</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance (RSP, SPY total-return closes; Nov 13, 2026)</p>
+<ul class="bullets"><li><strong>So what:</strong> the strongest pillar of the composite. Since Oct 30, equal-weight is up 1.3% and cap-weight is down 0.2%. The market is rotating away from mega-cap AI after the Nov 5 crash and the Nvidia shock, not abandoning equities.</li><li><strong>Watch:</strong> RSP falling in absolute terms alongside SPY would convert the rotation into broad de-risking.</li></ul>
+<figure class="viz" data-chart><figcaption><span class="viz-title">Market Breadth — RSP vs SPY (indexed to 100)</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "Market Breadth — RSP vs SPY (indexed to 100)", "unit": "num", "categories": ["2021-11-12", "2021-11-19", "2021-11-26", "2021-12-03", "2021-12-10", "2021-12-17", "2021-12-24", "2021-12-31", "2022-01-07", "2022-01-14", "2022-01-21", "2022-01-28", "2022-02-04", "2022-02-11", "2022-02-18", "2022-02-25", "2022-03-04", "2022-03-11", "2022-03-18", "2022-03-25", "2022-04-01", "2022-04-08", "2022-04-15", "2022-04-22", "2022-04-29", "2022-05-06", "2022-05-13", "2022-05-20", "2022-05-27", "2022-06-03", "2022-06-10", "2022-06-17", "2022-06-24", "2022-07-01", "2022-07-08", "2022-07-15", "2022-07-22", "2022-07-29", "2022-08-05", "2022-08-12", "2022-08-19", "2022-08-26", "2022-09-02", "2022-09-09", "2022-09-16", "2022-09-23", "2022-09-30", "2022-10-07", "2022-10-14", "2022-10-21", "2022-10-28", "2022-11-04", "2022-11-11", "2022-11-18", "2022-11-25", "2022-12-02", "2022-12-09", "2022-12-16", "2022-12-23", "2022-12-30", "2023-01-06", "2023-01-13", "2023-01-20", "2023-01-27", "2023-02-03", "2023-02-10", "2023-02-17", "2023-02-24", "2023-03-03", "2023-03-10", "2023-03-17", "2023-03-24", "2023-03-31", "2023-04-07", "2023-04-14", "2023-04-21", "2023-04-28", "2023-05-05", "2023-05-12", "2023-05-19", "2023-05-26", "2023-06-02", "2023-06-09", "2023-06-16", "2023-06-23", "2023-06-30", "2023-07-07", "2023-07-14", "2023-07-21", "2023-07-28", "2023-08-04", "2023-08-11", "2023-08-18", "2023-08-25", "2023-09-01", "2023-09-08", "2023-09-15", "2023-09-22", "2023-09-29", "2023-10-06", "2023-10-13", "2023-10-20", "2023-10-27", "2023-11-03", "2023-11-10", "2023-11-17", "2023-11-24", "2023-12-01", "2023-12-08", "2023-12-15", "2023-12-22", "2023-12-29", "2024-01-05", "2024-01-12", "2024-01-19", "2024-01-26", "2024-02-02", "2024-02-09", "2024-02-16", "2024-02-23", "2024-03-01", "2024-03-08", "2024-03-15", "2024-03-22", "2024-03-29", "2024-04-05", "2024-04-12", "2024-04-19", "2024-04-26", "2024-05-03", "2024-05-10", "2024-05-17", "2024-05-24", "2024-05-31", "2024-06-07", "2024-06-14", "2024-06-21", "2024-06-28", "2024-07-05", "2024-07-12", "2024-07-19", "2024-07-26", "2024-08-02", "2024-08-09", "2024-08-16", "2024-08-23", "2024-08-30", "2024-09-06", "2024-09-13", "2024-09-20", "2024-09-27", "2024-10-04", "2024-10-11", "2024-10-18", "2024-10-25", "2024-11-01", "2024-11-08", "2024-11-15", "2024-11-22", "2024-11-29", "2024-12-06", "2024-12-13", "2024-12-20", "2024-12-27", "2025-01-03", "2025-01-10", "2025-01-17", "2025-01-24", "2025-01-31", "2025-02-07", "2025-02-14", "2025-02-21", "2025-02-28", "2025-03-07", "2025-03-14", "2025-03-21", "2025-03-28", "2025-04-04", "2025-04-11", "2025-04-18", "2025-04-25", "2025-05-02", "2025-05-09", "2025-05-16", "2025-05-23", "2025-05-30", "2025-06-06", "2025-06-13", "2025-06-20", "2025-06-27", "2025-07-04", "2025-07-11", "2025-07-18", "2025-07-25", "2025-08-01", "2025-08-08", "2025-08-15", "2025-08-22", "2025-08-29", "2025-09-05", "2025-09-12", "2025-09-19", "2025-09-26", "2025-10-03", "2025-10-10", "2025-10-17", "2025-10-24", "2025-10-31", "2025-11-07", "2025-11-14", "2025-11-21", "2025-11-28", "2025-12-05", "2025-12-12", "2025-12-19", "2025-12-26", "2026-01-02", "2026-01-09", "2026-01-16", "2026-01-23", "2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-03", "2026-04-10", "2026-04-17", "2026-04-24", "2026-05-01", "2026-05-08", "2026-05-15", "2026-05-22", "2026-05-29", "2026-06-05", "2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03", "2026-07-10", "2026-07-17", "2026-07-24", "2026-07-31", "2026-08-07", "2026-08-14", "2026-08-21", "2026-08-28", "2026-09-04", "2026-09-11", "2026-09-18", "2026-09-25", "2026-10-02", "2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-13"], "series": [{"name": "RSP (equal-weight)", "values": [100.73, 99.48, 97.49, 96.27, 99.54, 97.81, 100.13, 101.71, 101.1, 100.98, 95.67, 95.79, 97.32, 97.07, 95.96, 96.97, 95.98, 93.44, 98.22, 99.17, 99.29, 98.46, 97.6, 95.63, 92.53, 92.41, 90.68, 88.6, 94.35, 92.98, 88.3, 82.3, 87.11, 85.72, 86.46, 85.71, 88.54, 92.02, 92.04, 95.66, 94.29, 90.94, 88.24, 91.95, 87.54, 82.7, 80.67, 82.49, 81.25, 84.21, 88.85, 87.41, 92.59, 91.6, 93.49, 94.4, 91.29, 89.6, 89.92, 89.89, 92.43, 94.87, 93.85, 95.97, 97.41, 96.07, 96.12, 93.46, 95.18, 89.4, 87.84, 88.6, 92.5, 91.52, 92.52, 92.69, 92.83, 91.48, 90.52, 91.38, 90.24, 91.93, 92.85, 95.19, 93.0, 96.13, 95.41, 97.68, 99.0, 99.18, 97.22, 97.17, 94.61, 94.57, 96.7, 94.85, 94.8, 92.06, 91.41, 90.32, 90.51, 88.4, 86.23, 91.35, 90.81, 93.87, 94.78, 97.12, 97.14, 100.91, 101.69, 102.21, 100.85, 101.07, 100.92, 102.01, 102.43, 102.94, 103.65, 104.93, 106.18, 107.2, 106.49, 108.38, 110.16, 108.22, 105.35, 103.94, 105.64, 105.88, 108.04, 109.29, 107.92, 107.82, 107.03, 106.46, 107.7, 107.27, 106.88, 110.05, 109.97, 110.84, 108.9, 108.82, 111.52, 113.82, 114.84, 111.3, 114.28, 115.87, 117.3, 117.06, 117.94, 119.23, 116.76, 115.64, 120.69, 118.62, 121.63, 123.0, 121.4, 119.42, 115.81, 116.24, 116.0, 113.98, 118.44, 119.86, 119.23, 118.56, 119.13, 118.3, 118.54, 116.24, 113.59, 114.37, 113.57, 103.9, 107.1, 107.52, 110.69, 113.63, 114.08, 118.98, 115.24, 116.63, 118.12, 117.23, 117.43, 120.06, 122.91, 122.41, 122.25, 124.6, 120.51, 121.52, 123.36, 125.77, 125.19, 125.07, 125.42, 125.59, 125.71, 127.49, 123.41, 125.33, 127.5, 125.28, 125.03, 124.89, 123.83, 127.68, 127.99, 128.93, 128.58, 129.73, 129.08, 132.25, 133.22, 133.03, 132.57, 135.37, 135.78, 136.59, 137.18, 132.62, 129.52, 127.48, 126.67, 129.78, 132.18, 136.55, 135.79, 136.32, 137.18, 135.48, 138.85, 140.36, 139.69, 142.26, 141.12, 141.91, 145.01, 144.6, 143.97, 144.1, 145.08, 148.5, 150.31, 149.57, 148.91, 147.77, 144.98, 143.24, 142.98, 142.05, 144.29, 145.0, 146.66, 147.86, 146.33, 149.79]}, {"name": "SPY (cap-weight)", "values": [100.79, 101.14, 99.0, 97.8, 101.54, 99.54, 101.86, 102.81, 100.89, 100.59, 94.8, 95.66, 97.12, 95.34, 93.99, 94.75, 93.54, 90.92, 96.52, 98.29, 98.34, 97.18, 95.05, 92.5, 89.46, 89.31, 87.22, 84.6, 90.16, 89.14, 84.63, 79.78, 85.06, 83.13, 84.75, 83.98, 86.15, 89.84, 90.16, 93.13, 92.05, 88.38, 85.53, 88.66, 84.42, 80.57, 78.21, 79.44, 78.31, 81.95, 85.18, 82.4, 87.26, 86.71, 88.09, 89.1, 86.11, 84.31, 84.23, 84.12, 85.36, 87.66, 87.08, 89.23, 90.7, 89.75, 89.58, 87.19, 88.91, 84.89, 86.11, 87.38, 90.39, 90.35, 91.07, 91.01, 91.84, 91.11, 90.88, 92.43, 92.74, 94.49, 94.92, 97.39, 96.01, 98.24, 97.19, 99.57, 100.21, 101.26, 99.02, 98.77, 96.74, 97.51, 99.99, 98.74, 98.61, 95.73, 95.07, 95.53, 95.97, 93.67, 91.34, 96.68, 97.99, 100.26, 101.26, 102.11, 102.35, 104.8, 105.77, 106.14, 104.49, 106.45, 107.73, 108.84, 110.39, 111.92, 111.54, 113.41, 114.52, 114.27, 114.2, 116.75, 117.17, 116.13, 114.43, 110.92, 113.85, 114.53, 116.67, 118.6, 118.59, 118.13, 119.62, 121.58, 122.36, 122.3, 124.64, 125.84, 123.37, 122.35, 119.75, 119.78, 124.57, 126.32, 126.67, 121.43, 126.3, 128.09, 128.82, 129.16, 130.64, 131.77, 130.52, 128.72, 134.84, 132.04, 134.24, 135.82, 137.01, 136.2, 133.7, 134.57, 133.88, 131.29, 135.16, 137.51, 136.11, 135.88, 137.9, 135.69, 134.39, 130.26, 127.29, 127.94, 126.05, 114.62, 121.12, 119.42, 124.91, 128.57, 128.02, 134.79, 131.37, 133.7, 135.92, 135.43, 135.21, 139.91, 142.28, 141.89, 142.79, 144.95, 141.45, 144.97, 146.4, 146.82, 146.76, 147.26, 149.58, 151.42, 151.0, 152.68, 148.99, 151.58, 154.52, 155.61, 153.08, 153.3, 150.36, 155.92, 156.44, 155.55, 155.74, 157.96, 156.33, 158.82, 158.27, 157.71, 158.34, 158.03, 156.0, 157.76, 156.97, 153.86, 151.55, 148.82, 145.49, 150.48, 155.9, 162.94, 163.81, 165.35, 169.25, 169.6, 171.09, 173.58, 169.23, 170.2, 171.78, 167.7, 171.33, 173.67, 170.99, 169.99, 171.85, 177.88, 178.59, 176.15, 176.98, 177.18, 175.82, 175.66, 177.88, 177.49, 179.55, 176.02, 175.26, 174.28, 169.57, 173.97]}], "refs": []}</script><p class="source">Source: Yahoo Finance RSP and SPY, 5-year daily</p></figure>
+<h3 id="hy-oas-spread">HY OAS Spread</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Current Value</th><th scope="col" class=num>Score</th><th scope="col">Trend</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>320 bps</td><td class="num">73</td><td>↓ from 348 bps (Nov 5)</td><td>Bullish</td></tr></tbody></table></div><p class="source">Source: FRED BAMLH0A0HYM2 (Nov 12, 2026; ×100 for bps)</p>
+<ul class="bullets"><li><strong>So what:</strong> the heaviest-weighted gauge. It widened 22 bps on the crash day, came within 2 bps of our 350 bps Risk-Off line, and then fully retraced. The bond market is treating the AI and Nvidia news as an equity-multiple problem, not a default-risk problem.</li><li><strong>Watch:</strong> 350 bps is the line. A widening from here while Treasury yields rise would mean higher rates are starting to hit credit.</li></ul>
+<figure class="viz" data-chart><figcaption><span class="viz-title">High-Yield OAS (bps)</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "High-Yield OAS (bps)", "unit": "num", "categories": ["2023-11-17", "2023-11-24", "2023-12-01", "2023-12-08", "2023-12-15", "2023-12-22", "2023-12-29", "2024-01-05", "2024-01-12", "2024-01-19", "2024-01-26", "2024-02-02", "2024-02-09", "2024-02-16", "2024-02-23", "2024-03-01", "2024-03-08", "2024-03-15", "2024-03-22", "2024-03-29", "2024-04-05", "2024-04-12", "2024-04-19", "2024-04-26", "2024-05-03", "2024-05-10", "2024-05-17", "2024-05-24", "2024-05-31", "2024-06-07", "2024-06-14", "2024-06-21", "2024-06-28", "2024-07-05", "2024-07-12", "2024-07-19", "2024-07-26", "2024-08-02", "2024-08-09", "2024-08-16", "2024-08-23", "2024-08-30", "2024-09-06", "2024-09-13", "2024-09-20", "2024-09-27", "2024-10-04", "2024-10-11", "2024-10-18", "2024-10-25", "2024-11-01", "2024-11-08", "2024-11-15", "2024-11-22", "2024-11-29", "2024-12-06", "2024-12-13", "2024-12-20", "2024-12-27", "2025-01-03", "2025-01-10", "2025-01-17", "2025-01-24", "2025-01-31", "2025-02-07", "2025-02-14", "2025-02-21", "2025-02-28", "2025-03-07", "2025-03-14", "2025-03-21", "2025-03-28", "2025-04-04", "2025-04-11", "2025-04-18", "2025-04-25", "2025-05-02", "2025-05-09", "2025-05-16", "2025-05-23", "2025-05-30", "2025-06-06", "2025-06-13", "2025-06-20", "2025-06-27", "2025-07-04", "2025-07-11", "2025-07-18", "2025-07-25", "2025-08-01", "2025-08-08", "2025-08-15", "2025-08-22", "2025-08-29", "2025-09-05", "2025-09-12", "2025-09-19", "2025-09-26", "2025-10-03", "2025-10-10", "2025-10-17", "2025-10-24", "2025-10-31", "2025-11-07", "2025-11-14", "2025-11-21", "2025-11-28", "2025-12-05", "2025-12-12", "2025-12-19", "2025-12-26", "2026-01-02", "2026-01-09", "2026-01-16", "2026-01-23", "2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-03", "2026-04-10", "2026-04-17", "2026-04-24", "2026-05-01", "2026-05-08", "2026-05-15", "2026-05-22", "2026-05-29", "2026-06-05", "2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03", "2026-07-10", "2026-07-17", "2026-07-24", "2026-07-31", "2026-08-07", "2026-08-14", "2026-08-21", "2026-08-28", "2026-09-04", "2026-09-11", "2026-09-18", "2026-09-25", "2026-10-02", "2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-13"], "series": [{"name": "HY OAS (bps)", "values": [399.0, 385.0, 387.0, 375.0, 351.0, 339.0, 334.0, 368.0, 356.0, 354.0, 339.0, 347.0, 333.0, 334.0, 323.0, 332.0, 326.0, 316.0, 308.0, 312.0, 318.0, 325.0, 337.0, 316.0, 308.0, 312.0, 309.0, 311.0, 320.0, 315.0, 329.0, 321.0, 318.0, 327.0, 319.0, 309.0, 310.0, 372.0, 349.0, 329.0, 319.0, 313.0, 339.0, 337.0, 315.0, 314.0, 289.0, 298.0, 288.0, 289.0, 283.0, 263.0, 272.0, 261.0, 272.0, 267.0, 268.0, 286.0, 284.0, 281.0, 281.0, 264.0, 260.0, 268.0, 267.0, 262.0, 278.0, 287.0, 297.0, 325.0, 321.0, 347.0, 445.0, 426.0, 402.0, 367.0, 360.0, 353.0, 316.0, 340.0, 331.0, 309.0, 318.0, 313.0, 302.0, 280.0, 297.0, 293.0, 284.0, 313.0, 294.0, 288.0, 288.0, 282.0, 283.0, 279.0, 272.0, 275.0, 280.0, 318.0, 304.0, 288.0, 294.0, 315.0, 307.0, 319.0, 295.0, 285.0, 291.0, 290.0, 286.0, 283.0, 274.0, 265.0, 268.0, 280.0, 287.0, 295.0, 286.0, 310.0, 313.0, 328.0, 324.0, 342.0, 313.0, 294.0, 283.0, 286.0, 277.0, 281.0, 280.0, 274.0, 272.0, 276.0, 271.0, 266.0, 283.0, 274.0, 269.0, 273.0, 279.0, 285.0, 270.0, 267.0, 270.0, 260.0, 268.0, 265.0, 268.0, 293.0, 310.0, 311.0, 331.0, 338.0, 344.0, 342.0, 320.0]}], "refs": [{"value": 300, "label": "300 complacency"}, {"value": 500, "label": "500 neutral"}, {"value": 700, "label": "700 stress"}]}</script><p class="source">Source: FRED BAMLH0A0HYM2, 5-year daily</p></figure>
+<h3 id="shiller-cape">Shiller CAPE</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Current Value</th><th scope="col" class=num>Score</th><th scope="col">Trend</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>~40.0</td><td class="num">15</td><td>↓ from 40.9 (Oct 29)</td><td>Bearish</td></tr></tbody></table></div><p class="source">Source: multpl.com (Nov 13, 2026); prior reading from the Oct 30 report</p>
+<ul class="bullets"><li><strong>So what:</strong> still second only to the 1999 peak. With a 5.15% 10Y, the excess CAPE yield (the CAPE earnings yield over the real 10Y) was 0.56 pp in October, the thinnest since March 2002. Equities offer almost no premium over bonds.</li><li><strong>Implication:</strong> valuation sets the size of the next drawdown, not its date.</li></ul>
+<figure class="viz" data-chart><figcaption><span class="viz-title">Shiller CAPE</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "Shiller CAPE", "unit": "num", "categories": ["2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01", "2026-05-01", "2026-06-01", "2026-07-01", "2026-08-01", "2026-09-01", "2026-10-01", "2026-11-01", "2026-11-13"], "series": [{"name": "CAPE", "values": [38.31, 36.94, 35.29, 34.27, 33.89, 30.67, 29.05, 29.0, 30.7, 28.23, 27.08, 28.38, 28.32, 28.34, 28.92, 27.94, 28.77, 28.76, 29.94, 30.89, 30.09, 29.8, 28.7, 30.01, 31.45, 31.97, 33.04, 33.76, 33.03, 33.78, 34.81, 35.48, 35.08, 35.7, 36.59, 37.36, 37.72, 37.14, 37.19, 34.79, 32.63, 35.08, 36.12, 37.48, 37.85, 38.59, 39.31, 39.16, 39.59, 39.65, 39.02, 37.04, 38.15, 40.11, 40.16, 40.02, 41.0, 40.42, 40.6, 39.82, 39.95]}], "refs": [{"value": 35, "label": "35 bubble warning"}, {"value": 25, "label": "25 expensive"}, {"value": 17, "label": "17 long-run avg"}]}</script><p class="source">Source: multpl.com Shiller CAPE</p></figure>
+<h3 id="buffett-indicator">Buffett Indicator</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Current Value</th><th scope="col" class=num>Score</th><th scope="col">Trend</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>~228%</td><td class="num">15</td><td>→ flat</td><td>Bearish</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance ^FTW5000 / FRED GDP, anchored to ~228% (our estimate; S&amp;P 500 7,557 → 7,562 since Oct 30)</p>
+<ul class="bullets"><li><strong>So what:</strong> well above Buffett&#x27;s ~200% &#x27;playing with fire&#x27; marker on every methodology (Fed Z.1-based trackers read ~250–260%). The score band (above 200%) does not move with small price changes.</li></ul>
+<figure class="viz" data-chart><figcaption><span class="viz-title">Buffett Indicator (% of GDP)</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "Buffett Indicator (% of GDP)", "unit": "pct", "categories": ["2022-01-07", "2022-01-14", "2022-01-21", "2022-01-28", "2022-02-04", "2022-02-11", "2022-02-18", "2022-02-25", "2022-03-04", "2022-03-11", "2022-03-18", "2022-03-25", "2022-04-01", "2022-04-08", "2022-04-15", "2022-04-22", "2022-04-29", "2022-05-06", "2022-05-13", "2022-05-20", "2022-05-27", "2022-06-03", "2022-06-10", "2022-06-17", "2022-06-24", "2022-07-01", "2022-07-08", "2022-07-15", "2022-07-22", "2022-07-29", "2022-08-05", "2022-08-12", "2022-08-19", "2022-08-26", "2022-09-02", "2022-09-09", "2022-09-16", "2022-09-23", "2022-09-30", "2022-10-07", "2022-10-14", "2022-10-21", "2022-10-28", "2022-11-04", "2022-11-11", "2022-11-18", "2022-11-25", "2022-12-02", "2022-12-09", "2022-12-16", "2022-12-23", "2022-12-30", "2023-01-06", "2023-01-13", "2023-01-20", "2023-01-27", "2023-02-03", "2023-02-10", "2023-02-17", "2023-02-24", "2023-03-03", "2023-03-10", "2023-03-17", "2023-03-24", "2023-03-31", "2023-04-07", "2023-04-14", "2023-04-21", "2023-04-28", "2023-05-05", "2023-05-12", "2023-05-19", "2023-05-26", "2023-06-02", "2023-06-09", "2023-06-16", "2023-06-23", "2023-06-30", "2023-07-07", "2023-07-14", "2023-07-21", "2023-07-28", "2023-08-04", "2023-08-11", "2023-08-18", "2023-08-25", "2023-09-01", "2023-09-08", "2023-09-15", "2023-09-22", "2023-09-29", "2023-10-06", "2023-10-13", "2023-10-20", "2023-10-27", "2023-11-03", "2023-11-10", "2023-11-17", "2023-11-24", "2023-12-01", "2023-12-08", "2023-12-15", "2023-12-22", "2023-12-29", "2024-01-05", "2024-01-12", "2024-01-19", "2024-01-26", "2024-02-02", "2024-02-09", "2024-02-16", "2024-02-23", "2024-03-01", "2024-03-08", "2024-03-15", "2024-03-22", "2024-03-29", "2024-04-05", "2024-04-12", "2024-04-19", "2024-04-26", "2024-05-03", "2024-05-10", "2024-05-17", "2024-05-24", "2024-05-31", "2024-06-07", "2024-06-14", "2024-06-21", "2024-06-28", "2024-07-05", "2024-07-12", "2024-07-19", "2024-07-26", "2024-08-02", "2024-08-09", "2024-08-16", "2024-08-23", "2024-08-30", "2024-09-06", "2024-09-13", "2024-09-20", "2024-09-27", "2024-10-04", "2024-10-11", "2024-10-18", "2024-10-25", "2024-11-01", "2024-11-08", "2024-11-15", "2024-11-22", "2024-11-29", "2024-12-06", "2024-12-13", "2024-12-20", "2024-12-27", "2025-01-03", "2025-01-10", "2025-01-17", "2025-01-24", "2025-01-31", "2025-02-07", "2025-02-14", "2025-02-21", "2025-02-28", "2025-03-07", "2025-03-14", "2025-03-21", "2025-03-28", "2025-04-04", "2025-04-11", "2025-04-18", "2025-04-25", "2025-05-02", "2025-05-09", "2025-05-16", "2025-05-23", "2025-05-30", "2025-06-06", "2025-06-13", "2025-06-20", "2025-06-27", "2025-07-04", "2025-07-11", "2025-07-18", "2025-07-25", "2025-08-01", "2025-08-08", "2025-08-15", "2025-08-22", "2025-08-29", "2025-09-05", "2025-09-12", "2025-09-19", "2025-09-26", "2025-10-03", "2025-10-10", "2025-10-17", "2025-10-24", "2025-10-31", "2025-11-07", "2025-11-14", "2025-11-21", "2025-11-28", "2025-12-05", "2025-12-12", "2025-12-19", "2025-12-26", "2026-01-02", "2026-01-09", "2026-01-16", "2026-01-23", "2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-03", "2026-04-10", "2026-04-17", "2026-04-24", "2026-05-01", "2026-05-08", "2026-05-15", "2026-05-22", "2026-05-29", "2026-06-05", "2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03", "2026-07-10", "2026-07-17", "2026-07-24", "2026-07-31", "2026-08-07", "2026-08-14", "2026-08-21", "2026-08-28", "2026-09-04", "2026-09-11", "2026-09-18", "2026-09-25", "2026-10-02", "2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-13"], "series": [{"name": "Buffett Indicator", "values": [186.98, 186.12, 174.73, 175.44, 178.78, 176.47, 173.33, 174.89, 172.03, 167.17, 177.85, 180.55, 176.72, 173.34, 170.46, 165.17, 159.52, 158.41, 154.42, 149.82, 159.7, 157.34, 149.94, 140.93, 150.21, 144.01, 147.24, 145.58, 149.6, 155.84, 157.06, 162.47, 159.85, 153.87, 148.49, 154.3, 146.87, 139.42, 135.82, 135.77, 133.38, 139.5, 145.21, 140.3, 148.5, 147.03, 149.19, 151.0, 145.43, 142.47, 142.07, 141.94, 141.54, 145.95, 145.04, 148.9, 151.64, 149.46, 149.56, 145.43, 148.21, 140.62, 142.03, 143.85, 149.15, 146.84, 148.16, 148.07, 148.86, 147.79, 147.31, 149.81, 150.21, 156.53, 157.34, 161.22, 158.65, 162.7, 157.82, 161.93, 163.15, 164.75, 161.13, 160.36, 156.76, 157.88, 162.2, 159.84, 159.51, 154.68, 153.82, 151.95, 152.34, 148.7, 144.82, 153.56, 154.95, 158.89, 160.48, 162.34, 162.78, 167.41, 168.92, 169.35, 164.45, 167.22, 168.91, 170.72, 172.76, 175.33, 175.66, 177.33, 179.31, 178.92, 178.34, 182.4, 183.43, 178.7, 175.7, 172.26, 174.94, 176.03, 179.15, 181.89, 181.6, 180.54, 182.25, 184.72, 185.85, 185.98, 186.98, 189.32, 186.12, 185.16, 180.55, 180.47, 187.41, 190.49, 190.91, 182.52, 189.88, 192.75, 193.82, 191.88, 194.13, 195.97, 193.69, 191.46, 201.12, 196.76, 200.99, 203.03, 204.84, 203.02, 198.41, 199.54, 197.36, 193.43, 199.44, 202.9, 201.05, 200.51, 203.07, 198.94, 196.91, 190.43, 186.09, 187.22, 184.23, 164.75, 173.63, 171.55, 179.53, 184.85, 184.26, 194.0, 188.78, 192.25, 195.47, 194.36, 194.26, 200.83, 200.96, 200.2, 201.5, 204.34, 199.25, 203.86, 206.04, 207.11, 207.06, 207.95, 210.98, 213.66, 212.73, 213.13, 207.78, 211.31, 215.46, 216.48, 212.97, 212.67, 208.66, 216.79, 217.5, 216.38, 216.43, 219.33, 214.08, 217.89, 217.45, 216.61, 216.67, 217.02, 214.14, 216.39, 215.38, 210.62, 207.1, 203.34, 199.53, 202.09, 209.06, 218.62, 219.56, 221.49, 226.24, 225.95, 228.41, 231.89, 226.03, 228.04, 230.13, 226.4, 226.97, 229.18, 225.75, 224.16, 226.35, 234.62, 235.71, 232.46, 233.02, 233.16, 230.96, 230.46, 232.89, 232.15, 234.62, 230.01, 229.37, 228.34, 222.44, 228.0]}], "refs": [{"value": 160, "label": "160% bubble warning"}, {"value": 120, "label": "120% overvalued"}, {"value": 100, "label": "100% fair value"}]}</script><p class="source">Source: Yahoo Finance ^FTW5000; FRED GDP; anchor: our estimate</p></figure>
+<h2 id="macro-policy-outlook-next-3-6-months">Macro &amp; Policy Outlook (Next 3–6 Months)</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Factor</th><th scope="col">Current Reading</th><th scope="col">Expected Path (3–6 mo)</th><th scope="col">Market Impact</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>Fed commentary</td><td>Oct 28: held at 3.75–4.00% (10–2, two dissents for a hike); activity described as &#x27;strong&#x27;. Since then Waller backed a December hike and floated 50 bp; Daly said further tightening is likely</td><td>December hike is the base case; no easing bias under Warsh</td><td>Hiking into a strong economy with core inflation sticky: no Fed put for equities</td><td class="fill-bad">Headwind</td></tr><tr><td>Rate guidance</td><td>December hike ~90% priced, ~11% odds of 50 bp (CME FedWatch, Nov 10–13); up from ~83% on Oct 30</td><td>The Dec 9 dots decide whether the market prices a 2027 hike too</td><td>Repricing risk is toward more tightening: a 50 bp move or a higher terminal dot</td><td class="fill-bad">Headwind</td></tr><tr><td>Fiscal deficit</td><td>FY2026 deficit $1.99T (+$217B YoY); net interest ~$1.05T; FRED trailing-12M series $2.11T</td><td>Coupons held at $125B for now; dealers expect long-end cuts no earlier than Aug 2027</td><td>Heavy supply into weak duration demand keeps the term premium rising</td><td class="fill-bad">Headwind</td></tr><tr><td>Treasury yields</td><td>10Y 5.15% (^TNX, Nov 13), up 31 bp from Nov 5; 2Y 4.86%; 10Y−2Y +24 bp; 30Y 5.48%</td><td>Long end pinned above 5% until core inflation turns or supply is cut</td><td>Discount rate ~65 bp above the 4.5% pressure line against CAPE ~40</td><td class="fill-bad">Headwind</td></tr></tbody></table></div><p class="source">Source: Federal Reserve (Oct 28, 2026); CME FedWatch via Investing.com and CNBC (Nov 10, 2026); 24/7 Wall St. (Nov 7, 2026); American Action Forum and CBO (Oct 2026); Treasury refunding statement (Nov 4, 2026); FRED DGS10, DGS2, MTSDS133FMS; Yahoo Finance ^TNX, ^TYX (Nov 13, 2026)</p>
+<figure class="viz" data-chart><figcaption><span class="viz-title">Treasury Yields and the 10Y−2Y Curve (%)</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "Treasury Yields and the 10Y−2Y Curve (%)", "unit": "pct", "categories": ["2021-11-12", "2021-11-19", "2021-11-26", "2021-12-03", "2021-12-10", "2021-12-17", "2021-12-24", "2021-12-31", "2022-01-07", "2022-01-14", "2022-01-21", "2022-01-28", "2022-02-04", "2022-02-11", "2022-02-18", "2022-02-25", "2022-03-04", "2022-03-11", "2022-03-18", "2022-03-25", "2022-04-01", "2022-04-08", "2022-04-15", "2022-04-22", "2022-04-29", "2022-05-06", "2022-05-13", "2022-05-20", "2022-05-27", "2022-06-03", "2022-06-10", "2022-06-17", "2022-06-24", "2022-07-01", "2022-07-08", "2022-07-15", "2022-07-22", "2022-07-29", "2022-08-05", "2022-08-12", "2022-08-19", "2022-08-26", "2022-09-02", "2022-09-09", "2022-09-16", "2022-09-23", "2022-09-30", "2022-10-07", "2022-10-14", "2022-10-21", "2022-10-28", "2022-11-04", "2022-11-11", "2022-11-18", "2022-11-25", "2022-12-02", "2022-12-09", "2022-12-16", "2022-12-23", "2022-12-30", "2023-01-06", "2023-01-13", "2023-01-20", "2023-01-27", "2023-02-03", "2023-02-10", "2023-02-17", "2023-02-24", "2023-03-03", "2023-03-10", "2023-03-17", "2023-03-24", "2023-03-31", "2023-04-07", "2023-04-14", "2023-04-21", "2023-04-28", "2023-05-05", "2023-05-12", "2023-05-19", "2023-05-26", "2023-06-02", "2023-06-09", "2023-06-16", "2023-06-23", "2023-06-30", "2023-07-07", "2023-07-14", "2023-07-21", "2023-07-28", "2023-08-04", "2023-08-11", "2023-08-18", "2023-08-25", "2023-09-01", "2023-09-08", "2023-09-15", "2023-09-22", "2023-09-29", "2023-10-06", "2023-10-13", "2023-10-20", "2023-10-27", "2023-11-03", "2023-11-10", "2023-11-17", "2023-11-24", "2023-12-01", "2023-12-08", "2023-12-15", "2023-12-22", "2023-12-29", "2024-01-05", "2024-01-12", "2024-01-19", "2024-01-26", "2024-02-02", "2024-02-09", "2024-02-16", "2024-02-23", "2024-03-01", "2024-03-08", "2024-03-15", "2024-03-22", "2024-03-29", "2024-04-05", "2024-04-12", "2024-04-19", "2024-04-26", "2024-05-03", "2024-05-10", "2024-05-17", "2024-05-24", "2024-05-31", "2024-06-07", "2024-06-14", "2024-06-21", "2024-06-28", "2024-07-05", "2024-07-12", "2024-07-19", "2024-07-26", "2024-08-02", "2024-08-09", "2024-08-16", "2024-08-23", "2024-08-30", "2024-09-06", "2024-09-13", "2024-09-20", "2024-09-27", "2024-10-04", "2024-10-11", "2024-10-18", "2024-10-25", "2024-11-01", "2024-11-08", "2024-11-15", "2024-11-22", "2024-11-29", "2024-12-06", "2024-12-13", "2024-12-20", "2024-12-27", "2025-01-03", "2025-01-10", "2025-01-17", "2025-01-24", "2025-01-31", "2025-02-07", "2025-02-14", "2025-02-21", "2025-02-28", "2025-03-07", "2025-03-14", "2025-03-21", "2025-03-28", "2025-04-04", "2025-04-11", "2025-04-18", "2025-04-25", "2025-05-02", "2025-05-09", "2025-05-16", "2025-05-23", "2025-05-30", "2025-06-06", "2025-06-13", "2025-06-20", "2025-06-27", "2025-07-04", "2025-07-11", "2025-07-18", "2025-07-25", "2025-08-01", "2025-08-08", "2025-08-15", "2025-08-22", "2025-08-29", "2025-09-05", "2025-09-12", "2025-09-19", "2025-09-26", "2025-10-03", "2025-10-10", "2025-10-17", "2025-10-24", "2025-10-31", "2025-11-07", "2025-11-14", "2025-11-21", "2025-11-28", "2025-12-05", "2025-12-12", "2025-12-19", "2025-12-26", "2026-01-02", "2026-01-09", "2026-01-16", "2026-01-23", "2026-01-30", "2026-02-06", "2026-02-13", "2026-02-20", "2026-02-27", "2026-03-06", "2026-03-13", "2026-03-20", "2026-03-27", "2026-04-03", "2026-04-10", "2026-04-17", "2026-04-24", "2026-05-01", "2026-05-08", "2026-05-15", "2026-05-22", "2026-05-29", "2026-06-05", "2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03", "2026-07-10", "2026-07-17", "2026-07-24", "2026-07-31", "2026-08-07", "2026-08-14", "2026-08-21", "2026-08-28", "2026-09-04", "2026-09-11", "2026-09-18", "2026-09-25", "2026-10-02", "2026-10-09", "2026-10-16", "2026-10-23", "2026-10-30", "2026-11-06", "2026-11-13"], "series": [{"name": "10-Year", "values": [1.58, 1.54, 1.48, 1.35, 1.48, 1.41, 1.5, 1.52, 1.76, 1.78, 1.75, 1.78, 1.93, 1.92, 1.92, 1.97, 1.74, 2.0, 2.14, 2.48, 2.39, 2.72, 2.83, 2.9, 2.89, 3.12, 2.93, 2.78, 2.74, 2.96, 3.15, 3.25, 3.13, 2.88, 3.09, 2.93, 2.77, 2.67, 2.83, 2.84, 2.98, 3.04, 3.2, 3.33, 3.45, 3.69, 3.83, 3.89, 4.0, 4.21, 4.02, 4.17, 3.82, 3.82, 3.68, 3.51, 3.57, 3.48, 3.75, 3.88, 3.55, 3.49, 3.48, 3.52, 3.53, 3.74, 3.82, 3.95, 3.97, 3.7, 3.39, 3.38, 3.48, 3.39, 3.52, 3.57, 3.44, 3.44, 3.46, 3.7, 3.8, 3.69, 3.75, 3.77, 3.74, 3.81, 4.06, 3.83, 3.84, 3.96, 4.05, 4.16, 4.26, 4.25, 4.18, 4.26, 4.33, 4.44, 4.59, 4.78, 4.63, 4.93, 4.84, 4.57, 4.61, 4.44, 4.47, 4.22, 4.23, 3.91, 3.9, 3.88, 4.05, 3.96, 4.15, 4.15, 4.03, 4.17, 4.3, 4.26, 4.19, 4.09, 4.31, 4.22, 4.2, 4.39, 4.5, 4.62, 4.67, 4.5, 4.5, 4.42, 4.46, 4.51, 4.43, 4.2, 4.25, 4.36, 4.28, 4.18, 4.25, 4.2, 3.8, 3.94, 3.89, 3.81, 3.91, 3.72, 3.66, 3.73, 3.75, 3.98, 4.08, 4.08, 4.25, 4.37, 4.3, 4.43, 4.41, 4.18, 4.15, 4.4, 4.52, 4.62, 4.6, 4.77, 4.61, 4.63, 4.58, 4.49, 4.47, 4.42, 4.24, 4.32, 4.31, 4.25, 4.27, 4.01, 4.48, 4.34, 4.29, 4.33, 4.37, 4.43, 4.51, 4.41, 4.51, 4.41, 4.38, 4.29, 4.35, 4.43, 4.44, 4.4, 4.23, 4.27, 4.33, 4.26, 4.23, 4.1, 4.06, 4.14, 4.2, 4.13, 4.05, 4.02, 4.02, 4.11, 4.11, 4.14, 4.06, 4.02, 4.14, 4.19, 4.16, 4.14, 4.19, 4.18, 4.24, 4.24, 4.26, 4.22, 4.04, 4.08, 3.97, 4.15, 4.28, 4.39, 4.44, 4.35, 4.31, 4.26, 4.31, 4.39, 4.38, 4.59, 4.56, 4.45, 4.55, 4.48, 4.46, 4.38, 4.49, 4.56, 4.55, 4.69, 4.75, 4.65, 4.68, 4.74, 4.73, 4.78, 4.96, 5.01, 5.17, 5.28, 5.24, 5.09, 5.0, 4.94, 4.86, 5.1]}, {"name": "2-Year", "values": [0.53, 0.52, 0.5, 0.6, 0.67, 0.66, 0.71, 0.73, 0.87, 0.99, 1.01, 1.15, 1.31, 1.5, 1.47, 1.55, 1.5, 1.75, 1.97, 2.3, 2.44, 2.53, 2.47, 2.72, 2.7, 2.72, 2.61, 2.6, 2.47, 2.66, 3.06, 3.17, 3.04, 2.84, 3.12, 3.13, 2.98, 2.89, 3.24, 3.25, 3.25, 3.37, 3.4, 3.56, 3.85, 4.2, 4.22, 4.3, 4.48, 4.49, 4.41, 4.66, 4.34, 4.51, 4.42, 4.28, 4.33, 4.17, 4.31, 4.41, 4.24, 4.22, 4.14, 4.19, 4.3, 4.5, 4.6, 4.78, 4.86, 4.6, 3.81, 3.76, 4.06, 3.97, 4.08, 4.17, 4.04, 3.92, 3.98, 4.28, 4.54, 4.5, 4.59, 4.7, 4.71, 4.87, 4.94, 4.74, 4.82, 4.87, 4.78, 4.89, 4.92, 5.03, 4.87, 4.98, 5.02, 5.1, 5.03, 5.08, 5.04, 5.07, 4.99, 4.83, 5.04, 4.88, 4.92, 4.56, 4.71, 4.44, 4.31, 4.23, 4.4, 4.14, 4.39, 4.34, 4.36, 4.48, 4.64, 4.67, 4.54, 4.48, 4.72, 4.59, 4.59, 4.73, 4.88, 4.97, 4.96, 4.81, 4.87, 4.83, 4.93, 4.89, 4.87, 4.67, 4.7, 4.71, 4.6, 4.45, 4.49, 4.36, 3.88, 4.05, 4.06, 3.9, 3.91, 3.66, 3.57, 3.55, 3.55, 3.93, 3.95, 3.95, 4.11, 4.21, 4.26, 4.31, 4.37, 4.13, 4.1, 4.25, 4.3, 4.31, 4.28, 4.4, 4.27, 4.27, 4.22, 4.29, 4.26, 4.19, 3.99, 3.99, 4.02, 3.94, 3.89, 3.68, 3.96, 3.81, 3.74, 3.83, 3.88, 3.98, 4.0, 3.89, 4.04, 3.96, 3.9, 3.73, 3.88, 3.9, 3.88, 3.91, 3.69, 3.76, 3.75, 3.68, 3.59, 3.51, 3.56, 3.57, 3.63, 3.58, 3.52, 3.46, 3.48, 3.6, 3.55, 3.62, 3.51, 3.47, 3.56, 3.52, 3.48, 3.46, 3.47, 3.54, 3.59, 3.6, 3.52, 3.5, 3.4, 3.48, 3.38, 3.56, 3.73, 3.88, 3.88, 3.84, 3.81, 3.71, 3.78, 3.88, 3.9, 4.09, 4.13, 3.98, 4.17, 4.09, 4.19, 4.07, 4.14, 4.21, 4.18, 4.33, 4.28, 4.19, 4.17, 4.24, 4.34, 4.37, 4.63, 4.76, 4.81, 4.83, 4.8, 4.74, 4.69, 4.56, 4.51, 4.86]}, {"name": "10Y−2Y spread", "values": [1.05, 1.02, 0.98, 0.75, 0.81, 0.75, 0.79, 0.79, 0.89, 0.79, 0.74, 0.63, 0.62, 0.42, 0.45, 0.42, 0.24, 0.25, 0.17, 0.18, -0.05, 0.19, 0.36, 0.18, 0.19, 0.4, 0.32, 0.18, 0.27, 0.3, 0.09, 0.08, 0.09, 0.04, -0.03, -0.2, -0.21, -0.22, -0.41, -0.41, -0.27, -0.33, -0.2, -0.23, -0.4, -0.51, -0.39, -0.41, -0.48, -0.28, -0.39, -0.49, -0.52, -0.69, -0.74, -0.77, -0.76, -0.69, -0.56, -0.53, -0.69, -0.73, -0.66, -0.67, -0.77, -0.76, -0.78, -0.83, -0.89, -0.9, -0.42, -0.38, -0.58, -0.58, -0.56, -0.6, -0.6, -0.48, -0.52, -0.58, -0.74, -0.81, -0.84, -0.93, -0.97, -1.06, -0.88, -0.91, -0.98, -0.91, -0.73, -0.73, -0.66, -0.78, -0.69, -0.72, -0.69, -0.66, -0.44, -0.3, -0.41, -0.14, -0.15, -0.26, -0.43, -0.44, -0.45, -0.34, -0.48, -0.53, -0.41, -0.35, -0.35, -0.18, -0.24, -0.19, -0.33, -0.31, -0.34, -0.41, -0.35, -0.39, -0.41, -0.37, -0.39, -0.34, -0.38, -0.35, -0.29, -0.31, -0.37, -0.41, -0.47, -0.38, -0.44, -0.47, -0.45, -0.35, -0.32, -0.27, -0.24, -0.16, -0.08, -0.11, -0.17, -0.09, 0.0, 0.06, 0.09, 0.18, 0.2, 0.05, 0.13, 0.13, 0.14, 0.16, 0.04, 0.12, 0.04, 0.05, 0.05, 0.15, 0.22, 0.31, 0.32, 0.37, 0.34, 0.36, 0.36, 0.2, 0.21, 0.23, 0.25, 0.33, 0.29, 0.31, 0.38, 0.33, 0.52, 0.53, 0.55, 0.5, 0.49, 0.45, 0.51, 0.52, 0.47, 0.45, 0.48, 0.56, 0.47, 0.53, 0.56, 0.49, 0.54, 0.51, 0.58, 0.58, 0.64, 0.59, 0.5, 0.57, 0.57, 0.55, 0.53, 0.56, 0.54, 0.51, 0.56, 0.52, 0.55, 0.55, 0.58, 0.67, 0.68, 0.68, 0.72, 0.64, 0.65, 0.64, 0.74, 0.72, 0.64, 0.6, 0.59, 0.59, 0.55, 0.51, 0.56, 0.51, 0.5, 0.55, 0.53, 0.51, 0.48, 0.5, 0.43, 0.47, 0.38, 0.39, 0.27, 0.31, 0.35, 0.35, 0.37, 0.36, 0.47, 0.46, 0.51, 0.5, 0.39, 0.41, 0.33, 0.25, 0.36, 0.45, 0.44, 0.35, 0.31, 0.38, 0.35, 0.24]}], "refs": [{"value": 4.5, "label": "4.5% valuation headwind"}, {"value": 0, "label": "inversion"}]}</script><p class="source">Source: FRED DGS10, DGS2</p></figure>
+<figure class="viz" data-chart><figcaption><span class="viz-title">US Federal Deficit — trailing 12 months ($T)</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "US Federal Deficit — trailing 12 months ($T)", "unit": "num", "categories": ["2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01", "2026-05-01", "2026-06-01", "2026-07-01", "2026-08-01", "2026-09-01", "2026-10-01"], "series": [{"name": "Deficit, trailing 12M ($T)", "values": [2.58, 2.3, 2.2, 1.73, 1.2, 1.13, 1.05, 0.96, 1.01, 1.38, 1.3, 1.36, 1.42, 1.58, 1.62, 1.81, 1.94, 2.11, 2.25, 2.26, 1.95, 1.7, 1.67, 1.74, 1.78, 1.77, 1.8, 1.66, 1.63, 1.73, 1.57, 1.59, 2.06, 1.83, 2.02, 2.07, 2.03, 2.14, 2.15, 2.07, 2.02, 1.99, 1.9, 1.94, 1.91, 1.78, 1.8, 1.61, 1.67, 1.63, 1.63, 1.64, 1.68, 1.66, 1.8, 1.95, 1.77, 1.99, 2.11]}], "refs": [{"value": 1.0, "label": "$1T"}, {"value": 2.0, "label": "$2T heavy issuance"}]}</script><p class="source">Source: FRED MTSDS133FMS, A091RC1Q027SBEA</p></figure>
+<ul class="bullets"><li><strong>Fed commentary:</strong> the tone has moved further hawkish since the Oct 28 hold. Waller, normally a centrist voice, argued for a December hike and said 50 bp should be considered if core CPI prints ~0.3% or higher (single source). October core CPI was exactly +0.3%.</li><li><strong>Rate guidance:</strong> Fed and market agree on direction; the risk is magnitude. A 50 bp move, or December dots implying another 2027 hike, would reprice the long end again. Nothing priced points to easing within six months.</li><li><strong>Fiscal deficit:</strong> a ~$2T deficit with net interest above $1T is now structural. The Nov 4 refunding held coupon sizes, but the 30-year sale (5.441%, 0.4 bp tail, bid-to-cover 2.36 vs 2.54, dealers left with 11.4%) shows buyers want more yield for duration.</li><li><strong>Treasury yields:</strong> the 10Y is the equity discount rate, and it is 65 bp above the level where CAPE-40 multiples come under pressure. The bear-flattening (2Y +19 bp) says this is Fed pricing. The 30Y at 5.48% says supply is adding to it.</li><li><strong>Offsetting factor:</strong> Brent fell from ~$115 to ~$96 since Oct 30, which takes pressure off headline inflation into 2027. It is the one macro input moving in equities&#x27; favour, but it is not enough to change any factor&#x27;s rating.</li><li><strong>Interplay check:</strong> rising 10Y + heavy issuance + hawkish Fed are all present: the multiple-compression combination, even with VIX under 20 and credit tight. This is hiking into a resilient economy (strong October jobs report), not easing into weakness.</li><li><strong>Net macro overlay: Headwind (4 of 4).</strong> Posture capped at Neutral; conviction reduced by 1 (7 → 6).</li></ul>
+<h3 id="dated-upcoming-catalysts">Dated Upcoming Catalysts</h3>
+<ul class="bullets"><li><strong>Nov 17 — Nvidia Q3 FY2027 results:</strong> the first print under interim CEO Colette Kress. A clean beat on the $108B guide calms the AI leadership worry; a guide-down plus governance overhang would test credit.</li><li><strong>Late November — FINRA October margin debt:</strong> a second monthly decline would confirm deleveraging after the Nov 5 crash (release date UNVERIFIED).</li><li><strong>~Nov 25 — October PCE:</strong> core above 3% keeps the 50 bp tail alive (date UNVERIFIED).</li><li><strong>Dec 4 — November jobs report:</strong> another strong print cements a hike (date UNVERIFIED).</li><li><strong>Dec 9 — FOMC decision with new dots:</strong> a 25 bp hike is priced. The risk is the 2027 dots; a 50 bp move would be a Risk-Off trigger for long-duration equities.</li><li><strong>Mid-December — November CPI:</strong> core at +0.3% or hotter keeps the 10Y above 5% (date UNVERIFIED).</li><li><strong>Early February 2027 — next quarterly refunding:</strong> any coupon upsizing or delay to long-end cuts would push the term premium higher (date UNVERIFIED).</li></ul>
+<p class="source">Source: Catalyst dates: Federal Reserve FOMC calendar (Dec 9, 2026), CNBC/Motley Fool (Nvidia Nov 17); other dates are typical release timing and marked UNVERIFIED</p>
+<h2 id="market-leverage-margin-debt">Market Leverage — Margin Debt</h2>
+<p><strong>Margin Picture: Critical</strong></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Dimension</th><th scope="col">Current Reading</th><th scope="col">Historical Benchmark</th><th scope="col">Signal</th></tr></thead><tbody><tr><td>Level ($B/$T)</td><td>$1.48T (FINRA, Sep 2026), +1.8% m/m; $22B below the $1.502T June record. October data due late November</td><td>Record nominal levels are common in rising markets</td><td class="fill-warn">Elevated</td></tr><tr><td>Margin Debt / GDP</td><td>≈4.5% on the FINRA basis (<em>our estimate: GDP ≈ $32.6T</em>); the Fed Z.1 broker margin-loan series reads 2.28%</td><td>2000 ≈ 2.8% · 2007 ≈ 2.6% · 2021 ≈ 3.8–4.0%</td><td class="fill-bad">Critical (above every prior peak on the FINRA basis)</td></tr><tr><td>YoY Growth Rate</td><td>+31.4% (Sep); +38.6% Jul, +49.0% Jun, +53.7% May</td><td>Crash-cluster zone is &gt;+40–50%: late 1999–2000, mid-2007, spring 2021</td><td class="fill-warn">Elevated (left the zone after June)</td></tr></tbody></table></div><p class="source">Source: FINRA margin statistics via Advisor Perspectives (Oct 23, 2026); FRED BOGZ1FL663067003Q and GDP; GDP basis for the FINRA ratio is our estimate. Unchanged since the Oct 30 report: no new FINRA release</p>
+<figure class="viz" data-chart><figcaption><span class="viz-title">Margin Debt as % of GDP</span></figcaption><script type="application/json" class="chart-data">{"kind": "line", "title": "Margin Debt as % of GDP", "unit": "pct", "categories": ["2022-01-01", "2022-04-01", "2022-07-01", "2022-10-01", "2023-01-01", "2023-04-01", "2023-07-01", "2023-10-01", "2024-01-01", "2024-04-01", "2024-07-01", "2024-10-01", "2025-01-01", "2025-04-01", "2025-07-01", "2025-10-01", "2026-01-01", "2026-04-01"], "series": [{"name": "Margin debt / GDP", "values": [2.06, 1.8, 1.74, 1.43, 1.36, 1.38, 1.43, 1.4, 1.51, 1.54, 1.53, 1.62, 1.58, 1.65, 1.82, 1.94, 1.95, 2.28]}], "refs": [{"value": 2.6, "label": "2.6% 2007 peak"}, {"value": 2.8, "label": "2.8% 2000 peak"}, {"value": 3.8, "label": "3.8% 2021 peak"}]}</script><p class="source">Source: FRED BOGZ1FL663067003Q (Z.1 margin loans) and GDP</p></figure>
+<div class="table-wrap"><table><thead><tr><th scope="col">Episode</th><th scope="col">Margin signal at the peak</th><th scope="col">What followed</th></tr></thead><tbody><tr><td>1929</td><td>Broker loans ≈ 12% of NYSE market cap; call-loan rates spiking</td><td>−89% Dow peak-to-trough; margin calls drove the cascade</td></tr><tr><td>Mar 2000</td><td>Margin/GDP ~2.8% record; YoY growth &gt;+50%</td><td>Dot-com crash, S&amp;P −49%; margin debt fell ~50%</td></tr><tr><td>Jul 2007</td><td>Margin/GDP ~2.6%; YoY growth &gt;+50% mid-2007</td><td>GFC, S&amp;P −57%; margin contraction amplified the decline</td></tr><tr><td>Oct 2021</td><td>Margin/GDP ~3.8–4.0% record; YoY growth &gt;+70% (spring 2021)</td><td>2022 bear market, S&amp;P −25%</td></tr></tbody></table></div><p class="source">Source: Historical record per FINRA / NYSE margin history and the skill&#x27;s crash-record table</p>
+<p>Today&#x27;s readings still most resemble <strong>late 2021</strong>: record margin/GDP, YoY growth that peaked in the crash-cluster zone in May–June and is decelerating, and a Fed hiking into it at a 5% 10Y. Margin debt amplifies moves rather than timing them. The Nov 5 drop (S&amp;P 500 −4.4%, Nasdaq −5.5%) is the kind of day record leverage turns into forced selling, and the rebound suggests margin calls were absorbed. The October FINRA print will show whether leverage contracted. The Critical rating bumps the Bubble Risk verdict up one notch, from Moderate to Elevated.</p>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>Is the Nvidia CEO resignation the top of the AI trade?</td><td>A leadership shock at the market&#x27;s largest weight, on top of the Nov 5 crash, ends AI leadership; cut AI exposure broadly</td><td>It is a governance shock, not a demand or credit shock. HY OAS tightened from 342 to 320 bps the same week, and equal-weight outperformed (RSP +1.3% vs SPY −0.2% since Oct 30). Cut cap-weight concentration, not the market.</td></tr><tr><td>Was the Nov 5–6 washout (F&amp;G 20, VIX 28) the low?</td><td>Capitulation is done; buy the dip as in every 2026 drawdown</td><td>Positioning washed out, but the rate driver got worse after it: the 10Y rose 31 bp to 5.15% and the December hike went from ~77% to ~90% with a 50 bp tail. Scale in, but the multiple has no support from rates.</td></tr><tr><td>Does the oil drop ($115 → $96) let the Fed stop?</td><td>Lower oil cools inflation; one hike in December, then done</td><td>Headline relief only. Core CPI was +0.3% m/m, PPI is +6.5% y/y (core ex trade +4.9%) and Waller is talking 50 bp. The terminal rate is still rising.</td></tr><tr><td>Is 5% on the 10Y a ceiling?</td><td>5% has capped yields all year; it is a buying level for duration</td><td>Not with a $2T deficit and weak end demand: the 30Y tailed at 5.441% with dealers taking 11.4%. The term premium is still rising, and the 30Y is at a cycle high (5.48%).</td></tr></tbody></table></div><p class="source">Source: Yahoo Finance; FRED; CNN; CME FedWatch via Investing.com and CNBC; CNBC PPI; Here Rock Hill; TechCrunch (Nov 2026)</p>
+<div class="edge"><strong>The edge:</strong> Consensus is trading the Nvidia headline. The tape is being driven by rates: the 10Y rose 31 bp in six sessions while credit tightened and breadth widened. That is multiple compression, not a credit event. Stay Neutral with an equal-weight tilt and underweight long-duration growth. Move to Risk-Off only if HY OAS breaks 350 bps or the Fed delivers 50 bp.</div>
+<h2 id="bubble-risk-assessment">Bubble Risk Assessment</h2>
+<p><strong>Risk Level: Elevated</strong> (2 of 6 conditions firing = Moderate by count; bumped up one notch because the margin picture is Critical)</p>
+<ul class="bullets"><li><strong>Firing — Shiller CAPE ~40.0 (&gt; 35):</strong> second only to the 1999 peak; the excess CAPE yield is the thinnest since 2002.</li><li><strong>Firing — Buffett Indicator ~228% (&gt; 160%):</strong> above Buffett&#x27;s ~200% &#x27;playing with fire&#x27; marker.</li><li><strong>Not firing — HY OAS 320 bps (threshold &lt; 300), VIX 19.30 (&lt; 15), F&amp;G 38.6 (&gt; 70):</strong> the complacency conditions are all off. The Nov 5 crash reset volatility and positioning.</li><li><strong>Not firing — breadth:</strong> RSP leads SPY by 5.3 pp, the opposite of a narrow rally.</li><li><strong>Amplifier — margin debt Critical:</strong> ≈4.5% of GDP on the FINRA basis, above the 2000, 2007 and 2021 peaks.</li></ul>
+<p>Current conditions most resemble <strong>2021–22</strong>: record valuation and leverage meeting a tightening Fed, which produced a −25% bear market over ten months. The analogy breaks down on sentiment. In late 2021, greed and tight spreads were also firing, whereas today positioning has already been washed out once and credit is not complacent. That makes a valuation-led grind lower more likely than a crash, unless the Fed overshoots.</p>
+<h2 id="overall-market-opinion">Overall Market Opinion</h2>
+<p>A composite of 47 is mid-band Neutral, up 5 points since Oct 30. The improvement is real but shallow. Breadth (+5.3 pp) and credit (320 bps) are healthy, and positioning recovered from a genuine washout: F&amp;G 20 and VIX 28 on Nov 5–6, when the S&amp;P 500 fell 4.4% in a day. Valuation has not moved. CAPE is ~40, the Buffett Indicator ~228% and margin leverage is at a record share of GDP, so the market is still priced for a benign rate path it is not getting.</p>
+<p>The most concerning signal is the bond market. The credit side is not the problem: HY spreads widened only 22 bps on the crash day and fully retraced, so the bond market does not see an earnings or default problem in the Nvidia news. The Treasury side is. The 10Y rose 31 bp in six sessions to 5.15% and the 30Y hit 5.48%, the December hike is ~90% priced with a 50 bp tail, and the long-bond auction tailed into a $2T deficit. That combination compresses multiples even when volatility is calm.</p>
+<p>Over the next 3–6 months, three things decide the posture: the Nov 17 Nvidia print under an interim CEO, the Dec 9 FOMC dots, and whether long-end supply finds buyers above 5%. Lower oil is the one help. Overall verdict: <strong>cautious-neutral</strong>. Hold net at neutral, keep hedges on, prefer equal-weight over cap-weight and underweight long-duration growth. Upgrade only on a 10Y back below ~4.75% with credit stable. Downgrade to Risk-Off on HY OAS above 350 bps or a 50 bp hike.</p>
+<h2 id="sources">Sources</h2>
+<ul class="bullets"><li><a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2">FRED — ICE BofA US High Yield OAS (BAMLH0A0HYM2)</a> (Nov 12, 2026)</li><li><a href="https://fred.stlouisfed.org/series/DGS10">FRED — 10-Year Treasury (DGS10)</a> and <a href="https://fred.stlouisfed.org/series/DGS2">2-Year Treasury (DGS2)</a> (Nov 12, 2026)</li><li><a href="https://www.cnn.com/markets/fear-and-greed">CNN Fear &amp; Greed Index</a> via the dataviz API (Nov 13, 2026)</li><li>Yahoo Finance: ^VIX, ^SKEW, RSP, SPY, ^GSPC, ^TNX, ^TYX, BZ=F (Nov 13, 2026 close)</li><li><a href="https://www.multpl.com/shiller-pe">multpl.com — Shiller PE</a> (Nov 13, 2026)</li><li><a href="https://www.thetrading.tools/chart-of-the-day/2026-11-04-excess-cape-yield-lowest-since-2002">The Trading Tools — Excess CAPE yield lowest since 2002 (Nov 4, 2026)</a></li><li><a href="https://www.cboe.com/markets/us/options/market-statistics/daily?dt=2026-11-05">Cboe daily market statistics (Nov 5, 2026)</a></li><li><a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm">Federal Reserve — FOMC statement (Oct 28, 2026)</a></li><li><a href="https://www.investing.com/news/economy-news/fed-rate-hike-odds-in-december-at-88-after-hot-cpi-cme-fedwatch-5017585">Investing.com — Fed rate hike odds in December at 88% after hot CPI (Nov 10, 2026)</a></li><li><a href="https://www.cnbc.com/2026/11/10/market-spooked-because-now-the-fed-may-need-a-supersized-hike-in-december.html">CNBC — Fed may need a supersized hike in December (Nov 10, 2026)</a></li><li><a href="https://247wallst.com/investing/2026/11/07/odds-of-a-december-rate-hike-jump-to-77-after-a-blowout-jobs-report/">24/7 Wall St. — December hike odds jump after jobs report (Nov 7, 2026)</a></li><li><a href="https://www.cnbc.com/2026/11/13/ppi-inflation-report-october-2026.html">CNBC — October 2026 PPI report (Nov 13, 2026)</a></li><li><a href="https://www.stocktitan.net/articles/october-2026-ppi-report">StockTitan — October 2026 PPI details (Nov 13, 2026)</a></li><li><a href="https://home.treasury.gov/news/press-releases/sb0678">US Treasury — Quarterly refunding statement (Nov 4, 2026)</a></li><li><a href="https://www.hererockhill.com/2026/11/13/treasury-25-billion-30-year-auction-tails-5-441/">Here Rock Hill — 30-year auction tails at 5.441% (Nov 13, 2026)</a></li><li><a href="https://www.americanactionforum.org/insight/u-s-treasury-fy-2026-deficit-totaled-2-trillion/">American Action Forum — FY2026 deficit totaled $2 trillion (Oct 2026)</a></li><li><a href="https://www.cbo.gov/system/files/2026-10/61985-MBR.pdf">CBO — Monthly Budget Review (Oct 2026)</a></li><li><a href="https://www.advisorperspectives.com/dshort/updates/2026/10/23/margin-debt-finra-september-2026">Advisor Perspectives — Margin debt, September 2026 (Oct 23, 2026)</a></li><li><a href="https://techcrunch.com/2026/11/12/nvidias-jensen-huang-resigns-chipmaker-names-cfo-colette-kress-as-interim-ceo/">TechCrunch — Jensen Huang resigns as Nvidia CEO (Nov 12, 2026)</a></li><li><a href="https://www.cnbc.com/2026/11/13/nvidia-stock-jensen-affair-ai.html">CNBC — Nvidia&#x27;s longest weekly losing streak since 2012 (Nov 13, 2026)</a></li><li><a href="https://www.fool.com/coverage/stock-market-today/2026/11/13/stock-market-midday-nov-13-nasdaq-plunges-as-nvidia-turmoil-deepens-and-treasury-yields-hit-5/">Motley Fool — Stock market midday, Nov 13, 2026</a></li><li>UNVERIFIED: release dates for FINRA October margin, October PCE, November jobs, November CPI and the February 2027 refunding (typical timing)</li></ul>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- collapsible side panel ----------
+  // The "toc-collapsed" class lives on <html>; a tiny script in <head> restores it before first paint.
+  (function () {
+    var toc = document.querySelector(".shell:not(.wide) > .toc");
+    if (!toc) return;   // wide layout has no side panel
+    var root = document.documentElement;
+    function stored() { try { return localStorage.getItem("toc-collapsed") === "1"; } catch (e) { return false; } }
+    function store(v) { try { localStorage.setItem("toc-collapsed", v ? "1" : "0"); } catch (e) { /* private mode */ } }
+    var hide = document.createElement("button");
+    hide.type = "button"; hide.className = "toc-toggle"; hide.textContent = "‹ Hide panel";
+    hide.title = "Hide the side panel"; hide.setAttribute("aria-expanded", "true");
+    toc.insertBefore(hide, toc.firstChild);
+    var show = document.createElement("button");
+    show.type = "button"; show.className = "toc-expand"; show.textContent = "☰";
+    show.title = "Show the side panel"; show.setAttribute("aria-label", "Show the side panel");
+    show.setAttribute("aria-expanded", "false");
+    document.body.appendChild(show);
+    function set(collapsed, persist) {
+      root.classList.toggle("toc-collapsed", collapsed);
+      hide.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      show.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      if (persist) store(collapsed);
+    }
+    hide.addEventListener("click", function () { set(true, true); });
+    show.addEventListener("click", function () { set(false, true); });
+    set(stored(), false);
+  })();
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>
