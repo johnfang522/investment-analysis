@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="report-meta" content="{&quot;ticker&quot;: &quot;NVDA&quot;, &quot;skill&quot;: &quot;business_potential&quot;, &quot;title&quot;: &quot;NVDA — Business Potential&quot;, &quot;signal&quot;: &quot;BULLISH&quot;, &quot;conviction&quot;: 7, &quot;as_of&quot;: &quot;Q3 FY2027 (quarter ended Oct 25, 2026); FY0 = TTM&quot;, &quot;rendered&quot;: &quot;2026-11-17&quot;, &quot;rendered_at&quot;: &quot;2026-11-17T22:16:24&quot;, &quot;company&quot;: &quot;NVIDIA Corporation&quot;}">
+<title>NVDA — Business Potential</title>
+<style>/* font-scale 1.15 */
+/* House style for the interactive HTML reports (inlined by report_renderer.py). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #1f3864;          /* house dark blue (Word table headers) */
+  --accent-ink: #ffffff;
+  --head-bg: #1f3864;
+  --link: #256abf;
+  --wash: rgba(42, 120, 214, 0.08);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --pos: #2a78d6;             /* diverging poles: inflow / outflow */
+  --neg: #e34948;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --fill-good: #e3f4e3;
+  --fill-warn: #fff3d6;
+  --fill-bad: #fbe3e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+    --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+    --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10); --accent: #86b6ef; --accent-ink: #0b0b0b; --head-bg: #22324f;
+  --link: #86b6ef; --wash: rgba(57, 135, 229, 0.12);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --pos: #3987e5; --neg: #e66767; --good-ink: #0ca30c;
+  --fill-good: #16301a; --fill-warn: #3a2f12; --fill-bad: #3a1a1a;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); }
+strong { font-weight: 650; }
+
+/* ---------- layout ---------- */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; font-size: 15px; }
+.toc .toc-home { display: block; color: var(--muted); text-decoration: none; margin-bottom: 14px; font-size: 14px; letter-spacing: .02em; }
+.toc .toc-home:hover { color: var(--ink); }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--grid); }
+.toc li a { display: block; padding: 5px 0 5px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; }
+.toc li a:hover { color: var(--ink); }
+.toc li a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+main { min-width: 0; }
+/* wide layout (quick_stock_metrics): full-width page, no sidebar, tables fit the frame with no scrolling */
+.shell.wide { grid-template-columns: minmax(0, 1fr); max-width: none; gap: 0; padding: 20px 16px 48px; }
+.shell.wide .toc { display: none; }
+.shell.wide .table-wrap { overflow-x: visible; }
+.shell.wide table { font-size: clamp(12.5px, 0.9vw, 16px); }
+.shell.wide thead th { white-space: nowrap; padding: 8px 5px; }
+.shell.wide thead th.sortable::after { margin-left: 3px; }
+.shell.wide td { padding: 6px 5px; }
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 48px; gap: 0; }
+  .toc { display: none; }
+}
+
+/* ---------- collapsible side panel (buttons are added by report.js; the class is set on <html>) ---------- */
+.toc-toggle { display: flex; align-items: center; gap: 6px; width: fit-content; margin: 0 0 12px auto; padding: 3px 10px; font: inherit; font-size: 14px; color: var(--muted); background: transparent; border: 1px solid var(--grid); border-radius: 999px; cursor: pointer; }
+.toc-toggle:hover { color: var(--ink); border-color: var(--muted); }
+.toc-expand { display: none; position: fixed; top: 12px; left: 12px; z-index: 40; width: 34px; height: 34px; align-items: center; justify-content: center; padding: 0; font-size: 19.5px; line-height: 1; color: var(--ink-2); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; }
+.toc-expand:hover { color: var(--ink); border-color: var(--muted); }
+@media (min-width: 961px) {
+  .toc-collapsed .shell:not(.wide) { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 64px; }
+  .toc-collapsed .shell:not(.wide) > .toc { display: none; }
+  .toc-collapsed .toc-expand { display: inline-flex; }
+}
+@media (max-width: 960px) { .toc-toggle, .toc-expand { display: none; } }
+
+/* ---------- header ---------- */
+.report-head { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 28px; }
+.report-head .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+.report-head h1 { margin: 6px 0 4px; font-size: 34.5px; line-height: 1.2; letter-spacing: -0.01em; }
+.report-head .subtitle { margin: 0; color: var(--ink-2); }
+.theme-toggle { font: inherit; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.theme-toggle:hover { color: var(--ink); background: var(--surface-2); }
+.call-strip { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.stat { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; flex: 1 1 140px; max-width: 280px; }
+.stat .label { color: var(--muted); font-size: 14px; }
+.stat .value { font-size: 23px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.stat .sub { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.meter { height: 6px; border-radius: 3px; background: var(--grid); margin-top: 6px; overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+/* ---------- sections ---------- */
+h2 { font-size: 24px; margin: 40px 0 12px; padding-top: 4px; letter-spacing: -0.005em; }
+h3 { font-size: 19.5px; margin: 28px 0 10px; }
+h4 { font-size: 17px; margin: 22px 0 8px; }
+main > h2:first-of-type { margin-top: 8px; }
+p { margin: 10px 0; }
+ul.bullets, ol.bullets { margin: 10px 0; padding-left: 22px; }
+.bullets li { margin: 6px 0; }
+.bullets li::marker { color: var(--muted); }
+.source { color: var(--muted); font-size: 14.5px; font-style: italic; margin: 6px 0 16px; }
+hr.page-break { border: 0; border-top: 1px dashed var(--grid); margin: 32px 0; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin: 12px 0 4px; }
+table { --cell-line: color-mix(in srgb, var(--ink) 55%, transparent); border-collapse: collapse; width: 100%; font-size: 16px; }
+thead th { position: sticky; top: 0; background: var(--head-bg); color: #ffffff; font-weight: 600; text-align: left; padding: 9px 10px; }
+thead th.sortable { cursor: pointer; user-select: none; }
+thead th.sortable::after { content: "↕"; opacity: .45; margin-left: 6px; font-size: 12.5px; }
+thead th[aria-sort="ascending"]::after { content: "↑"; opacity: 1; }
+thead th[aria-sort="descending"]::after { content: "↓"; opacity: 1; }
+thead th:first-child { border-top-left-radius: 11px; }
+thead th:last-child { border-top-right-radius: 11px; }
+tbody td { padding: 8px 10px; vertical-align: top; }
+/* visible solid grid on every cell (theme-aware) */
+table { border: 1px solid var(--cell-line); }
+th, td { overflow-wrap: break-word; }
+th, td { border: 1px solid var(--cell-line); }
+tbody tr:hover td { background: var(--wash); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+tr.bold td { font-weight: 650; }
+td.fill-good { background: var(--fill-good); }
+td.fill-warn { background: var(--fill-warn); }
+td.fill-bad { background: var(--fill-bad); }
+td.fill-muted { background: var(--surface-2); }
+
+/* ---------- callouts ---------- */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin: 12px 0; }
+.callout.bullish { border-left-color: var(--good); }
+.callout.bearish { border-left-color: var(--critical); }
+.callout .signal { display: flex; align-items: center; gap: 10px; font-size: 20.5px; font-weight: 650; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.badge.bullish .dot { background: var(--good); }
+.badge.bearish .dot { background: var(--critical); }
+.callout.verdict .call-strip { margin-top: 12px; }
+/* verdict tiles hold sentences, not just numbers: smaller, normal flow (flex split "$225.00" from its text) */
+.callout.verdict .stat { flex: 1 1 170px; max-width: none; }
+.callout.verdict .stat .value { display: block; font-size: 16px; font-weight: 600; line-height: 1.45; }
+.report-head .stat .value { font-size: 20.5px; }
+.callout.verdict .signal { font-size: 25.5px; }
+.callout .scale { color: var(--muted); font-size: 14.5px; margin-top: 8px; }
+.call-line { font-size: 19.5px; padding-left: 12px; border-left: 4px solid var(--muted); }
+.call-line.good { border-left-color: var(--good); } .call-line.good strong { color: var(--good-ink); }
+.call-line.bad { border-left-color: var(--critical); } .call-line.bad strong { color: var(--critical); }
+.call-line.warn { border-left-color: var(--warning); }
+.call-line.serious { border-left-color: #ec835a; }
+.edge { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+
+/* ---------- charts ---------- */
+figure.viz { margin: 16px 0 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 10px; box-shadow: var(--shadow); position: relative; }
+figure.viz figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; margin-bottom: 6px; }
+figure.viz .viz-title { font-weight: 650; font-size: 17px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { font: inherit; font-size: 14.5px; color: var(--ink-2); background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button[aria-pressed="false"] { opacity: .45; }
+.legend button:hover { background: var(--surface-2); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.legend .swatch.line { height: 2px; width: 14px; border-radius: 1px; }
+.legend .latest { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.viz-canvas { position: relative; width: 100%; }
+.viz-canvas svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-canvas svg:focus { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.viz text { fill: var(--muted); font-size: 13px; font-family: inherit; }
+.viz text.value-label { fill: var(--ink); font-weight: 600; font-size: 14px; }
+.viz text.point-label { fill: var(--ink-2); font-weight: 600; font-size: 12px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.viz text.axis2 { font-variant-numeric: tabular-nums; }
+.viz .gridline { stroke: var(--grid); stroke-width: 1; }
+.viz .baseline { stroke: var(--axis); stroke-width: 1; }
+.viz .connector { stroke: var(--axis); stroke-width: 1; }
+.viz .band-hit { fill: transparent; }
+.viz .band-hit.active { fill: var(--wash); }
+.viz .refline { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.viz text.ref-label { fill: var(--muted); font-size: 12.5px; }
+.viz .crosshair { stroke: var(--axis); stroke-width: 1; }
+.tooltip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .14); padding: 8px 10px; font-size: 14.5px; min-width: 150px; opacity: 0; transition: opacity .08s; }
+.tooltip.show { opacity: 1; }
+.tooltip .tt-head { color: var(--muted); margin-bottom: 4px; }
+.tooltip .tt-row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+.tooltip .tt-val { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tooltip .tt-name { color: var(--ink-2); }
+.tooltip .tt-note { color: var(--muted); }
+details.viz-data { margin-top: 6px; font-size: 15px; }
+details.viz-data summary { cursor: pointer; color: var(--muted); }
+details.viz-data .table-wrap { box-shadow: none; max-height: 420px; overflow: auto; }
+img.static-chart { width: 100%; height: auto; border-radius: 8px; background: #ffffff; }
+
+/* ---------- footer ---------- */
+.disclaimer { color: var(--muted); font-size: 14px; font-style: italic; border-top: 1px solid var(--grid); margin-top: 48px; padding-top: 16px; }
+
+/* ---------- index page ---------- */
+.shell.library { max-width: 1480px; }
+.toc li a .count { float: right; margin-left: 8px; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.toc ol.sub { border-left: 0; margin: 0 0 6px 12px; }
+.toc ol.sub li a { padding: 2px 0 2px 12px; font-size: 14.5px; color: var(--muted); }
+.stage { margin-bottom: 36px; scroll-margin-top: 16px; }
+.stage-title { margin: 0 0 2px; font-size: 25.5px; }
+.stage-title .stage-no { color: var(--accent); }
+.stage-desc { margin: 0 0 14px; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.card { scroll-margin-top: 16px; }
+/* floating back button (draggable; position remembered) */
+.back-fab { position: fixed; left: 16px; bottom: 20px; z-index: 50; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.25); cursor: grab; touch-action: none; user-select: none; }
+.back-fab:active { cursor: grabbing; }
+.library-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.library-head h1 { margin: 0; font-size: 34.5px; }
+.library-head input { font: inherit; padding: 8px 14px; min-width: 260px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); }
+.card h2 { margin: 0 0 8px; font-size: 20.5px; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.card .last-run { color: var(--muted); font-size: 14.5px; }
+.card details > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.card details > summary::-webkit-details-marker { display: none; }
+.card .card-head { display: flex; align-items: baseline; gap: 10px; }
+.card .card-head::before { content: "▸"; color: var(--muted); font-size: 15px; display: inline-block; width: 12px; transition: transform .12s; }
+.card details[open] .card-head::before { transform: rotate(90deg); }
+.card .card-head h2 { margin: 0; }
+.card .card-head .count { color: var(--muted); font-size: 14px; }
+.card .card-meta { display: flex; align-items: center; gap: 10px; }
+.card details[open] > summary { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.card .last-run time { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.card li { padding: 7px 0; border-top: 1px solid var(--grid); font-size: 16px; }
+.card li .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card .new-tag { margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--good); color: #fff; font-size: 12.5px; font-weight: 650; vertical-align: 1px; }
+.toc ol.sub li a::before { content: "• "; }
+.card ul.sub { list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+.card ul.sub li { border-top: 0; padding: 3px 0; font-size: 15px; }
+.card ul.sub li::marker { color: var(--muted); }
+.card li a { text-decoration: none; }
+.card li a:hover { text-decoration: underline; }
+.card .meta { color: var(--muted); font-size: 14px; white-space: nowrap; }
+@media (max-width: 640px) { .shell.library { padding: 16px 16px 48px; } .library-head input { min-width: 0; width: 100%; } }
+
+/* ---------- print ---------- */
+@media print {
+  :root { color-scheme: light; }
+  body { background: #ffffff; font-size: 11pt; }
+  .toc, .back-fab, .theme-toggle, .toc-toggle, .toc-expand, details.viz-data summary { display: none; }
+  .shell { display: block; padding: 0; }
+  figure.viz, .table-wrap, .callout { box-shadow: none; break-inside: avoid; }
+  hr.page-break { break-after: page; border: 0; }
+}
+
+.file-chip { margin-left: 6px; padding: 1px 7px; border: 1px solid var(--grid); border-radius: 999px; font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--muted); vertical-align: 1px; }
+.file-chip:hover { color: var(--ink); border-color: var(--muted); }
+</style>
+<script>try{if(localStorage.getItem("toc-collapsed")==="1")document.documentElement.classList.add("toc-collapsed")}catch(e){}</script>
+</head>
+<body><div style="background:#fff4d6;color:#4a3b00;border-bottom:1px solid #e0c870;padding:8px 16px;font:13px/1.4 system-ui,sans-serif;text-align:center">AI-generated research for information only. Not investment advice, not a recommendation to buy or sell any security. Figures come from SEC EDGAR, Yahoo Finance and web sources and may be incomplete or out of date.</div>
+<a class="back-fab" href="nvda_stock_deep_research_notes_20261117.html" title="Back to the previous page (drag to move)"><span aria-hidden="true">←</span> Back</a>
+<div class="shell">
+<nav class="toc" aria-label="Contents"><a class="toc-home" href="../index.html">← Investment Research Library</a><ol><li><a href="#at-a-glance">At a Glance</a></li><li><a href="#read-through-to-the-call">Read-Through to the Call</a></li><li><a href="#what-changed-since-october-10-2026">What Changed Since October 10, 2026</a></li><li><a href="#growth-outlook-3-5-years">Growth Outlook — 3–5 Years</a></li><li><a href="#nbt-readiness-scorecard">NBT Readiness Scorecard</a></li><li><a href="#value-alignment">Value Alignment</a></li><li><a href="#operational-agility">Operational Agility</a></li><li><a href="#financial-runway">Financial Runway</a></li><li><a href="#ecosystem-control">Ecosystem Control</a></li><li><a href="#strengths-vs-risks">Strengths vs Risks</a></li><li><a href="#variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</a></li></ol></nav>
+<main>
+<header class="report-head"><div class="eyebrow"><span>NVDA · Business Potential</span><button type="button" class="theme-toggle">Dark mode</button></div><h1>NVDA — Business Potential</h1><p class="subtitle">Update · Buy-side growth outlook and NBT readiness · November 17, 2026 · Data as of: Q3 FY2027 (quarter ended October 25, 2026)</p><div class="call-strip"><div class="stat"><div class="label">Signal</div><div class="value"><span class="badge bullish"><span class="dot"></span>BULLISH</span></div></div><div class="stat"><div class="label">Conviction</div><div class="value">7 / 10</div><div class="meter"><span style="width:70%"></span></div></div><div class="stat"><div class="label">Thesis bias</div><div class="value">LONG</div></div><div class="stat" title="Source: our estimate; Yahoo Finance $155.46 Nov 17, 2026"><div class="label">Prob-weighted FY+5 price</div><div class="value">$499</div><div class="sub">(+25.2%/yr)</div></div><div class="stat" title="Source: our estimate; FY0 SEC EDGAR + 8-K"><div class="label">Base revenue FY+3/FY+5</div><div class="value">$1,020.8B / $1,201.8B</div><div class="sub">(+25.7% CAGR)</div></div><div class="stat" title="Source: our scorecard"><div class="label">NBT readiness</div><div class="value">16/20 Strong</div></div></div></header>
+<h2 id="at-a-glance">At a Glance</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Primary Emerging Opportunity</td><td>AI factories beyond the hyperscalers: Vera Rubin compute + NVLink/Spectrum-X networking sold into sovereign, AI-cloud, enterprise and physical-AI buyers</td></tr><tr><td>Next Big Thing (NBT) Readiness Score</td><td><strong>16 / 20</strong> — Strong (down from 18 Dominant on the CEO exit)</td></tr><tr><td>Thesis Bias</td><td><strong>LONG</strong></td></tr><tr><td>Conviction (Optionality)</td><td><strong>7 / 10</strong></td></tr><tr><td>Base-Case Revenue, FY+3 / FY+5</td><td>$1,020.8B (+37.6% CAGR) / $1,201.8B (+25.7% CAGR) from $361.81B in FY0 (TTM to Oct 25, 2026)</td></tr><tr><td>Base-Case Operating Income, FY+5</td><td>$745.1B (62% margin vs 66.1% TTM)</td></tr><tr><td>Top Growth Driver</td><td>Hyperscale accelerated compute (Blackwell Ultra → Vera Rubin → Rubin Ultra) — +$470B incremental revenue by FY+5</td></tr><tr><td>Our Base vs Consensus</td><td>In line — FY+2 (FY2029) revenue $888B vs consensus $903B (−1.7%); FY2028 $699B vs $692B (+1.0%)</td></tr><tr><td>Probability-Weighted FY+5 Share Price</td><td>$499 (+221% vs $155.46; +25.2%/yr) — base $487 at 18x GAAP P/E</td></tr><tr><td>Single Biggest Advantage</td><td>CUDA + NVLink full-stack toll booth: ~80–85% accelerator share at 74.8% gross margin</td></tr><tr><td>Single Biggest Risk</td><td>Leadership vacuum (founder-CEO resigned, investigation) on top of $390B purchase commitments and $118B guarantees</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR (digest.py); <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000088/q3fy27pr.htm">NVIDIA Q3 FY27 8-K, Nov 17, 2026</a>; Yahoo Finance Nov 17, 2026; our estimates</p>
+<h2 id="read-through-to-the-call">Read-Through to the Call</h2>
+<div class="callout bullish"><div class="signal"><span class="badge bullish"><span class="dot"></span>BULLISH</span> NBT-Readiness conviction 7 / 10</div><ul class="bullets"><li><strong>So what:</strong> Base FY+5 (FY2032) revenue of $1,201.8B (+25.7% CAGR) is in line with the Street, yet $155.46 is ~10x FY2028 EPS: the growth outlook supports a +25%/yr probability-weighted return, so it adds to the long even after cutting readiness to 16/20.</li><li><strong>What flips it:</strong> An outside CEO plus a Q1 FY28 guide below ~$140B (not tracking the ~+75% FY28 outlook) moves us toward Bear; a permanent CEO from the product org and FY28 tracking above $740B moves us to Bull.</li></ul><div class="scale">Conviction scale (this dimension only): 9–10 = decisive support for the call · 7–8 = strong · 5–6 = mixed/neutral · 3–4 = weak · 1–2 = red flag</div></div>
+<h2 id="what-changed-since-october-10-2026">What Changed Since October 10, 2026</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Item</th><th scope="col">Prior (Oct 10, 2026)</th><th scope="col">Now</th><th scope="col">What changed and why it matters</th></tr></thead><tbody><tr><td>Base revenue FY+3 / FY+5</td><td>$799.9B (FY29) / $1,011.9B (FY31), +36% CAGR</td><td class="fill-good">$1,020.8B (FY30) / $1,201.8B (FY32), +25.7% CAGR; like-for-like FY31 $1,122.9B (+11%)</td><td>Horizon rolled one year (FY0 now TTM); FY28 raised $640B → $699B on the ~+75% FY28 outlook and the ~$20B Vera Rubin first quarter</td></tr><tr><td>Base FY+5 operating margin</td><td>62%</td><td class="fill-warn">62%</td><td>Unchanged: FY28 gross-margin guide 72–73% offsets the record 66.9% Q3 operating margin</td></tr><tr><td>Drivers</td><td>Blackwell/Rubin compute +$560B; sovereign/enterprise +$75B ⚠️</td><td class="fill-good">Hyperscale compute +$470B; sovereign/AI-cloud/enterprise +$190B ✅</td><td>Non-hyperscale Data Center (~$47B in Q3, ~3x YoY) upgraded ⚠️→✅; Hugging Face added to software</td></tr><tr><td>Scenario probabilities (Bear/Base/Bull/XB)</td><td>20 / 45 / 25 / 10</td><td class="fill-bad">25 / 45 / 22 / 8</td><td>Bear up 5 pts on the CEO resignation, investigation and China export rules</td></tr><tr><td>Scenario prices &amp; multiples</td><td>$110 (14x) / $451 (20x) / $674 (22x) / $985 (24x)</td><td class="fill-warn">$115 (12x) / $487 (18x) / $740 (21x) / $1,107 (23x)</td><td>Multiples cut 1–2 turns (governance discount; FY+5 growth 7% vs 10%); higher EPS more than offsets</td></tr><tr><td>Probability-weighted FY+5 price</td><td>$492 (+19.5%/yr from $229.28)</td><td class="fill-good">$499 (+25.2%/yr from $155.46)</td><td>Price −32% while the outcome rose; the return is the larger change</td></tr><tr><td>NBT readiness</td><td>18/20 (5/4/4/5)</td><td class="fill-bad">16/20 (4/3/4/5)</td><td>Value Alignment and Operational Agility each −1 on the founder-CEO exit</td></tr><tr><td>NBT spend ratio</td><td>0.32x</td><td class="fill-warn">0.37x</td><td>9M FY27 net equity-stake purchases $48.61B and TTM capex $10.14B</td></tr><tr><td>New deals / launches</td><td>$1T Blackwell+Rubin visibility; $30B OpenAI stake</td><td class="fill-warn">Vera Rubin ~$20B first quarter; Hugging Face acquisition; $105B OpenAI campus guarantee</td><td>Ramp proven; guarantees grew $108.5B → $118B</td></tr></tbody></table></div><p class="source">Source: Prior: 6_nvda_business_potential_20261010 report; now: this report, SEC EDGAR, NVIDIA Q3 FY27 8-K, Yahoo Finance</p>
+<ul class="bullets"><li><strong>Net read:</strong> thesis intact — growth outlook strengthened, readiness weakened; signal BULLISH and conviction 7/10 unchanged.</li><li><strong>Driver:</strong> Q3 FY27 revenue $115.84B (+103% YoY), Q4 guide $130.0B and ~+75% FY28 outlook (<a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000088/q3fy27pr.htm">NVIDIA Q3 FY27 8-K, Nov 17, 2026</a>); offset by Jensen Huang&#x27;s Nov 11–12 resignation (leadership run).</li><li><strong>Prior triggers:</strong> &#x27;Q4 FY27 revenue below ~$110B&#x27; did not fire (guide $130.0B); &#x27;two consecutive hyperscaler capex cuts&#x27; did not fire (hyperscale DC ~$60B, +23% QoQ).</li></ul>
+<h2 id="growth-outlook-3-5-years">Growth Outlook — 3–5 Years</h2>
+<ul class="bullets"><li><strong>FY0 definition:</strong> FY2026 closed Jan 25, 2026 — more than 9 months ago — so FY0 = TTM to Oct 25, 2026 ($361.81B revenue, SEC EDGAR + Q3 8-K via digest.py). FY+3 = FY2030 (Jan 2030), FY+5 = FY2032 (Jan 2032); CAGRs run from Oct 2026 over 3.25 / 5.25 years.</li><li><strong>Label key:</strong> reported = SEC EDGAR / NVIDIA 8-K; guided = management Nov 17, 2026; consensus = Street figures from the income-statement run (FY28E $692B, 57 analysts; FY29E $903B, 38 analysts); every FY+3/FY+5 figure is our estimate with its build.</li><li><strong>FY2027 bridge (guidance-implied):</strong> Q1 $81.65B + Q2 $96.22B + Q3 $115.84B + Q4 guide $130.0B (14 weeks) = $423.7B (+96%).</li><li><strong>Base path:</strong> FY28 $699B (+65%, vs company ~+75% ≈ $741B) → FY29 $888B (+27%) → FY30 $1,020.8B (+15%) → FY31 $1,122.9B (+10%) → FY32 $1,201.8B (+7%).</li></ul>
+<h3 id="1-growth-driver-inventory">1. Growth Driver Inventory</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">#</th><th scope="col">Driver</th><th scope="col">Category</th><th scope="col">Status</th><th scope="col">Timing (revenue starts → material)</th><th scope="col">Incremental Revenue by FY+3</th><th scope="col">Incremental Revenue by FY+5</th><th scope="col">Margin Effect</th><th scope="col">Evidence (cite)</th></tr></thead><tbody><tr><td>1</td><td>Hyperscale accelerated compute (Blackwell Ultra → Vera Rubin → Rubin Ultra / Feynman)</td><td>New product / volume</td><td class="fill-good">✅ Shipping</td><td>Rubin ramped Q3 FY27 → material FY28</td><td>+$380B (37% of FY+3)</td><td>+$470B (39% of FY+5)</td><td>→ GM 72–73% guided FY28 (memory costs)</td><td>Hyperscale DC ~$60B, +23% QoQ; Vera Rubin ~$20B first quarter (8-K)</td></tr><tr><td>2</td><td>Sovereign AI, AI cloud and enterprise on-prem</td><td>New customer segment</td><td class="fill-good">✅ Shipping</td><td>already material → FY29</td><td>+$140B (14%)</td><td>+$190B (16%)</td><td>↓ smaller deals, more services</td><td>AI Cloud/Industrial/Enterprise ~$47B, nearly 3x YoY; sovereign &gt;3x YoY; enterprise on-prem ~$5B TTM (8-K / call)</td></tr><tr><td>3</td><td>Networking (NVLink, Spectrum-X, InfiniBand, co-packaged optics)</td><td>Attach / pricing-mix</td><td class="fill-good">✅ Shipping</td><td>already material</td><td>+$125B (12%)</td><td>+$160B (13%)</td><td>↑ per-rack content</td><td>Networking &gt;$21B in Q3 (~$84B run-rate) (8-K)</td></tr><tr><td>4</td><td>Physical AI and Edge (robotics, automotive, industrial)</td><td>New TAM</td><td class="fill-good">✅ Shipping</td><td>FY27 → FY30</td><td>+$30B (3%)</td><td>+$55B (5%)</td><td>→</td><td>Edge $8.2B +42% YoY; Physical AI on track for &gt;$25B in FY27 (8-K); overlap with DC removed in our split</td></tr><tr><td>5</td><td>Software, DGX Cloud and Hugging Face</td><td>Recurring / services · M&amp;A</td><td class="fill-warn">⚠️ Signed, not yet material</td><td>FY28 → FY31</td><td>+$12B (1%)</td><td>+$25B (2%)</td><td>↑ software-like margin</td><td>Hugging Face acquisition agreed (8-K); revenue not disclosed</td></tr><tr><td>6</td><td>China data-center compute</td><td>Geographic expansion</td><td class="fill-bad">🔴 Speculative</td><td>None assumed</td><td>$0</td><td>$0 (Bull/XB only)</td><td>↑ if licensed</td><td>Q3 had $2.4B licensed Hopper, now stopped; new Commerce rules this week</td></tr><tr><td>7</td><td>Headwinds: custom ASIC share loss, price-downs</td><td>Headwind</td><td class="fill-warn">⚠️ Emerging</td><td>FY29 onward</td><td>−$28B</td><td>−$60B</td><td>↓</td><td>Accelerator share ~80–85% (2026E, business-overview run)</td></tr></tbody></table></div><p class="source">Source: <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000088/q3fy27pr.htm">NVIDIA Q3 FY27 8-K, Nov 17, 2026</a> and call; business-overview run (share); dollar columns are our estimates — the product/customer split of Data Center is ours</p>
+<ul class="bullets"><li><strong>Not a driver:</strong> quantum, AI-RAN/telecom and gaming-cycle upside each move FY+5 revenue &lt;2%; China DC compute is excluded from Base after the export stop; Hopper recontracting at up to 2x and B300 rental +60% are demand evidence for driver 1, not separate revenue.</li></ul>
+<h3 id="2-revenue-bridge-fy0-to-fy-5-base-case">2. Revenue Bridge — FY0 to FY+5 (Base Case)</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Component</th><th scope="col" class=num>FY0 (reported, TTM)</th><th scope="col">FY+3 (FY2030)</th><th scope="col" class=num>FY+5 (FY2032)</th><th scope="col" class=num>$ Change FY0→FY+5</th><th scope="col" class=num>CAGR</th><th scope="col">Basis</th></tr></thead><tbody><tr><td>Base business (TTM products and markets, held flat)</td><td class="num">$361.81B</td><td class="fill-muted">$361.8B</td><td class="num fill-muted">$361.8B</td><td class="num">$0.0B</td><td class="num">0%</td><td>reported TTM held flat (SEC EDGAR + 8-K)</td></tr><tr><td>1. Hyperscale accelerated compute</td><td class="num">—</td><td class="fill-muted">+$380.0B</td><td class="num fill-muted">+$470.0B</td><td class="num">+$470.0B</td><td class="num">n/m</td><td>hyperscale ~$240B run-rate (Q3 ~$60B × 4) roughly 2.5x by FY32 incl. networking share</td></tr><tr><td>2. Sovereign / AI cloud / enterprise</td><td class="num">—</td><td class="fill-muted">+$140.0B</td><td class="num fill-muted">+$190.0B</td><td class="num">+$190.0B</td><td class="num">n/m</td><td>~$188B run-rate (Q3 ~$47B × 4) growing ~20%/yr after FY28</td></tr><tr><td>3. Networking</td><td class="num">—</td><td class="fill-muted">+$125.0B</td><td class="num fill-muted">+$160.0B</td><td class="num">+$160.0B</td><td class="num">n/m</td><td>~$84B run-rate → ~$230B, ~19% of FY+5 revenue</td></tr><tr><td>4. Physical AI / Edge</td><td class="num">—</td><td class="fill-muted">+$30.0B</td><td class="num fill-muted">+$55.0B</td><td class="num">+$55.0B</td><td class="num">n/m</td><td>Edge ~$33B run-rate ($8.2B × 4) growing ~20%/yr</td></tr><tr><td>5. Software / DGX Cloud / Hugging Face</td><td class="num">—</td><td class="fill-muted">+$12.0B</td><td class="num fill-muted">+$25.0B</td><td class="num">+$25.0B</td><td class="num">n/m</td><td>~2% of FY+5 revenue</td></tr><tr><td>Headwinds (ASIC share loss, price-downs)</td><td class="num">—</td><td class="fill-muted">−$28.0B</td><td class="num fill-muted">−$60.0B</td><td class="num">−$60.0B</td><td class="num">—</td><td>accelerator share ~80–85% → ~70% implicit</td></tr><tr class=bold><td><strong>Total revenue</strong></td><td class="num"><strong>$361.81B</strong></td><td class="fill-muted"><strong>$1,020.8B</strong></td><td class="num fill-muted"><strong>$1,201.8B</strong></td><td class="num"><strong>+$840.0B (+232%)</strong></td><td class="num"><strong>25.7%</strong></td><td>FY+3 CAGR 37.6% (3.25 yrs)</td></tr><tr><td>Consensus</td><td class="num">—</td><td>N/A (FY2030 not covered)</td><td class="num">N/A</td><td class="num">—</td><td class="num">—</td><td>FY28E $692B (57 analysts) vs ours $699B; FY29E $903B (38) vs ours $888B (income-statement run, Nov 2026)</td></tr></tbody></table></div><p class="source">Source: FY0 SEC EDGAR + NVIDIA Q3 FY27 8-K (digest.py); consensus from the income-statement run; FY+3/FY+5 our estimate</p>
+<ul class="bullets"><li><strong>Growth shape:</strong> decelerating — growth peaked in FY27 (+96% guidance-implied), then FY28 +65%, FY29 +27%, FY30 +15%, FY31 +10%, FY32 +7%.</li><li><strong>Our base vs consensus:</strong> in line — FY28 +$7B ($699B vs $692B), FY29 −$15B ($888B vs $903B); we sit $42B under the company&#x27;s ~$741B FY28 outlook because China is zero and memory supply caps units.</li><li><strong>Concentration:</strong> hyperscale compute is 52% of gross driver growth ($470B of $900B before headwinds); frontier labs are ~15% of Data Center revenue (call); top-customer share N/A.</li></ul>
+<h3 id="3-profitability-path">3. Profitability Path</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">FY0 (reported, TTM)</th><th scope="col" class=num>FY+3 (base)</th><th scope="col">FY+5 (base)</th><th scope="col">Driver of the change</th></tr></thead><tbody><tr><td>Gross margin</td><td>74.9%</td><td class="num fill-muted">72.0%</td><td class="fill-muted">71.0%</td><td>FY28 guided 72–73% on supply/memory costs; Rubin mix</td></tr><tr><td>Operating margin</td><td>66.1%</td><td class="num fill-muted">64.0%</td><td class="fill-muted">62.0%</td><td>opex grows ~26%/yr from $31.98B TTM to ~$108B (R&amp;D, stock-based compensation)</td></tr><tr><td>Operating income</td><td>$239.09B</td><td class="num fill-muted">$653.3B</td><td class="fill-muted">$745.1B (+24.2% CAGR)</td><td>revenue × margin</td></tr><tr><td>EPS (diluted GAAP; FY0 also ex non-operating gains)</td><td>$9.31 GAAP / ~$8.31 ex gains</td><td class="num fill-muted">$23.25</td><td class="fill-muted">$27.07 (+25.2% CAGR vs $8.31)</td><td>17% tax; net interest income $4–5B; diluted shares 24.186B → 23.5B (FY+3) → 23.0B (FY+5), net −1%/yr buybacks</td></tr><tr><td>Free Cash Flow (FCF)</td><td>$148.72B</td><td class="num fill-muted">~$464B</td><td class="fill-muted">~$529B</td><td>85% of net income (TTM 66% on working capital); Capital Expenditures (CapEx) &lt;2% of revenue</td></tr></tbody></table></div><p class="source">Source: FY0 SEC EDGAR + 8-K (digest.py); guided gross margin NVIDIA Nov 17, 2026; FY+3/FY+5 our estimate</p>
+<ul class="bullets"><li><strong>Incremental margin:</strong> ($745.1B − $239.09B) ÷ $840.0B = 60.2%, below the 66.1% TTM margin — conservative against history.</li><li><strong>Margin risk:</strong> gross margin — memory and supply costs already pull the Q4 guide to 71–72% from 74.8% in Q3.</li></ul>
+<h3 id="4-scenarios-fy-5-from-revenue-to-share-price">4. Scenarios — FY+5 (From Revenue to Share Price)</h3>
+<ul class="bullets"><li><strong>EPS basis:</strong> GAAP diluted EPS excluding equity-stake mark-to-market gains (TTM net income $226.26B is 95% of operating income $239.09B, implying material non-operating gains); multiples are GAAP multiples.</li><li><strong>Tax and shares:</strong> 17% tax (our assumption, near NVIDIA&#x27;s recent effective rate); 24.186B diluted shares today (income-statement run) falling ~1%/yr to 23.0B; Bear holds 24.0B, Bull/Extreme Bull buy back more.</li><li><strong>Current price and horizon:</strong> $155.46 (Yahoo Finance close, Nov 17, 2026, before the release) to FY+5 year-end ~Jan 25, 2032 = 5.2 years.</li><li><strong>Multiple evidence:</strong> NVIDIA ~16.7x TTM GAAP EPS ($9.31) and ~9.8x FY28E EPS $15.86; Broadcom ~19–20x next-year, AMD ~32x (<a href="https://fourweekmba.com/ai-nvidia-at-10-7x-next-year-earnings-vs-broadcom-19x-amd-32x/">FourWeekMBA, Nov 2026</a>); TSMC 16.6x (<a href="https://www.useluminix.com/reports/industry-analysis/when-will-the-ai-cycle-peak/source/1">Luminix, Nov 9, 2026</a>); Microsoft ~27–28x (LSEG via press, Aug–Oct 2026).</li><li><strong>Why Base 18x exceeds today&#x27;s ~10x forward:</strong> today&#x27;s multiple embeds a governance shock and a cycle-peak call, not FY+5 growth; at ~7% growth and 62% margins, 18x sits between TSMC (16.6x) and Broadcom (19–20x).</li><li><strong>Exclusions:</strong> $390B purchase commitments and $118B guarantees are not deducted from EPS (tail risk carried in Bear).</li></ul>
+<h4 id="bear-25-probability">Bear — 25% probability</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Basis</th></tr></thead><tbody><tr><td class="fill-bad">Probability</td><td class="fill-bad">25%</td><td class="fill-bad">CEO vacuum, China at zero and capex digestion raise the odds vs 20% on Oct 10</td></tr><tr><td class="fill-bad">FY+5 revenue (FY2032, ends Jan 2032)</td><td class="fill-bad">$550.0B (+8.3% CAGR from FY0 $361.81B)</td><td class="fill-bad">FY28 peaks ~$600B then digestion: Base drivers deliver ~$350B less and ASIC/price headwinds widen to −$360B (Base −$652B)</td></tr><tr><td class="fill-bad">FY+5 operating margin</td><td class="fill-bad">50%</td><td class="fill-bad">gross margin ~64%; opex grows into the downturn</td></tr><tr><td class="fill-bad">FY+5 operating income</td><td class="fill-bad">$275.0B</td><td class="fill-bad">revenue × margin = $550.0B × 50%</td></tr><tr><td class="fill-bad">FY+5 EPS</td><td class="fill-muted">$9.61</td><td class="fill-bad">GAAP ex gains · 17% tax · ($275.0B + $3B) × 0.83 ÷ 24.0B</td></tr><tr><td class="fill-bad">Multiple at FY+5</td><td class="fill-muted">12x P/E</td><td class="fill-bad">our assumption — cyclical-semi trough below TSMC 16.6x; NVIDIA trades ~10x FY28E today</td></tr><tr class=bold><td class="fill-bad"><strong>Implied FY+5 share price</strong></td><td class="fill-bad"><strong>$115</strong></td><td class="fill-bad">$9.61 × 12x</td></tr><tr><td class="fill-bad">Return vs current</td><td class="fill-bad">−26% (−5.6%/yr over 5.2 years)</td><td class="fill-bad">vs $155.46 (Yahoo Finance close, Nov 17, 2026, before the release); FY+5 year-end ~Jan 25, 2032 = 5.2 years</td></tr></tbody></table></div><p class="source">Source: Reported: SEC EDGAR TTM / NVIDIA Q3 FY27 8-K; guided: NVIDIA Q4 FY27 / FY28 outlook (Nov 17, 2026); consensus: Street FY28E/FY29E per the income-statement run; our estimate: all FY+5 values and multiples; price: Yahoo Finance $155.46 close Nov 17, 2026</p>
+<ul class="bullets"><li><strong>What has to happen:</strong> Hyperscalers cut AI capex in CY2028; guarantees ($105B OpenAI campus) and $390B purchase commitments become inventory and credit drag; a successor CEO slows the annual cadence.</li><li><strong>Early evidence:</strong> Two consecutive quarters of hyperscale DC down QoQ; gross-margin guide below 70%; a guarantee called.</li></ul>
+<h4 id="base-45-probability">Base — 45% probability</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Basis</th></tr></thead><tbody><tr><td class="fill-warn">Probability</td><td class="fill-warn">45%</td><td class="fill-warn">supply-constrained ramp then deceleration is the modal outcome</td></tr><tr><td class="fill-warn">FY+5 revenue (FY2032, ends Jan 2032)</td><td class="fill-warn">$1,201.8B (+25.7% CAGR from FY0 $361.81B)</td><td class="fill-warn">bridge in Section 2: FY0 $361.81B + $840.0B</td></tr><tr><td class="fill-warn">FY+5 operating margin</td><td class="fill-warn">62%</td><td class="fill-warn">GM 71% (FY28 guide 72–73%); opex ~9% of revenue</td></tr><tr><td class="fill-warn">FY+5 operating income</td><td class="fill-warn">$745.1B</td><td class="fill-warn">revenue × margin = $1,201.8B × 62%</td></tr><tr><td class="fill-warn">FY+5 EPS</td><td class="fill-muted">$27.07</td><td class="fill-warn">GAAP ex gains · 17% tax · ($745.1B + $5B) × 0.83 ÷ 23.0B</td></tr><tr><td class="fill-warn">Multiple at FY+5</td><td class="fill-muted">18x P/E</td><td class="fill-warn">our assumption — ~7% FY+5 growth: between TSMC 16.6x and Broadcom 19–20x; 2 turns below the prior 20x for governance</td></tr><tr class=bold><td class="fill-warn"><strong>Implied FY+5 share price</strong></td><td class="fill-warn"><strong>$487</strong></td><td class="fill-warn">$27.07 × 18x</td></tr><tr><td class="fill-warn">Return vs current</td><td class="fill-warn">+213% (+24.6%/yr over 5.2 years)</td><td class="fill-warn">vs $155.46 (Yahoo Finance close, Nov 17, 2026, before the release); FY+5 year-end ~Jan 25, 2032 = 5.2 years</td></tr></tbody></table></div><p class="source">Source: Reported: SEC EDGAR TTM / NVIDIA Q3 FY27 8-K; guided: NVIDIA Q4 FY27 / FY28 outlook (Nov 17, 2026); consensus: Street FY28E/FY29E per the income-statement run; our estimate: all FY+5 values and multiples; price: Yahoo Finance $155.46 close Nov 17, 2026</p>
+<ul class="bullets"><li><strong>What has to happen:</strong> FY28 lands near $699B (+65%) and growth decays to +7% by FY32: hyperscale compute +$470B, sovereign/enterprise +$190B, networking +$160B, physical AI/Edge +$55B, software +$25B, headwinds −$60B.</li><li><strong>Early evidence:</strong> Q1 FY28 guide ≥$150B; a permanent CEO named from the product org; Rubin Ultra on schedule for CY2027.</li></ul>
+<h4 id="bull-22-probability">Bull — 22% probability</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Basis</th></tr></thead><tbody><tr><td class="fill-good">Probability</td><td class="fill-good">22%</td><td class="fill-good">company&#x27;s ~+75% FY28 outlook delivered and extended</td></tr><tr><td class="fill-good">FY+5 revenue (FY2032, ends Jan 2032)</td><td class="fill-good">$1,500.0B (+31.1% CAGR from FY0 $361.81B)</td><td class="fill-good">Base + $298B: compute +$160B, sovereign/enterprise +$80B, networking +$58B</td></tr><tr><td class="fill-good">FY+5 operating margin</td><td class="fill-good">64%</td><td class="fill-good">scale holds near TTM 66.1%</td></tr><tr><td class="fill-good">FY+5 operating income</td><td class="fill-good">$960.0B</td><td class="fill-good">revenue × margin = $1,500.0B × 64%</td></tr><tr><td class="fill-good">FY+5 EPS</td><td class="fill-muted">$35.24</td><td class="fill-good">GAAP ex gains · 17% tax · ($960.0B + $8B) × 0.83 ÷ 22.8B</td></tr><tr><td class="fill-good">Multiple at FY+5</td><td class="fill-muted">21x P/E</td><td class="fill-good">our assumption — ~10% FY+5 growth; Broadcom 19–20x plus a quality premium, below Microsoft ~27x</td></tr><tr class=bold><td class="fill-good"><strong>Implied FY+5 share price</strong></td><td class="fill-good"><strong>$740</strong></td><td class="fill-good">$35.24 × 21x</td></tr><tr><td class="fill-good">Return vs current</td><td class="fill-good">+376% (+35.1%/yr over 5.2 years)</td><td class="fill-good">vs $155.46 (Yahoo Finance close, Nov 17, 2026, before the release); FY+5 year-end ~Jan 25, 2032 = 5.2 years</td></tr></tbody></table></div><p class="source">Source: Reported: SEC EDGAR TTM / NVIDIA Q3 FY27 8-K; guided: NVIDIA Q4 FY27 / FY28 outlook (Nov 17, 2026); consensus: Street FY28E/FY29E per the income-statement run; our estimate: all FY+5 values and multiples; price: Yahoo Finance $155.46 close Nov 17, 2026</p>
+<ul class="bullets"><li><strong>What has to happen:</strong> FY28 ≥$741B (company outlook) and the $2.5T cloud backlog (from $2T three months ago) converts at NVIDIA&#x27;s current content share; China stays at zero.</li><li><strong>Early evidence:</strong> FY28 revenue tracking above $740B; industry backlog above $3T; sovereign deals with disclosed values.</li></ul>
+<h4 id="extreme-bull-8-probability">Extreme Bull — 8% probability</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Basis</th></tr></thead><tbody><tr><td style="background:#A9D08E;color:#0b0b0b">Probability</td><td style="background:#A9D08E;color:#0b0b0b">8%</td><td style="background:#A9D08E;color:#0b0b0b">blue-sky right tail only</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">FY+5 revenue (FY2032, ends Jan 2032)</td><td style="background:#A9D08E;color:#0b0b0b">$2,000.0B (+38.5% CAGR from FY0 $361.81B)</td><td style="background:#A9D08E;color:#0b0b0b">Base + $798B: compute +$450B, networking +$150B, China/physical AI/software +$198B</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">FY+5 operating margin</td><td style="background:#A9D08E;color:#0b0b0b">65%</td><td style="background:#A9D08E;color:#0b0b0b">marginally below TTM 66.1%</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">FY+5 operating income</td><td style="background:#A9D08E;color:#0b0b0b">$1,300.0B</td><td style="background:#A9D08E;color:#0b0b0b">revenue × margin = $2,000.0B × 65%</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">FY+5 EPS</td><td class="fill-muted">$48.11</td><td style="background:#A9D08E;color:#0b0b0b">GAAP ex gains · 17% tax · ($1,300.0B + $10B) × 0.83 ÷ 22.6B</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">Multiple at FY+5</td><td class="fill-muted">23x P/E</td><td style="background:#A9D08E;color:#0b0b0b">our assumption — above today&#x27;s ~16.7x trailing because ~15% FY+5 growth on a $2T base would re-rate toward AMD/Microsoft (27–32x); capped at 23x</td></tr><tr class=bold><td style="background:#A9D08E;color:#0b0b0b"><strong>Implied FY+5 share price</strong></td><td style="background:#A9D08E;color:#0b0b0b"><strong>$1,107</strong></td><td style="background:#A9D08E;color:#0b0b0b">$48.11 × 23x</td></tr><tr><td style="background:#A9D08E;color:#0b0b0b">Return vs current</td><td style="background:#A9D08E;color:#0b0b0b">+612% (+46.0%/yr over 5.2 years)</td><td style="background:#A9D08E;color:#0b0b0b">vs $155.46 (Yahoo Finance close, Nov 17, 2026, before the release); FY+5 year-end ~Jan 25, 2032 = 5.2 years</td></tr></tbody></table></div><p class="source">Source: Reported: SEC EDGAR TTM / NVIDIA Q3 FY27 8-K; guided: NVIDIA Q4 FY27 / FY28 outlook (Nov 17, 2026); consensus: Street FY28E/FY29E per the income-statement run; our estimate: all FY+5 values and multiples; price: Yahoo Finance $155.46 close Nov 17, 2026</p>
+<ul class="bullets"><li><strong>What has to happen:</strong> Every driver works including China licences and physical AI at scale: ~$1.6T of Data Center revenue ≈ 30–50% of a $3–5T 2030 market (Dell&#x27;Oro / JPMorgan) — a share the Addressable Market Check flags as a stretch.</li><li><strong>Early evidence:</strong> China DC licences restored; a disclosed NVIDIA-specific multi-year backlog above $1.5T.</li></ul>
+<h4 id="probability-weighted-outcome">Probability-Weighted Outcome</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Probability-weighted</th></tr></thead><tbody><tr><td>FY+5 revenue</td><td>$1,168.3B</td></tr><tr><td>FY+5 operating income</td><td>$719.3B</td></tr><tr><td>FY+5 EPS</td><td>$26.19</td></tr><tr class=bold><td><strong>Implied FY+5 share price</strong></td><td><strong>$499 (Σ probability × scenario price)</strong></td></tr><tr><td>Return vs current</td><td>+221% (+25.2%/yr over 5.2 years)</td></tr></tbody></table></div><p class="source">Source: Our estimate: 25% Bear, 45% Base, 22% Bull, 8% Extreme Bull; price Yahoo Finance Nov 17, 2026</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Base-case price: multiple ↓ / EPS →</th><th scope="col" class=num>−20% ($21.66)</th><th scope="col" class=num>Base ($27.07)</th><th scope="col" class=num>+20% ($32.48)</th></tr></thead><tbody><tr><td>14x P/E</td><td class="num">$303</td><td class="num">$379</td><td class="num">$455</td></tr><tr><td>18x P/E</td><td class="num">$390</td><td class="num fill-muted">$487</td><td class="num">$585</td></tr><tr><td>22x P/E</td><td class="num">$476</td><td class="num">$596</td><td class="num">$715</td></tr></tbody></table></div><p class="source">Source: Our estimate: Base FY+5 EPS × multiple</p>
+<ul class="bullets"><li><strong>Weights and price:</strong> 25+45+22+8 = 100%; 0.25×$115 + 0.45×$487 + 0.22×$740 + 0.08×$1,107 = $499, +25.2%/yr.</li><li><strong>Read:</strong> +25.2%/yr clears a 10–12%/yr hurdle by 2x; Base supplies 44% of the weighted price and Extreme Bull 18% on 8% odds; even the worst sensitivity cell ($303) is +95%.</li><li><strong>Quality:</strong> high near term (supply- and backlog-backed, customer mix broadening beyond hyperscale) but cyclical and partly financed by NVIDIA&#x27;s own stakes ($48.61B 9M FY27) and guarantees ($118B).</li><li><strong>Consistency:</strong> Base revenue and margins equal Sections 2–3; price $155.46 and 24.186B diluted shares match the valuation and income-statement runs; the valuation analysis sets the 12-month target and stop.</li></ul>
+<h3 id="5-addressable-market-check">5. Addressable Market Check</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Market</th><th scope="col">TAM Today</th><th scope="col">TAM in FY+5</th><th scope="col" class=num>TAM CAGR</th><th scope="col">Company Share Today</th><th scope="col">Share Implied by Base Case</th><th scope="col">Source</th></tr></thead><tbody><tr><td>AI / data-center infrastructure capex</td><td>~$800B (2026, PwC central case)</td><td>$1.1T (PwC) – $3T+ (Dell&#x27;Oro, all DC) – $5T+ (JPMorgan, AI + DC) by 2030</td><td class="num">~8–45%</td><td>Data Center TTM ~$335B (our estimate) ≈ 40% of 2026 capex</td><td>FY+5 DC ~$1.1T ≈ 22–37% of $3–5T; ~100% of PwC&#x27;s $1.1T</td><td><a href="https://datacenterknowledge.com/ai-data-centers/ai-infrastructure-pushes-data-center-capex-forecast-above-3-trillion">Dell&#x27;Oro via DataCenter Knowledge, Aug 2026</a>; <a href="https://www.kucoin.com/news/flash/jpmorgan-raises-ai-and-data-center-spending-estimates-to-5-trillion-by-2030">JPMorgan via KuCoin</a>; <a href="https://theenergymag.com/news/market-news/ai-data-center-trillion-pwc">PwC via The Energy Mag</a></td></tr><tr><td>AI accelerators (GPU + ASIC)</td><td>N/A sized</td><td>N/A</td><td class="num">N/A</td><td>~80–85% (2026E)</td><td>~70% (our assumption)</td><td>business-overview run</td></tr><tr><td>Physical AI / Edge</td><td>N/A sized</td><td>N/A</td><td class="num">N/A</td><td>Physical AI &gt;$25B FY27</td><td>~$85B Edge/Physical AI</td><td>NVIDIA 8-K</td></tr></tbody></table></div><p class="source">Source: Dell&#x27;Oro (Aug 2026), JPMorgan, PwC, McKinsey ($3–8T AI capex range by 2030); NVIDIA; our estimate</p>
+<ul class="bullets"><li>Base needs the market at the $3–5T end of third-party ranges: on PwC&#x27;s $1.1T central case it is implausible, so the Base is a bet on Dell&#x27;Oro/JPMorgan sizing, not on share gain (share falls from ~40% to 22–37%).</li><li>Range shown rather than the company&#x27;s own $3–4T claim alone; the $2.5T cloud industry backlog (call) is the nearest hard check.</li></ul>
+<h2 id="nbt-readiness-scorecard">NBT Readiness Scorecard</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Dimension</th><th scope="col" class=num>Score</th><th scope="col">Key Evidence (must cite source)</th></tr></thead><tbody><tr><td>1. Value Alignment</td><td class="num">4/5</td><td>AI is the business: Data Center $107.6B = 92.9% of Q3 revenue (8-K); −1 because the founder-owner who set the strategy (~811.5M shares, ~$126B) resigned Nov 11–12 — leadership run</td></tr><tr><td>2. Operational Agility</td><td class="num">3/5</td><td>Vera Rubin ~$20B in its first quarter, &#x27;fastest ramp in company history&#x27;, Hugging Face deal (8-K); but interim CEO, CEO search and independent investigation — leadership run</td></tr><tr><td>3. Financial Runway</td><td class="num">4/5</td><td>TTM FCF $148.72B (41.1%) vs capex $10.14B; net cash $21.14B; but $390B purchase commitments, $118B guarantees — SEC EDGAR, balance-sheet run</td></tr><tr><td>4. Ecosystem Control</td><td class="num">5/5</td><td>CUDA/NVLink standard, ~80–85% accelerator share (business-overview run); networking &gt;$21B/qtr; Hugging Face adds the open-model hub</td></tr><tr class=bold><td><strong>Total</strong></td><td class="num fill-warn"><strong>16/20</strong></td><td>Strong</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR; NVIDIA Q3 FY27 8-K; business-overview, leadership and balance-sheet runs</p>
+<h2 id="value-alignment">Value Alignment</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Question</th><th scope="col">Verdict</th><th scope="col">Evidence (1 phrase)</th></tr></thead><tbody><tr><td>Does the trend solve a core problem for existing customers?</td><td>✅</td><td>Hopper recontracted at up to 2x; B300 rental +60% — compute still scarce</td></tr><tr><td>Do current moats extend (data, brand, IP, distribution)?</td><td>✅</td><td>CUDA + NVLink + networking attach (&gt;$21B/qtr)</td></tr><tr><td>Is the legacy business sticky enough to fund the pivot?</td><td>✅</td><td>Edge $8.2B +42%; Data Center funds everything (FCF $148.72B TTM)</td></tr></tbody></table></div><p class="source">Source: NVIDIA Q3 FY27 8-K / call; SEC EDGAR</p>
+<h2 id="operational-agility">Operational Agility</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Notes</th></tr></thead><tbody><tr><td>Research &amp; Development (R&amp;D) Spend (annual)</td><td>N/A (no R&amp;D line in SEC EDGAR JSON)</td><td>TTM total operating expense $31.98B = 8.8% of revenue (gross profit $271.07B − operating income $239.09B, SEC EDGAR)</td></tr><tr><td>R&amp;D Growth (YoY)</td><td>N/A</td><td>revenue +103% YoY; operating income +115% (operating leverage 1.12x, digest.py)</td></tr><tr><td>Recent time-to-market</td><td>~12 months</td><td>Blackwell Ultra → Vera Rubin annual cadence; Rubin ~$20B in first quarter</td></tr><tr><td>Capacity Expansion</td><td>Purchase commitments $390B</td><td>from $279B in the Q2 10-Q (balance-sheet run)</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR; NVIDIA Q3 FY27 8-K; balance-sheet run</p>
+<ul class="bullets"><li><strong>Talent &amp; infrastructure:</strong> system-level engineering bench intact, but strategy ran through the founder; interim CEO Colette Kress is a finance, not product, leader.</li><li><strong>Forward-looking proof:</strong> Q4 guide $130.0B; Hugging Face acquisition; $105B guarantee for an OpenAI-leased campus; 9M FY27 net equity-stake purchases $48.61B.</li></ul>
+<h2 id="financial-runway">Financial Runway</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Annual Free Cash Flow (TTM)</td><td>$148.72B [SEC EDGAR + 8-K]</td></tr><tr><td>Estimated Trend Capex / strategic equity</td><td>$10.14B TTM CapEx + $48.61B 9M FY27 net equity-stake purchases = $58.75B (proxy; Q4 FY26 stakes excluded). The parent&#x27;s ~$10.6B capex sum recomputes to $10.14B (digest.py)</td></tr><tr><td><strong>NBT Spend Ratio</strong></td><td><strong>0.37x</strong> ✅ (trend spend ÷ TTM operating cash flow $158.86B)</td></tr><tr><td>FCF Margin</td><td>41.1%</td></tr><tr><td>Net Cash / (Net Debt)</td><td>$21.14B net cash (plus $44.2B marketable equity) — balance-sheet run</td></tr><tr><td>Interest Coverage</td><td>~500x (operating income $239.09B ÷ ~$0.5B interest; interest N/A in SEC JSON, prior 10-Q run-rate)</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR (digest.py cash_flow); NVIDIA 10-Q / 8-K; balance-sheet and cash-flow runs</p>
+<ul class="bullets"><li><strong>Legacy revenue drag:</strong> ~7% of revenue (Edge) sits outside the AI factory and is growing +42%, not disrupted; the drag is off-balance-sheet ($118B guarantees), not legacy revenue.</li></ul>
+<h2 id="ecosystem-control">Ecosystem Control</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Question</th><th scope="col">Verdict</th><th scope="col">Evidence (1 phrase)</th></tr></thead><tbody><tr><td>Toll booth — owns critical infrastructure?</td><td>✅</td><td>CUDA + NVLink; ~80–85% accelerator share</td></tr><tr><td>Open ecosystem or closed niche?</td><td>⚠️ Mixed</td><td>Hugging Face and NVLink Fusion open the edges; core stack proprietary</td></tr><tr><td>Helping write the rules (regulatory engagement)?</td><td>🔴</td><td>China DC licences stopped; new Commerce export rules this week</td></tr></tbody></table></div><p class="source">Source: NVIDIA 8-K; business-overview run</p>
+<h2 id="strengths-vs-risks">Strengths vs Risks</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">✅ Structural Advantages</th><th scope="col">⚠️ Execution Risks</th></tr></thead><tbody><tr><td>Record 66.9% operating margin at $115.84B/quarter</td><td>Founder-CEO resigned; interim CEO and independent investigation</td></tr><tr><td>$148.72B TTM FCF and $21.14B net cash</td><td>$390B purchase commitments, $118B guarantees, $109.7B equity stakes (circular)</td></tr><tr><td>Customer base broadening: non-hyperscale DC ~$47B/qtr, ~3x YoY</td><td>Gross margin guided down to 71–72% (memory costs); China at zero</td></tr></tbody></table></div><p class="source">Source: SEC EDGAR; NVIDIA Q3 FY27 8-K; leadership and balance-sheet runs</p>
+<h2 id="variant-view-consensus-vs-our-read">Variant View — Consensus vs. Our Read</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Debate</th><th scope="col">Consensus / Sell-Side</th><th scope="col">Our Read</th></tr></thead><tbody><tr><td>How fast does revenue grow through FY+3 / FY+5?</td><td>FY28E $692B (57 analysts), FY29E $903B (38); company ~+75% FY28 (~$741B)</td><td>Base FY28 $699B, FY29 $888B, FY32 $1,201.8B (+25.7% CAGR) — in line with the Street; no revenue edge claimed</td></tr><tr><td>What is the duration worth?</td><td>~9.8x FY28E EPS $15.86 at $155.46 prices FY28 as the peak plus a governance discount</td><td>Base FY+5 GAAP EPS $27.07 at 18x = $487 (+213%); even Bear at 12x is −26%</td></tr><tr><td>Does the CEO exit break the growth engine?</td><td>Price −32% since Oct 10 says yes</td><td>Readiness falls 18 → 16/20, but Vera Rubin&#x27;s ~$20B first quarter and non-hyperscale DC ~3x YoY show the engine is the product org and customer pull</td></tr><tr><td>Can they self-fund?</td><td>Circular-financing worry ($105B OpenAI campus guarantee)</td><td>NBT spend ratio 0.37x; FCF $148.72B — fundable; guarantees are the tail, carried in Bear</td></tr></tbody></table></div><p class="source">Source: Street consensus via the income-statement run; NVIDIA 8-K; Yahoo Finance; our estimate</p>
+<div class="edge"><strong>The edge:</strong> The Street&#x27;s revenue numbers are right but the price capitalizes them at ~10x forward as if FY28 were the peak and the founder were the moat; our in-line Base still yields ~$27 of FY+5 GAAP EPS, so the mispricing is duration and governance, not growth.</div>
+<p><strong>Note:</strong> Our revenue base matches consensus by design — we do not force a revenue variant; the edge is the multiple the market applies to it.</p>
+<footer class="disclaimer">This analysis was generated by AI with human instructions. It is provided for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Always conduct your own research and consult a qualified financial advisor before making any investment decisions.</footer>
+</main>
+</div>
+<script>/* Interactive layer for the HTML reports (inlined by report_renderer.py). No dependencies. */
+(function () {
+  "use strict";
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- theme ----------
+  function storedTheme() { try { return localStorage.getItem("report-theme"); } catch (e) { return null; } }
+  function storeTheme(t) { try { localStorage.setItem("report-theme", t); } catch (e) { /* private mode */ } }
+  var initial = storedTheme();
+  if (initial) document.documentElement.setAttribute("data-theme", initial);
+  function currentTheme() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function labelToggle(btn) { btn.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode"; }
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    labelToggle(btn);
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeTheme(next);
+      labelToggle(btn);
+      redrawAll();
+    });
+  });
+
+  // ---------- collapsible side panel ----------
+  // The "toc-collapsed" class lives on <html>; a tiny script in <head> restores it before first paint.
+  (function () {
+    var toc = document.querySelector(".shell:not(.wide) > .toc");
+    if (!toc) return;   // wide layout has no side panel
+    var root = document.documentElement;
+    function stored() { try { return localStorage.getItem("toc-collapsed") === "1"; } catch (e) { return false; } }
+    function store(v) { try { localStorage.setItem("toc-collapsed", v ? "1" : "0"); } catch (e) { /* private mode */ } }
+    var hide = document.createElement("button");
+    hide.type = "button"; hide.className = "toc-toggle"; hide.textContent = "‹ Hide panel";
+    hide.title = "Hide the side panel"; hide.setAttribute("aria-expanded", "true");
+    toc.insertBefore(hide, toc.firstChild);
+    var show = document.createElement("button");
+    show.type = "button"; show.className = "toc-expand"; show.textContent = "☰";
+    show.title = "Show the side panel"; show.setAttribute("aria-label", "Show the side panel");
+    show.setAttribute("aria-expanded", "false");
+    document.body.appendChild(show);
+    function set(collapsed, persist) {
+      root.classList.toggle("toc-collapsed", collapsed);
+      hide.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      show.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      if (persist) store(collapsed);
+    }
+    hide.addEventListener("click", function () { set(true, true); });
+    show.addEventListener("click", function () { set(false, true); });
+    set(stored(), false);
+  })();
+
+  // ---------- number formatting (mirrors doc_utils.fmt_value) ----------
+  function fmtUSD(v, compact) {
+    if (v === null || v === undefined) return "N/A";
+    var a = Math.abs(v), s = v < 0 ? "-" : "";
+    if (compact) {
+      if (a >= 1e9) return s + "$" + trim(a / 1e9) + "B";
+      if (a >= 1e6) return s + "$" + trim(a / 1e6) + "M";
+      if (a >= 1e3) return s + "$" + trim(a / 1e3) + "K";
+      return s + "$" + trim(a);
+    }
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + "M";
+    if (a >= 1e3) return s + "$" + (a / 1e3).toFixed(1) + "K";
+    return s + "$" + a.toFixed(2);
+  }
+  function trim(x) { return (Math.round(x * 10) / 10).toString(); }
+  function formatter(unit, compact) {
+    if (unit === "usd") return function (v) { return fmtUSD(v, compact); };
+    if (unit === "pct") return function (v) { return v === null ? "N/A" : (compact ? trim(v) : v.toFixed(1)) + "%"; };
+    if (unit === "x") return function (v) { return v === null ? "N/A" : v.toFixed(compact ? 1 : 2) + "x"; };
+    if (unit === "price") return function (v) { return v === null ? "N/A" : "$" + v.toFixed(2); };
+    return function (v) { return v === null ? "N/A" : (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString() : trim(v)); };
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function catLabel(c, long) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(c);
+    if (!m) return c;
+    return long ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : MONTHS[+m[2] - 1] + " '" + m[1].slice(2);
+  }
+
+  // ---------- svg helpers ----------
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(SVGNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    var t = el("text", Object.assign({ x: x, y: y }, attrs || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function niceTicks(lo, hi, count) {
+    if (lo === hi) { hi = lo + 1; }
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log10(span / count)));
+    var err = (count * step) / span;
+    if (err <= 0.15) step *= 10; else if (err <= 0.35) step *= 5; else if (err <= 0.75) step *= 2;
+    var t0 = Math.floor(lo / step) * step, t1 = Math.ceil(hi / step) * step, out = [];
+    for (var v = t0; v <= t1 + step / 2; v += step) out.push(Math.abs(v) < step / 1e6 ? 0 : v);
+    return out;
+  }
+  // A bar with a 4px rounded data-end, square at the baseline.
+  function barPath(x, w, yBase, yTip) {
+    var r = Math.min(4, w / 2, Math.abs(yBase - yTip));
+    if (yTip <= yBase) {
+      return "M" + x + "," + yBase + "V" + (yTip + r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+        "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip + r) + "V" + yBase + "Z";
+    }
+    return "M" + x + "," + yBase + "V" + (yTip - r) + "Q" + x + "," + yTip + " " + (x + r) + "," + yTip +
+      "H" + (x + w - r) + "Q" + (x + w) + "," + yTip + " " + (x + w) + "," + (yTip - r) + "V" + yBase + "Z";
+  }
+
+  // A series can borrow another slot's color (`slot`, 1-based) and be drawn faded (`faded`, e.g. consensus).
+  function colorOf(s, i) { return "var(--series-" + (s.slot || i + 1) + ")"; }
+
+  // Date categories: label the first point of every k-th month so labels never crowd.
+  function dateTicks(cats, width) {
+    var idx = [], lastKey = null;
+    cats.forEach(function (c, i) {
+      var m = /^(\d{4})-(\d{2})/.exec(c);
+      if (!m) return;
+      var key = m[1] + m[2];
+      if (key !== lastKey) { idx.push(i); lastKey = key; }
+    });
+    var maxLabels = Math.max(2, Math.floor(width / 72)), k = 1;
+    while (idx.length / k > maxLabels) k++;
+    return idx.filter(function (_, j) { return j % k === 0; });
+  }
+
+  // ---------- tooltip ----------
+  function tooltip(canvas) {
+    var tip = document.createElement("div");
+    tip.className = "tooltip";
+    tip.setAttribute("role", "status");
+    canvas.appendChild(tip);
+    return {
+      show: function (head, rows, x, y) {
+        tip.replaceChildren();
+        var h = document.createElement("div"); h.className = "tt-head"; h.textContent = head; tip.appendChild(h);
+        rows.forEach(function (r) {
+          var row = document.createElement("div"); row.className = "tt-row";
+          if (r.color) { var k = document.createElement("span"); k.className = "tt-key"; k.style.background = r.color; row.appendChild(k); }
+          var v = document.createElement("span"); v.className = "tt-val"; v.textContent = r.value; row.appendChild(v);
+          var n = document.createElement("span"); n.className = "tt-name"; n.textContent = r.name; row.appendChild(n);
+          if (r.note) { var o = document.createElement("span"); o.className = "tt-note"; o.textContent = "· " + r.note; row.appendChild(o); }
+          tip.appendChild(row);
+        });
+        tip.classList.add("show");
+        var cw = canvas.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+        var left = x + 14; if (left + tw > cw) left = Math.max(0, x - tw - 14);
+        tip.style.left = left + "px";
+        tip.style.top = Math.max(0, y - th / 2) + "px";
+      },
+      hide: function () { tip.classList.remove("show"); }
+    };
+  }
+
+  // ---------- data table view ----------
+  function dataTable(fig, data) {
+    var det = document.createElement("details"); det.className = "viz-data";
+    var sum = document.createElement("summary"); sum.textContent = "Show data"; det.appendChild(sum);
+    var wrap = document.createElement("div"); wrap.className = "table-wrap";
+    var tbl = document.createElement("table"), thead = tbl.createTHead(), hr = thead.insertRow(), body = tbl.createTBody();
+    var f = formatter(data.unit, false);
+    function th(t, num) { var c = document.createElement("th"); c.textContent = t; if (num) c.className = "num"; hr.appendChild(c); }
+    if (data.kind === "waterfall") {
+      th("Step"); th("Value", true);
+      data.steps.forEach(function (s) {
+        var r = body.insertRow(); r.insertCell().textContent = s.label;
+        var c = r.insertCell(); c.className = "num"; c.textContent = f(s.value);
+      });
+    } else {
+      th("Period");
+      data.series.forEach(function (s) { th(s.name, true); });
+      if (data.overlay) th(data.overlay.name, true);
+      if (data.category_notes) th("Note");
+      var step = data.categories.length > 60 ? 5 : 1;   // daily series: every 5th session keeps the table readable
+      data.categories.forEach(function (cat, i) {
+        if (step > 1 && (data.categories.length - 1 - i) % step !== 0) return;
+        var r = body.insertRow(); r.insertCell().textContent = catLabel(cat, true);
+        data.series.forEach(function (s) {
+          var c = r.insertCell(); c.className = "num";
+          c.textContent = s.values[i] === null ? "—" : f(s.values[i]) + (s.notes && s.notes[i] ? " (" + s.notes[i] + ")" : "");
+        });
+        if (data.overlay) {
+          var oc = r.insertCell(), ovv = data.overlay.points[i]; oc.className = "num";
+          oc.textContent = ovv === null ? "—" : formatter(data.overlay.unit || "price", false)(ovv);
+        }
+        if (data.category_notes) r.insertCell().textContent = data.category_notes[i] || "";
+      });
+    }
+    wrap.appendChild(tbl); det.appendChild(wrap); fig.appendChild(det);
+  }
+
+  // ---------- legend ----------
+  function legend(cap, data, state, kind, redraw) {
+    var box = document.createElement("div"); box.className = "legend";
+    var f = formatter(data.unit, false);
+    data.series.forEach(function (s, i) {
+      var b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-pressed", "true");
+      var sw = document.createElement("span"); sw.className = "swatch" + (kind === "line" ? " line" : "");
+      sw.style.background = colorOf(s, i); if (s.faded) sw.style.opacity = "0.45"; b.appendChild(sw);
+      var name = document.createElement("span"); name.textContent = s.name; b.appendChild(name);
+      var last = null;
+      for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] !== null) { last = s.values[k]; break; }
+      if (data.legend_latest !== false) { var lv = document.createElement("span"); lv.className = "latest"; lv.textContent = f(last); b.appendChild(lv); }
+      b.title = "Click to hide or show " + s.name;
+      b.addEventListener("click", function () {
+        var visibleCount = state.visible.filter(Boolean).length;
+        if (state.visible[i] && visibleCount === 1) return;   // keep at least one series
+        state.visible[i] = !state.visible[i];
+        b.setAttribute("aria-pressed", String(state.visible[i]));
+        redraw();
+      });
+      box.appendChild(b);
+    });
+    if (data.overlay) {
+      var ov = data.overlay, ob = document.createElement("button"); ob.type = "button"; ob.setAttribute("aria-pressed", "true");
+      var osw = document.createElement("span"); osw.className = "swatch line";
+      osw.style.background = "var(--series-" + (ov.slot || 7) + ")"; ob.appendChild(osw);
+      var on = document.createElement("span"); on.textContent = ov.name + " (right axis)"; ob.appendChild(on);
+      var olast = ov.daily ? ov.daily.y[ov.daily.y.length - 1] : null;
+      if (olast === null) for (var q = ov.points.length - 1; q >= 0; q--) if (ov.points[q] !== null) { olast = ov.points[q]; break; }
+      var olv = document.createElement("span"); olv.className = "latest"; olv.textContent = formatter(ov.unit || "price", false)(olast); ob.appendChild(olv);
+      ob.title = "Latest value; click to hide or show " + ov.name;
+      ob.addEventListener("click", function () {
+        state.overlay = !state.overlay;
+        ob.setAttribute("aria-pressed", String(state.overlay));
+        redraw();
+      });
+      box.appendChild(ob);
+    }
+    cap.appendChild(box);
+  }
+
+  // ---------- bar & line charts ----------
+  var CHAR_W = 6.3;   // approx. width of one point-label character (10.5px semibold)
+  function pointLabel(parent, x, y, str, attrs) {
+    return text(parent, x, y, str, Object.assign({ "text-anchor": "middle", class: "point-label" }, attrs || {}));
+  }
+  function drawSeriesChart(canvas, data, state, tip) {
+    var kind = data.kind;
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(420, Math.max(260, W * 0.44)));
+    var shown = data.series.map(function (s, i) { return { s: s, i: i }; }).filter(function (o) { return state.visible[o.i]; });
+    var n = data.categories.length;
+    var ov = kind === "bar" && data.overlay && state.overlay ? data.overlay : null;
+    var fLabel = formatter(data.unit, true), fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    // line labels: every point when there is room; otherwise a thinned set (one series) or end labels (several)
+    var lineMode = null;
+    var m = { top: 16, right: 16, bottom: 34, left: 62 };
+    if (ov) m.right = 64;
+    if (data.category_dates) m.bottom += 14;   // second axis line: period-end date
+    if (kind === "line") {
+      lineMode = (W - m.left - m.right) / n >= 44 ? "all" : shown.length === 1 ? "thin" : "end";
+      if (lineMode === "end") {
+        var longest = 0;
+        shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) longest = Math.max(longest, fLabel(v).length); }); });
+        m.right = Math.max(m.right, longest * CHAR_W + 14);
+      }
+    }
+    var ih = H - m.top - m.bottom, iw = W - m.left - m.right, band = iw / n;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var vals = [];
+    shown.forEach(function (o) { o.s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+    var lo = Math.min.apply(null, vals.concat(kind === "bar" ? [0] : [])), hi = Math.max.apply(null, vals.concat(kind === "bar" ? [0] : []));
+    (data.refs || []).forEach(function (r) { lo = Math.min(lo, r.value); hi = Math.max(hi, r.value); });
+    if (kind === "line") { var pad = (hi - lo) * 0.06 || 1, floor0 = lo >= 0; lo -= pad; hi += pad; if (floor0 && lo < 0) lo = 0; }
+    var fixed = data.y_min != null && data.y_max != null;
+    if (data.y_min != null) lo = data.y_min;
+    if (data.y_max != null) hi = data.y_max;
+    var ticks = niceTicks(lo, hi, 5);
+    if (fixed) ticks = ticks.filter(function (t) { return t >= lo && t <= hi; });
+    else if (kind === "bar") { lo = Math.min(lo, ticks[0]); hi = Math.max(hi, ticks[ticks.length - 1]); }
+    else { lo = ticks[0]; hi = ticks[ticks.length - 1]; }
+
+    // bar geometry, then the label room it needs (labels turn vertical when wider than a bar)
+    var k = shown.length, gap = 2, bw = 0, groupW = 0, rotate = false, padTop = 0, padBottom = 0;
+    if (kind === "bar") {
+      bw = Math.max(3, Math.min(24, (band * 0.72 - gap * (k - 1)) / k));
+      groupW = bw * k + gap * (k - 1);
+      var maxChars = 0, anyNeg = false, anyPos = false;
+      shown.forEach(function (o) { o.s.values.forEach(function (v) {
+        if (v === null) return;
+        maxChars = Math.max(maxChars, fLabel(v).length);
+        if (v < 0) anyNeg = true; else anyPos = true;
+      }); });
+      rotate = maxChars * CHAR_W > (k === 1 ? band * 0.9 : bw + gap + 2);   // room = distance to the neighbouring bar
+      var room = rotate ? maxChars * CHAR_W + 8 : 16;
+      padTop = anyPos ? room : 0; padBottom = anyNeg ? room : 0;
+    } else if (lineMode === "all") { padTop = 14; padBottom = 14; }
+    var ovBand = 0;
+    var yTop = m.top + ovBand + padTop, yBot = m.top + ih - padBottom;
+    function y(v) { return yBot - ((v - lo) / (hi - lo)) * (yBot - yTop); }
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      if (t < lo - 1e-9 || t > hi + 1e-9) return;
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 && kind === "bar" ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var labelIdx, isDates = n > 40 && /^\d{4}-\d{2}-\d{2}$/.test(data.categories[0]);
+    if (isDates) labelIdx = dateTicks(data.categories, iw);
+    else {
+      var every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(iw / 70))));
+      labelIdx = data.categories.map(function (_, i) { return i; }).filter(function (i) { return i % every === 0; });
+    }
+    labelIdx.forEach(function (i) {
+      text(g, m.left + band * (i + 0.5), m.top + ih + 18, catLabel(data.categories[i]), { "text-anchor": "middle" });
+      if (data.category_dates && data.category_dates[i]) text(g, m.left + band * (i + 0.5), m.top + ih + 33, "(" + data.category_dates[i] + ")", { "text-anchor": "middle" });
+    });
+    (data.refs || []).forEach(function (r) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(r.value), y2: y(r.value), class: "refline" }, g);
+      if (r.label) text(g, W - m.right - 4, y(r.value) - 5, r.label, { "text-anchor": "end", class: "ref-label" });
+    });
+    var marks = el("g", {}, svg), labels = el("g", {}, svg);
+    if (kind === "bar") {
+      shown.forEach(function (o, j) {
+        o.s.values.forEach(function (v, i) {
+          if (v === null) return;
+          var x = m.left + band * i + (band - groupW) / 2 + j * (bw + gap), cx = x + bw / 2, tipY = y(v);
+          el("path", { d: barPath(x, bw, y(0), tipY), fill: colorOf(o.s, o.i), "fill-opacity": o.s.faded ? 0.45 : 1 }, marks);
+          var neg = v < 0, ly = neg ? tipY + 4 : tipY - 4;
+          if (rotate) pointLabel(labels, cx, ly, fLabel(v), { "text-anchor": neg ? "end" : "start",
+            transform: "rotate(-90 " + cx + " " + ly + ")", dy: "0.35em" });
+          else pointLabel(labels, cx, neg ? tipY + 13 : tipY - 5, fLabel(v));
+        });
+      });
+    } else {
+      var ends = [];
+      shown.forEach(function (o) {
+        var d = "", pen = false, color = colorOf(o.s, o.i), last = -1;
+        o.s.values.forEach(function (v, i) {
+          if (v === null) { pen = false; return; }
+          d += (pen ? "L" : "M") + (m.left + band * (i + 0.5)) + "," + y(v); pen = true; last = i;
+        });
+        el("path", { d: d, fill: "none", stroke: color, "stroke-width": o.s.width || 2,
+          "stroke-opacity": o.s.faded ? 0.6 : 1, "stroke-dasharray": o.s.dashed ? "6 4" : "none",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }, marks);
+        if (last < 0) return;
+        var pts;
+        if (lineMode === "all") pts = o.s.values.map(function (_, i) { return i; });
+        else if (lineMode === "thin") {
+          var minGap = Math.ceil(56 / band);
+          pts = (isDates ? labelIdx.slice() : o.s.values.map(function (_, i) { return i; }).filter(function (i) { return (last - i) % minGap === 0; }))
+            .filter(function (i) { return last - i >= minGap; });
+          pts.push(last);
+        } else pts = [last];
+        pts.forEach(function (i) {
+          var v = o.s.values[i];
+          if (v === null) return;
+          var px = m.left + band * (i + 0.5), py = y(v);
+          el("circle", { cx: px, cy: py, r: i === last ? 4 : 3, fill: color, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          if (lineMode === "end") { ends.push({ y: py, v: v, color: color }); return; }
+          // with several series, the highest value at a point labels above and the rest below
+          var below = false;
+          if (shown.length > 1) shown.forEach(function (p) { var w = p.s.values[i]; if (p !== o && w !== null && w > v) below = true; });
+          var ty = below ? py + 15 : Math.max(m.top + 8, py - 8);
+          pointLabel(labels, Math.min(W - m.right - 14, Math.max(m.left + 14, px)), ty, fLabel(v), { style: "fill:" + color });
+        });
+      });
+      // end labels in the right margin, nudged apart so they never collide
+      ends.sort(function (a, b) { return a.y - b.y; });
+      for (var e = 1; e < ends.length; e++) if (ends[e].y - ends[e - 1].y < 13) ends[e].y = ends[e - 1].y + 13;
+      ends.forEach(function (o) {
+        pointLabel(labels, W - m.right + 8, o.y + 4, fLabel(o.v), { "text-anchor": "start", style: "fill:" + o.color });
+      });
+    }
+    // overlay: its own right-hand axis in the band above the bars (the income trend's share price)
+    var y2 = null, fOv = null, color2 = null;
+    if (ov) {
+      fOv = formatter(ov.unit || "price", false);
+      color2 = "var(--series-" + (ov.slot || 7) + ")";
+      var pv = ov.points.filter(function (v) { return v !== null; }).concat(ov.daily ? ov.daily.y : []);
+      if (pv.length) {
+        var t2 = niceTicks(Math.min.apply(null, pv), Math.max.apply(null, pv), 3), lo2 = t2[0], hi2 = t2[t2.length - 1];
+        var top2 = yTop, bot2 = yBot;
+        y2 = function (v) { return bot2 - ((v - lo2) / (hi2 - lo2 || 1)) * (bot2 - top2); };
+        var fT2 = formatter(ov.unit || "price", true);
+        t2.forEach(function (t) {
+          text(g, W - m.right + 8, y2(t) + 4, (ov.unit || "price") === "price" ? "$" + trim(t) : fT2(t),
+            { "text-anchor": "start", class: "axis2", style: "fill:" + color2 });
+        });
+        el("line", { x1: W - m.right + 2, x2: W - m.right + 2, y1: y2(hi2), y2: y2(lo2), stroke: color2, "stroke-width": 1, "stroke-opacity": 0.5 }, g);
+        var ox = function (c) { return m.left + band * (c + 0.5); };
+        if (ov.daily && ov.daily.x.length) {
+          var d2 = "";
+          ov.daily.x.forEach(function (c, j) { d2 += (j ? "L" : "M") + ox(c).toFixed(1) + "," + y2(ov.daily.y[j]).toFixed(1); });
+          el("path", { d: d2, fill: "none", stroke: color2, "stroke-width": 1.4, "stroke-opacity": 0.85, "stroke-linejoin": "round" }, marks);
+          var lx = ox(ov.daily.x[ov.daily.x.length - 1]), lyv = ov.daily.y[ov.daily.y.length - 1];
+          el("circle", { cx: lx, cy: y2(lyv), r: 4.5, fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+          var lt = ov.daily.last_label || fOv(lyv);
+          // keep the tag clear of the price line: try above, higher, below, then left of the end point
+          var tw = lt.length * CHAR_W, tx = Math.min(W - m.right - tw / 2, lx), ty = y2(lyv) - 9;
+          var cands = [[0, -9], [0, -30], [0, 24], [-tw * 0.8, -9], [-tw * 0.8, 24], [-tw * 1.6, -30]], bestC = null;
+          for (var ci = 0; ci < cands.length; ci++) {
+            var cxx = tx + cands[ci][0], cyy = y2(lyv) + cands[ci][1], hits = 0;
+            ov.daily.x.forEach(function (c, j) {
+              var px_ = ox(c), py_ = y2(ov.daily.y[j]);
+              if (Math.abs(px_ - cxx) < tw / 2 + 4 && py_ > cyy - 14 && py_ < cyy + 6) hits++;
+            });
+            if (!bestC || hits < bestC.hits) bestC = { hits: hits, dx: cands[ci][0], dy: cands[ci][1] };
+            if (!hits) break;
+          }
+          pointLabel(labels, Math.max(m.left + tw / 2, tx + bestC.dx), y2(lyv) + bestC.dy, lt, { style: "fill:" + color2, class: "point-label price-tag" });
+        }
+        ov.points.forEach(function (v, i) {
+          if (v === null) return;
+          var cx = ox(i), cy = y2(v), s = 5;
+          el("path", { d: "M" + cx + "," + (cy - s) + "L" + (cx + s) + "," + cy + "L" + cx + "," + (cy + s) + "L" + (cx - s) + "," + cy + "Z",
+            fill: color2, stroke: "var(--surface)", "stroke-width": 1.5 }, marks);
+        });
+      }
+    }
+    // hover layer
+    var hover = el("g", {}, svg), hl = null, cross = null, active = -1;
+    if (kind === "bar") hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    else cross = el("line", { class: "crosshair", y1: m.top, y2: m.top + ih, visibility: "hidden" }, hover);
+    if (hl) marks.parentNode.insertBefore(hover, marks);
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i;
+      var cx = m.left + band * (i + 0.5);
+      if (hl) { hl.setAttribute("x", m.left + band * i); hl.classList.add("active"); }
+      if (cross) { cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible"); }
+      var rows = shown.map(function (o) {
+        return { color: colorOf(o.s, o.i), value: fVal(o.s.values[i]), name: o.s.name,
+          note: o.s.notes ? o.s.notes[i] : null };
+      });
+      if (y2 && ov.points[i] !== null) rows.push({ color: color2, value: fOv(ov.points[i]), name: ov.name + " (period-end close)" });
+      var scale = canvas.clientWidth / W;
+      rows = rows.filter(function (r) { return r.value !== "N/A"; });
+      var head = catLabel(data.categories[i], true) + (data.category_notes && data.category_notes[i] ? " · " + data.category_notes[i] : "");
+      tip.show(head, rows, cx * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; if (hl) hl.classList.remove("active"); if (cross) cross.setAttribute("visibility", "hidden"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width);
+      var i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- waterfall ----------
+  function drawWaterfall(canvas, data, state, tip) {
+    var W = Math.max(320, canvas.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.36)));
+    var m = { top: 26, right: 16, bottom: 34, left: 62 };
+    var iw = W - m.left - m.right, ih = H - m.top - m.bottom;
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", tabindex: "0",
+      "aria-label": data.title + " — use left and right arrow keys to read values" });
+    var run = 0, bars = data.steps.map(function (s) {
+      var from = s.total ? 0 : run, to = s.total ? s.value : run + s.value;
+      run = to;
+      return { s: s, from: from, to: to };
+    });
+    var pts = [0];
+    bars.forEach(function (b) { pts.push(b.from, b.to); });
+    var ticks = niceTicks(Math.min.apply(null, pts), Math.max.apply(null, pts), 5);
+    var lo = ticks[0], hi = ticks[ticks.length - 1];
+    function y(v) { return m.top + ih - ((v - lo) / (hi - lo)) * ih; }
+    var fTick = formatter(data.unit, true), fVal = formatter(data.unit, false);
+    var g = el("g", {}, svg);
+    ticks.forEach(function (t) {
+      el("line", { x1: m.left, x2: W - m.right, y1: y(t), y2: y(t), class: t === 0 ? "baseline" : "gridline" }, g);
+      text(g, m.left - 8, y(t) + 4, fTick(t), { "text-anchor": "end" });
+    });
+    var n = bars.length, band = iw / n, bw = Math.min(64, band * 0.5);
+    var hover = el("g", {}, svg), hl = el("rect", { class: "band-hit", y: m.top, height: ih, width: band }, hover);
+    var marks = el("g", {}, svg);
+    bars.forEach(function (b, i) {
+      var x = m.left + band * i + (band - bw) / 2;
+      var up = b.to >= b.from, color = b.s.total ? (b.to >= 0 ? "var(--pos)" : "var(--neg)") : (up ? "var(--pos)" : "var(--neg)");
+      var top = Math.min(y(b.from), y(b.to)), h = Math.max(1, Math.abs(y(b.from) - y(b.to)));
+      if (b.s.total) el("path", { d: barPath(x, bw, y(0), y(b.to)), fill: color }, marks);
+      else el("rect", { x: x, y: top, width: bw, height: h, rx: 3, fill: color, "fill-opacity": 0.75 }, marks);
+      if (i < n - 1) {
+        var nx = m.left + band * (i + 1) + (band - bw) / 2;
+        el("line", { x1: x + bw, x2: nx, y1: y(b.to), y2: y(b.to), class: "connector" }, marks);
+      }
+      var ly = (b.to >= b.from ? Math.min(y(b.to), y(b.from)) - 8 : Math.max(y(b.to), y(b.from)) + 16);
+      text(marks, x + bw / 2, b.s.total ? (b.to >= 0 ? y(b.to) - 8 : y(b.to) + 16) : ly,
+        (b.s.total || b.s.value < 0 ? "" : "+") + fVal(b.s.total ? b.to : b.s.value), { "text-anchor": "middle", class: "value-label" });
+      text(g, m.left + band * (i + 0.5), H - m.bottom + 18, b.s.label, { "text-anchor": "middle" });
+    });
+    var active = -1;
+    function activate(i) {
+      if (i < 0 || i >= n) return;
+      active = i; hl.setAttribute("x", m.left + band * i); hl.classList.add("active");
+      var b = bars[i], scale = canvas.clientWidth / W;
+      var rows = [{ value: fVal(b.s.total ? b.to : b.s.value), name: b.s.total ? "total" : "change" }];
+      if (!b.s.total) rows.push({ value: fVal(b.to), name: "running total" });
+      tip.show(b.s.label, rows, (m.left + band * (i + 0.5)) * scale, (m.top + ih / 3) * scale);
+    }
+    function clear() { active = -1; hl.classList.remove("active"); tip.hide(); }
+    svg.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (W / r.width), i = Math.floor((x - m.left) / band);
+      if (i >= 0 && i < n) activate(i); else clear();
+    });
+    svg.addEventListener("pointerleave", clear);
+    svg.addEventListener("blur", clear);
+    svg.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { activate(Math.min(n - 1, active + 1)); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { activate(active < 0 ? n - 1 : Math.max(0, active - 1)); e.preventDefault(); }
+      else if (e.key === "Escape") clear();
+    });
+    return svg;
+  }
+
+  // ---------- chart bootstrap ----------
+  var charts = [];
+  function redrawAll() { charts.forEach(function (c) { c.draw(); }); }
+  document.querySelectorAll("figure.viz[data-chart]").forEach(function (fig) {
+    var data;
+    try { data = JSON.parse(fig.querySelector("script.chart-data").textContent); } catch (e) { return; }
+    var cap = fig.querySelector("figcaption");
+    var canvas = document.createElement("div"); canvas.className = "viz-canvas";
+    fig.insertBefore(canvas, cap.nextSibling);
+    var state = { visible: (data.series || []).map(function () { return true; }), overlay: true };
+    var tip = tooltip(canvas), svg = null;
+    function draw() {
+      var next = data.kind === "waterfall" ? drawWaterfall(canvas, data, state, tip) : drawSeriesChart(canvas, data, state, tip);
+      if (svg) canvas.replaceChild(next, svg); else canvas.insertBefore(next, canvas.firstChild);
+      svg = next;
+    }
+    if (data.series && (data.series.length > 1 || data.overlay)) legend(cap, data, state, data.kind, draw);
+    dataTable(fig, data);
+    var src = fig.querySelector(".source");
+    if (src) fig.appendChild(src);
+    charts.push({ draw: draw });
+    draw();
+    if (window.ResizeObserver) {
+      var lastW = canvas.clientWidth;
+      new ResizeObserver(function () { if (Math.abs(canvas.clientWidth - lastW) > 4) { lastW = canvas.clientWidth; draw(); } }).observe(canvas);
+    }
+  });
+
+  // ---------- sortable tables ----------
+  function parseCell(t) {
+    var s = t.replace(/[−–]/g, "-").replace(/,/g, "");
+    var mm = /(-)?\s*\$?\s*(\d*\.?\d+)\s*([BMK%x×])?/.exec(s);
+    if (!mm) return null;
+    var v = parseFloat(mm[2]);
+    if (mm[1] || /^\s*\(.*\)\s*$/.test(s)) v = -v;
+    var mult = { B: 1e9, M: 1e6, K: 1e3 }[mm[3]];
+    return mult ? v * mult : v;
+  }
+  document.querySelectorAll("table.sortable").forEach(function (tbl) {
+    var heads = tbl.tHead ? tbl.tHead.rows[0].cells : [];
+    Array.prototype.forEach.call(heads, function (th, col) {
+      th.classList.add("sortable");
+      th.tabIndex = 0;
+      function sort() {
+        var dir = th.getAttribute("aria-sort") === "descending" ? "ascending" : "descending";
+        Array.prototype.forEach.call(heads, function (h) { h.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", dir);
+        var body = tbl.tBodies[0], rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var x = a.cells[col] ? a.cells[col].textContent : "", y2 = b.cells[col] ? b.cells[col].textContent : "";
+          var nx = parseCell(x), ny = parseCell(y2), r;
+          if (nx !== null && ny !== null) r = nx - ny;
+          else if (nx !== null) r = -1; else if (ny !== null) r = 1;
+          else r = x.localeCompare(y2);
+          return dir === "ascending" ? r : -r;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      }
+      th.addEventListener("click", sort);
+      th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+    });
+  });
+
+  // ---------- table of contents scroll-spy ----------
+  var links = document.querySelectorAll(".toc a[href^='#']");
+  if (links.length && window.IntersectionObserver) {
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("active"); });
+          var a = byId[en.target.id]; if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "0px 0px -70% 0px" });
+    Object.keys(byId).forEach(function (id) { var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+
+  // ---------- library search ----------
+  var search = document.getElementById("library-search");
+  if (search) {
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(function (c) {
+        var hit = !q || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.style.display = hit ? "" : "none";
+        var det = c.querySelector("details");
+        if (det && q && hit) det.open = true;
+      });
+      document.querySelectorAll(".stage").forEach(function (st) {
+        var any = st.querySelector(".card:not([style*='none'])");
+        st.style.display = !q || any || !st.querySelector(".card") ? "" : "none";
+      });
+    });
+  }
+
+  // ---------- floating back button: click = previous page (or the library), drag = move ----------
+  var fab = document.querySelector(".back-fab");
+  if (fab) {
+    try {
+      var pos = JSON.parse(localStorage.getItem("back-fab-pos") || "null");
+      if (pos) { fab.style.left = pos.x + "px"; fab.style.top = pos.y + "px"; fab.style.bottom = "auto"; }
+    } catch (e) {}
+    var drag = null;
+    fab.addEventListener("pointerdown", function (e) {
+      var r = fab.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+      fab.setPointerCapture(e.pointerId);
+    });
+    fab.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) > 4) drag.moved = true;
+      if (!drag.moved) return;
+      var x = Math.min(Math.max(0, e.clientX - drag.dx), window.innerWidth - fab.offsetWidth);
+      var y = Math.min(Math.max(0, e.clientY - drag.dy), window.innerHeight - fab.offsetHeight);
+      fab.style.left = x + "px"; fab.style.top = y + "px"; fab.style.bottom = "auto";
+    });
+    fab.addEventListener("pointerup", function () {
+      if (drag && drag.moved) {
+        try { localStorage.setItem("back-fab-pos", JSON.stringify({ x: parseFloat(fab.style.left), y: parseFloat(fab.style.top) })); } catch (e) {}
+      }
+    });
+    fab.addEventListener("click", function (e) {
+      if (drag && drag.moved) { e.preventDefault(); drag = null; return; }
+      if (window.history.length > 1 && document.referrer) { e.preventDefault(); window.history.back(); }
+    });
+  }
+
+  // ---------- library cards: open the target card from a nav link / hash; open matches while filtering ----------
+  function openCardFromHash() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    var d = t && t.querySelector && t.querySelector("details");
+    if (d) d.open = true;
+  }
+  window.addEventListener("hashchange", openCardFromHash);
+  openCardFromHash();
+})();
+</script>
+</body>
+</html>
