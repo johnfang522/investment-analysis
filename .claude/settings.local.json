@@ -19,5 +19,21 @@
       "Bash(.venv/Scripts/python cohr_charts.py)",
       "Bash(.venv/Scripts/python *)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "if grep -qE \"python[^\\\"]*report_renderer\\.py\"; then cd \"$CLAUDE_PROJECT_DIR\" && PYTHONIOENCODING=utf-8 .venv/Scripts/python publish_reports.py; fi",
+            "timeout": 180,
+            "statusMessage": "Publishing reports to GitHub Pages..."
+          }
+        ]
+      }
+    ]
   }
 }
